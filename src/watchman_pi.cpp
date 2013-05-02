@@ -94,7 +94,12 @@ int watchman_pi::Init(void)
 
       m_pWatchmanDialog = NULL;
 
+      m_DeadmanTimer.Connect(wxEVT_TIMER, wxTimerEventHandler
+                             ( watchman_pi::OnDeadmanTimer ), NULL, this);
+      m_DeadmanUpdateTime = wxDateTime::Now();
+
       return (WANTS_TOOLBAR_CALLBACK    |
+              WANTS_CURSOR_LATLON       |
               INSTALLS_TOOLBAR_TOOL     |
               WANTS_PREFERENCES         |
               WANTS_NMEA_EVENTS         |
@@ -206,6 +211,12 @@ void watchman_pi::OnToolbarToolCallback(int id)
       m_pWatchmanDialog->Move(p);
 }
 
+void watchman_pi::OnDeadmanTimer( wxTimerEvent & )
+{
+    if(m_bDeadman)
+        Alarm();
+}
+
 bool watchman_pi::LoadConfig(void)
 {
       wxFileConfig *pConf = m_pconfig;
@@ -217,11 +228,20 @@ bool watchman_pi::LoadConfig(void)
             m_watchman_dialog_x =  pConf->Read ( _T ( "DialogPosX" ), 20L );
             m_watchman_dialog_y =  pConf->Read ( _T ( "DialogPosY" ), 20L );
 
+            pConf->Read ( _T ( "LandFall" ), &m_bLandFall, 0 );
             pConf->Read ( _T ( "LandFallDistance" ), &m_dLandFallDistance, 3 );
-            pConf->Read ( _T ( "LandFallSoundEnabled" ), &m_bLandFallSound, 0 );
-            pConf->Read ( _T ( "LandFallSoundFilepath" ), &m_sLandFallSound, _T("") );
-            pConf->Read ( _T ( "LandFallCommandEnabled" ), &m_bLandFallCommand, 0 );
-            pConf->Read ( _T ( "LandFallCommandFilepath" ), &m_sLandFallCommand, _T("") );
+
+            pConf->Read ( _T ( "Deadman" ), &m_bDeadman, 0 );
+            int deadmanminutes;
+            pConf->Read ( _T ( "DeadmanMinutes" ), &deadmanminutes, 20 );
+            m_DeadmanSpan = wxTimeSpan::Minutes(deadmanminutes);
+
+            pConf->Read ( _T ( "MessageBox" ), &m_bMessageBox, 0);
+
+            pConf->Read ( _T ( "SoundEnabled" ), &m_bSound, 0 );
+            pConf->Read ( _T ( "SoundFilepath" ), &m_sSound, _T("") );
+            pConf->Read ( _T ( "CommandEnabled" ), &m_bCommand, 0 );
+            pConf->Read ( _T ( "CommandFilepath" ), &m_sCommand, _T("") );
             return true;
       } else
             return false;
@@ -238,21 +258,53 @@ bool watchman_pi::SaveConfig(void)
             pConf->Write ( _T ( "DialogPosX" ),   m_watchman_dialog_x );
             pConf->Write ( _T ( "DialogPosY" ),   m_watchman_dialog_y );
 
+            pConf->Write ( _T ( "LandFall" ), m_bLandFall );
             pConf->Write ( _T ( "LandFallDistance" ), m_dLandFallDistance);
-            pConf->Write ( _T ( "LandFallSoundEnabled" ), m_bLandFallSound);
-            pConf->Write ( _T ( "LandFallSoundFilepath" ), m_sLandFallSound);
-            pConf->Write ( _T ( "LandFallCommandEnabled" ), m_bLandFallCommand);
-            pConf->Write ( _T ( "LandFallCommandFilepath" ), m_sLandFallCommand);
+
+            pConf->Write ( _T ( "Deadman" ), m_bDeadman );
+            pConf->Write ( _T ( "DeadmanMinutes" ), m_DeadmanSpan.GetMinutes() );
+
+            pConf->Write ( _T ( "MessageBox" ), m_bMessageBox);
+
+            pConf->Write ( _T ( "SoundEnabled" ), m_bSound);
+            pConf->Write ( _T ( "SoundFilepath" ), m_sSound);
+            pConf->Write ( _T ( "CommandEnabled" ), m_bCommand);
+            pConf->Write ( _T ( "CommandFilepath" ), m_sCommand);
             return true;
       }
       else
             return false;
 }
 
+void watchman_pi::Alarm()
+{
+    if(m_bSound) {
+        // play sound
+    }
+    if(m_bCommand) {
+        wxProcess::Open(m_sCommand);
+    }
+
+    if(m_bMessageBox) {
+        wxMessageDialog mdlg(m_parent_window, _("ALARM!!!!"),
+                             wxString(_("Watchman"), wxOK | wxICON_ERROR));
+        mdlg.ShowModal();
+    }
+}
+
+void watchman_pi::SetCursorLatLon(double, double)
+{
+    m_DeadmanTimer.Start(m_DeadmanSpan.GetMilliseconds().ToLong(), true);
+    m_DeadmanUpdateTime = wxDateTime::Now();
+}
+
 extern "C" void ll_gc_ll(double lat, double lon, double crs, double dist, double *dlat, double *dlon);
 extern bool gshhsCrossesLand(double lat1, double lon1, double lat2, double lon2);
 void watchman_pi::SetPositionFixEx(PlugIn_Position_Fix_Ex &pfix)
 {
+    if(!m_bLandFall)
+        return;
+
     wxDateTime now = wxDateTime::Now();
     wxTimeSpan diff = now - m_LastLandFallCheck;
     if(diff.GetSeconds() < 15)
@@ -265,12 +317,7 @@ void watchman_pi::SetPositionFixEx(PlugIn_Position_Fix_Ex &pfix)
         ll_gc_ll(pfix.Lat, pfix.Lon, t, m_dLandFallDistance, &dlat, &dlon);
 
         if(gshhsCrossesLand(pfix.Lat, pfix.Lon, dlat, dlon)) {
-            if(m_bLandFallSound) {
-                // play sound
-            }
-            if(m_bLandFallCommand) {
-                wxProcess::Open(m_sLandFallCommand);
-            }
+            Alarm();
             return;
         }
     }
@@ -283,12 +330,19 @@ void watchman_pi::ShowPreferencesDialog( wxWindow* parent )
 {
     WatchmanPrefsDialog *dialog = new WatchmanPrefsDialog( parent );
 
+    dialog->m_cbLandFall->SetValue(m_bLandFall);
     dialog->m_tcLandFallDistance->SetValue(wxString::Format(_T("%.2f"),
                                                             m_dLandFallDistance));
-    dialog->m_cbLandFallSound->SetValue(m_bLandFallSound);
-    dialog->m_fpLandFallSound->SetPath(m_sLandFallSound);
-    dialog->m_cbLandFallCommand->SetValue(m_bLandFallCommand);
-    dialog->m_tLandFallCommand->SetValue(m_sLandFallCommand);
+
+    dialog->m_cbDeadman->SetValue(m_bDeadman);
+    dialog->m_sDeadmanMinutes->SetValue(m_DeadmanSpan.GetMinutes());
+
+    dialog->m_cbMessageBox->SetValue(m_bMessageBox);
+
+    dialog->m_cbSound->SetValue(m_bSound);
+    dialog->m_fpSound->SetPath(m_sSound);
+    dialog->m_cbCommand->SetValue(m_bCommand);
+    dialog->m_tCommand->SetValue(m_sCommand);
     
     dialog->Fit();
     wxColour cl;
@@ -297,11 +351,18 @@ void watchman_pi::ShowPreferencesDialog( wxWindow* parent )
     
     if(dialog->ShowModal() == wxID_OK)
     {
+        m_bLandFall = dialog->m_cbLandFall->GetValue();
         dialog->m_tcLandFallDistance->GetValue().ToDouble(&m_dLandFallDistance);
-        m_bLandFallSound = dialog->m_cbLandFallSound->GetValue();
-        m_sLandFallSound = dialog->m_fpLandFallSound->GetPath();
-        m_bLandFallCommand = dialog->m_cbLandFallCommand->GetValue();
-        m_sLandFallCommand = dialog->m_tLandFallCommand->GetValue();
+
+        m_bDeadman = dialog->m_cbDeadman->GetValue();
+        m_DeadmanSpan = wxTimeSpan::Minutes(dialog->m_sDeadmanMinutes->GetValue());
+
+        m_bMessageBox = dialog->m_cbMessageBox->GetValue();
+
+        m_bSound = dialog->m_cbSound->GetValue();
+        m_sSound = dialog->m_fpSound->GetPath();
+        m_bCommand = dialog->m_cbCommand->GetValue();
+        m_sCommand = dialog->m_tCommand->GetValue();
         SaveConfig();
     }
     delete dialog;

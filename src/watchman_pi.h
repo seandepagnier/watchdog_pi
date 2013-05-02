@@ -52,7 +52,7 @@
 
 class WatchmanDialog;
 
-class watchman_pi : public opencpn_plugin_18
+class watchman_pi : public opencpn_plugin_18, public wxEvtHandler
 {
 public:
       watchman_pi(void *ppimgr);
@@ -73,6 +73,7 @@ public:
       int GetToolbarToolCount(void);
 
       void OnToolbarToolCallback(int id);
+      void OnDeadmanTimer( wxTimerEvent & );
 
 //    Optional plugin overrides
       void SetColorScheme(PI_ColorScheme cs);
@@ -87,17 +88,29 @@ public:
       wxWindow         *m_parent_window;
 
       double m_dLandFallDistance;
-      bool m_bLandFallSound;
-      wxString m_sLandFallSound;
-      bool m_bLandFallCommand;
-      wxString m_sLandFallCommand;
 
+      bool m_bLandFall;
       wxDateTime LastLandFallCheck;
 
+      bool m_bDeadman;
+      wxTimeSpan m_DeadmanSpan;
+      wxTimer m_DeadmanTimer;
+      wxDateTime m_DeadmanUpdateTime;
+
+      bool m_bSound;
+      wxString m_sSound;
+      bool m_bCommand;
+      wxString m_sCommand;
+      bool m_bMessageBox;
+
       wxFileConfig     *m_pconfig;
+
 private:
       bool    LoadConfig(void);
       bool    SaveConfig(void);
+
+      void    Alarm();
+      void    SetCursorLatLon(double lat, double lon);
       void    SetPositionFixEx(PlugIn_Position_Fix_Ex &pfix);
 
       WatchmanDialog      *m_pWatchmanDialog;

@@ -20,10 +20,11 @@
 #include <wx/button.h>
 #include <wx/sizer.h>
 #include <wx/dialog.h>
-#include <wx/textctrl.h>
 #include <wx/checkbox.h>
-#include <wx/filepicker.h>
+#include <wx/textctrl.h>
 #include <wx/statbox.h>
+#include <wx/spinctrl.h>
+#include <wx/filepicker.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -38,6 +39,8 @@ class WatchmanDialogBase : public wxDialog
 	protected:
 		wxStaticText* m_staticText24;
 		wxStaticText* m_stLandFallTime;
+		wxStaticText* m_staticText4;
+		wxStaticText* m_stActivity;
 		wxButton* m_bPreferences;
 		wxButton* m_bClose;
 		
@@ -61,17 +64,22 @@ class WatchmanPrefsDialog : public wxDialog
 	private:
 	
 	protected:
-		wxStaticText* m_staticText27;
+		wxStaticText* m_staticText7;
+		wxStaticText* m_staticText6;
 		wxStdDialogButtonSizer* m_sdbSizer1;
 		wxButton* m_sdbSizer1OK;
 		wxButton* m_sdbSizer1Cancel;
 	
 	public:
+		wxCheckBox* m_cbLandFall;
 		wxTextCtrl* m_tcLandFallDistance;
-		wxCheckBox* m_cbLandFallSound;
-		wxFilePickerCtrl* m_fpLandFallSound;
-		wxCheckBox* m_cbLandFallCommand;
-		wxTextCtrl* m_tLandFallCommand;
+		wxCheckBox* m_cbDeadman;
+		wxSpinCtrl* m_sDeadmanMinutes;
+		wxCheckBox* m_cbSound;
+		wxFilePickerCtrl* m_fpSound;
+		wxCheckBox* m_cbCommand;
+		wxTextCtrl* m_tCommand;
+		wxCheckBox* m_cbMessageBox;
 		
 		WatchmanPrefsDialog( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Watchman Preferences"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxCAPTION|wxDEFAULT_DIALOG_STYLE ); 
 		~WatchmanPrefsDialog();

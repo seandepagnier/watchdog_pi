@@ -45,4 +45,8 @@ public:
 protected:
 
     watchman_pi &m_watchman_pi;
+
+private:
+    void OnTimer( wxTimerEvent & );
+    wxTimer m_Timer;
 };

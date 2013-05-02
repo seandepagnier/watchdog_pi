@@ -31,6 +31,9 @@
 WatchmanDialog::WatchmanDialog( watchman_pi &_watchman_pi, wxWindow* parent)
     : WatchmanDialogBase( parent ), m_watchman_pi(_watchman_pi)
 {
+    m_Timer.Connect(wxEVT_TIMER, wxTimerEventHandler
+                    ( WatchmanDialog::OnTimer ), NULL, this);
+    m_Timer.Start(1000);
 }
 
 WatchmanDialog::~WatchmanDialog()
@@ -43,21 +46,21 @@ void WatchmanDialog::UpdateLandFallTime(PlugIn_Position_Fix_Ex &pfix)
 {
     double lat1 = pfix.Lat, lon1 = pfix.Lon, lat2, lon2;
     double dist = 0, dist1 = 1000;
-    wxTimeSpan time;
+    wxTimeSpan span;
     int count = 0;
     while(count < 10) {
         ll_gc_ll(pfix.Lat, pfix.Lon, pfix.Cog, dist + dist1, &lat2, &lon2);
         if(gshhsCrossesLand(lat1, lon1, lat2, lon2)) {
             if(dist < 1) {
-                time = wxTimeSpan::Seconds(3600.0 * dist / pfix.Sog);
+                span = wxTimeSpan::Seconds(3600.0 * dist / pfix.Sog);
                 wxString s;
-                s += wxString::Format(_("%d Days"), time.GetDays());
-                time -= wxTimeSpan::Days(time.GetDays());
-                s += wxString::Format(_(" %d Hours"), time.GetHours());
-                time -= wxTimeSpan::Hours(time.GetHours());
-                s += wxString::Format(_(" %d Minutes"), time.GetMinutes());
-                time -= wxTimeSpan::Minutes(time.GetMinutes());
-                s += wxString::Format(_(" %d Seconds"), time.GetSeconds());
+                s += wxString::Format(_("%d Days"), span.GetDays());
+                span -= wxTimeSpan::Days(span.GetDays());
+                s += wxString::Format(_(" %d Hours"), span.GetHours());
+                span -= wxTimeSpan::Hours(span.GetHours());
+                s += wxString::Format(_(" %d Minutes"), span.GetMinutes());
+                span -= wxTimeSpan::Minutes(span.GetMinutes());
+                s += wxString::Format(_(" %d Seconds"), span.GetSeconds());
                 m_stLandFallTime->SetLabel(s);
                 return;
             }
@@ -71,4 +74,22 @@ void WatchmanDialog::UpdateLandFallTime(PlugIn_Position_Fix_Ex &pfix)
         }
     }
     m_stLandFallTime->SetLabel(_("LandFall not Detected"));
+}
+
+
+void WatchmanDialog::OnTimer( wxTimerEvent & )
+{
+    wxTimeSpan span = wxDateTime::Now() - m_watchman_pi.m_DeadmanUpdateTime;
+    int days = span.GetDays();
+    span -= wxTimeSpan::Days(days);
+    int hours = span.GetHours();
+    span -= wxTimeSpan::Hours(hours);
+    int minutes = span.GetMinutes();
+    span -= wxTimeSpan::Minutes(minutes);
+    int seconds = span.GetSeconds().ToLong();
+    wxString d;
+    if(days)
+        d = wxString::Format(_T("%d days"), days);
+    m_stActivity->SetLabel(wxString::Format(days + _T("%02d:%02d:%02d"),
+                                            hours, minutes, seconds));
 }
