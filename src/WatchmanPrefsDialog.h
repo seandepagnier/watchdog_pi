@@ -29,22 +29,12 @@
 
 class watchman_pi;
 
-class WatchmanDialog: public WatchmanDialogBase
+class WatchmanPrefsDialog: public WatchmanPrefsDialogBase
 {
 public:
-    WatchmanDialog( watchman_pi &_watchman_pi, wxWindow* parent);
-
-    ~WatchmanDialog();
-
-    virtual void OnPreferences( wxCommandEvent& event ) { m_watchman_pi.ShowPreferencesDialog(this); }
-    virtual void OnClose( wxCommandEvent& event ) { Hide(); }
-    void UpdateLandFallTime(PlugIn_Position_Fix_Ex &pfix);
-    void UpdateAnchorDistance(double distance);
+    WatchmanPrefsDialog( watchman_pi &_watchman_pi, wxWindow* parent);
+    void OnSyncToBoat( wxCommandEvent& event );
 
 protected:
     watchman_pi &m_watchman_pi;
-
-private:
-    void OnTimer( wxTimerEvent & );
-    wxTimer m_Timer;
 };

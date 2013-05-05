@@ -25,7 +25,6 @@
  ***************************************************************************
  */
 
-
 #include "wx/wxprec.h"
 
 #ifndef  WX_PRECOMP
@@ -34,8 +33,11 @@
 
 #include "wx/process.h"
 
+#include "../../../include/ocpndc.h"
+
 #include "watchman_pi.h"
 #include "WatchmanDialog.h"
+#include "WatchmanPrefsDialog.h"
 #include "icons.h"
 
 // the class factories, used to create and destroy instances of the PlugIn
@@ -61,6 +63,8 @@ watchman_pi::watchman_pi(void *ppimgr)
 {
     // Create the PlugIn icons
     initialize_images();
+    m_lastfix.Lat = NAN;
+    m_lastfix.Lon = NAN;
 }
 
 //---------------------------------------------------------------------------------------------------------
@@ -71,75 +75,77 @@ watchman_pi::watchman_pi(void *ppimgr)
 
 int watchman_pi::Init(void)
 {
-      AddLocaleCatalog( _T("opencpn-watchman_pi") );
+    AddLocaleCatalog( _T("opencpn-watchman_pi") );
 
-      // Set some default private member parameters
-      m_watchman_dialog_x = 0;
-      m_watchman_dialog_y = 0;
+    // Set some default private member parameters
+    m_watchman_dialog_x = 0;
+    m_watchman_dialog_y = 0;
 
-      ::wxDisplaySize(&m_display_width, &m_display_height);
-
-      //    Get a pointer to the opencpn display canvas, to use as a parent for the POI Manager dialog
-      m_parent_window = GetOCPNCanvasWindow();
-
-      //    Get a pointer to the opencpn configuration object
-      m_pconfig = GetOCPNConfigObject();
-
-      //    And load the configuration items
-      LoadConfig();
-
-      m_leftclick_tool_id  = InsertPlugInTool(_T(""), _img_watchman, _img_watchman, wxITEM_NORMAL,
-            _("Watchman"), _T(""), NULL,
-             WATCHMAN_TOOL_POSITION, 0, this);
-
-      m_pWatchmanDialog = NULL;
-
-      m_DeadmanTimer.Connect(wxEVT_TIMER, wxTimerEventHandler
-                             ( watchman_pi::OnDeadmanTimer ), NULL, this);
-      m_DeadmanUpdateTime = wxDateTime::Now();
-
-      return (WANTS_TOOLBAR_CALLBACK    |
-              WANTS_CURSOR_LATLON       |
-              INSTALLS_TOOLBAR_TOOL     |
-              WANTS_PREFERENCES         |
-              WANTS_NMEA_EVENTS         |
-              WANTS_CONFIG
-           );
+    ::wxDisplaySize(&m_display_width, &m_display_height);
+    
+    //    Get a pointer to the opencpn display canvas, to use as a parent for the POI Manager dialog
+    m_parent_window = GetOCPNCanvasWindow();
+    m_pconfig = GetOCPNConfigObject(); //    Get opencpn configuration object
+    
+    LoadConfig(); //    And load the configuration items
+    
+    m_leftclick_tool_id  = InsertPlugInTool
+        (_T(""), _img_watchman, _img_watchman, wxITEM_NORMAL,
+         _("Watchman"), _T(""), NULL, WATCHMAN_TOOL_POSITION, 0, this);
+    
+    wxMenu dummy_menu;
+    m_anchor_menu_id = AddCanvasContextMenuItem
+        (new wxMenuItem(&dummy_menu, -1, _("Watchman Anchor Watch")), this );
+    
+    m_pWatchmanDialog = NULL;
+    
+    m_DeadmanTimer.Connect(wxEVT_TIMER, wxTimerEventHandler
+                           ( watchman_pi::OnDeadmanTimer ), NULL, this);
+    m_DeadmanUpdateTime = wxDateTime::Now();
+    
+    return (WANTS_OVERLAY_CALLBACK |
+            WANTS_OPENGL_OVERLAY_CALLBACK |
+            WANTS_TOOLBAR_CALLBACK    |
+            WANTS_CURSOR_LATLON       |
+            WANTS_PREFERENCES         |
+            WANTS_NMEA_EVENTS         |
+            WANTS_CONFIG
+        );
 }
 
 bool watchman_pi::DeInit(void)
 {
-      //    Record the dialog position
-      if (NULL != m_pWatchmanDialog)
-      {
-            wxPoint p = m_pWatchmanDialog->GetPosition();
-            SetWatchmanDialogX(p.x);
-            SetWatchmanDialogY(p.y);
+    //    Record the dialog position
+    if (NULL != m_pWatchmanDialog)
+    {
+        wxPoint p = m_pWatchmanDialog->GetPosition();
+        SetWatchmanDialogX(p.x);
+        SetWatchmanDialogY(p.y);
+        
+        m_pWatchmanDialog->Close();
+        delete m_pWatchmanDialog;
+        m_pWatchmanDialog = NULL;
+    }
+    SaveConfig();
 
-            m_pWatchmanDialog->Close();
-            delete m_pWatchmanDialog;
-            m_pWatchmanDialog = NULL;
-      }
-      SaveConfig();
+    RemovePlugInTool(m_leftclick_tool_id);
 
-      RemovePlugInTool(m_leftclick_tool_id);
-
-      return true;
+    return true;
 }
 
 int watchman_pi::GetAPIVersionMajor()
 {
-      return MY_API_VERSION_MAJOR;
+    return MY_API_VERSION_MAJOR;
 }
 
 int watchman_pi::GetAPIVersionMinor()
 {
-      return MY_API_VERSION_MINOR;
+    return MY_API_VERSION_MINOR;
 }
 
 int watchman_pi::GetPlugInVersionMajor()
 {
-      return PLUGIN_VERSION_MAJOR;
+    return PLUGIN_VERSION_MAJOR;
 }
 
 int watchman_pi::GetPlugInVersionMinor()
@@ -149,66 +155,117 @@ int watchman_pi::GetPlugInVersionMinor()
 
 wxBitmap *watchman_pi::GetPlugInBitmap()
 {
-      return _img_watchman;
+    return _img_watchman;
 }
 
 wxString watchman_pi::GetCommonName()
 {
-      return _("Watchman");
+    return _("Watchman");
 }
 
 
 wxString watchman_pi::GetShortDescription()
 {
-      return _("Watchman PlugIn for OpenCPN");
+    return _("Watchman PlugIn for OpenCPN");
 }
 
 wxString watchman_pi::GetLongDescription()
 {
-      return _("Watchman Fax PlugIn for OpenCPN\n\
+    return _("Watchman Fax PlugIn for OpenCPN\n\
 Alarm user of possible dangerous situations. \n\
 Currently only supports coastline detection. \n\
 \n\
-The Weather Fax plugin was written by Sean D'Epagnier\n\
+The Watchman plugin was written by Sean D'Epagnier\n\
 ");
 }
 
 int watchman_pi::GetToolbarToolCount(void)
 {
-      return 1;
+    return 1;
 }
 
 void watchman_pi::SetColorScheme(PI_ColorScheme cs)
 {
-      if (NULL == m_pWatchmanDialog)
-            return;
-      DimeWindow(m_pWatchmanDialog);
+    if (NULL == m_pWatchmanDialog)
+        return;
+
+    DimeWindow(m_pWatchmanDialog);
 }
 
 void watchman_pi::RearrangeWindow()
 {
-      if (NULL == m_pWatchmanDialog)
-            return;
+    if (NULL == m_pWatchmanDialog)
+        return;
 
-      SetColorScheme(PI_ColorScheme());
-
-      m_pWatchmanDialog->Fit();
+    SetColorScheme(PI_ColorScheme());
+    
+    m_pWatchmanDialog->Fit();
 }
 
 void watchman_pi::OnToolbarToolCallback(int id)
 {
-      if(!m_pWatchmanDialog)
-      {
-            m_pWatchmanDialog = new WatchmanDialog(*this, m_parent_window);
-            m_pWatchmanDialog->Move(wxPoint(m_watchman_dialog_x, m_watchman_dialog_y));
-      }
+    if(!m_pWatchmanDialog)
+    {
+        m_pWatchmanDialog = new WatchmanDialog(*this, m_parent_window);
+        m_pWatchmanDialog->Move(wxPoint(m_watchman_dialog_x, m_watchman_dialog_y));
+    }
 
-      RearrangeWindow();
-      m_pWatchmanDialog->Show(!m_pWatchmanDialog->IsShown());
+    RearrangeWindow();
+    m_pWatchmanDialog->Show(!m_pWatchmanDialog->IsShown());
 
-      wxPoint p = m_pWatchmanDialog->GetPosition();
-      m_pWatchmanDialog->Move(0,0);        // workaround for gtk autocentre dialog behavior
-      m_pWatchmanDialog->Move(p);
+    wxPoint p = m_pWatchmanDialog->GetPosition();
+    m_pWatchmanDialog->Move(0, 0);        // workaround for gtk autocentre dialog behavior
+    m_pWatchmanDialog->Move(p);
+}
+
+void watchman_pi::OnContextMenuItemCallback(int id)
+{
+    if(id == m_anchor_menu_id) {
+        m_bAnchor = true;
+        m_dAnchorLatitude = m_cursor_lat;
+        m_dAnchorLongitude = m_cursor_lon;
+    }
+}
+
+bool watchman_pi::RenderOverlay(wxDC &dc, PlugIn_ViewPort *vp)
+{
+    ocpnDC odc(dc);
+    Render(odc, *vp);
+    return true;
+}
+
+bool watchman_pi::RenderGLOverlay(wxGLContext *pcontext, PlugIn_ViewPort *vp)
+{
+    glPushAttrib(GL_LINE_BIT | GL_ENABLE_BIT | GL_HINT_BIT ); //Save state
+    glEnable( GL_LINE_SMOOTH );
+    glEnable( GL_BLEND );
+    glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+    glHint( GL_LINE_SMOOTH_HINT, GL_NICEST );
+
+    ocpnDC odc;
+    Render(odc, *vp);
+
+    glPopAttrib();
+    return true;
+}
+
+void watchman_pi::Render(ocpnDC &dc, PlugIn_ViewPort &vp)
+{
+    if(!m_pWatchmanDialog || !m_pWatchmanDialog->IsShown())
+        return;
+
+    wxPoint r1, r2;
+    GetCanvasPixLL(&vp, &r1, m_dAnchorLatitude, m_dAnchorLongitude);
+    GetCanvasPixLL(&vp, &r2, m_dAnchorLatitude+m_iAnchorRadius/1853.0/60.0,
+                   m_dAnchorLongitude);
+    wxColour c;
+    if(m_bAnchor)
+        c = *wxRED;
+    else
+        c = *wxGREEN;
+
+    dc.SetPen(wxPen(c, 2));
+    dc.DrawCircle( r1.x, r1.y, r2.y - r1.y );
 }
 
 void watchman_pi::OnDeadmanTimer( wxTimerEvent & )
@@ -219,61 +276,67 @@ void watchman_pi::OnDeadmanTimer( wxTimerEvent & )
 
 bool watchman_pi::LoadConfig(void)
 {
-      wxFileConfig *pConf = m_pconfig;
+    wxFileConfig *pConf = m_pconfig;
 
-      if(pConf)
-      {
-            pConf->SetPath ( _T( "/Settings/Watchman" ) );
+    if(!pConf)
+        return false;
 
-            m_watchman_dialog_x =  pConf->Read ( _T ( "DialogPosX" ), 20L );
-            m_watchman_dialog_y =  pConf->Read ( _T ( "DialogPosY" ), 20L );
-
-            pConf->Read ( _T ( "LandFall" ), &m_bLandFall, 0 );
-            pConf->Read ( _T ( "LandFallDistance" ), &m_dLandFallDistance, 3 );
-
-            pConf->Read ( _T ( "Deadman" ), &m_bDeadman, 0 );
-            int deadmanminutes;
-            pConf->Read ( _T ( "DeadmanMinutes" ), &deadmanminutes, 20 );
-            m_DeadmanSpan = wxTimeSpan::Minutes(deadmanminutes);
-
-            pConf->Read ( _T ( "MessageBox" ), &m_bMessageBox, 0);
-
-            pConf->Read ( _T ( "SoundEnabled" ), &m_bSound, 0 );
-            pConf->Read ( _T ( "SoundFilepath" ), &m_sSound, _T("") );
-            pConf->Read ( _T ( "CommandEnabled" ), &m_bCommand, 0 );
-            pConf->Read ( _T ( "CommandFilepath" ), &m_sCommand, _T("") );
-            return true;
-      } else
-            return false;
+    pConf->SetPath ( _T( "/Settings/Watchman" ) );
+    
+    m_watchman_dialog_x =  pConf->Read ( _T ( "DialogPosX" ), 20L );
+    m_watchman_dialog_y =  pConf->Read ( _T ( "DialogPosY" ), 20L );
+    
+    pConf->Read ( _T ( "LandFallAlarm" ), &m_bLandFall, 0 );
+    pConf->Read ( _T ( "LandFallDistance" ), &m_dLandFallDistance, 3 );
+    
+    pConf->Read ( _T ( "DeadmanAlarm" ), &m_bDeadman, 0 );
+    int deadmanminutes;
+    pConf->Read ( _T ( "DeadmanMinutes" ), &deadmanminutes, 20 );
+    m_DeadmanSpan = wxTimeSpan::Minutes(deadmanminutes);
+    
+    pConf->Read ( _T ( "AnchorAlarm" ), &m_bAnchor, 0 );
+    pConf->Read ( _T ( "AnchorLatitude" ), &m_dAnchorLatitude, NAN );
+    pConf->Read ( _T ( "AnchorLongitude" ), &m_dAnchorLongitude, NAN );
+    pConf->Read ( _T ( "AnchorRadius" ), &m_iAnchorRadius, 50 );
+    
+    pConf->Read ( _T ( "SoundEnabled" ), &m_bSound, 0 );
+    pConf->Read ( _T ( "SoundFilepath" ), &m_sSound, _T("") );
+    pConf->Read ( _T ( "CommandEnabled" ), &m_bCommand, 0 );
+    pConf->Read ( _T ( "CommandFilepath" ), &m_sCommand, _T("") );
+    pConf->Read ( _T ( "MessageBox" ), &m_bMessageBox, 0);
+    return true;
 }
 
 bool watchman_pi::SaveConfig(void)
 {
-      wxFileConfig *pConf = m_pconfig;
+    wxFileConfig *pConf = m_pconfig;
 
-      if(pConf)
-      {
-            pConf->SetPath ( _T ( "/Settings/Watchman" ) );
+    if(!pConf)
+        return false;
 
-            pConf->Write ( _T ( "DialogPosX" ),   m_watchman_dialog_x );
-            pConf->Write ( _T ( "DialogPosY" ),   m_watchman_dialog_y );
+    pConf->SetPath ( _T ( "/Settings/Watchman" ) );
 
-            pConf->Write ( _T ( "LandFall" ), m_bLandFall );
-            pConf->Write ( _T ( "LandFallDistance" ), m_dLandFallDistance);
+    pConf->Write ( _T ( "DialogPosX" ),   m_watchman_dialog_x );
+    pConf->Write ( _T ( "DialogPosY" ),   m_watchman_dialog_y );
 
-            pConf->Write ( _T ( "Deadman" ), m_bDeadman );
-            pConf->Write ( _T ( "DeadmanMinutes" ), m_DeadmanSpan.GetMinutes() );
-
-            pConf->Write ( _T ( "MessageBox" ), m_bMessageBox);
-
-            pConf->Write ( _T ( "SoundEnabled" ), m_bSound);
-            pConf->Write ( _T ( "SoundFilepath" ), m_sSound);
-            pConf->Write ( _T ( "CommandEnabled" ), m_bCommand);
-            pConf->Write ( _T ( "CommandFilepath" ), m_sCommand);
-            return true;
-      }
-      else
-            return false;
+    pConf->Write ( _T ( "LandFallAlarm" ), m_bLandFall );
+    pConf->Write ( _T ( "LandFallDistance" ), m_dLandFallDistance);
+    
+    pConf->Write ( _T ( "DeadmanAlarm" ), m_bDeadman );
+    pConf->Write ( _T ( "DeadmanMinutes" ), m_DeadmanSpan.GetMinutes() );
+    
+    pConf->Write ( _T ( "AnchorAlarm" ), m_bAnchor );
+    pConf->Write ( _T ( "AnchorLatitude" ), m_dAnchorLatitude );
+    pConf->Write ( _T ( "AnchorLongitude" ), m_dAnchorLongitude );
+    pConf->Write ( _T ( "AnchorRadius" ), m_iAnchorRadius );
+    
+    pConf->Write ( _T ( "SoundEnabled" ), m_bSound);
+    pConf->Write ( _T ( "SoundFilepath" ), m_sSound);
+    pConf->Write ( _T ( "CommandEnabled" ), m_bCommand);
+    pConf->Write ( _T ( "CommandFilepath" ), m_sCommand);
+    pConf->Write ( _T ( "MessageBox" ), m_bMessageBox);
+    
+    return true;
 }
 
 void watchman_pi::Alarm()
@@ -292,78 +355,103 @@ void watchman_pi::Alarm()
     }
 }
 
-void watchman_pi::SetCursorLatLon(double, double)
+void watchman_pi::SetCursorLatLon(double lat, double lon)
 {
     m_DeadmanTimer.Start(m_DeadmanSpan.GetMilliseconds().ToLong(), true);
     m_DeadmanUpdateTime = wxDateTime::Now();
+
+    m_cursor_lat = lat;
+    m_cursor_lon = lon;
 }
 
 extern "C" void ll_gc_ll(double lat, double lon, double crs, double dist, double *dlat, double *dlon);
 extern bool gshhsCrossesLand(double lat1, double lon1, double lat2, double lon2);
+
 void watchman_pi::SetPositionFixEx(PlugIn_Position_Fix_Ex &pfix)
 {
-    if(!m_bLandFall)
+    if(m_bLandFall) {
         return;
 
-    wxDateTime now = wxDateTime::Now();
-    wxTimeSpan diff = now - m_LastLandFallCheck;
-    if(diff.GetSeconds() < 15)
-        return;
-
-    m_LastLandFallCheck = now;
-
-    for(double t = 0; t<360; t+=18) {
-        double dlat, dlon;
-        ll_gc_ll(pfix.Lat, pfix.Lon, t, m_dLandFallDistance, &dlat, &dlon);
-
-        if(gshhsCrossesLand(pfix.Lat, pfix.Lon, dlat, dlon)) {
-            Alarm();
+        wxDateTime now = wxDateTime::Now();
+        wxTimeSpan diff = now - m_LastLandFallCheck;
+        if(diff.GetSeconds() < 15)
             return;
+
+        m_LastLandFallCheck = now;
+        
+        for(double t = 0; t<360; t+=18) {
+            double dlat, dlon;
+            ll_gc_ll(pfix.Lat, pfix.Lon, t, m_dLandFallDistance, &dlat, &dlon);
+            
+            if(gshhsCrossesLand(pfix.Lat, pfix.Lon, dlat, dlon)) {
+                Alarm();
+                return;
+            }
         }
     }
 
-    if(m_pWatchmanDialog)
+    double anchordist;
+    DistanceBearingMercator_Plugin(pfix.Lat, pfix.Lon, m_dAnchorLatitude,
+                                   m_dAnchorLongitude, 0, &anchordist);
+    anchordist *= 1853.248; /* in meters */
+    if(m_bAnchor && anchordist > m_iAnchorRadius)
+        Alarm();
+
+    if(m_pWatchmanDialog) {
         m_pWatchmanDialog->UpdateLandFallTime(pfix);
+        m_pWatchmanDialog->UpdateAnchorDistance(anchordist);
+    }
+
+    m_lastfix = pfix;
 }
 
 void watchman_pi::ShowPreferencesDialog( wxWindow* parent )
 {
-    WatchmanPrefsDialog *dialog = new WatchmanPrefsDialog( parent );
+    WatchmanPrefsDialog dialog(*this, parent);
 
-    dialog->m_cbLandFall->SetValue(m_bLandFall);
-    dialog->m_tcLandFallDistance->SetValue(wxString::Format(_T("%.2f"),
+    dialog.m_cbLandFall->SetValue(m_bLandFall);
+    dialog.m_tcLandFallDistance->SetValue(wxString::Format(_T("%.2f"),
                                                             m_dLandFallDistance));
 
-    dialog->m_cbDeadman->SetValue(m_bDeadman);
-    dialog->m_sDeadmanMinutes->SetValue(m_DeadmanSpan.GetMinutes());
+    dialog.m_cbDeadman->SetValue(m_bDeadman);
+    dialog.m_sDeadmanMinutes->SetValue(m_DeadmanSpan.GetMinutes());
 
-    dialog->m_cbMessageBox->SetValue(m_bMessageBox);
+    dialog.m_cbAnchor->SetValue(m_bAnchor);
+    dialog.m_tAnchorLatitude->SetValue(wxString::Format(_T("%f"), m_dAnchorLatitude));
+    dialog.m_tAnchorLongitude->SetValue(wxString::Format(_T("%f"), m_dAnchorLongitude));
+    dialog.m_sAnchorRadius->SetValue(m_iAnchorRadius);
 
-    dialog->m_cbSound->SetValue(m_bSound);
-    dialog->m_fpSound->SetPath(m_sSound);
-    dialog->m_cbCommand->SetValue(m_bCommand);
-    dialog->m_tCommand->SetValue(m_sCommand);
+    dialog.m_cbSound->SetValue(m_bSound);
+    dialog.m_fpSound->SetPath(m_sSound);
+    dialog.m_cbCommand->SetValue(m_bCommand);
+    dialog.m_tCommand->SetValue(m_sCommand);
+    dialog.m_cbMessageBox->SetValue(m_bMessageBox);
     
-    dialog->Fit();
+    dialog.Fit();
     wxColour cl;
     GetGlobalColor(_T("DILG1"), &cl);
-    dialog->SetBackgroundColour(cl);
+    dialog.SetBackgroundColour(cl);
     
-    if(dialog->ShowModal() == wxID_OK)
+    if(dialog.ShowModal() == wxID_OK)
     {
-        m_bLandFall = dialog->m_cbLandFall->GetValue();
-        dialog->m_tcLandFallDistance->GetValue().ToDouble(&m_dLandFallDistance);
+        m_bLandFall = dialog.m_cbLandFall->GetValue();
+        dialog.m_tcLandFallDistance->GetValue().ToDouble(&m_dLandFallDistance);
 
-        m_bDeadman = dialog->m_cbDeadman->GetValue();
-        m_DeadmanSpan = wxTimeSpan::Minutes(dialog->m_sDeadmanMinutes->GetValue());
+        m_bDeadman = dialog.m_cbDeadman->GetValue();
+        m_DeadmanSpan = wxTimeSpan::Minutes(dialog.m_sDeadmanMinutes->GetValue());
 
-        m_bMessageBox = dialog->m_cbMessageBox->GetValue();
+        m_bAnchor = dialog.m_cbAnchor->GetValue();
+        dialog.m_tAnchorLatitude->GetValue().ToDouble(&m_dAnchorLatitude);
+        dialog.m_tAnchorLongitude->GetValue().ToDouble(&m_dAnchorLongitude);
+        m_iAnchorRadius = dialog.m_sAnchorRadius->GetValue();
 
-        m_bSound = dialog->m_cbSound->GetValue();
-        m_sSound = dialog->m_fpSound->GetPath();
-        m_bCommand = dialog->m_cbCommand->GetValue();
-        m_sCommand = dialog->m_tCommand->GetValue();
+        m_bSound = dialog.m_cbSound->GetValue();
+        m_sSound = dialog.m_fpSound->GetPath();
+        m_bCommand = dialog.m_cbCommand->GetValue();
+        m_sCommand = dialog.m_tCommand->GetValue();
+        m_bMessageBox = dialog.m_cbMessageBox->GetValue();
+
         SaveConfig();
     }
-    delete dialog;
+    RequestRefresh(m_parent_window);
 }

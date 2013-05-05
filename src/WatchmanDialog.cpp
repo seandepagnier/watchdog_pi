@@ -53,14 +53,14 @@ void WatchmanDialog::UpdateLandFallTime(PlugIn_Position_Fix_Ex &pfix)
         if(gshhsCrossesLand(lat1, lon1, lat2, lon2)) {
             if(dist < 1) {
                 span = wxTimeSpan::Seconds(3600.0 * dist / pfix.Sog);
-                wxString s;
-                s += wxString::Format(_("%d Days"), span.GetDays());
+                wxString s, fmt(_T("%d "));
+                s += wxString::Format(fmt + _("Days "), span.GetDays());
                 span -= wxTimeSpan::Days(span.GetDays());
-                s += wxString::Format(_(" %d Hours"), span.GetHours());
+                s += wxString::Format(fmt + _("Hours "), span.GetHours());
                 span -= wxTimeSpan::Hours(span.GetHours());
-                s += wxString::Format(_(" %d Minutes"), span.GetMinutes());
+                s += wxString::Format(fmt + _("Minutes "), span.GetMinutes());
                 span -= wxTimeSpan::Minutes(span.GetMinutes());
-                s += wxString::Format(_(" %d Seconds"), span.GetSeconds());
+                s += wxString::Format(fmt + _("Seconds"), span.GetSeconds());
                 m_stLandFallTime->SetLabel(s);
                 return;
             }
@@ -76,6 +76,16 @@ void WatchmanDialog::UpdateLandFallTime(PlugIn_Position_Fix_Ex &pfix)
     m_stLandFallTime->SetLabel(_("LandFall not Detected"));
 }
 
+void WatchmanDialog::UpdateAnchorDistance(double distance)
+{
+    if(isnan(distance))
+        m_stAnchorDistance->SetLabel(_T("N/A"));
+    else {
+        wxString fmt(_T("%.0f "));
+        m_stAnchorDistance->SetLabel(
+            wxString::Format(fmt + _("meters from anchor"), distance));
+    }
+}
 
 void WatchmanDialog::OnTimer( wxTimerEvent & )
 {
@@ -87,9 +97,9 @@ void WatchmanDialog::OnTimer( wxTimerEvent & )
     int minutes = span.GetMinutes();
     span -= wxTimeSpan::Minutes(minutes);
     int seconds = span.GetSeconds().ToLong();
-    wxString d;
+    wxString d, fmt(_T("%d "));
     if(days)
-        d = wxString::Format(_T("%d days"), days);
+        d = wxString::Format(fmt + _T("days"), days);
     m_stActivity->SetLabel(wxString::Format(days + _T("%02d:%02d:%02d"),
                                             hours, minutes, seconds));
 }

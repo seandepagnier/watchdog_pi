@@ -1,5 +1,7 @@
 src/WatchmanDialog.cpp
 src/WatchmanDialog.h
+src/WatchmanPrefsDialog.cpp
+src/WatchmanPrefsDialog.h
 src/WatchmanUI.cpp
 src/WatchmanUI.h
 src/watchman_pi.cpp

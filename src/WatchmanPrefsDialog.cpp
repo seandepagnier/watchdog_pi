@@ -25,26 +25,16 @@
  ***************************************************************************
  */
 
-#include "WatchmanUI.h"
+#include "watchman_pi.h"
+#include "WatchmanPrefsDialog.h"
 
-class watchman_pi;
-
-class WatchmanDialog: public WatchmanDialogBase
+WatchmanPrefsDialog::WatchmanPrefsDialog( watchman_pi &_watchman_pi, wxWindow* parent)
+    : WatchmanPrefsDialogBase( parent ), m_watchman_pi(_watchman_pi)
 {
-public:
-    WatchmanDialog( watchman_pi &_watchman_pi, wxWindow* parent);
+}
 
-    ~WatchmanDialog();
-
-    virtual void OnPreferences( wxCommandEvent& event ) { m_watchman_pi.ShowPreferencesDialog(this); }
-    virtual void OnClose( wxCommandEvent& event ) { Hide(); }
-    void UpdateLandFallTime(PlugIn_Position_Fix_Ex &pfix);
-    void UpdateAnchorDistance(double distance);
-
-protected:
-    watchman_pi &m_watchman_pi;
-
-private:
-    void OnTimer( wxTimerEvent & );
-    wxTimer m_Timer;
-};
+void WatchmanPrefsDialog::OnSyncToBoat( wxCommandEvent& event )
+{
+    m_tAnchorLatitude->SetValue(wxString::Format(_T("%f"), m_watchman_pi.m_lastfix.Lat));
+    m_tAnchorLongitude->SetValue(wxString::Format(_T("%f"), m_watchman_pi.m_lastfix.Lon));
+}

@@ -43,14 +43,30 @@ WatchmanDialogBase::WatchmanDialogBase( wxWindow* parent, wxWindowID id, const w
 	m_stActivity->Wrap( -1 );
 	fgSizer7->Add( m_stActivity, 0, wxALL, 5 );
 	
-	m_bPreferences = new wxButton( this, wxID_ANY, _("Preferences"), wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer7->Add( m_bPreferences, 0, wxALL, 5 );
+	m_staticText10 = new wxStaticText( this, wxID_ANY, _("Distance to Anchor"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText10->Wrap( -1 );
+	fgSizer7->Add( m_staticText10, 0, wxALL, 5 );
 	
-	m_bClose = new wxButton( this, wxID_ANY, _("Close"), wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer7->Add( m_bClose, 0, wxALL, 5 );
+	m_stAnchorDistance = new wxStaticText( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 200,-1 ), 0 );
+	m_stAnchorDistance->Wrap( -1 );
+	fgSizer7->Add( m_stAnchorDistance, 0, wxALL, 5 );
 	
 	
 	fgSizer8->Add( fgSizer7, 1, wxEXPAND, 5 );
+	
+	wxFlexGridSizer* fgSizer71;
+	fgSizer71 = new wxFlexGridSizer( 0, 2, 0, 0 );
+	fgSizer71->SetFlexibleDirection( wxBOTH );
+	fgSizer71->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_bPreferences = new wxButton( this, wxID_ANY, _("Preferences"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer71->Add( m_bPreferences, 0, wxALL, 5 );
+	
+	m_bClose = new wxButton( this, wxID_ANY, _("Close"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer71->Add( m_bClose, 0, wxALL, 5 );
+	
+	
+	fgSizer8->Add( fgSizer71, 1, wxEXPAND, 5 );
 	
 	
 	this->SetSizer( fgSizer8 );
@@ -72,12 +88,12 @@ WatchmanDialogBase::~WatchmanDialogBase()
 	
 }
 
-WatchmanPrefsDialog::WatchmanPrefsDialog( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
+WatchmanPrefsDialogBase::WatchmanPrefsDialogBase( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
 	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
 	
 	wxFlexGridSizer* fgSizer4;
-	fgSizer4 = new wxFlexGridSizer( 0, 1, 0, 0 );
+	fgSizer4 = new wxFlexGridSizer( 0, 2, 0, 0 );
 	fgSizer4->SetFlexibleDirection( wxBOTH );
 	fgSizer4->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
@@ -129,6 +145,50 @@ WatchmanPrefsDialog::WatchmanPrefsDialog( wxWindow* parent, wxWindowID id, const
 	
 	fgSizer4->Add( sbSizer2, 1, wxEXPAND, 5 );
 	
+	wxStaticBoxSizer* sbSizer3;
+	sbSizer3 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Anchor Watch") ), wxVERTICAL );
+	
+	wxFlexGridSizer* fgSizer9;
+	fgSizer9 = new wxFlexGridSizer( 0, 2, 0, 0 );
+	fgSizer9->SetFlexibleDirection( wxBOTH );
+	fgSizer9->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_cbAnchor = new wxCheckBox( this, wxID_ANY, _("Enabled"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer9->Add( m_cbAnchor, 0, wxALL, 5 );
+	
+	m_bSyncToBoat = new wxButton( this, wxID_ANY, _("Sync to Boat"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer9->Add( m_bSyncToBoat, 0, wxALL, 5 );
+	
+	m_staticText71 = new wxStaticText( this, wxID_ANY, _("Latitude"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText71->Wrap( -1 );
+	fgSizer9->Add( m_staticText71, 0, wxALL, 5 );
+	
+	m_tAnchorLatitude = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer9->Add( m_tAnchorLatitude, 0, wxALL, 5 );
+	
+	m_staticText8 = new wxStaticText( this, wxID_ANY, _("Longitude"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText8->Wrap( -1 );
+	fgSizer9->Add( m_staticText8, 0, wxALL, 5 );
+	
+	m_tAnchorLongitude = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer9->Add( m_tAnchorLongitude, 0, wxALL, 5 );
+	
+	m_staticText9 = new wxStaticText( this, wxID_ANY, _("Radius (m)"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText9->Wrap( -1 );
+	fgSizer9->Add( m_staticText9, 0, wxALL, 5 );
+	
+	m_sAnchorRadius = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 1000, 50 );
+	fgSizer9->Add( m_sAnchorRadius, 0, wxALL, 5 );
+	
+	
+	sbSizer3->Add( fgSizer9, 1, wxEXPAND, 5 );
+	
+	
+	fgSizer4->Add( sbSizer3, 1, wxEXPAND, 5 );
+	
+	wxStaticBoxSizer* sbSizer4;
+	sbSizer4 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Alarm Action") ), wxVERTICAL );
+	
 	wxFlexGridSizer* fgSizer6;
 	fgSizer6 = new wxFlexGridSizer( 0, 2, 0, 0 );
 	fgSizer6->AddGrowableCol( 1 );
@@ -155,7 +215,10 @@ WatchmanPrefsDialog::WatchmanPrefsDialog( wxWindow* parent, wxWindowID id, const
 	fgSizer6->Add( m_cbMessageBox, 0, wxALL, 5 );
 	
 	
-	fgSizer4->Add( fgSizer6, 1, wxEXPAND, 5 );
+	sbSizer4->Add( fgSizer6, 1, wxEXPAND, 5 );
+	
+	
+	fgSizer4->Add( sbSizer4, 1, wxEXPAND, 5 );
 	
 	m_sdbSizer1 = new wxStdDialogButtonSizer();
 	m_sdbSizer1OK = new wxButton( this, wxID_OK );
@@ -172,8 +235,14 @@ WatchmanPrefsDialog::WatchmanPrefsDialog( wxWindow* parent, wxWindowID id, const
 	fgSizer4->Fit( this );
 	
 	this->Centre( wxBOTH );
+	
+	// Connect Events
+	m_bSyncToBoat->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchmanPrefsDialogBase::OnSyncToBoat ), NULL, this );
 }
 
-WatchmanPrefsDialog::~WatchmanPrefsDialog()
+WatchmanPrefsDialogBase::~WatchmanPrefsDialogBase()
 {
+	// Disconnect Events
+	m_bSyncToBoat->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchmanPrefsDialogBase::OnSyncToBoat ), NULL, this );
+	
 }

@@ -44,12 +44,47 @@
 
 #include "../../../include/ocpn_plugin.h"
 
+#ifdef __MSVC__
+#include <float.h>
+#include <iostream>
+#include <limits>
+
+# if !defined(M_PI)
+# define M_PI		3.14159265358979323846	/* pi */
+# endif
+
+# if !defined(NAN)
+# define NAN std::numeric_limits<double>::quiet_NaN ()
+# endif
+
+# if !defined(INFINITY)
+# define INFINITY std::numeric_limits<double>::infinity ()
+# endif
+
+#define isnan _isnan
+#define isinf(x) (!_finite(x) && !_isnan(x))
+
+inline double trunc(double d){ return (d>0) ? floor(d) : ceil(d) ; }
+inline double round(double n) { return n < 0.0 ? ceil(n - 0.5) : floor(n + 0.5); }
+
+# if !defined(snprintf)
+# define snprintf _snprintf
+# endif
+#define vsnprintf _vsnprintf
+#define strcasecmp _stricmp
+#define strncasecmp _strnicmp
+
+#define strtok_r strtok_s
+
+#endif
+
 //----------------------------------------------------------------------------------------------------------
 //    The PlugIn Class Definition
 //----------------------------------------------------------------------------------------------------------
 
 #define WATCHMAN_TOOL_POSITION    -1          // Request default positioning of toolbar tool
 
+class ocpnDC;
 class WatchmanDialog;
 
 class watchman_pi : public opencpn_plugin_18, public wxEvtHandler
@@ -73,6 +108,12 @@ public:
       int GetToolbarToolCount(void);
 
       void OnToolbarToolCallback(int id);
+      void OnContextMenuItemCallback(int id);
+
+      bool RenderOverlay(wxDC &dc, PlugIn_ViewPort *vp);
+      bool RenderGLOverlay(wxGLContext *pcontext, PlugIn_ViewPort *vp);
+      void Render(ocpnDC &dc, PlugIn_ViewPort &vp);
+
       void OnDeadmanTimer( wxTimerEvent & );
 
 //    Optional plugin overrides
@@ -97,6 +138,10 @@ public:
       wxTimer m_DeadmanTimer;
       wxDateTime m_DeadmanUpdateTime;
 
+      bool m_bAnchor;
+      double m_dAnchorLatitude, m_dAnchorLongitude;
+      double m_iAnchorRadius;
+
       bool m_bSound;
       wxString m_sSound;
       bool m_bCommand;
@@ -104,6 +149,7 @@ public:
       bool m_bMessageBox;
 
       wxFileConfig     *m_pconfig;
+      PlugIn_Position_Fix_Ex m_lastfix;
 
 private:
       bool    LoadConfig(void);
@@ -114,13 +160,15 @@ private:
       void    SetPositionFixEx(PlugIn_Position_Fix_Ex &pfix);
 
       WatchmanDialog      *m_pWatchmanDialog;
-
       int               m_watchman_dialog_x, m_watchman_dialog_y;
       int               m_display_width, m_display_height;
 
       int               m_leftclick_tool_id;
+      int               m_anchor_menu_id;
 
       void              RearrangeWindow();
+
+      double m_cursor_lat, m_cursor_lon;
 
       wxDateTime m_LastLandFallCheck;
 };

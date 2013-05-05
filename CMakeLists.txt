@@ -56,6 +56,8 @@ SET(SRC_WATCHMAN
             src/watchman_pi.cpp
             src/WatchmanDialog.h
             src/WatchmanDialog.cpp
+            src/WatchmanPrefsDialog.h
+            src/WatchmanPrefsDialog.cpp
             src/WatchmanUI.h
             src/WatchmanUI.cpp
             src/icons.h
