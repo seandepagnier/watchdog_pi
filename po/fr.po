@@ -1,0 +1,200 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: AIS Radar, Plugin for OpenCPN\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-05-05 22:29+1200\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Gilletarom <contact@gilletarom.fr>\n"
+"Language-Team: Gilletarom <contact@gilletarom.fr>\n"
+"Language: French\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.5\n"
+
+#: src/WatchmanDialog.cpp:57
+msgid "Days "
+msgstr "Jours"
+
+#: src/WatchmanDialog.cpp:59
+msgid "Hours "
+msgstr "Heures"
+
+#: src/WatchmanDialog.cpp:61
+msgid "Minutes "
+msgstr "Minutes"
+
+#: src/WatchmanDialog.cpp:63
+msgid "Seconds"
+msgstr "Secondes"
+
+# Touché terre non détecté
+# ???
+# Gilletarom
+# ----------
+#: src/WatchmanDialog.cpp:76
+msgid "LandFall not Detected"
+msgstr "Atterage non détecté"
+
+#: src/WatchmanDialog.cpp:86
+msgid "meters from anchor"
+msgstr "Distance depuis le mouillage"
+
+# Touché terre suivant
+# ???
+# Gilletarom
+# --------
+#: src/WatchmanUI.cpp:30
+msgid "Next LandFall in"
+msgstr "Atterage suivant"
+
+#: src/WatchmanUI.cpp:34
+msgid "No NMEA Messages"
+msgstr "Pas de phrase NMEA"
+
+#: src/WatchmanUI.cpp:38
+msgid "Last activity"
+msgstr "Dernière activité"
+
+#: src/WatchmanUI.cpp:42
+msgid "No Updates"
+msgstr "Aucune mise à jour"
+
+# Distance jusqu'au point de mouillage
+# ??
+# Gilletarom
+# --------
+#: src/WatchmanUI.cpp:46
+msgid "Distance to Anchor"
+msgstr "Distance jusqu'à l'ancre"
+
+#: src/WatchmanUI.cpp:62
+msgid "Preferences"
+msgstr "Préférences"
+
+#: src/WatchmanUI.cpp:65
+msgid "Close"
+msgstr "Fermer"
+
+# Alarme de touché terre
+# ???
+# Gilletarom
+# -------
+#: src/WatchmanUI.cpp:101
+msgid "Landfall Alarm"
+msgstr "Alarme d'atterage"
+
+#: src/WatchmanUI.cpp:108
+msgid "If Distance is <"
+msgstr "Si la distance est < "
+
+#: src/WatchmanUI.cpp:111
+msgid "3"
+msgstr "3"
+
+#: src/WatchmanUI.cpp:114
+msgid "nm"
+msgstr "Nm"
+
+# ?
+# Gilletarom
+# ---------
+#: src/WatchmanUI.cpp:125
+msgid "Deadman Alarm"
+msgstr "Alarme d'homme mort"
+
+#: src/WatchmanUI.cpp:132
+msgid "No Activity for"
+msgstr "Pas d'activité pour "
+
+#: src/WatchmanUI.cpp:138
+msgid "min"
+msgstr "min"
+
+#: src/WatchmanUI.cpp:149
+msgid "Anchor Watch"
+msgstr "Surveillance de mouillage"
+
+#: src/WatchmanUI.cpp:156
+msgid "Enabled"
+msgstr "Autorisé"
+
+#: src/WatchmanUI.cpp:159
+msgid "Sync to Boat"
+msgstr "Sync to Boat"
+
+#: src/WatchmanUI.cpp:162
+msgid "Latitude"
+msgstr "Latitude"
+
+#: src/WatchmanUI.cpp:169
+msgid "Longitude"
+msgstr "Longitude"
+
+#: src/WatchmanUI.cpp:176
+msgid "Radius (m)"
+msgstr "Rayon (m)"
+
+# Action sur alarme
+# ou
+# Action d'alerte
+# ???
+# Gilletarom
+# -------
+#: src/WatchmanUI.cpp:190
+msgid "Alarm Action"
+msgstr "Action d'alarme"
+
+#: src/WatchmanUI.cpp:198
+msgid "Sound"
+msgstr "Son"
+
+#: src/WatchmanUI.cpp:203
+msgid "Select a file"
+msgstr "Sélectionner un fichier"
+
+#: src/WatchmanUI.cpp:208
+msgid "Command"
+msgstr "Commande"
+
+#: src/WatchmanUI.cpp:214
+msgid "Message Box"
+msgstr "Boite à message"
+
+#: src/WatchmanUI.h:56
+msgid "Watch Man"
+msgstr "Homme de quart"
+
+#: src/WatchmanUI.h:98
+msgid "Watchman Preferences"
+msgstr "Préférences du complément Watchman"
+
+#: src/watchman_pi.cpp:94 src/watchman_pi.cpp:163 src/watchman_pi.cpp:353
+msgid "Watchman"
+msgstr "Homme de quart"
+
+#: src/watchman_pi.cpp:98
+msgid "Watchman Anchor Watch"
+msgstr "Homme de quart pour la sécurisation du mouillage"
+
+#: src/watchman_pi.cpp:169
+msgid "Watchman PlugIn for OpenCPN"
+msgstr "Complément \"Watchman\" pour OpenCPN."
+
+#: src/watchman_pi.cpp:174
+msgid ""
+"Watchman Fax PlugIn for OpenCPN\n"
+"Alarm user of possible dangerous situations. \n"
+"Currently only supports coastline detection. \n"
+"\n"
+"The Watchman plugin was written by Sean D'Epagnier\n"
+msgstr ""
+"Complément de sécurisation du mouillage pour OpenCPN\n"
+"Utilisation en situations potentiellement dangereuses. \n"
+"Cette version détecte seulement la ligne de côte. \n"
+"\n"
+"Le complément Watchman plugin a été développé par Sean D'Epagnier\n"
+
+#: src/watchman_pi.cpp:352
+msgid "ALARM!!!!"
+msgstr "Alerte !!!"
