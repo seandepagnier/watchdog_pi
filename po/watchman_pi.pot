@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: watchman_pi 3.3.424\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-05 22:29+1200\n"
+"POT-Creation-Date: 2013-05-07 22:13+1200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,27 +16,27 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/WatchmanDialog.cpp:57
+#: src/WatchmanDialog.cpp:56
 msgid "Days "
 msgstr ""
 
-#: src/WatchmanDialog.cpp:59
+#: src/WatchmanDialog.cpp:58
 msgid "Hours "
 msgstr ""
 
-#: src/WatchmanDialog.cpp:61
+#: src/WatchmanDialog.cpp:60
 msgid "Minutes "
 msgstr ""
 
-#: src/WatchmanDialog.cpp:63
+#: src/WatchmanDialog.cpp:62
 msgid "Seconds"
 msgstr ""
 
-#: src/WatchmanDialog.cpp:76
+#: src/WatchmanDialog.cpp:75
 msgid "LandFall not Detected"
 msgstr ""
 
-#: src/WatchmanDialog.cpp:86
+#: src/WatchmanDialog.cpp:85
 msgid "meters from anchor"
 msgstr ""
 

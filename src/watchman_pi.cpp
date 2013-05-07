@@ -364,7 +364,6 @@ void watchman_pi::SetCursorLatLon(double lat, double lon)
     m_cursor_lon = lon;
 }
 
-extern "C" void ll_gc_ll(double lat, double lon, double crs, double dist, double *dlat, double *dlon);
 extern bool gshhsCrossesLand(double lat1, double lon1, double lat2, double lon2);
 
 void watchman_pi::SetPositionFixEx(PlugIn_Position_Fix_Ex &pfix)
@@ -381,7 +380,7 @@ void watchman_pi::SetPositionFixEx(PlugIn_Position_Fix_Ex &pfix)
         
         for(double t = 0; t<360; t+=18) {
             double dlat, dlon;
-            ll_gc_ll(pfix.Lat, pfix.Lon, t, m_dLandFallDistance, &dlat, &dlon);
+            PositionBearingDistanceMercator_Plugin(pfix.Lat, pfix.Lon, t, m_dLandFallDistance, &dlat, &dlon);
             
             if(gshhsCrossesLand(pfix.Lat, pfix.Lon, dlat, dlon)) {
                 Alarm();
