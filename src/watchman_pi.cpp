@@ -304,6 +304,7 @@ bool watchman_pi::LoadConfig(void)
     pConf->Read ( _T ( "CommandEnabled" ), &m_bCommand, 0 );
     pConf->Read ( _T ( "CommandFilepath" ), &m_sCommand, _T("") );
     pConf->Read ( _T ( "MessageBox" ), &m_bMessageBox, 0);
+
     return true;
 }
 
@@ -342,8 +343,9 @@ bool watchman_pi::SaveConfig(void)
 void watchman_pi::Alarm()
 {
     if(m_bSound) {
-        // play sound
+        PlugInPlaySound(m_sSound);
     }
+
     if(m_bCommand) {
         wxProcess::Open(m_sCommand);
     }
@@ -364,8 +366,6 @@ void watchman_pi::SetCursorLatLon(double lat, double lon)
     m_cursor_lon = lon;
 }
 
-extern bool gshhsCrossesLand(double lat1, double lon1, double lat2, double lon2);
-
 void watchman_pi::SetPositionFixEx(PlugIn_Position_Fix_Ex &pfix)
 {
     if(m_bLandFall) {
@@ -382,7 +382,7 @@ void watchman_pi::SetPositionFixEx(PlugIn_Position_Fix_Ex &pfix)
             double dlat, dlon;
             PositionBearingDistanceMercator_Plugin(pfix.Lat, pfix.Lon, t, m_dLandFallDistance, &dlat, &dlon);
             
-            if(gshhsCrossesLand(pfix.Lat, pfix.Lon, dlat, dlon)) {
+            if(PlugIn_GSHHS_CrossesLand(pfix.Lat, pfix.Lon, dlat, dlon)) {
                 Alarm();
                 return;
             }

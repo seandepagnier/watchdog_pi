@@ -40,7 +40,6 @@ WatchmanDialog::~WatchmanDialog()
 {
 }
 
-extern bool gshhsCrossesLand(double lat1, double lon1, double lat2, double lon2);
 void WatchmanDialog::UpdateLandFallTime(PlugIn_Position_Fix_Ex &pfix)
 {
     double lat1 = pfix.Lat, lon1 = pfix.Lon, lat2, lon2;
@@ -49,7 +48,7 @@ void WatchmanDialog::UpdateLandFallTime(PlugIn_Position_Fix_Ex &pfix)
     int count = 0;
     while(count < 10) {
         PositionBearingDistanceMercator_Plugin(pfix.Lat, pfix.Lon, pfix.Cog, dist + dist1, &lat2, &lon2);
-        if(gshhsCrossesLand(lat1, lon1, lat2, lon2)) {
+        if(PlugIn_GSHHS_CrossesLand(lat1, lon1, lat2, lon2)) {
             if(dist < 1) {
                 span = wxTimeSpan::Seconds(3600.0 * dist / pfix.Sog);
                 wxString s, fmt(_T("%d "));

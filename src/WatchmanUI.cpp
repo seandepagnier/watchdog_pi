@@ -196,13 +196,9 @@ WatchmanPrefsDialogBase::WatchmanPrefsDialogBase( wxWindow* parent, wxWindowID i
 	fgSizer6->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
 	m_cbSound = new wxCheckBox( this, wxID_ANY, _("Sound"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_cbSound->Enable( false );
-	
 	fgSizer6->Add( m_cbSound, 0, wxALL, 5 );
 	
 	m_fpSound = new wxFilePickerCtrl( this, wxID_ANY, wxEmptyString, _("Select a file"), wxT("Wav Files (*.wav)|*.WAV;*.wav|All Files (*.*)|*.*"), wxDefaultPosition, wxDefaultSize, wxFLP_DEFAULT_STYLE );
-	m_fpSound->Enable( false );
-	
 	fgSizer6->Add( m_fpSound, 0, wxALL|wxEXPAND, 5 );
 	
 	m_cbCommand = new wxCheckBox( this, wxID_ANY, _("Command"), wxDefaultPosition, wxDefaultSize, 0 );
