@@ -251,6 +251,8 @@ bool watchman_pi::RenderGLOverlay(wxGLContext *pcontext, PlugIn_ViewPort *vp)
 
 void watchman_pi::Render(ocpnDC &dc, PlugIn_ViewPort &vp)
 {
+    ResetDeadman();
+
     if(!m_pWatchmanDialog || !m_pWatchmanDialog->IsShown())
         return;
 
@@ -272,6 +274,12 @@ void watchman_pi::OnDeadmanTimer( wxTimerEvent & )
 {
     if(m_bDeadman)
         Alarm();
+}
+
+void watchman_pi::ResetDeadman()
+{
+    m_DeadmanTimer.Start(m_DeadmanSpan.GetMilliseconds().ToLong(), true);
+    m_DeadmanUpdateTime = wxDateTime::Now();
 }
 
 bool watchman_pi::LoadConfig(void)
@@ -342,6 +350,8 @@ bool watchman_pi::SaveConfig(void)
 
 void watchman_pi::Alarm()
 {
+    ResetDeadman();
+
     if(m_bSound) {
         PlugInPlaySound(m_sSound);
     }
@@ -359,8 +369,7 @@ void watchman_pi::Alarm()
 
 void watchman_pi::SetCursorLatLon(double lat, double lon)
 {
-    m_DeadmanTimer.Start(m_DeadmanSpan.GetMilliseconds().ToLong(), true);
-    m_DeadmanUpdateTime = wxDateTime::Now();
+    ResetDeadman();
 
     m_cursor_lat = lat;
     m_cursor_lon = lon;

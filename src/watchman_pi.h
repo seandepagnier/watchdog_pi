@@ -152,6 +152,8 @@ public:
       PlugIn_Position_Fix_Ex m_lastfix;
 
 private:
+      void ResetDeadman();
+
       bool    LoadConfig(void);
       bool    SaveConfig(void);
 
