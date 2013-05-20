@@ -42,6 +42,9 @@ WatchmanDialog::~WatchmanDialog()
 
 void WatchmanDialog::UpdateLandFallTime(PlugIn_Position_Fix_Ex &pfix)
 {
+    m_stLandFallTime->SetForegroundColour(m_watchman_pi.m_bLandFallAlarmed ?
+                                          *wxRED : *wxBLACK);
+
     double lat1 = pfix.Lat, lon1 = pfix.Lon, lat2, lon2;
     double dist = 0, dist1 = 1000;
     wxTimeSpan span;
@@ -49,7 +52,7 @@ void WatchmanDialog::UpdateLandFallTime(PlugIn_Position_Fix_Ex &pfix)
     while(count < 10) {
         PositionBearingDistanceMercator_Plugin(pfix.Lat, pfix.Lon, pfix.Cog, dist + dist1, &lat2, &lon2);
         if(PlugIn_GSHHS_CrossesLand(lat1, lon1, lat2, lon2)) {
-            if(dist < 1) {
+            if(dist1 < 1) {
                 span = wxTimeSpan::Seconds(3600.0 * dist / pfix.Sog);
                 wxString s, fmt(_T("%d "));
                 s += wxString::Format(fmt + _("Days "), span.GetDays());
@@ -76,6 +79,9 @@ void WatchmanDialog::UpdateLandFallTime(PlugIn_Position_Fix_Ex &pfix)
 
 void WatchmanDialog::UpdateAnchorDistance(double distance)
 {
+    m_stAnchorDistance->SetForegroundColour(m_watchman_pi.m_bAnchorAlarmed ?
+                                           *wxRED : *wxBLACK);
+
     if(isnan(distance))
         m_stAnchorDistance->SetLabel(_T("N/A"));
     else {
@@ -87,6 +93,9 @@ void WatchmanDialog::UpdateAnchorDistance(double distance)
 
 void WatchmanDialog::OnTimer( wxTimerEvent & )
 {
+    m_stActivity->SetForegroundColour(m_watchman_pi.m_bDeadmanAlarmed ?
+                                      *wxRED : *wxBLACK);
+
     wxTimeSpan span = wxDateTime::Now() - m_watchman_pi.m_DeadmanUpdateTime;
     int days = span.GetDays();
     span -= wxTimeSpan::Days(days);
@@ -100,4 +109,30 @@ void WatchmanDialog::OnTimer( wxTimerEvent & )
         d = wxString::Format(fmt + _T("days"), days);
     m_stActivity->SetLabel(wxString::Format(days + _T("%02d:%02d:%02d"),
                                             hours, minutes, seconds));
+}
+
+void WatchmanDialog::UpdateGPSTime(double seconds)
+{
+    m_stGPS->SetForegroundColour(m_watchman_pi.m_bGPSAlarmed ?
+                                           *wxRED : *wxBLACK);
+    if(isnan(seconds))
+        m_stGPS->SetLabel(_T("N/A"));
+    else {
+        wxString fmt(_T("%.0f "));
+        m_stGPS->SetLabel(
+            wxString::Format(fmt + _("second(s)"), seconds));
+    }
+}
+
+void WatchmanDialog::UpdateAISTime(double seconds)
+{
+    m_stAIS->SetForegroundColour(m_watchman_pi.m_bAISAlarmed ?
+                                           *wxRED : *wxBLACK);
+    if(isnan(seconds))
+        m_stAIS->SetLabel(_T("N/A"));
+    else {
+        wxString fmt(_T("%.0f "));
+        m_stAIS->SetLabel(
+            wxString::Format(fmt + _("second(s)"), seconds));
+    }
 }

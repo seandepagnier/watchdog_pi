@@ -51,6 +51,22 @@ WatchmanDialogBase::WatchmanDialogBase( wxWindow* parent, wxWindowID id, const w
 	m_stAnchorDistance->Wrap( -1 );
 	fgSizer7->Add( m_stAnchorDistance, 0, wxALL, 5 );
 	
+	m_staticText14 = new wxStaticText( this, wxID_ANY, _("Last GPS Update"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText14->Wrap( -1 );
+	fgSizer7->Add( m_staticText14, 0, wxALL, 5 );
+	
+	m_stGPS = new wxStaticText( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_stGPS->Wrap( -1 );
+	fgSizer7->Add( m_stGPS, 0, wxALL, 5 );
+	
+	m_staticText16 = new wxStaticText( this, wxID_ANY, _("Last AIS Sentence"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText16->Wrap( -1 );
+	fgSizer7->Add( m_staticText16, 0, wxALL, 5 );
+	
+	m_stAIS = new wxStaticText( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_stAIS->Wrap( -1 );
+	fgSizer7->Add( m_stAIS, 0, wxALL, 5 );
+	
 	
 	fgSizer8->Add( fgSizer7, 1, wxEXPAND, 5 );
 	
@@ -215,6 +231,40 @@ WatchmanPrefsDialogBase::WatchmanPrefsDialogBase( wxWindow* parent, wxWindowID i
 	
 	
 	fgSizer4->Add( sbSizer4, 1, wxEXPAND, 5 );
+	
+	wxStaticBoxSizer* sbSizer5;
+	sbSizer5 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("NMEA Data Alarm") ), wxVERTICAL );
+	
+	wxFlexGridSizer* fgSizer91;
+	fgSizer91 = new wxFlexGridSizer( 0, 3, 0, 0 );
+	fgSizer91->SetFlexibleDirection( wxBOTH );
+	fgSizer91->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_cbGPSAlarm = new wxCheckBox( this, wxID_ANY, _("No GPS for >"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer91->Add( m_cbGPSAlarm, 0, wxALL, 5 );
+	
+	m_sGPSSeconds = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 60,-1 ), wxSP_ARROW_KEYS, 1, 10000, 10 );
+	fgSizer91->Add( m_sGPSSeconds, 0, wxALL, 5 );
+	
+	m_staticText13 = new wxStaticText( this, wxID_ANY, _("seconds"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText13->Wrap( -1 );
+	fgSizer91->Add( m_staticText13, 0, wxALL, 5 );
+	
+	m_cbAISAlarm = new wxCheckBox( this, wxID_ANY, _("No AIS for >"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer91->Add( m_cbAISAlarm, 0, wxALL, 5 );
+	
+	m_sAISSeconds = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 60,-1 ), wxSP_ARROW_KEYS, 1, 10000, 100 );
+	fgSizer91->Add( m_sAISSeconds, 0, wxALL, 5 );
+	
+	m_staticText12 = new wxStaticText( this, wxID_ANY, _("seconds"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText12->Wrap( -1 );
+	fgSizer91->Add( m_staticText12, 0, wxALL, 5 );
+	
+	
+	sbSizer5->Add( fgSizer91, 1, wxEXPAND, 5 );
+	
+	
+	fgSizer4->Add( sbSizer5, 1, wxEXPAND, 5 );
 	
 	m_sdbSizer1 = new wxStdDialogButtonSizer();
 	m_sdbSizer1OK = new wxButton( this, wxID_OK );

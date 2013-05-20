@@ -42,6 +42,8 @@ class WatchmanDialogBase : public wxDialog
 		wxStaticText* m_staticText4;
 		wxStaticText* m_stActivity;
 		wxStaticText* m_staticText10;
+		wxStaticText* m_staticText14;
+		wxStaticText* m_staticText16;
 		wxButton* m_bPreferences;
 		wxButton* m_bClose;
 		
@@ -52,6 +54,8 @@ class WatchmanDialogBase : public wxDialog
 	
 	public:
 		wxStaticText* m_stAnchorDistance;
+		wxStaticText* m_stGPS;
+		wxStaticText* m_stAIS;
 		
 		WatchmanDialogBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Watch Man"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxCAPTION|wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxTAB_TRAVERSAL ); 
 		~WatchmanDialogBase();
@@ -72,6 +76,8 @@ class WatchmanPrefsDialogBase : public wxDialog
 		wxStaticText* m_staticText71;
 		wxStaticText* m_staticText8;
 		wxStaticText* m_staticText9;
+		wxStaticText* m_staticText13;
+		wxStaticText* m_staticText12;
 		wxStdDialogButtonSizer* m_sdbSizer1;
 		wxButton* m_sdbSizer1OK;
 		wxButton* m_sdbSizer1Cancel;
@@ -94,6 +100,10 @@ class WatchmanPrefsDialogBase : public wxDialog
 		wxCheckBox* m_cbCommand;
 		wxTextCtrl* m_tCommand;
 		wxCheckBox* m_cbMessageBox;
+		wxCheckBox* m_cbGPSAlarm;
+		wxSpinCtrl* m_sGPSSeconds;
+		wxCheckBox* m_cbAISAlarm;
+		wxSpinCtrl* m_sAISSeconds;
 		
 		WatchmanPrefsDialogBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Watchman Preferences"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxCAPTION|wxDEFAULT_DIALOG_STYLE ); 
 		~WatchmanPrefsDialogBase();

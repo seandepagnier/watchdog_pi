@@ -37,7 +37,7 @@
 #include <wx/fileconf.h>
 
 #define     PLUGIN_VERSION_MAJOR    0
-#define     PLUGIN_VERSION_MINOR    2
+#define     PLUGIN_VERSION_MINOR    3
 
 #define     MY_API_VERSION_MAJOR    1
 #define     MY_API_VERSION_MINOR    8
@@ -114,7 +114,7 @@ public:
       bool RenderGLOverlay(wxGLContext *pcontext, PlugIn_ViewPort *vp);
       void Render(ocpnDC &dc, PlugIn_ViewPort &vp);
 
-      void OnDeadmanTimer( wxTimerEvent & );
+      void OnTimer( wxTimerEvent & );
 
 //    Optional plugin overrides
       void SetColorScheme(PI_ColorScheme cs);
@@ -135,12 +135,15 @@ public:
 
       bool m_bDeadman;
       wxTimeSpan m_DeadmanSpan;
-      wxTimer m_DeadmanTimer;
-      wxDateTime m_DeadmanUpdateTime;
 
       bool m_bAnchor;
       double m_dAnchorLatitude, m_dAnchorLongitude;
       double m_iAnchorRadius;
+
+      bool m_bGPSAlarm;
+      double m_dGPSSeconds;
+      bool m_bAISAlarm;
+      double m_dAISSeconds;
 
       bool m_bSound;
       wxString m_sSound;
@@ -148,8 +151,13 @@ public:
       wxString m_sCommand;
       bool m_bMessageBox;
 
+      wxDateTime m_DeadmanUpdateTime;
+
       wxFileConfig     *m_pconfig;
       PlugIn_Position_Fix_Ex m_lastfix;
+
+      bool     m_bLandFallAlarmed, m_bAnchorAlarmed, m_bDeadmanAlarmed;
+      bool     m_bGPSAlarmed, m_bAISAlarmed;
 
 private:
       void ResetDeadman();
@@ -160,6 +168,7 @@ private:
       void    Alarm();
       void    SetCursorLatLon(double lat, double lon);
       void    SetPositionFixEx(PlugIn_Position_Fix_Ex &pfix);
+      void    SetAISSentence(wxString &);
 
       WatchmanDialog      *m_pWatchmanDialog;
       int               m_watchman_dialog_x, m_watchman_dialog_y;
@@ -173,6 +182,11 @@ private:
       double m_cursor_lat, m_cursor_lon;
 
       wxDateTime m_LastLandFallCheck;
+      wxDateTime m_LastAlarmTime;
+
+      wxDateTime m_LastPositionFix, m_LastAISSentence;
+
+      wxTimer m_Timer;
 };
 
 #endif

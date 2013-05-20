@@ -40,6 +40,8 @@ public:
     virtual void OnClose( wxCommandEvent& event ) { Hide(); }
     void UpdateLandFallTime(PlugIn_Position_Fix_Ex &pfix);
     void UpdateAnchorDistance(double distance);
+    void UpdateGPSTime(double seconds);
+    void UpdateAISTime(double seconds);
 
 protected:
     watchman_pi &m_watchman_pi;
