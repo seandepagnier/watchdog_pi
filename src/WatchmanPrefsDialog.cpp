@@ -38,3 +38,8 @@ void WatchmanPrefsDialog::OnSyncToBoat( wxCommandEvent& event )
     m_tAnchorLatitude->SetValue(wxString::Format(_T("%f"), m_watchman_pi.m_lastfix.Lat));
     m_tAnchorLongitude->SetValue(wxString::Format(_T("%f"), m_watchman_pi.m_lastfix.Lon));
 }
+
+void WatchmanPrefsDialog::OnCurrentCourse( wxCommandEvent& event )
+{
+    m_sCourseDegrees->SetValue(m_watchman_pi.m_dCurrentCourse);
+}

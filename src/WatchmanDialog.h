@@ -42,6 +42,7 @@ public:
     void UpdateAnchorDistance(double distance);
     void UpdateGPSTime(double seconds);
     void UpdateAISTime(double seconds);
+    void UpdateCourseError(double courseerror);
 
 protected:
     watchman_pi &m_watchman_pi;

@@ -37,7 +37,7 @@
 #include <wx/fileconf.h>
 
 #define     PLUGIN_VERSION_MAJOR    0
-#define     PLUGIN_VERSION_MINOR    3
+#define     PLUGIN_VERSION_MINOR    4
 
 #define     MY_API_VERSION_MAJOR    1
 #define     MY_API_VERSION_MINOR    8
@@ -77,6 +77,8 @@ inline double round(double n) { return n < 0.0 ? ceil(n - 0.5) : floor(n + 0.5);
 #define strtok_r strtok_s
 
 #endif
+
+double heading_resolve(double degrees);
 
 //----------------------------------------------------------------------------------------------------------
 //    The PlugIn Class Definition
@@ -145,6 +147,9 @@ public:
       bool m_bAISAlarm;
       double m_dAISSeconds;
 
+      bool m_bOffCourseAlarm;
+      double m_dOffCourseDegrees, m_dCourseDegrees;
+
       bool m_bSound;
       wxString m_sSound;
       bool m_bCommand;
@@ -157,7 +162,9 @@ public:
       PlugIn_Position_Fix_Ex m_lastfix;
 
       bool     m_bLandFallAlarmed, m_bAnchorAlarmed, m_bDeadmanAlarmed;
-      bool     m_bGPSAlarmed, m_bAISAlarmed;
+      bool     m_bGPSAlarmed, m_bAISAlarmed, m_bOffCourseAlarmed;
+
+      bool m_dCurrentCourse;
 
 private:
       void ResetDeadman();
@@ -170,7 +177,7 @@ private:
       void    SetPositionFixEx(PlugIn_Position_Fix_Ex &pfix);
       void    SetAISSentence(wxString &);
 
-      WatchmanDialog      *m_pWatchmanDialog;
+      WatchmanDialog   *m_pWatchmanDialog;
       int               m_watchman_dialog_x, m_watchman_dialog_y;
       int               m_display_width, m_display_height;
 

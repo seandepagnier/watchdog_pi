@@ -40,6 +40,16 @@
 #include "WatchmanPrefsDialog.h"
 #include "icons.h"
 
+
+double heading_resolve(double degrees)
+{
+    while(degrees < -180)
+        degrees += 360;
+    while(degrees >= 180)
+        degrees -= 360;
+    return degrees;
+}
+
 // the class factories, used to create and destroy instances of the PlugIn
 
 extern "C" DECL_EXP opencpn_plugin* create_pi(void *ppimgr)
@@ -333,11 +343,19 @@ void watchman_pi::OnTimer( wxTimerEvent & )
     } else
         m_bAISAlarmed = false;
 
+    double courseerror = fabs(heading_resolve(m_lastfix.Cog - m_dCourseDegrees));
+    if(m_bOffCourseAlarm && courseerror > m_dOffCourseDegrees) {
+        Alarm();
+        m_bOffCourseAlarmed = true;
+    } else
+        m_bOffCourseAlarmed = false;
+
     if(m_pWatchmanDialog) {
         m_pWatchmanDialog->UpdateLandFallTime(m_lastfix);
         m_pWatchmanDialog->UpdateAnchorDistance(anchordist);
         m_pWatchmanDialog->UpdateGPSTime(gpsseconds);
         m_pWatchmanDialog->UpdateAISTime(aisseconds);
+        m_pWatchmanDialog->UpdateCourseError(courseerror);
     }
 }
 
@@ -357,7 +375,7 @@ bool watchman_pi::LoadConfig(void)
     
     m_watchman_dialog_x =  pConf->Read ( _T ( "DialogPosX" ), 20L );
     m_watchman_dialog_y =  pConf->Read ( _T ( "DialogPosY" ), 20L );
-    
+
     pConf->Read ( _T ( "LandFallAlarm" ), &m_bLandFall, 0 );
     pConf->Read ( _T ( "LandFallDistance" ), &m_dLandFallDistance, 3 );
     
@@ -375,6 +393,10 @@ bool watchman_pi::LoadConfig(void)
     pConf->Read ( _T ( "GPSSeconds" ), &m_dGPSSeconds, 10 );
     pConf->Read ( _T ( "AISAlarm" ), &m_bAISAlarm, 0 );
     pConf->Read ( _T ( "AISSeconds" ), &m_dAISSeconds, 100 );
+
+    pConf->Read ( _T ( "OffCourseAlarm" ), &m_bOffCourseAlarm, 0 );
+    pConf->Read ( _T ( "OffCourseDegrees" ), &m_dOffCourseDegrees, 20 );
+    pConf->Read ( _T ( "CourseDegrees" ), &m_dCourseDegrees, 0 );
     
     pConf->Read ( _T ( "SoundEnabled" ), &m_bSound, 0 );
     pConf->Read ( _T ( "SoundFilepath" ), &m_sSound, _T("") );
@@ -412,6 +434,10 @@ bool watchman_pi::SaveConfig(void)
     pConf->Write ( _T ( "GPSSeconds" ), m_dGPSSeconds );
     pConf->Write ( _T ( "AISAlarm" ), m_bAISAlarm );
     pConf->Write ( _T ( "AISSeconds" ), m_dAISSeconds );
+
+    pConf->Write ( _T ( "OffCourseAlarm" ), m_bOffCourseAlarm );
+    pConf->Write ( _T ( "OffCourseDegrees" ), m_dOffCourseDegrees );
+    pConf->Write ( _T ( "CourseDegrees" ), m_dCourseDegrees );
 
     pConf->Write ( _T ( "SoundEnabled" ), m_bSound);
     pConf->Write ( _T ( "SoundFilepath" ), m_sSound);
@@ -486,6 +512,10 @@ void watchman_pi::ShowPreferencesDialog( wxWindow* parent )
     dialog.m_cbAISAlarm->SetValue(m_bAISAlarm);
     dialog.m_sAISSeconds->SetValue(m_dAISSeconds);
 
+    dialog.m_cbOffCourseAlarm->SetValue(m_bOffCourseAlarm);
+    dialog.m_sOffCourseDegrees->SetValue(m_dOffCourseDegrees);
+    dialog.m_sCourseDegrees->SetValue(m_dCourseDegrees);
+
     dialog.m_cbSound->SetValue(m_bSound);
     dialog.m_fpSound->SetPath(m_sSound);
     dialog.m_cbCommand->SetValue(m_bCommand);
@@ -514,6 +544,10 @@ void watchman_pi::ShowPreferencesDialog( wxWindow* parent )
         m_dGPSSeconds = dialog.m_sGPSSeconds->GetValue();
         m_bAISAlarm = dialog.m_cbAISAlarm->GetValue();
         m_dAISSeconds = dialog.m_sAISSeconds->GetValue();
+
+        m_bOffCourseAlarm = dialog.m_cbOffCourseAlarm->GetValue();
+        m_dOffCourseDegrees = dialog.m_sOffCourseDegrees->GetValue();
+        m_dCourseDegrees = dialog.m_sCourseDegrees->GetValue();
 
         m_bSound = dialog.m_cbSound->GetValue();
         m_sSound = dialog.m_fpSound->GetPath();
