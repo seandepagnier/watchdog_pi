@@ -118,6 +118,7 @@ int watchman_pi::Init(void)
     wxDateTime now = wxDateTime::Now();
     m_LastAlarmTime = now;
     m_DeadmanUpdateTime = now;
+    m_LastLandFallCheck = now;
 
     m_bAnchorAlarmed = false;
     

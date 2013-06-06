@@ -168,6 +168,74 @@ WatchmanPrefsDialogBase::WatchmanPrefsDialogBase( wxWindow* parent, wxWindowID i
 	
 	fgSizer4->Add( sbSizer2, 1, wxEXPAND, 5 );
 	
+	wxStaticBoxSizer* sbSizer5;
+	sbSizer5 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("NMEA Data Alarm") ), wxVERTICAL );
+	
+	wxFlexGridSizer* fgSizer91;
+	fgSizer91 = new wxFlexGridSizer( 0, 3, 0, 0 );
+	fgSizer91->SetFlexibleDirection( wxBOTH );
+	fgSizer91->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_cbGPSAlarm = new wxCheckBox( this, wxID_ANY, _("No GPS for >"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer91->Add( m_cbGPSAlarm, 0, wxALL, 5 );
+	
+	m_sGPSSeconds = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 60,-1 ), wxSP_ARROW_KEYS, 1, 10000, 10 );
+	fgSizer91->Add( m_sGPSSeconds, 0, wxALL, 5 );
+	
+	m_staticText13 = new wxStaticText( this, wxID_ANY, _("seconds"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText13->Wrap( -1 );
+	fgSizer91->Add( m_staticText13, 0, wxALL, 5 );
+	
+	m_cbAISAlarm = new wxCheckBox( this, wxID_ANY, _("No AIS for >"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer91->Add( m_cbAISAlarm, 0, wxALL, 5 );
+	
+	m_sAISSeconds = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 60,-1 ), wxSP_ARROW_KEYS, 1, 10000, 100 );
+	fgSizer91->Add( m_sAISSeconds, 0, wxALL, 5 );
+	
+	m_staticText12 = new wxStaticText( this, wxID_ANY, _("seconds"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText12->Wrap( -1 );
+	fgSizer91->Add( m_staticText12, 0, wxALL, 5 );
+	
+	
+	sbSizer5->Add( fgSizer91, 1, wxEXPAND, 5 );
+	
+	
+	fgSizer4->Add( sbSizer5, 1, wxEXPAND, 5 );
+	
+	wxStaticBoxSizer* sbSizer61;
+	sbSizer61 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Off Course Alarm") ), wxVERTICAL );
+	
+	wxFlexGridSizer* fgSizer101;
+	fgSizer101 = new wxFlexGridSizer( 0, 3, 0, 0 );
+	fgSizer101->SetFlexibleDirection( wxBOTH );
+	fgSizer101->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_cbOffCourseAlarm = new wxCheckBox( this, wxID_ANY, _("Off Course By >"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer101->Add( m_cbOffCourseAlarm, 0, wxALL, 5 );
+	
+	m_sOffCourseDegrees = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 180, 20 );
+	fgSizer101->Add( m_sOffCourseDegrees, 0, wxALL, 5 );
+	
+	m_staticText18 = new wxStaticText( this, wxID_ANY, _("Degrees"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText18->Wrap( -1 );
+	fgSizer101->Add( m_staticText18, 0, wxALL, 5 );
+	
+	m_staticText21 = new wxStaticText( this, wxID_ANY, _("With Course Of"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText21->Wrap( -1 );
+	fgSizer101->Add( m_staticText21, 0, wxALL, 5 );
+	
+	m_sCourseDegrees = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 10, 0 );
+	fgSizer101->Add( m_sCourseDegrees, 0, wxALL, 5 );
+	
+	m_bCurrentCourse = new wxButton( this, wxID_ANY, _("Current Course"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer101->Add( m_bCurrentCourse, 0, wxALL, 5 );
+	
+	
+	sbSizer61->Add( fgSizer101, 1, wxEXPAND, 5 );
+	
+	
+	fgSizer4->Add( sbSizer61, 1, wxEXPAND, 5 );
+	
 	wxStaticBoxSizer* sbSizer3;
 	sbSizer3 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Anchor Watch") ), wxVERTICAL );
 	
@@ -239,74 +307,6 @@ WatchmanPrefsDialogBase::WatchmanPrefsDialogBase( wxWindow* parent, wxWindowID i
 	
 	fgSizer4->Add( sbSizer4, 1, wxEXPAND, 5 );
 	
-	wxStaticBoxSizer* sbSizer5;
-	sbSizer5 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("NMEA Data Alarm") ), wxVERTICAL );
-	
-	wxFlexGridSizer* fgSizer91;
-	fgSizer91 = new wxFlexGridSizer( 0, 3, 0, 0 );
-	fgSizer91->SetFlexibleDirection( wxBOTH );
-	fgSizer91->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
-	
-	m_cbGPSAlarm = new wxCheckBox( this, wxID_ANY, _("No GPS for >"), wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer91->Add( m_cbGPSAlarm, 0, wxALL, 5 );
-	
-	m_sGPSSeconds = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 60,-1 ), wxSP_ARROW_KEYS, 1, 10000, 10 );
-	fgSizer91->Add( m_sGPSSeconds, 0, wxALL, 5 );
-	
-	m_staticText13 = new wxStaticText( this, wxID_ANY, _("seconds"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText13->Wrap( -1 );
-	fgSizer91->Add( m_staticText13, 0, wxALL, 5 );
-	
-	m_cbAISAlarm = new wxCheckBox( this, wxID_ANY, _("No AIS for >"), wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer91->Add( m_cbAISAlarm, 0, wxALL, 5 );
-	
-	m_sAISSeconds = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 60,-1 ), wxSP_ARROW_KEYS, 1, 10000, 100 );
-	fgSizer91->Add( m_sAISSeconds, 0, wxALL, 5 );
-	
-	m_staticText12 = new wxStaticText( this, wxID_ANY, _("seconds"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText12->Wrap( -1 );
-	fgSizer91->Add( m_staticText12, 0, wxALL, 5 );
-	
-	
-	sbSizer5->Add( fgSizer91, 1, wxEXPAND, 5 );
-	
-	
-	fgSizer4->Add( sbSizer5, 1, wxEXPAND, 5 );
-	
-	wxStaticBoxSizer* sbSizer61;
-	sbSizer61 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Off Course Alarm") ), wxVERTICAL );
-	
-	wxFlexGridSizer* fgSizer101;
-	fgSizer101 = new wxFlexGridSizer( 0, 3, 0, 0 );
-	fgSizer101->SetFlexibleDirection( wxBOTH );
-	fgSizer101->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
-	
-	m_cbOffCourseAlarm = new wxCheckBox( this, wxID_ANY, _("Off Course By >"), wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer101->Add( m_cbOffCourseAlarm, 0, wxALL, 5 );
-	
-	m_sOffCourseDegrees = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 180, 20 );
-	fgSizer101->Add( m_sOffCourseDegrees, 0, wxALL, 5 );
-	
-	m_staticText18 = new wxStaticText( this, wxID_ANY, _("Degrees"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText18->Wrap( -1 );
-	fgSizer101->Add( m_staticText18, 0, wxALL, 5 );
-	
-	m_staticText21 = new wxStaticText( this, wxID_ANY, _("With Course Of"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText21->Wrap( -1 );
-	fgSizer101->Add( m_staticText21, 0, wxALL, 5 );
-	
-	m_sCourseDegrees = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 10, 0 );
-	fgSizer101->Add( m_sCourseDegrees, 0, wxALL, 5 );
-	
-	m_bCurrentCourse = new wxButton( this, wxID_ANY, _("Current Course"), wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer101->Add( m_bCurrentCourse, 0, wxALL, 5 );
-	
-	
-	sbSizer61->Add( fgSizer101, 1, wxEXPAND, 5 );
-	
-	
-	fgSizer4->Add( sbSizer61, 1, wxEXPAND, 5 );
-	
 	m_sdbSizer1 = new wxStdDialogButtonSizer();
 	m_sdbSizer1OK = new wxButton( this, wxID_OK );
 	m_sdbSizer1->AddButton( m_sdbSizer1OK );
@@ -324,14 +324,14 @@ WatchmanPrefsDialogBase::WatchmanPrefsDialogBase( wxWindow* parent, wxWindowID i
 	this->Centre( wxBOTH );
 	
 	// Connect Events
-	m_bSyncToBoat->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchmanPrefsDialogBase::OnSyncToBoat ), NULL, this );
 	m_bCurrentCourse->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchmanPrefsDialogBase::OnCurrentCourse ), NULL, this );
+	m_bSyncToBoat->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchmanPrefsDialogBase::OnSyncToBoat ), NULL, this );
 }
 
 WatchmanPrefsDialogBase::~WatchmanPrefsDialogBase()
 {
 	// Disconnect Events
-	m_bSyncToBoat->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchmanPrefsDialogBase::OnSyncToBoat ), NULL, this );
 	m_bCurrentCourse->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchmanPrefsDialogBase::OnCurrentCourse ), NULL, this );
+	m_bSyncToBoat->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchmanPrefsDialogBase::OnSyncToBoat ), NULL, this );
 	
 }

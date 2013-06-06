@@ -49,6 +49,9 @@ void WatchmanDialog::UpdateAlarms()
     UpdateAlarm(m_stTextGPS, m_stGPS, m_watchman_pi.m_bGPSAlarm);
     UpdateAlarm(m_stTextAIS, m_stAIS, m_watchman_pi.m_bAISAlarm);
     UpdateAlarm(m_stTextCourseError, m_stCourseError, m_watchman_pi.m_bOffCourseAlarm);
+
+    Fit();
+    Refresh();
 }
 
 void WatchmanDialog::OnPreferences( wxCommandEvent& event )
@@ -91,13 +94,40 @@ void WatchmanDialog::UpdateLandFallTime(PlugIn_Position_Fix_Ex &pfix)
             count++;
         }
     }
-    m_stLandFallTime->SetLabel(_("LandFall not Detected"));
+
+    if(m_watchman_pi.m_bLandFallAlarmed)
+        m_stLandFallTime->SetLabel(_("LandFall Detected"));
+    else
+        m_stLandFallTime->SetLabel(_("LandFall not Detected"));
 }
 
 void WatchmanDialog::UpdateAnchorDistance(double distance)
 {
     m_stAnchorDistance->SetForegroundColour(m_watchman_pi.m_bAnchorAlarmed ?
                                            *wxRED : *wxBLACK);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     if(isnan(distance))
         m_stAnchorDistance->SetLabel(_T("N/A"));

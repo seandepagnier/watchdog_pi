@@ -60,7 +60,7 @@ class WatchmanDialogBase : public wxDialog
 		wxStaticText* m_stGPS;
 		wxStaticText* m_stAIS;
 		
-		WatchmanDialogBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Watch Man"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxCAPTION|wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxTAB_TRAVERSAL ); 
+		WatchmanDialogBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Watch Man"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxCAPTION|wxDEFAULT_DIALOG_STYLE|wxTAB_TRAVERSAL ); 
 		~WatchmanDialogBase();
 	
 };
@@ -75,22 +75,22 @@ class WatchmanPrefsDialogBase : public wxDialog
 	protected:
 		wxStaticText* m_staticText7;
 		wxStaticText* m_staticText6;
-		wxButton* m_bSyncToBoat;
-		wxStaticText* m_staticText71;
-		wxStaticText* m_staticText8;
-		wxStaticText* m_staticText9;
 		wxStaticText* m_staticText13;
 		wxStaticText* m_staticText12;
 		wxStaticText* m_staticText18;
 		wxStaticText* m_staticText21;
 		wxButton* m_bCurrentCourse;
+		wxButton* m_bSyncToBoat;
+		wxStaticText* m_staticText71;
+		wxStaticText* m_staticText8;
+		wxStaticText* m_staticText9;
 		wxStdDialogButtonSizer* m_sdbSizer1;
 		wxButton* m_sdbSizer1OK;
 		wxButton* m_sdbSizer1Cancel;
 		
 		// Virtual event handlers, overide them in your derived class
-		virtual void OnSyncToBoat( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnCurrentCourse( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnSyncToBoat( wxCommandEvent& event ) { event.Skip(); }
 		
 	
 	public:
@@ -98,6 +98,13 @@ class WatchmanPrefsDialogBase : public wxDialog
 		wxTextCtrl* m_tcLandFallDistance;
 		wxCheckBox* m_cbDeadman;
 		wxSpinCtrl* m_sDeadmanMinutes;
+		wxCheckBox* m_cbGPSAlarm;
+		wxSpinCtrl* m_sGPSSeconds;
+		wxCheckBox* m_cbAISAlarm;
+		wxSpinCtrl* m_sAISSeconds;
+		wxCheckBox* m_cbOffCourseAlarm;
+		wxSpinCtrl* m_sOffCourseDegrees;
+		wxSpinCtrl* m_sCourseDegrees;
 		wxCheckBox* m_cbAnchor;
 		wxTextCtrl* m_tAnchorLatitude;
 		wxTextCtrl* m_tAnchorLongitude;
@@ -107,13 +114,6 @@ class WatchmanPrefsDialogBase : public wxDialog
 		wxCheckBox* m_cbCommand;
 		wxTextCtrl* m_tCommand;
 		wxCheckBox* m_cbMessageBox;
-		wxCheckBox* m_cbGPSAlarm;
-		wxSpinCtrl* m_sGPSSeconds;
-		wxCheckBox* m_cbAISAlarm;
-		wxSpinCtrl* m_sAISSeconds;
-		wxCheckBox* m_cbOffCourseAlarm;
-		wxSpinCtrl* m_sOffCourseDegrees;
-		wxSpinCtrl* m_sCourseDegrees;
 		
 		WatchmanPrefsDialogBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Watchman Preferences"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxCAPTION|wxDEFAULT_DIALOG_STYLE ); 
 		~WatchmanPrefsDialogBase();
