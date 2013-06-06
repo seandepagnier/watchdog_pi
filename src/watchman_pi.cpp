@@ -521,6 +521,9 @@ void watchman_pi::ShowPreferencesDialog( wxWindow* parent )
         m_sCommand = dialog.m_tCommand->GetValue();
         m_bMessageBox = dialog.m_cbMessageBox->GetValue();
 
+        if(m_pWatchmanDialog)
+            m_pWatchmanDialog->UpdateAlarms();
+
         SaveConfig();
     }
 

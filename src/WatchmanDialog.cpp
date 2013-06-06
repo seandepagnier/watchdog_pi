@@ -31,6 +31,7 @@
 WatchmanDialog::WatchmanDialog( watchman_pi &_watchman_pi, wxWindow* parent)
     : WatchmanDialogBase( parent ), m_watchman_pi(_watchman_pi)
 {
+    UpdateAlarms();
     m_Timer.Connect(wxEVT_TIMER, wxTimerEventHandler
                     ( WatchmanDialog::OnTimer ), NULL, this);
     m_Timer.Start(1000);
@@ -38,6 +39,32 @@ WatchmanDialog::WatchmanDialog( watchman_pi &_watchman_pi, wxWindow* parent)
 
 WatchmanDialog::~WatchmanDialog()
 {
+}
+
+void WatchmanDialog::UpdateAlarm(wxControl *ctrl1,  wxControl *ctrl2, bool show)
+{
+    if(show) {
+        ctrl1->Show();
+        ctrl2->Show();
+    } else {
+        ctrl1->Hide();
+        ctrl2->Hide();
+    }
+}
+
+void WatchmanDialog::UpdateAlarms()
+{
+    UpdateAlarm(m_stTextLandfall, m_stLandFallTime, m_watchman_pi.m_bLandFall);
+    UpdateAlarm(m_stTextActivity, m_stActivity, m_watchman_pi.m_bDeadman);
+    UpdateAlarm(m_stTextAnchor, m_stAnchorDistance, m_watchman_pi.m_bAnchor);
+    UpdateAlarm(m_stTextGPS, m_stGPS, m_watchman_pi.m_bGPSAlarm);
+    UpdateAlarm(m_stTextAIS, m_stAIS, m_watchman_pi.m_bAISAlarm);
+}
+
+void WatchmanDialog::OnPreferences( wxCommandEvent& event )
+{
+    m_watchman_pi.ShowPreferencesDialog(this);
+    UpdateAlarms();
 }
 
 void WatchmanDialog::UpdateLandFallTime(PlugIn_Position_Fix_Ex &pfix)

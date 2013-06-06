@@ -33,11 +33,12 @@ class WatchmanDialog: public WatchmanDialogBase
 {
 public:
     WatchmanDialog( watchman_pi &_watchman_pi, wxWindow* parent);
-
     ~WatchmanDialog();
 
-    virtual void OnPreferences( wxCommandEvent& event ) { m_watchman_pi.ShowPreferencesDialog(this); }
-    virtual void OnClose( wxCommandEvent& event ) { Hide(); }
+    void UpdateAlarms();
+
+    void OnPreferences( wxCommandEvent& event );
+    void OnClose( wxCommandEvent& event ) { Hide(); }
     void UpdateLandFallTime(PlugIn_Position_Fix_Ex &pfix);
     void UpdateAnchorDistance(double distance);
     void UpdateGPSTime(double seconds);
@@ -47,6 +48,8 @@ protected:
     watchman_pi &m_watchman_pi;
 
 private:
+    void UpdateAlarm(wxControl *ctrl1,  wxControl *ctrl2, bool show);
+
     void OnTimer( wxTimerEvent & );
     wxTimer m_Timer;
 };
