@@ -20,63 +20,62 @@ WatchmanDialogBase::WatchmanDialogBase( wxWindow* parent, wxWindowID id, const w
 	fgSizer8->SetFlexibleDirection( wxBOTH );
 	fgSizer8->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	wxFlexGridSizer* fgSizer7;
-	fgSizer7 = new wxFlexGridSizer( 0, 2, 0, 0 );
-	fgSizer7->AddGrowableCol( 0 );
-	fgSizer7->AddGrowableRow( 0 );
-	fgSizer7->SetFlexibleDirection( wxBOTH );
-	fgSizer7->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	m_fgAlarms = new wxFlexGridSizer( 0, 2, 0, 0 );
+	m_fgAlarms->AddGrowableCol( 0 );
+	m_fgAlarms->AddGrowableRow( 0 );
+	m_fgAlarms->SetFlexibleDirection( wxBOTH );
+	m_fgAlarms->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_staticText24 = new wxStaticText( this, wxID_ANY, _("Next LandFall in"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText24->Wrap( -1 );
-	fgSizer7->Add( m_staticText24, 0, wxALL, 5 );
+	m_stTextLandFall = new wxStaticText( this, wxID_ANY, _("Next LandFall in"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_stTextLandFall->Wrap( -1 );
+	m_fgAlarms->Add( m_stTextLandFall, 0, wxALL, 5 );
 	
 	m_stLandFallTime = new wxStaticText( this, wxID_ANY, _("No NMEA Messages"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_stLandFallTime->Wrap( -1 );
-	fgSizer7->Add( m_stLandFallTime, 0, wxALL, 5 );
+	m_fgAlarms->Add( m_stLandFallTime, 0, wxALL, 5 );
 	
-	m_staticText4 = new wxStaticText( this, wxID_ANY, _("Last activity"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText4->Wrap( -1 );
-	fgSizer7->Add( m_staticText4, 0, wxALL, 5 );
+	m_stTextActivity = new wxStaticText( this, wxID_ANY, _("Last activity"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_stTextActivity->Wrap( -1 );
+	m_fgAlarms->Add( m_stTextActivity, 0, wxALL, 5 );
 	
 	m_stActivity = new wxStaticText( this, wxID_ANY, _("No Updates"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_stActivity->Wrap( -1 );
-	fgSizer7->Add( m_stActivity, 0, wxALL, 5 );
+	m_fgAlarms->Add( m_stActivity, 0, wxALL, 5 );
 	
-	m_staticText10 = new wxStaticText( this, wxID_ANY, _("Distance to Anchor"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText10->Wrap( -1 );
-	fgSizer7->Add( m_staticText10, 0, wxALL, 5 );
+	m_stTextAnchor = new wxStaticText( this, wxID_ANY, _("Distance to Anchor"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_stTextAnchor->Wrap( -1 );
+	m_fgAlarms->Add( m_stTextAnchor, 0, wxALL, 5 );
 	
 	m_stAnchorDistance = new wxStaticText( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 200,-1 ), 0 );
 	m_stAnchorDistance->Wrap( -1 );
-	fgSizer7->Add( m_stAnchorDistance, 0, wxALL, 5 );
+	m_fgAlarms->Add( m_stAnchorDistance, 0, wxALL, 5 );
 	
-	m_staticText14 = new wxStaticText( this, wxID_ANY, _("Last GPS Update"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText14->Wrap( -1 );
-	fgSizer7->Add( m_staticText14, 0, wxALL, 5 );
+	m_stTextGPS = new wxStaticText( this, wxID_ANY, _("Last GPS Update"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_stTextGPS->Wrap( -1 );
+	m_fgAlarms->Add( m_stTextGPS, 0, wxALL, 5 );
 	
 	m_stGPS = new wxStaticText( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	m_stGPS->Wrap( -1 );
-	fgSizer7->Add( m_stGPS, 0, wxALL, 5 );
+	m_fgAlarms->Add( m_stGPS, 0, wxALL, 5 );
 	
-	m_staticText16 = new wxStaticText( this, wxID_ANY, _("Last AIS Sentence"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText16->Wrap( -1 );
-	fgSizer7->Add( m_staticText16, 0, wxALL, 5 );
+	m_stTextAIS = new wxStaticText( this, wxID_ANY, _("Last AIS Sentence"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_stTextAIS->Wrap( -1 );
+	m_fgAlarms->Add( m_stTextAIS, 0, wxALL, 5 );
 	
 	m_stAIS = new wxStaticText( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	m_stAIS->Wrap( -1 );
-	fgSizer7->Add( m_stAIS, 0, wxALL, 5 );
+	m_fgAlarms->Add( m_stAIS, 0, wxALL, 5 );
 	
-	m_staticText19 = new wxStaticText( this, wxID_ANY, _("Course Error"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText19->Wrap( -1 );
-	fgSizer7->Add( m_staticText19, 0, wxALL, 5 );
+	m_stTextCourseError = new wxStaticText( this, wxID_ANY, _("Course Error"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_stTextCourseError->Wrap( -1 );
+	m_fgAlarms->Add( m_stTextCourseError, 0, wxALL, 5 );
 	
 	m_stCourseError = new wxStaticText( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	m_stCourseError->Wrap( -1 );
-	fgSizer7->Add( m_stCourseError, 0, wxALL, 5 );
+	m_fgAlarms->Add( m_stCourseError, 0, wxALL, 5 );
 	
 	
-	fgSizer8->Add( fgSizer7, 1, wxEXPAND, 5 );
+	fgSizer8->Add( m_fgAlarms, 1, wxEXPAND, 5 );
 	
 	wxFlexGridSizer* fgSizer71;
 	fgSizer71 = new wxFlexGridSizer( 0, 2, 0, 0 );

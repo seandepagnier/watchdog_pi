@@ -37,14 +37,15 @@ class WatchmanDialogBase : public wxDialog
 	private:
 	
 	protected:
-		wxStaticText* m_staticText24;
+		wxFlexGridSizer* m_fgAlarms;
+		wxStaticText* m_stTextLandFall;
 		wxStaticText* m_stLandFallTime;
-		wxStaticText* m_staticText4;
+		wxStaticText* m_stTextActivity;
 		wxStaticText* m_stActivity;
-		wxStaticText* m_staticText10;
-		wxStaticText* m_staticText14;
-		wxStaticText* m_staticText16;
-		wxStaticText* m_staticText19;
+		wxStaticText* m_stTextAnchor;
+		wxStaticText* m_stTextGPS;
+		wxStaticText* m_stTextAIS;
+		wxStaticText* m_stTextCourseError;
 		wxStaticText* m_stCourseError;
 		wxButton* m_bPreferences;
 		wxButton* m_bClose;

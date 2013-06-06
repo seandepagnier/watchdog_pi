@@ -41,24 +41,14 @@ WatchmanDialog::~WatchmanDialog()
 {
 }
 
-void WatchmanDialog::UpdateAlarm(wxControl *ctrl1,  wxControl *ctrl2, bool show)
-{
-    if(show) {
-        ctrl1->Show();
-        ctrl2->Show();
-    } else {
-        ctrl1->Hide();
-        ctrl2->Hide();
-    }
-}
-
 void WatchmanDialog::UpdateAlarms()
 {
-    UpdateAlarm(m_stTextLandfall, m_stLandFallTime, m_watchman_pi.m_bLandFall);
+    UpdateAlarm(m_stTextLandFall, m_stLandFallTime, m_watchman_pi.m_bLandFall);
     UpdateAlarm(m_stTextActivity, m_stActivity, m_watchman_pi.m_bDeadman);
     UpdateAlarm(m_stTextAnchor, m_stAnchorDistance, m_watchman_pi.m_bAnchor);
     UpdateAlarm(m_stTextGPS, m_stGPS, m_watchman_pi.m_bGPSAlarm);
     UpdateAlarm(m_stTextAIS, m_stAIS, m_watchman_pi.m_bAISAlarm);
+    UpdateAlarm(m_stTextCourseError, m_stCourseError, m_watchman_pi.m_bOffCourseAlarm);
 }
 
 void WatchmanDialog::OnPreferences( wxCommandEvent& event )
@@ -115,6 +105,17 @@ void WatchmanDialog::UpdateAnchorDistance(double distance)
         wxString fmt(_T("%.0f "));
         m_stAnchorDistance->SetLabel(
             wxString::Format(fmt + _("meters from anchor"), distance));
+    }
+}
+
+void WatchmanDialog::UpdateAlarm(wxControl *ctrl1,  wxControl *ctrl2, bool show)
+{
+    if(show) {
+        ctrl1->Show();
+        ctrl2->Show();
+    } else {
+        ctrl1->Hide();
+        ctrl2->Hide();
     }
 }
 
