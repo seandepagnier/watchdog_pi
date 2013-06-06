@@ -163,3 +163,16 @@ void WatchmanDialog::UpdateAISTime(double seconds)
             wxString::Format(fmt + _("second(s)"), seconds));
     }
 }
+
+void WatchmanDialog::UpdateCourseError(double courseerror)
+{
+    m_stCourseError->SetForegroundColour(m_watchman_pi.m_bOffCourseAlarmed ?
+                                           *wxRED : *wxBLACK);
+    if(isnan(courseerror))
+        m_stCourseError->SetLabel(_T("N/A"));
+    else {
+        wxString fmt(_T("%.0f "));
+        m_stCourseError->SetLabel(
+            wxString::Format(fmt + _("degrees(s)"), courseerror));
+    }
+}
