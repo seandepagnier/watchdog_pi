@@ -89,7 +89,7 @@ double heading_resolve(double degrees);
 class ocpnDC;
 class WatchmanDialog;
 
-class watchman_pi : public opencpn_plugin_18, public wxEvtHandler
+class watchman_pi : public wxEvtHandler, public opencpn_plugin_18
 {
 public:
       watchman_pi(void *ppimgr);
