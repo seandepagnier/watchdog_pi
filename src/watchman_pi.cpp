@@ -344,12 +344,15 @@ void watchman_pi::OnTimer( wxTimerEvent & )
     } else
         m_bAISAlarmed = false;
 
-    double courseerror = fabs(heading_resolve(m_lastfix.Cog - m_dCourseDegrees));
-    if(m_bOffCourseAlarm && courseerror > m_dOffCourseDegrees) {
-        Alarm();
-        m_bOffCourseAlarmed = true;
-    } else
-        m_bOffCourseAlarmed = false;
+    double courseerror = NAN;
+    if(!isnan(m_lastfix.Lat)) {
+        courseerror = fabs(heading_resolve(m_lastfix.Cog - m_dCourseDegrees));
+        if(m_bOffCourseAlarm && courseerror > m_dOffCourseDegrees) {
+            Alarm();
+            m_bOffCourseAlarmed = true;
+        } else
+            m_bOffCourseAlarmed = false;
+    }
 
     if(m_pWatchmanDialog) {
         m_pWatchmanDialog->UpdateLandFallTime(m_lastfix);
