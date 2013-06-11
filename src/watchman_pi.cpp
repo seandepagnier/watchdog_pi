@@ -462,7 +462,7 @@ void watchman_pi::RunAlarm(wxString sound, wxString command, bool mb)
 
     if(mb) {
         wxMessageDialog mdlg(m_parent_window, _("ALARM!!!!"),
-                             wxString(_("Watchman"), wxOK | wxICON_ERROR));
+                             _("Watchman"), wxOK | wxICON_ERROR);
         mdlg.ShowModal();
     }
 }
