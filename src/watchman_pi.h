@@ -128,6 +128,8 @@ public:
       void OnWatchmanDialogClose();
       void ShowPreferencesDialog( wxWindow* parent );
 
+      void    RunAlarm(wxString sound, wxString command, bool mb);
+
       wxWindow         *m_parent_window;
 
       double m_dLandFallDistance;

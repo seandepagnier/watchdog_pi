@@ -452,6 +452,21 @@ bool watchman_pi::SaveConfig(void)
     return true;
 }
 
+void watchman_pi::RunAlarm(wxString sound, wxString command, bool mb)
+{
+    if(sound.size())
+        PlugInPlaySound(sound);
+
+    if(command.size())
+        wxProcess::Open(command);
+
+    if(mb) {
+        wxMessageDialog mdlg(m_parent_window, _("ALARM!!!!"),
+                             wxString(_("Watchman"), wxOK | wxICON_ERROR));
+        mdlg.ShowModal();
+    }
+}
+
 void watchman_pi::Alarm()
 {
     wxDateTime now = wxDateTime::Now();
@@ -463,17 +478,9 @@ void watchman_pi::Alarm()
 
     ResetDeadman();
 
-    if(m_bSound)
-        PlugInPlaySound(m_sSound);
-
-    if(m_bCommand)
-        wxProcess::Open(m_sCommand);
-
-    if(m_bMessageBox) {
-        wxMessageDialog mdlg(m_parent_window, _("ALARM!!!!"),
-                             wxString(_("Watchman"), wxOK | wxICON_ERROR));
-        mdlg.ShowModal();
-    }
+    RunAlarm(m_bSound ? m_sSound : _T(""),
+             m_bCommand ? m_sCommand : _T(""),
+             m_bMessageBox);
 }
 
 void watchman_pi::SetCursorLatLon(double lat, double lon)

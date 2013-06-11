@@ -35,6 +35,7 @@ public:
     WatchmanPrefsDialog( watchman_pi &_watchman_pi, wxWindow* parent);
     void OnSyncToBoat( wxCommandEvent& event );
     void OnCurrentCourse( wxCommandEvent& event );
+    void OnTestAlarm( wxCommandEvent& event );
 		
 protected:
     watchman_pi &m_watchman_pi;

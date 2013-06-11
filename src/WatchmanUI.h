@@ -84,6 +84,7 @@ class WatchmanPrefsDialogBase : public wxDialog
 		wxStaticText* m_staticText71;
 		wxStaticText* m_staticText8;
 		wxStaticText* m_staticText9;
+		wxButton* m_bTestAlarm;
 		wxStdDialogButtonSizer* m_sdbSizer1;
 		wxButton* m_sdbSizer1OK;
 		wxButton* m_sdbSizer1Cancel;
@@ -91,6 +92,7 @@ class WatchmanPrefsDialogBase : public wxDialog
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnCurrentCourse( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSyncToBoat( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnTestAlarm( wxCommandEvent& event ) { event.Skip(); }
 		
 	
 	public:

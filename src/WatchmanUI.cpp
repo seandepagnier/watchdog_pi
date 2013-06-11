@@ -302,6 +302,12 @@ WatchmanPrefsDialogBase::WatchmanPrefsDialogBase( wxWindow* parent, wxWindowID i
 	fgSizer6->Add( m_cbMessageBox, 0, wxALL, 5 );
 	
 	
+	fgSizer6->Add( 0, 0, 1, wxEXPAND, 5 );
+	
+	m_bTestAlarm = new wxButton( this, wxID_ANY, _("Test Alarm"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer6->Add( m_bTestAlarm, 0, wxALL, 5 );
+	
+	
 	sbSizer4->Add( fgSizer6, 1, wxEXPAND, 5 );
 	
 	
@@ -326,6 +332,7 @@ WatchmanPrefsDialogBase::WatchmanPrefsDialogBase( wxWindow* parent, wxWindowID i
 	// Connect Events
 	m_bCurrentCourse->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchmanPrefsDialogBase::OnCurrentCourse ), NULL, this );
 	m_bSyncToBoat->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchmanPrefsDialogBase::OnSyncToBoat ), NULL, this );
+	m_bTestAlarm->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchmanPrefsDialogBase::OnTestAlarm ), NULL, this );
 }
 
 WatchmanPrefsDialogBase::~WatchmanPrefsDialogBase()
@@ -333,5 +340,6 @@ WatchmanPrefsDialogBase::~WatchmanPrefsDialogBase()
 	// Disconnect Events
 	m_bCurrentCourse->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchmanPrefsDialogBase::OnCurrentCourse ), NULL, this );
 	m_bSyncToBoat->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchmanPrefsDialogBase::OnSyncToBoat ), NULL, this );
+	m_bTestAlarm->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchmanPrefsDialogBase::OnTestAlarm ), NULL, this );
 	
 }
