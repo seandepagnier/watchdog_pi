@@ -224,7 +224,7 @@ WatchmanPrefsDialogBase::WatchmanPrefsDialogBase( wxWindow* parent, wxWindowID i
 	m_staticText21->Wrap( -1 );
 	fgSizer101->Add( m_staticText21, 0, wxALL, 5 );
 	
-	m_sCourseDegrees = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 10, 0 );
+	m_sCourseDegrees = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 359, 0 );
 	fgSizer101->Add( m_sCourseDegrees, 0, wxALL, 5 );
 	
 	m_bCurrentCourse = new wxButton( this, wxID_ANY, _("Current Course"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -313,6 +313,20 @@ WatchmanPrefsDialogBase::WatchmanPrefsDialogBase( wxWindow* parent, wxWindowID i
 	
 	fgSizer4->Add( sbSizer4, 1, wxEXPAND, 5 );
 	
+	wxFlexGridSizer* fgSizer11;
+	fgSizer11 = new wxFlexGridSizer( 0, 2, 0, 0 );
+	fgSizer11->SetFlexibleDirection( wxBOTH );
+	fgSizer11->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_button6 = new wxButton( this, wxID_ANY, _("Information"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer11->Add( m_button6, 0, wxALL, 5 );
+	
+	m_button7 = new wxButton( this, wxID_ANY, _("About"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer11->Add( m_button7, 0, wxALL, 5 );
+	
+	
+	fgSizer4->Add( fgSizer11, 1, wxEXPAND, 5 );
+	
 	m_sdbSizer1 = new wxStdDialogButtonSizer();
 	m_sdbSizer1OK = new wxButton( this, wxID_OK );
 	m_sdbSizer1->AddButton( m_sdbSizer1OK );
@@ -333,6 +347,8 @@ WatchmanPrefsDialogBase::WatchmanPrefsDialogBase( wxWindow* parent, wxWindowID i
 	m_bCurrentCourse->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchmanPrefsDialogBase::OnCurrentCourse ), NULL, this );
 	m_bSyncToBoat->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchmanPrefsDialogBase::OnSyncToBoat ), NULL, this );
 	m_bTestAlarm->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchmanPrefsDialogBase::OnTestAlarm ), NULL, this );
+	m_button6->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchmanPrefsDialogBase::OnInformation ), NULL, this );
+	m_button7->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchmanPrefsDialogBase::OnAbout ), NULL, this );
 }
 
 WatchmanPrefsDialogBase::~WatchmanPrefsDialogBase()
@@ -341,5 +357,54 @@ WatchmanPrefsDialogBase::~WatchmanPrefsDialogBase()
 	m_bCurrentCourse->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchmanPrefsDialogBase::OnCurrentCourse ), NULL, this );
 	m_bSyncToBoat->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchmanPrefsDialogBase::OnSyncToBoat ), NULL, this );
 	m_bTestAlarm->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchmanPrefsDialogBase::OnTestAlarm ), NULL, this );
+	m_button6->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchmanPrefsDialogBase::OnInformation ), NULL, this );
+	m_button7->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchmanPrefsDialogBase::OnAbout ), NULL, this );
+	
+}
+
+AboutDialogBase::AboutDialogBase( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
+{
+	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+	
+	wxFlexGridSizer* fgSizer90;
+	fgSizer90 = new wxFlexGridSizer( 0, 1, 0, 0 );
+	fgSizer90->SetFlexibleDirection( wxBOTH );
+	fgSizer90->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_staticText110 = new wxStaticText( this, wxID_ANY, _("The watchman plugin for opencpn is made to add a range of useful alarms based on various conditions.\n\nA very small fraction of possible alarms is implemented,\npatches are welcome.\n\nLicense: GPLv3+\n\nSource Code:\nhttps://github.com/seandepagnier/watchman_pi\n\nAuthor:\nSean D'Epagnier\n\nMany thanks to all of the translators and testers."), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText110->Wrap( 400 );
+	fgSizer90->Add( m_staticText110, 0, wxALL, 5 );
+	
+	wxFlexGridSizer* fgSizer91;
+	fgSizer91 = new wxFlexGridSizer( 0, 2, 0, 0 );
+	fgSizer91->SetFlexibleDirection( wxBOTH );
+	fgSizer91->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_bDonate = new wxButton( this, wxID_ANY, _("Donate"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer91->Add( m_bDonate, 0, wxALL, 5 );
+	
+	m_bClose = new wxButton( this, wxID_ANY, _("Close"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer91->Add( m_bClose, 0, wxALL, 5 );
+	
+	
+	fgSizer90->Add( fgSizer91, 1, wxEXPAND, 5 );
+	
+	
+	this->SetSizer( fgSizer90 );
+	this->Layout();
+	fgSizer90->Fit( this );
+	
+	this->Centre( wxBOTH );
+	
+	// Connect Events
+	m_bDonate->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( AboutDialogBase::OnDonate ), NULL, this );
+	m_bClose->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( AboutDialogBase::OnClose ), NULL, this );
+}
+
+AboutDialogBase::~AboutDialogBase()
+{
+	// Disconnect Events
+	m_bDonate->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( AboutDialogBase::OnDonate ), NULL, this );
+	m_bClose->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( AboutDialogBase::OnClose ), NULL, this );
 	
 }

@@ -85,6 +85,8 @@ class WatchmanPrefsDialogBase : public wxDialog
 		wxStaticText* m_staticText8;
 		wxStaticText* m_staticText9;
 		wxButton* m_bTestAlarm;
+		wxButton* m_button6;
+		wxButton* m_button7;
 		wxStdDialogButtonSizer* m_sdbSizer1;
 		wxButton* m_sdbSizer1OK;
 		wxButton* m_sdbSizer1Cancel;
@@ -93,6 +95,8 @@ class WatchmanPrefsDialogBase : public wxDialog
 		virtual void OnCurrentCourse( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSyncToBoat( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnTestAlarm( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnInformation( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnAbout( wxCommandEvent& event ) { event.Skip(); }
 		
 	
 	public:
@@ -119,6 +123,30 @@ class WatchmanPrefsDialogBase : public wxDialog
 		
 		WatchmanPrefsDialogBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Watchman Preferences"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxCAPTION|wxDEFAULT_DIALOG_STYLE ); 
 		~WatchmanPrefsDialogBase();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class AboutDialogBase
+///////////////////////////////////////////////////////////////////////////////
+class AboutDialogBase : public wxDialog 
+{
+	private:
+	
+	protected:
+		wxStaticText* m_staticText110;
+		wxButton* m_bDonate;
+		wxButton* m_bClose;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnDonate( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnClose( wxCommandEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		
+		AboutDialogBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("About Watchman"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE ); 
+		~AboutDialogBase();
 	
 };
 

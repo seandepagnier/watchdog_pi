@@ -1,12 +1,11 @@
-/******************************************************************************
+/***************************************************************************
  *
- * Project:  OpenCPN
- * Purpose:  watchman Plugin
+ * Project:  OpenCPN Watchman plugin
  * Author:   Sean D'Epagnier
  *
  ***************************************************************************
  *   Copyright (C) 2013 by Sean D'Epagnier                                 *
- *   sean at depagnier dot com                                             *
+ *   sean@depagnier.com                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -23,22 +22,19 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,  USA.         *
  ***************************************************************************
+ *
  */
 
-#include "WatchmanUI.h"
+#include <wx/wx.h>
 
-class watchman_pi;
+#include <stdlib.h>
+#include <math.h>
+#include <time.h>
 
-class WatchmanPrefsDialog: public WatchmanPrefsDialogBase
+#include "AboutDialog.h"
+#include "watchman_pi.h"
+
+void AboutDialog::OnDonate( wxCommandEvent& event )
 {
-public:
-    WatchmanPrefsDialog( watchman_pi &_watchman_pi, wxWindow* parent);
-    void OnSyncToBoat( wxCommandEvent& event );
-    void OnCurrentCourse( wxCommandEvent& event );
-    void OnTestAlarm( wxCommandEvent& event );
-    void OnInformation( wxCommandEvent& event );
-    void OnAbout( wxCommandEvent& event );
-
-protected:
-    watchman_pi &m_watchman_pi;
-};
+      wxLaunchDefaultBrowser(_T("https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=sean%40depagnier%2ecom&lc=US&item_name=watchman&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest"));
+}

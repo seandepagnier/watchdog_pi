@@ -58,6 +58,8 @@ SET(SRC_WATCHMAN
             src/WatchmanDialog.cpp
             src/WatchmanPrefsDialog.h
             src/WatchmanPrefsDialog.cpp
+            src/AboutDialog.h
+            src/AboutDialog.cpp
             src/WatchmanUI.h
             src/WatchmanUI.cpp
             src/icons.h

@@ -10,7 +10,7 @@
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
+ *   the Free Software Foundation; either version 3 of the License, or     *
  *   (at your option) any later version.                                   *
  *                                                                         *
  *   This program is distributed in the hope that it will be useful,       *
@@ -27,6 +27,7 @@
 
 #include "watchman_pi.h"
 #include "WatchmanPrefsDialog.h"
+#include "AboutDialog.h"
 
 WatchmanPrefsDialog::WatchmanPrefsDialog( watchman_pi &_watchman_pi, wxWindow* parent)
     : WatchmanPrefsDialogBase( parent ), m_watchman_pi(_watchman_pi)
@@ -49,4 +50,24 @@ void WatchmanPrefsDialog::OnTestAlarm( wxCommandEvent& event )
         m_watchman_pi.RunAlarm(m_cbSound->GetValue() ? m_fpSound->GetPath() : _T(""),
                                m_cbCommand->GetValue() ? m_tCommand->GetValue() : _T(""),
                                m_cbMessageBox->GetValue());
+}
+
+void WatchmanPrefsDialog::OnInformation( wxCommandEvent& event )
+{
+    wxMessageDialog mdlg(this, _("Each alarm is enabled/disabled with a check box.\n\n\
+Most alarms should be self-explanatory, however the AIS alarm may be only useful \
+in areas where AIS traffic is known to regularly occur, or from a reciever on a ship \
+which also has an active transmitter.\n\n\
+Alarm action:\n\n\
+Normally a sound is played, however you can execute any command you like.  \
+On linux for example, builtin sound playing can block, so instead consider:\n\
+command=\"aplay /usr/local/share/opencpn/sounds/2bells.wav\""),
+                         _("Watchman Information"), wxOK | wxICON_INFORMATION);
+    mdlg.ShowModal();
+}
+
+void WatchmanPrefsDialog::OnAbout( wxCommandEvent& event )
+{
+    AboutDialog dlg(this);
+    dlg.ShowModal();
 }
