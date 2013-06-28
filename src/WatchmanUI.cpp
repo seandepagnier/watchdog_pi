@@ -128,7 +128,7 @@ WatchmanPrefsDialogBase::WatchmanPrefsDialogBase( wxWindow* parent, wxWindowID i
 	fgSizer10->SetFlexibleDirection( wxBOTH );
 	fgSizer10->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_cbLandFall = new wxCheckBox( this, wxID_ANY, _("If Distance is <"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_cbLandFall = new wxCheckBox( this, wxID_ANY, _("If GPS fix is <"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer10->Add( m_cbLandFall, 0, wxALL, 5 );
 	
 	m_tcLandFallDistance = new wxTextCtrl( this, wxID_ANY, _("3"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -137,6 +137,13 @@ WatchmanPrefsDialogBase::WatchmanPrefsDialogBase( wxWindow* parent, wxWindowID i
 	m_staticText7 = new wxStaticText( this, wxID_ANY, _("nm"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText7->Wrap( -1 );
 	fgSizer10->Add( m_staticText7, 0, wxALL, 5 );
+	
+	
+	fgSizer10->Add( 0, 0, 1, wxEXPAND, 5 );
+	
+	m_staticText23 = new wxStaticText( this, wxID_ANY, _("from coastline"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText23->Wrap( -1 );
+	fgSizer10->Add( m_staticText23, 0, wxALL, 5 );
 	
 	
 	sbSizer6->Add( fgSizer10, 1, wxEXPAND, 5 );
@@ -152,7 +159,7 @@ WatchmanPrefsDialogBase::WatchmanPrefsDialogBase( wxWindow* parent, wxWindowID i
 	fgSizer5->SetFlexibleDirection( wxBOTH );
 	fgSizer5->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_cbDeadman = new wxCheckBox( this, wxID_ANY, _("No Activity for"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_cbDeadman = new wxCheckBox( this, wxID_ANY, _("No User Activity for"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer5->Add( m_cbDeadman, 0, wxALL, 5 );
 	
 	m_sDeadmanMinutes = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 1000, 20 );
@@ -371,7 +378,7 @@ AboutDialogBase::AboutDialogBase( wxWindow* parent, wxWindowID id, const wxStrin
 	fgSizer90->SetFlexibleDirection( wxBOTH );
 	fgSizer90->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_staticText110 = new wxStaticText( this, wxID_ANY, _("The watchman plugin for opencpn is made to add a range of useful alarms based on various conditions.\n\nA very small fraction of possible alarms is implemented,\npatches are welcome.\n\nLicense: GPLv3+\n\nSource Code:\nhttps://github.com/seandepagnier/watchman_pi\n\nAuthor:\nSean D'Epagnier\n\nMany thanks to all of the translators and testers."), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText110 = new wxStaticText( this, wxID_ANY, _("The watchman plugin for opencpn is made to add a range of alarms based on various conditions.\n\nOnly a very small fraction of possible alarms are implemented,\npatches are welcome.\n\nLicense: GPLv3+\n\nSource Code:\nhttps://github.com/seandepagnier/watchman_pi\n\nAuthor:\nSean D'Epagnier\n\nMany thanks to all of the translators and testers."), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText110->Wrap( 400 );
 	fgSizer90->Add( m_staticText110, 0, wxALL, 5 );
 	

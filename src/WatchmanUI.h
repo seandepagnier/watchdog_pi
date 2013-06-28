@@ -74,6 +74,7 @@ class WatchmanPrefsDialogBase : public wxDialog
 	
 	protected:
 		wxStaticText* m_staticText7;
+		wxStaticText* m_staticText23;
 		wxStaticText* m_staticText6;
 		wxStaticText* m_staticText13;
 		wxStaticText* m_staticText12;

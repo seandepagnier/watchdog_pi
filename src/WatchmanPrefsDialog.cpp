@@ -57,11 +57,12 @@ void WatchmanPrefsDialog::OnInformation( wxCommandEvent& event )
     wxMessageDialog mdlg(this, _("Each alarm is enabled/disabled with a check box.\n\n\
 Most alarms should be self-explanatory, however the AIS alarm may be only useful \
 in areas where AIS traffic is known to regularly occur, or from a reciever on a ship \
-which also has an active transmitter.\n\n\
+which also has an active transmitter.  Otherwise an alarm will occur if there are no \
+ships\n\n\
 Alarm action:\n\n\
 Normally a sound is played, however you can execute any command you like.  \
-On linux for example, builtin sound playing can block, so instead consider:\n\
-command=\"aplay /usr/local/share/opencpn/sounds/2bells.wav\""),
+On linux for example, builtin sound playing can block, so instead consider a command of:\n\
+\"aplay /usr/local/share/opencpn/sounds/2bells.wav\""),
                          _("Watchman Information"), wxOK | wxICON_INFORMATION);
     mdlg.ShowModal();
 }

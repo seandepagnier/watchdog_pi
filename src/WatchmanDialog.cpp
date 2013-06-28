@@ -134,7 +134,7 @@ void WatchmanDialog::UpdateAnchorDistance(double distance)
     else {
         wxString fmt(_T("%.0f "));
         m_stAnchorDistance->SetLabel(
-            wxString::Format(fmt + _("meters from anchor"), distance));
+            wxString::Format(fmt + _("meter(s)"), distance));
     }
 }
 
