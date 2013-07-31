@@ -42,14 +42,14 @@ void WatchmanPrefsDialog::OnSyncToBoat( wxCommandEvent& event )
 
 void WatchmanPrefsDialog::OnCurrentCourse( wxCommandEvent& event )
 {
-    m_sCourseDegrees->SetValue(m_watchman_pi.m_dCurrentCourse);
+    m_sCourseDegrees->SetValue(m_watchman_pi.cog/*m_lastfix.Cog*/);
 }
 
 void WatchmanPrefsDialog::OnTestAlarm( wxCommandEvent& event )
 {
-        m_watchman_pi.RunAlarm(m_cbSound->GetValue() ? m_fpSound->GetPath() : _T(""),
-                               m_cbCommand->GetValue() ? m_tCommand->GetValue() : _T(""),
-                               m_cbMessageBox->GetValue());
+    m_watchman_pi.RunAlarm(m_cbSound->GetValue() ? m_fpSound->GetPath() : _T(""),
+                           m_cbCommand->GetValue() ? m_tCommand->GetValue() : _T(""),
+                           m_cbMessageBox->GetValue());
 }
 
 void WatchmanPrefsDialog::OnInformation( wxCommandEvent& event )

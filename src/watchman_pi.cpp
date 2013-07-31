@@ -70,13 +70,13 @@ extern "C" DECL_EXP void destroy_pi(opencpn_plugin* p)
 
 watchman_pi::watchman_pi(void *ppimgr)
     : opencpn_plugin_18(ppimgr),
-      m_bLandFallAlarmed(false), m_bAnchorAlarmed(false), m_bDeadmanAlarmed(false),
-      m_bGPSAlarmed(false), m_bAISAlarmed(false)
+      m_iAlarm(0), m_iLastAlarm(0)
 {
     // Create the PlugIn icons
     initialize_images();
     m_lastfix.Lat = NAN;
-    m_lastfix.Lon = NAN;
+    m_lasttimerfix.Lat = NAN;
+    sog = cog = NAN;
 }
 
 //---------------------------------------------------------------------------------------------------------
@@ -120,8 +120,6 @@ int watchman_pi::Init(void)
     m_DeadmanUpdateTime = now;
     m_LastLandFallCheck = now;
 
-    m_bAnchorAlarmed = false;
-    
     return (WANTS_OVERLAY_CALLBACK |
             WANTS_OPENGL_OVERLAY_CALLBACK |
             WANTS_TOOLBAR_CALLBACK    |
@@ -190,7 +188,7 @@ wxString watchman_pi::GetShortDescription()
 
 wxString watchman_pi::GetLongDescription()
 {
-    return _("Watchman Fax PlugIn for OpenCPN\n\
+    return _("Watchman PlugIn for OpenCPN\n\
 Alarm user of possible dangerous situations. \n\
 \n\
 The Watchman plugin was written by Sean D'Epagnier\n\
@@ -228,8 +226,8 @@ void watchman_pi::OnToolbarToolCallback(int id)
         m_pWatchmanDialog->Move(wxPoint(m_watchman_dialog_x, m_watchman_dialog_y));
     }
 
-    RearrangeWindow();
     m_pWatchmanDialog->Show(!m_pWatchmanDialog->IsShown());
+    m_pWatchmanDialog->UpdateAlarms();
 
     wxPoint p = m_pWatchmanDialog->GetPosition();
     m_pWatchmanDialog->Move(0, 0);        // workaround for gtk autocentre dialog behavior
@@ -243,6 +241,16 @@ void watchman_pi::OnContextMenuItemCallback(int id)
         m_dAnchorLatitude = m_cursor_lat;
         m_dAnchorLongitude = m_cursor_lon;
     }
+}
+
+wxColour watchman_pi::Color(enum Alarm alarm_mask)
+{
+    if(m_iAlarm & alarm_mask)
+        return *wxRED;
+    else if(m_iLastAlarm & alarm_mask)
+        return wxColor(200, 200, 0); // darker yellow
+
+    return *wxGREEN;
 }
 
 bool watchman_pi::RenderOverlay(wxDC &dc, PlugIn_ViewPort *vp)
@@ -274,13 +282,8 @@ void watchman_pi::Render(ocpnDC &dc, PlugIn_ViewPort &vp)
         GetCanvasPixLL(&vp, &r1, m_dAnchorLatitude, m_dAnchorLongitude);
         GetCanvasPixLL(&vp, &r2, m_dAnchorLatitude+m_iAnchorRadius/1853.0/60.0,
                        m_dAnchorLongitude);
-        wxColour c;
-        if(m_bAnchorAlarmed)
-            c = *wxRED;
-        else
-            c = *wxGREEN;
 
-        dc.SetPen(wxPen(c, 2));
+        dc.SetPen(wxPen(Color(ANCHOR), 2));
         dc.DrawCircle( r1.x, r1.y, r2.y - r1.y );
     }
 
@@ -292,72 +295,84 @@ void watchman_pi::OnTimer( wxTimerEvent & )
 {
     wxDateTime now = wxDateTime::Now();
 
+    m_iAlarm = 0;
     if(m_bLandFall) {
         /* kind of slow, don't perform as often */
         if((now - m_LastLandFallCheck).GetSeconds() > 10) {
             m_LastLandFallCheck = now;
-            m_bLandFallAlarmed = false;        
             for(double t = 0; t<360; t+=18) {
                 double dlat, dlon;
                 PositionBearingDistanceMercator_Plugin(m_lastfix.Lat, m_lastfix.Lon, t,
                                                        m_dLandFallDistance, &dlat, &dlon);
             
                 if(PlugIn_GSHHS_CrossesLand(m_lastfix.Lat, m_lastfix.Lon, dlat, dlon)) {
-                    Alarm();
-                    m_bLandFallAlarmed = true;
+                    m_iAlarm |= LANDFALL;
+                    break;
                 }
             }
         }
-    } else
-        m_bLandFallAlarmed = false;
+    }
 
     double anchordist;
     DistanceBearingMercator_Plugin(m_lastfix.Lat, m_lastfix.Lon, m_dAnchorLatitude,
                                    m_dAnchorLongitude, 0, &anchordist);
     anchordist *= 1853.248; /* in meters */
-    if(m_bAnchor && anchordist > m_iAnchorRadius) {
-        Alarm();
-        m_bAnchorAlarmed = true;
-    } else
-        m_bAnchorAlarmed = false;
+    if(m_bAnchor && anchordist > m_iAnchorRadius)
+        m_iAlarm |= ANCHOR;
 
-    if(m_bDeadman && (now - m_DeadmanUpdateTime) > m_DeadmanSpan) {
-        Alarm();
-        m_bDeadmanAlarmed = true;
-    } else
-        m_bDeadmanAlarmed = false;
+    if(m_bDeadman && (now - m_DeadmanUpdateTime) > m_DeadmanSpan)
+        m_iAlarm |= DEADMAN;
 
     double gpsseconds = m_LastPositionFix.IsValid() ?
         (now - m_LastPositionFix).GetSeconds().ToLong() : NAN;
-    if(m_bGPSAlarm && gpsseconds > m_dGPSSeconds) {
-        Alarm();
-        m_bGPSAlarmed = true;
-    } else
-        m_bGPSAlarmed = false;
+    if(m_bGPSAlarm && gpsseconds > m_dGPSSeconds)
+        m_iAlarm |= GPS;
 
     double aisseconds = m_LastAISSentence.IsValid() ? 
         (now - m_LastAISSentence).GetSeconds().ToLong() : NAN;
-    if(m_bAISAlarm && aisseconds > m_dAISSeconds) {
-        Alarm();
-        m_bAISAlarmed = true;
-    } else
-        m_bAISAlarmed = false;
+    if(m_bAISAlarm && aisseconds > m_dAISSeconds)
+        m_iAlarm |= AIS;
 
     double courseerror = NAN;
-    if(!isnan(m_lastfix.Lat)) {
-        courseerror = fabs(heading_resolve(m_lastfix.Cog - m_dCourseDegrees));
-        if(m_bOffCourseAlarm && courseerror > m_dOffCourseDegrees) {
-            Alarm();
-            m_bOffCourseAlarmed = true;
-        } else
-            m_bOffCourseAlarmed = false;
+    if(m_LastPositionFix.IsValid()) {
+        if(!m_LastTimerFix.IsValid())
+            goto setfix;
+
+        if((m_LastPositionFix - m_LastTimerFix).GetSeconds() > 10) {
+            if(!isnan(m_lastfix.Lat) && !isnan(m_lasttimerfix.Lat)) {
+                DistanceBearingMercator_Plugin(m_lastfix.Lat, m_lastfix.Lon,
+                                               m_lasttimerfix.Lat, m_lasttimerfix.Lon, &cog, &sog);
+                /* this way helps avoid surge speed from gps from surfing waves etc... */
+                sog *= 3600.0 / (m_lastfix.FixTime - m_lasttimerfix.FixTime);
+            } else
+                sog = cog = NAN;
+
+        setfix:
+            m_lasttimerfix = m_lastfix;
+            m_LastTimerFix = m_LastPositionFix;
+        }
     }
+
+    if(m_bUnderSpeedAlarm && sog < m_dUnderSpeed)
+        m_iAlarm |= UNDERSPEED;
+
+    if(m_bOverSpeedAlarm && sog > m_dOverSpeed)
+        m_iAlarm |= OVERSPEED;
+
+    courseerror = fabs(heading_resolve(cog - m_dCourseDegrees));
+    if(m_bOffCourseAlarm && courseerror > m_dOffCourseDegrees)
+        m_iAlarm |= OFFCOURSE;
+
+    if(m_iAlarm)
+        Alarm();
 
     if(m_pWatchmanDialog) {
         m_pWatchmanDialog->UpdateLandFallTime(m_lastfix);
         m_pWatchmanDialog->UpdateAnchorDistance(anchordist);
         m_pWatchmanDialog->UpdateGPSTime(gpsseconds);
         m_pWatchmanDialog->UpdateAISTime(aisseconds);
+        m_pWatchmanDialog->UpdateUnderSpeed(sog);
+        m_pWatchmanDialog->UpdateOverSpeed(sog);
         m_pWatchmanDialog->UpdateCourseError(courseerror);
     }
 }
@@ -397,6 +412,11 @@ bool watchman_pi::LoadConfig(void)
     pConf->Read ( _T ( "AISAlarm" ), &m_bAISAlarm, 0 );
     pConf->Read ( _T ( "AISSeconds" ), &m_dAISSeconds, 100 );
 
+    pConf->Read ( _T ( "UnderSpeedAlarm" ), &m_bUnderSpeedAlarm, 0 );
+    pConf->Read ( _T ( "UnderSpeed" ), &m_dUnderSpeed, 1 );
+    pConf->Read ( _T ( "OverSpeedAlarm" ), &m_bOverSpeedAlarm, 0 );
+    pConf->Read ( _T ( "OverSpeed" ), &m_dOverSpeed, 10 );
+
     pConf->Read ( _T ( "OffCourseAlarm" ), &m_bOffCourseAlarm, 0 );
     pConf->Read ( _T ( "OffCourseDegrees" ), &m_dOffCourseDegrees, 20 );
     pConf->Read ( _T ( "CourseDegrees" ), &m_dCourseDegrees, 0 );
@@ -406,6 +426,8 @@ bool watchman_pi::LoadConfig(void)
     pConf->Read ( _T ( "CommandEnabled" ), &m_bCommand, 0 );
     pConf->Read ( _T ( "CommandFilepath" ), &m_sCommand, _T("") );
     pConf->Read ( _T ( "MessageBox" ), &m_bMessageBox, 0);
+    pConf->Read ( _T ( "RepeatSeconds" ), &m_iRepeatSeconds, 60);
+    pConf->Read ( _T ( "AutoReset" ), &m_bAutoReset, 0);
 
     return true;
 }
@@ -438,6 +460,11 @@ bool watchman_pi::SaveConfig(void)
     pConf->Write ( _T ( "AISAlarm" ), m_bAISAlarm );
     pConf->Write ( _T ( "AISSeconds" ), m_dAISSeconds );
 
+    pConf->Write ( _T ( "UnderSpeedAlarm" ), m_bUnderSpeedAlarm );
+    pConf->Write ( _T ( "UnderSpeed" ), m_dUnderSpeed );
+    pConf->Write ( _T ( "OverSpeedAlarm" ), m_bOverSpeedAlarm );
+    pConf->Write ( _T ( "OverSpeed" ), m_dOverSpeed );
+
     pConf->Write ( _T ( "OffCourseAlarm" ), m_bOffCourseAlarm );
     pConf->Write ( _T ( "OffCourseDegrees" ), m_dOffCourseDegrees );
     pConf->Write ( _T ( "CourseDegrees" ), m_dCourseDegrees );
@@ -447,6 +474,8 @@ bool watchman_pi::SaveConfig(void)
     pConf->Write ( _T ( "CommandEnabled" ), m_bCommand);
     pConf->Write ( _T ( "CommandFilepath" ), m_sCommand);
     pConf->Write ( _T ( "MessageBox" ), m_bMessageBox);
+    pConf->Write ( _T ( "RepeatSeconds" ), m_iRepeatSeconds);
+    pConf->Write ( _T ( "AutoReset" ), m_bAutoReset);
     
     return true;
 }
@@ -466,14 +495,23 @@ void watchman_pi::RunAlarm(wxString sound, wxString command, bool mb)
     }
 }
 
+void watchman_pi::ResetLastAlarm()
+{
+    m_iLastAlarm = 0;
+}
+
 void watchman_pi::Alarm()
 {
     wxDateTime now = wxDateTime::Now();
-    if((now - m_LastAlarmTime).GetSeconds() < 15)
-        return;
+
+    if(m_iLastAlarm == m_iAlarm) {
+        if((now - m_LastAlarmTime).GetSeconds() < m_iRepeatSeconds || !m_iRepeatSeconds)
+            return;
+    } else
+        if(!m_bAutoReset)
+            m_iLastAlarm |= m_iAlarm;
 
     m_LastAlarmTime = now;
-    m_bAnchorAlarmed = false;
 
     ResetDeadman();
 
@@ -494,6 +532,7 @@ void watchman_pi::SetPositionFixEx(PlugIn_Position_Fix_Ex &pfix)
 {
     if(pfix.FixTime && pfix.nSats)
         m_LastPositionFix = wxDateTime::Now();
+
     m_lastfix = pfix;
 }
 
@@ -522,6 +561,11 @@ void watchman_pi::ShowPreferencesDialog( wxWindow* parent )
     dialog.m_cbAISAlarm->SetValue(m_bAISAlarm);
     dialog.m_sAISSeconds->SetValue(m_dAISSeconds);
 
+    dialog.m_cbUnderSpeed->SetValue(m_bUnderSpeedAlarm);
+    dialog.m_tUnderSpeed->SetValue(wxString::Format(_T("%.1f"), m_dUnderSpeed));
+    dialog.m_cbOverSpeed->SetValue(m_bOverSpeedAlarm);
+    dialog.m_tOverSpeed->SetValue(wxString::Format(_T("%.1f"), m_dOverSpeed));
+
     dialog.m_cbOffCourseAlarm->SetValue(m_bOffCourseAlarm);
     dialog.m_sOffCourseDegrees->SetValue(m_dOffCourseDegrees);
     dialog.m_sCourseDegrees->SetValue(m_dCourseDegrees);
@@ -531,6 +575,8 @@ void watchman_pi::ShowPreferencesDialog( wxWindow* parent )
     dialog.m_cbCommand->SetValue(m_bCommand);
     dialog.m_tCommand->SetValue(m_sCommand);
     dialog.m_cbMessageBox->SetValue(m_bMessageBox);
+    dialog.m_cbRepeat->SetValue(m_iRepeatSeconds);
+    dialog.m_sRepeatSeconds->SetValue(m_iRepeatSeconds);
     
     dialog.Fit();
     wxColour cl;
@@ -555,6 +601,11 @@ void watchman_pi::ShowPreferencesDialog( wxWindow* parent )
         m_bAISAlarm = dialog.m_cbAISAlarm->GetValue();
         m_dAISSeconds = dialog.m_sAISSeconds->GetValue();
 
+        m_bUnderSpeedAlarm = dialog.m_cbUnderSpeed->GetValue();
+        dialog.m_tUnderSpeed->GetValue().ToDouble(&m_dUnderSpeed);
+        m_bOverSpeedAlarm = dialog.m_cbOverSpeed->GetValue();
+        dialog.m_tOverSpeed->GetValue().ToDouble(&m_dOverSpeed);
+
         m_bOffCourseAlarm = dialog.m_cbOffCourseAlarm->GetValue();
         m_dOffCourseDegrees = dialog.m_sOffCourseDegrees->GetValue();
         m_dCourseDegrees = dialog.m_sCourseDegrees->GetValue();
@@ -564,6 +615,7 @@ void watchman_pi::ShowPreferencesDialog( wxWindow* parent )
         m_bCommand = dialog.m_cbCommand->GetValue();
         m_sCommand = dialog.m_tCommand->GetValue();
         m_bMessageBox = dialog.m_cbMessageBox->GetValue();
+        m_iRepeatSeconds = dialog.m_cbRepeat->GetValue() ? dialog.m_sRepeatSeconds->GetValue() : 0;
 
         if(m_pWatchmanDialog)
             m_pWatchmanDialog->UpdateAlarms();

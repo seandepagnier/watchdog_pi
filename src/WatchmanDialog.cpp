@@ -31,7 +31,6 @@
 WatchmanDialog::WatchmanDialog( watchman_pi &_watchman_pi, wxWindow* parent)
     : WatchmanDialogBase( parent ), m_watchman_pi(_watchman_pi)
 {
-    UpdateAlarms();
     m_Timer.Connect(wxEVT_TIMER, wxTimerEventHandler
                     ( WatchmanDialog::OnTimer ), NULL, this);
     m_Timer.Start(1000);
@@ -48,6 +47,8 @@ void WatchmanDialog::UpdateAlarms()
     UpdateAlarm(m_stTextAnchor, m_stAnchorDistance, m_watchman_pi.m_bAnchor);
     UpdateAlarm(m_stTextGPS, m_stGPS, m_watchman_pi.m_bGPSAlarm);
     UpdateAlarm(m_stTextAIS, m_stAIS, m_watchman_pi.m_bAISAlarm);
+    UpdateAlarm(m_stTextUnderSpeed, m_stUnderSpeed, m_watchman_pi.m_bUnderSpeedAlarm);
+    UpdateAlarm(m_stTextOverSpeed, m_stOverSpeed, m_watchman_pi.m_bOverSpeedAlarm);
     UpdateAlarm(m_stTextCourseError, m_stCourseError, m_watchman_pi.m_bOffCourseAlarm);
 
     Fit();
@@ -57,13 +58,16 @@ void WatchmanDialog::UpdateAlarms()
 void WatchmanDialog::OnPreferences( wxCommandEvent& event )
 {
     m_watchman_pi.ShowPreferencesDialog(this);
-    UpdateAlarms();
+}
+
+void WatchmanDialog::OnResetLastAlarm( wxCommandEvent& event )
+{
+    m_watchman_pi.ResetLastAlarm();
 }
 
 void WatchmanDialog::UpdateLandFallTime(PlugIn_Position_Fix_Ex &pfix)
 {
-    m_stLandFallTime->SetForegroundColour(m_watchman_pi.m_bLandFallAlarmed ?
-                                          *wxRED : *wxBLACK);
+    m_stLandFallTime->SetForegroundColour(m_watchman_pi.Color(watchman_pi::LANDFALL));
 
     double lat1 = pfix.Lat, lon1 = pfix.Lon, lat2, lon2;
     double dist = 0, dist1 = 1000;
@@ -75,13 +79,15 @@ void WatchmanDialog::UpdateLandFallTime(PlugIn_Position_Fix_Ex &pfix)
             if(dist1 < 1) {
                 span = wxTimeSpan::Seconds(3600.0 * dist / pfix.Sog);
                 wxString s, fmt(_T("%d "));
-                s += wxString::Format(fmt + _("Days "), span.GetDays());
-                span -= wxTimeSpan::Days(span.GetDays());
-                s += wxString::Format(fmt + _("Hours "), span.GetHours());
-                span -= wxTimeSpan::Hours(span.GetHours());
-                s += wxString::Format(fmt + _("Minutes "), span.GetMinutes());
-                span -= wxTimeSpan::Minutes(span.GetMinutes());
-                s += wxString::Format(fmt + _("Seconds"), span.GetSeconds());
+                if(span.GetDays())
+                    s = wxString::Format(fmt + _("Days "), span.GetDays());
+                else if(span.GetHours())
+                    s = wxString::Format(fmt + _("Hours "), span.GetHours());
+                else if(span.GetMinutes())
+                    s = wxString::Format(fmt + _("Minutes "), span.GetMinutes());
+                else
+                    s = wxString::Format(fmt + _("Seconds"), span.GetSeconds());
+
                 m_stLandFallTime->SetLabel(s);
                 return;
             }
@@ -95,7 +101,7 @@ void WatchmanDialog::UpdateLandFallTime(PlugIn_Position_Fix_Ex &pfix)
         }
     }
 
-    if(m_watchman_pi.m_bLandFallAlarmed)
+    if(m_watchman_pi.m_iLastAlarm & watchman_pi::LANDFALL)
         m_stLandFallTime->SetLabel(_("LandFall Detected"));
     else
         m_stLandFallTime->SetLabel(_("LandFall not Detected"));
@@ -103,31 +109,7 @@ void WatchmanDialog::UpdateLandFallTime(PlugIn_Position_Fix_Ex &pfix)
 
 void WatchmanDialog::UpdateAnchorDistance(double distance)
 {
-    m_stAnchorDistance->SetForegroundColour(m_watchman_pi.m_bAnchorAlarmed ?
-                                           *wxRED : *wxBLACK);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    m_stAnchorDistance->SetForegroundColour(m_watchman_pi.Color(watchman_pi::ANCHOR));
 
     if(isnan(distance))
         m_stAnchorDistance->SetLabel(_T("N/A"));
@@ -151,8 +133,7 @@ void WatchmanDialog::UpdateAlarm(wxControl *ctrl1,  wxControl *ctrl2, bool show)
 
 void WatchmanDialog::OnTimer( wxTimerEvent & )
 {
-    m_stActivity->SetForegroundColour(m_watchman_pi.m_bDeadmanAlarmed ?
-                                      *wxRED : *wxBLACK);
+    m_stActivity->SetForegroundColour(m_watchman_pi.Color(watchman_pi::DEADMAN));
 
     wxTimeSpan span = wxDateTime::Now() - m_watchman_pi.m_DeadmanUpdateTime;
     int days = span.GetDays();
@@ -171,8 +152,7 @@ void WatchmanDialog::OnTimer( wxTimerEvent & )
 
 void WatchmanDialog::UpdateGPSTime(double seconds)
 {
-    m_stGPS->SetForegroundColour(m_watchman_pi.m_bGPSAlarmed ?
-                                           *wxRED : *wxBLACK);
+    m_stGPS->SetForegroundColour(m_watchman_pi.Color(watchman_pi::GPS));
     if(isnan(seconds))
         m_stGPS->SetLabel(_T("N/A"));
     else {
@@ -184,8 +164,7 @@ void WatchmanDialog::UpdateGPSTime(double seconds)
 
 void WatchmanDialog::UpdateAISTime(double seconds)
 {
-    m_stAIS->SetForegroundColour(m_watchman_pi.m_bAISAlarmed ?
-                                           *wxRED : *wxBLACK);
+    m_stAIS->SetForegroundColour(m_watchman_pi.Color(watchman_pi::AIS));
     if(isnan(seconds))
         m_stAIS->SetLabel(_T("N/A"));
     else {
@@ -195,10 +174,31 @@ void WatchmanDialog::UpdateAISTime(double seconds)
     }
 }
 
+void WatchmanDialog::UpdateUnderSpeed(double speed)
+{
+    m_stUnderSpeed->SetForegroundColour(m_watchman_pi.Color(watchman_pi::UNDERSPEED));
+    if(isnan(speed))
+        m_stUnderSpeed->SetLabel(_T("N/A"));
+    else {
+        wxString fmt(_T("%.1f "));
+        m_stUnderSpeed->SetLabel(wxString::Format(fmt, speed));
+    }
+}
+
+void WatchmanDialog::UpdateOverSpeed(double speed)
+{
+    m_stOverSpeed->SetForegroundColour(m_watchman_pi.Color(watchman_pi::OVERSPEED));
+    if(isnan(speed))
+        m_stOverSpeed->SetLabel(_T("N/A"));
+    else {
+        wxString fmt(_T("%.1f "));
+        m_stOverSpeed->SetLabel(wxString::Format(fmt, speed));
+    }
+}
+
 void WatchmanDialog::UpdateCourseError(double courseerror)
 {
-    m_stCourseError->SetForegroundColour(m_watchman_pi.m_bOffCourseAlarmed ?
-                                           *wxRED : *wxBLACK);
+    m_stCourseError->SetForegroundColour(m_watchman_pi.Color(watchman_pi::OFFCOURSE));
     if(isnan(courseerror))
         m_stCourseError->SetLabel(_T("N/A"));
     else {

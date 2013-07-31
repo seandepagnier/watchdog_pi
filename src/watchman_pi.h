@@ -37,7 +37,7 @@
 #include <wx/fileconf.h>
 
 #define     PLUGIN_VERSION_MAJOR    0
-#define     PLUGIN_VERSION_MINOR    5
+#define     PLUGIN_VERSION_MINOR    6
 
 #define     MY_API_VERSION_MAJOR    1
 #define     MY_API_VERSION_MINOR    8
@@ -92,6 +92,8 @@ class WatchmanDialog;
 class watchman_pi : public wxEvtHandler, public opencpn_plugin_18
 {
 public:
+    enum Alarm {LANDFALL=1, ANCHOR=2, DEADMAN=4, GPS=8, AIS=16, UNDERSPEED=32, OVERSPEED=64, OFFCOURSE=128};
+
       watchman_pi(void *ppimgr);
 
 //    The required PlugIn Methods
@@ -112,6 +114,8 @@ public:
       void OnToolbarToolCallback(int id);
       void OnContextMenuItemCallback(int id);
 
+      wxColour Color(enum Alarm alarm_mask);
+
       bool RenderOverlay(wxDC &dc, PlugIn_ViewPort *vp);
       bool RenderGLOverlay(wxGLContext *pcontext, PlugIn_ViewPort *vp);
       void Render(ocpnDC &dc, PlugIn_ViewPort &vp);
@@ -129,6 +133,7 @@ public:
       void ShowPreferencesDialog( wxWindow* parent );
 
       void    RunAlarm(wxString sound, wxString command, bool mb);
+      void ResetLastAlarm();
 
       wxWindow         *m_parent_window;
 
@@ -149,6 +154,11 @@ public:
       bool m_bAISAlarm;
       double m_dAISSeconds;
 
+      bool m_bUnderSpeedAlarm;
+      double m_dUnderSpeed;
+      bool m_bOverSpeedAlarm;
+      double m_dOverSpeed;
+
       bool m_bOffCourseAlarm;
       double m_dOffCourseDegrees, m_dCourseDegrees;
 
@@ -157,16 +167,17 @@ public:
       bool m_bCommand;
       wxString m_sCommand;
       bool m_bMessageBox;
+      int m_iRepeatSeconds;
+      bool m_bAutoReset;
 
       wxDateTime m_DeadmanUpdateTime;
 
       wxFileConfig     *m_pconfig;
-      PlugIn_Position_Fix_Ex m_lastfix;
+      PlugIn_Position_Fix_Ex m_lastfix, m_lasttimerfix;
 
-      bool     m_bLandFallAlarmed, m_bAnchorAlarmed, m_bDeadmanAlarmed;
-      bool     m_bGPSAlarmed, m_bAISAlarmed, m_bOffCourseAlarmed;
+      int m_iAlarm, m_iLastAlarm;
 
-      bool m_dCurrentCourse;
+      double sog, cog;
 
 private:
       void ResetDeadman();
@@ -194,6 +205,8 @@ private:
       wxDateTime m_LastAlarmTime;
 
       wxDateTime m_LastPositionFix, m_LastAISSentence;
+
+      wxDateTime m_LastTimerFix;
 
       wxTimer m_Timer;
 };
