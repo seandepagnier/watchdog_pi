@@ -172,7 +172,7 @@ int watchman_pi::GetPlugInVersionMinor()
 
 wxBitmap *watchman_pi::GetPlugInBitmap()
 {
-    return _img_watchman;
+    return new wxBitmap(_img_watchman->ConvertToImage().Copy());
 }
 
 wxString watchman_pi::GetCommonName()
@@ -296,17 +296,43 @@ void watchman_pi::OnTimer( wxTimerEvent & )
     wxDateTime now = wxDateTime::Now();
 
     m_iAlarm = 0;
-    if(m_bLandFall) {
-        /* kind of slow, don't perform as often */
-        if((now - m_LastLandFallCheck).GetSeconds() > 10) {
-            m_LastLandFallCheck = now;
+    /* kind of slow, don't perform as often */
+    if((now - m_LastLandFallCheck).GetSeconds() > 10) {
+        m_LastLandFallCheck = now;
+
+        double lat1 = m_lastfix.Lat, lon1 = m_lastfix.Lon, lat2, lon2;
+        double dist = 0, dist1 = 1000;
+        int count = 0;
+        m_LandFallTime = wxTimeSpan();
+
+        while(count < 10) {
+            PositionBearingDistanceMercator_Plugin
+                (m_lastfix.Lat, m_lastfix.Lon, m_lastfix.Cog, dist + dist1, &lat2, &lon2);
+            if(PlugIn_GSHHS_CrossesLand(lat1, lon1, lat2, lon2)) {
+                if(dist1 < 1) {
+                    m_LandFallTime = wxTimeSpan::Seconds(3600.0 * dist / m_lastfix.Sog);
+                    if(m_LandFallTime.GetMinutes() <= m_dLandFallTimeMinutes)
+                        m_iAlarm |= LANDFALLTIME;
+                    break;
+                }
+                count = 0;
+                dist1 /= 2;
+            } else {
+                dist += dist1;
+                lat1 = lat2;
+                lon1 = lon2;
+                count++;
+            }
+        }
+        
+        if(m_bLandFallDistance) {
             for(double t = 0; t<360; t+=18) {
                 double dlat, dlon;
                 PositionBearingDistanceMercator_Plugin(m_lastfix.Lat, m_lastfix.Lon, t,
                                                        m_dLandFallDistance, &dlat, &dlon);
             
                 if(PlugIn_GSHHS_CrossesLand(m_lastfix.Lat, m_lastfix.Lon, dlat, dlon)) {
-                    m_iAlarm |= LANDFALL;
+                    m_iAlarm |= LANDFALLDISTANCE;
                     break;
                 }
             }
@@ -367,7 +393,7 @@ void watchman_pi::OnTimer( wxTimerEvent & )
         Alarm();
 
     if(m_pWatchmanDialog) {
-        m_pWatchmanDialog->UpdateLandFallTime(m_lastfix);
+        m_pWatchmanDialog->UpdateLandFallTime();
         m_pWatchmanDialog->UpdateAnchorDistance(anchordist);
         m_pWatchmanDialog->UpdateGPSTime(gpsseconds);
         m_pWatchmanDialog->UpdateAISTime(aisseconds);
@@ -394,7 +420,9 @@ bool watchman_pi::LoadConfig(void)
     m_watchman_dialog_x =  pConf->Read ( _T ( "DialogPosX" ), 20L );
     m_watchman_dialog_y =  pConf->Read ( _T ( "DialogPosY" ), 20L );
 
-    pConf->Read ( _T ( "LandFallAlarm" ), &m_bLandFall, 0 );
+    pConf->Read ( _T ( "LandFallTimeAlarm" ), &m_bLandFallTime, 0 );
+    pConf->Read ( _T ( "LandFallTimeMinutes" ), &m_dLandFallTimeMinutes, 20 );
+    pConf->Read ( _T ( "LandFallDistanceAlarm" ), &m_bLandFallDistance, 0 );
     pConf->Read ( _T ( "LandFallDistance" ), &m_dLandFallDistance, 3 );
     
     pConf->Read ( _T ( "DeadmanAlarm" ), &m_bDeadman, 0 );
@@ -444,7 +472,9 @@ bool watchman_pi::SaveConfig(void)
     pConf->Write ( _T ( "DialogPosX" ),   m_watchman_dialog_x );
     pConf->Write ( _T ( "DialogPosY" ),   m_watchman_dialog_y );
 
-    pConf->Write ( _T ( "LandFallAlarm" ), m_bLandFall );
+    pConf->Write ( _T ( "LandFallTimeAlarm" ), m_bLandFallTime );
+    pConf->Write ( _T ( "LandFallTimeMinutes" ), m_dLandFallTimeMinutes);
+    pConf->Write ( _T ( "LandFallDistanceAlarm" ), m_bLandFallDistance );
     pConf->Write ( _T ( "LandFallDistance" ), m_dLandFallDistance);
     
     pConf->Write ( _T ( "DeadmanAlarm" ), m_bDeadman );
@@ -545,7 +575,10 @@ void watchman_pi::ShowPreferencesDialog( wxWindow* parent )
 {
     WatchmanPrefsDialog dialog(*this, parent);
 
-    dialog.m_cbLandFall->SetValue(m_bLandFall);
+    dialog.m_cbLandFallTime->SetValue(m_bLandFallTime);
+    dialog.m_sLandFallTimeMinutes->SetValue(wxString::Format(_T("%.2f"),
+                                                            m_dLandFallTimeMinutes));
+    dialog.m_cbLandFallDistance->SetValue(m_bLandFallDistance);
     dialog.m_tcLandFallDistance->SetValue(wxString::Format(_T("%.2f"),
                                                             m_dLandFallDistance));
     dialog.m_cbDeadman->SetValue(m_bDeadman);
@@ -585,7 +618,10 @@ void watchman_pi::ShowPreferencesDialog( wxWindow* parent )
     
     if(dialog.ShowModal() == wxID_OK)
     {
-        m_bLandFall = dialog.m_cbLandFall->GetValue();
+        m_bLandFallTime = dialog.m_cbLandFallTime->GetValue();
+        m_dLandFallTimeMinutes = dialog.m_sLandFallTimeMinutes->GetValue();
+
+        m_bLandFallDistance = dialog.m_cbLandFallDistance->GetValue();
         dialog.m_tcLandFallDistance->GetValue().ToDouble(&m_dLandFallDistance);
 
         m_bDeadman = dialog.m_cbDeadman->GetValue();

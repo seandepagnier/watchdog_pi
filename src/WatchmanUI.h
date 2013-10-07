@@ -21,9 +21,9 @@
 #include <wx/button.h>
 #include <wx/dialog.h>
 #include <wx/checkbox.h>
+#include <wx/spinctrl.h>
 #include <wx/textctrl.h>
 #include <wx/statbox.h>
-#include <wx/spinctrl.h>
 #include <wx/filepicker.h>
 
 ///////////////////////////////////////////////////////////////////////////
@@ -38,8 +38,10 @@ class WatchmanDialogBase : public wxDialog
 	
 	protected:
 		wxFlexGridSizer* m_fgAlarms;
-		wxStaticText* m_stTextLandFall;
+		wxStaticText* m_stTextLandFallTime;
 		wxStaticText* m_stLandFallTime;
+		wxStaticText* m_stTextLandFallDistance;
+		wxStaticText* m_stLandFallDistance;
 		wxStaticText* m_stTextActivity;
 		wxStaticText* m_stActivity;
 		wxStaticText* m_stTextAnchor;
@@ -79,8 +81,8 @@ class WatchmanPrefsDialogBase : public wxDialog
 	private:
 	
 	protected:
+		wxStaticText* m_staticText30;
 		wxStaticText* m_staticText7;
-		wxStaticText* m_staticText23;
 		wxStaticText* m_staticText6;
 		wxStaticText* m_staticText13;
 		wxStaticText* m_staticText12;
@@ -93,6 +95,7 @@ class WatchmanPrefsDialogBase : public wxDialog
 		wxStaticText* m_staticText18;
 		wxStaticText* m_staticText21;
 		wxButton* m_bCurrentCourse;
+		wxCheckBox* m_cbAutoReset;
 		wxButton* m_bTestAlarm;
 		wxButton* m_button6;
 		wxButton* m_button7;
@@ -109,7 +112,9 @@ class WatchmanPrefsDialogBase : public wxDialog
 		
 	
 	public:
-		wxCheckBox* m_cbLandFall;
+		wxCheckBox* m_cbLandFallTime;
+		wxSpinCtrl* m_sLandFallTimeMinutes;
+		wxCheckBox* m_cbLandFallDistance;
 		wxTextCtrl* m_tcLandFallDistance;
 		wxCheckBox* m_cbDeadman;
 		wxSpinCtrl* m_sDeadmanMinutes;

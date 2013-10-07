@@ -92,7 +92,8 @@ class WatchmanDialog;
 class watchman_pi : public wxEvtHandler, public opencpn_plugin_18
 {
 public:
-    enum Alarm {LANDFALL=1, ANCHOR=2, DEADMAN=4, GPS=8, AIS=16, UNDERSPEED=32, OVERSPEED=64, OFFCOURSE=128};
+    enum Alarm {LANDFALLTIME=1, LANDFALLDISTANCE=2, ANCHOR=4, DEADMAN=8,
+                GPS=16, AIS=32, UNDERSPEED=64, OVERSPEED=128, OFFCOURSE=256};
 
       watchman_pi(void *ppimgr);
 
@@ -137,10 +138,10 @@ public:
 
       wxWindow         *m_parent_window;
 
-      double m_dLandFallDistance;
+      wxTimeSpan m_LandFallTime;
+      double m_dLandFallTimeMinutes, m_dLandFallDistance;
 
-      bool m_bLandFall;
-      wxDateTime LastLandFallCheck;
+      bool m_bLandFallTime, m_bLandFallDistance;
 
       bool m_bDeadman;
       wxTimeSpan m_DeadmanSpan;

@@ -42,7 +42,8 @@ WatchmanDialog::~WatchmanDialog()
 
 void WatchmanDialog::UpdateAlarms()
 {
-    UpdateAlarm(m_stTextLandFall, m_stLandFallTime, m_watchman_pi.m_bLandFall);
+    UpdateAlarm(m_stTextLandFallTime, m_stLandFallTime, m_watchman_pi.m_bLandFallTime);
+    UpdateAlarm(m_stTextLandFallDistance, m_stLandFallDistance, m_watchman_pi.m_bLandFallDistance);
     UpdateAlarm(m_stTextActivity, m_stActivity, m_watchman_pi.m_bDeadman);
     UpdateAlarm(m_stTextAnchor, m_stAnchorDistance, m_watchman_pi.m_bAnchor);
     UpdateAlarm(m_stTextGPS, m_stGPS, m_watchman_pi.m_bGPSAlarm);
@@ -65,46 +66,28 @@ void WatchmanDialog::OnResetLastAlarm( wxCommandEvent& event )
     m_watchman_pi.ResetLastAlarm();
 }
 
-void WatchmanDialog::UpdateLandFallTime(PlugIn_Position_Fix_Ex &pfix)
+void WatchmanDialog::UpdateLandFallTime()
 {
-    m_stLandFallTime->SetForegroundColour(m_watchman_pi.Color(watchman_pi::LANDFALL));
+    wxString s, fmt(_T("%d "));
+    wxTimeSpan span = m_watchman_pi.m_LandFallTime;
+    if(span.IsNull())
+        s = _("LandFall not Detected");
+    else {
+        if(span.GetDays())
+            s = wxString::Format(fmt + _("Days "), span.GetDays());
+        else if(span.GetHours())
+            s = wxString::Format(fmt + _("Hours "), span.GetHours());
+        else if(span.GetMinutes())
+            s = wxString::Format(fmt + _("Minutes "), span.GetMinutes());
+        else
+            s = wxString::Format(fmt + _("Seconds"), span.GetSeconds());
+                    
+        m_stLandFallTime->SetForegroundColour(m_watchman_pi.Color(watchman_pi::LANDFALLTIME));
+        m_stLandFallTime->SetLabel(s);
+    }                    
 
-    double lat1 = pfix.Lat, lon1 = pfix.Lon, lat2, lon2;
-    double dist = 0, dist1 = 1000;
-    wxTimeSpan span;
-    int count = 0;
-    while(count < 10) {
-        PositionBearingDistanceMercator_Plugin(pfix.Lat, pfix.Lon, pfix.Cog, dist + dist1, &lat2, &lon2);
-        if(PlugIn_GSHHS_CrossesLand(lat1, lon1, lat2, lon2)) {
-            if(dist1 < 1) {
-                span = wxTimeSpan::Seconds(3600.0 * dist / pfix.Sog);
-                wxString s, fmt(_T("%d "));
-                if(span.GetDays())
-                    s = wxString::Format(fmt + _("Days "), span.GetDays());
-                else if(span.GetHours())
-                    s = wxString::Format(fmt + _("Hours "), span.GetHours());
-                else if(span.GetMinutes())
-                    s = wxString::Format(fmt + _("Minutes "), span.GetMinutes());
-                else
-                    s = wxString::Format(fmt + _("Seconds"), span.GetSeconds());
-
-                m_stLandFallTime->SetLabel(s);
-                return;
-            }
-            count = 0;
-            dist1 /= 2;
-        } else {
-            dist += dist1;
-            lat1 = lat2;
-            lon1 = lon2;
-            count++;
-        }
-    }
-
-    if(m_watchman_pi.m_iLastAlarm & watchman_pi::LANDFALL)
-        m_stLandFallTime->SetLabel(_("LandFall Detected"));
-    else
-        m_stLandFallTime->SetLabel(_("LandFall not Detected"));
+    m_stLandFallTime->SetForegroundColour(m_watchman_pi.Color(watchman_pi::LANDFALLDISTANCE));
+    m_stLandFallDistance->SetLabel(wxString::Format(_T("%.2f nm"), m_watchman_pi.m_dLandFallDistance));
 }
 
 void WatchmanDialog::UpdateAnchorDistance(double distance)

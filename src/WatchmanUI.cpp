@@ -26,13 +26,21 @@ WatchmanDialogBase::WatchmanDialogBase( wxWindow* parent, wxWindowID id, const w
 	m_fgAlarms->SetFlexibleDirection( wxBOTH );
 	m_fgAlarms->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_stTextLandFall = new wxStaticText( this, wxID_ANY, _("Next LandFall in"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_stTextLandFall->Wrap( -1 );
-	m_fgAlarms->Add( m_stTextLandFall, 0, wxALL, 5 );
+	m_stTextLandFallTime = new wxStaticText( this, wxID_ANY, _("LandFall in"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_stTextLandFallTime->Wrap( -1 );
+	m_fgAlarms->Add( m_stTextLandFallTime, 0, wxALL, 5 );
 	
 	m_stLandFallTime = new wxStaticText( this, wxID_ANY, _("No NMEA Messages"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_stLandFallTime->Wrap( -1 );
 	m_fgAlarms->Add( m_stLandFallTime, 0, wxALL, 5 );
+	
+	m_stTextLandFallDistance = new wxStaticText( this, wxID_ANY, _("Land Distance >"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_stTextLandFallDistance->Wrap( -1 );
+	m_fgAlarms->Add( m_stTextLandFallDistance, 0, wxALL, 5 );
+	
+	m_stLandFallDistance = new wxStaticText( this, wxID_ANY, _("No NMEA Messages"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_stLandFallDistance->Wrap( -1 );
+	m_fgAlarms->Add( m_stLandFallDistance, 0, wxALL, 5 );
 	
 	m_stTextActivity = new wxStaticText( this, wxID_ANY, _("Last activity"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_stTextActivity->Wrap( -1 );
@@ -144,27 +152,38 @@ WatchmanPrefsDialogBase::WatchmanPrefsDialogBase( wxWindow* parent, wxWindowID i
 	wxStaticBoxSizer* sbSizer6;
 	sbSizer6 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Landfall Alarm") ), wxVERTICAL );
 	
+	wxFlexGridSizer* fgSizer16;
+	fgSizer16 = new wxFlexGridSizer( 0, 3, 0, 0 );
+	fgSizer16->SetFlexibleDirection( wxBOTH );
+	fgSizer16->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_cbLandFallTime = new wxCheckBox( this, wxID_ANY, _("GPS fix crosses land in <"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer16->Add( m_cbLandFallTime, 0, wxALL, 5 );
+	
+	m_sLandFallTimeMinutes = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 10, 0 );
+	fgSizer16->Add( m_sLandFallTimeMinutes, 0, wxALL, 5 );
+	
+	m_staticText30 = new wxStaticText( this, wxID_ANY, _("minutes"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText30->Wrap( -1 );
+	fgSizer16->Add( m_staticText30, 0, wxALL, 5 );
+	
+	
+	sbSizer6->Add( fgSizer16, 1, wxEXPAND, 5 );
+	
 	wxFlexGridSizer* fgSizer10;
 	fgSizer10 = new wxFlexGridSizer( 0, 3, 0, 0 );
 	fgSizer10->SetFlexibleDirection( wxBOTH );
 	fgSizer10->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_cbLandFall = new wxCheckBox( this, wxID_ANY, _("If GPS fix is <"), wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer10->Add( m_cbLandFall, 0, wxALL, 5 );
+	m_cbLandFallDistance = new wxCheckBox( this, wxID_ANY, _("GPS fix is <"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer10->Add( m_cbLandFallDistance, 0, wxALL, 5 );
 	
 	m_tcLandFallDistance = new wxTextCtrl( this, wxID_ANY, _("3"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer10->Add( m_tcLandFallDistance, 0, wxALL, 5 );
 	
-	m_staticText7 = new wxStaticText( this, wxID_ANY, _("nm"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText7 = new wxStaticText( this, wxID_ANY, _("nm from coastline"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText7->Wrap( -1 );
 	fgSizer10->Add( m_staticText7, 0, wxALL, 5 );
-	
-	
-	fgSizer10->Add( 0, 0, 1, wxEXPAND, 5 );
-	
-	m_staticText23 = new wxStaticText( this, wxID_ANY, _("from coastline"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText23->Wrap( -1 );
-	fgSizer10->Add( m_staticText23, 0, wxALL, 5 );
 	
 	
 	sbSizer6->Add( fgSizer10, 1, wxEXPAND, 5 );
@@ -371,6 +390,9 @@ WatchmanPrefsDialogBase::WatchmanPrefsDialogBase( wxWindow* parent, wxWindowID i
 	
 	m_sRepeatSeconds = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 10000, 60 );
 	fgSizer6->Add( m_sRepeatSeconds, 0, wxALL, 5 );
+	
+	m_cbAutoReset = new wxCheckBox( this, wxID_ANY, _("Automatically  Reset"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer6->Add( m_cbAutoReset, 0, wxALL, 5 );
 	
 	m_bTestAlarm = new wxButton( this, wxID_ANY, _("Test Alarm"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer6->Add( m_bTestAlarm, 0, wxALL, 5 );
