@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Project:  OpenCPN
- * Purpose:  watchman Plugin
+ * Purpose:  watch dog Plugin
  * Author:   Sean D'Epagnier
  *
  ***************************************************************************
@@ -25,20 +25,39 @@
  ***************************************************************************
  */
 
-#include "WatchmanUI.h"
+wxString Alarm::AlarmNames[ALARMCOUNT] = {_T("LandFall"), _T("NMEAData"),
+                                          _T("Deaddog"), _T("Anchor"),
+                                          _T("Course"), _T("UnderSpeed")};
 
-class watchman_pi;
-
-class WatchmanPrefsDialog: public WatchmanPrefsDialogBase
+void Alarm::RunAlarm()
 {
-public:
-    WatchmanPrefsDialog( watchman_pi &_watchman_pi, wxWindow* parent);
-    void OnSyncToBoat( wxCommandEvent& event );
-    void OnCurrentCourse( wxCommandEvent& event );
-    void OnTestAlarm( wxCommandEvent& event );
-    void OnInformation( wxCommandEvent& event );
-    void OnAbout( wxCommandEvent& event );
+    wxDateTime now = wxDateTime::Now();
 
-protected:
-    watchman_pi &m_watchman_pi;
-};
+    if(Alarms[alarm].fired) {
+        if((now - m_LastAlarmTime).GetSeconds() < m_iRepeatSeconds || !m_iRepeatSeconds)
+            return;
+    }
+
+    m_LastAlarmTime = now;
+
+    RunAlarm(m_bSound ? m_sSound : _T(""),
+             m_bComdogd ? m_sComdogd : _T(""),
+             m_bMessageBox);
+
+
+    if(m_bSound)
+        PlugInPlaySound(m_sSound);
+
+    if(m_bComdogd)
+        if(!wxProcess::Open(m_bComdogd)) {
+            wxMessageDialog mdlg(m_parent_window, _("ALARM!!!!"),
+                                 _("Watchdog"), wxOK | wxICON_ERROR);
+            mdlg.ShowModal();
+            m_bComdogd = false;
+
+    if(mb) {
+        wxMessageDialog mdlg(m_parent_window, _("ALARM!!!!"),
+                             _("Watchdog"), wxOK | wxICON_ERROR);
+        mdlg.ShowModal();
+    }
+}

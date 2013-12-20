@@ -13,9 +13,9 @@ IF (COMMAND cmake_policy)
   CMAKE_POLICY(SET CMP0011 OLD)
 ENDIF (COMMAND cmake_policy)
 
-PROJECT(watchman_pi)
+PROJECT(watchdog_pi)
 
-SET(PACKAGE_NAME watchman_pi)
+SET(PACKAGE_NAME watchdog_pi)
 SET(PLUGIN_SOURCE_DIR .)
 MESSAGE (STATUS "*** Building ${PACKAGE_NAME} ***")
 
@@ -52,16 +52,14 @@ FIND_PACKAGE(Gettext REQUIRED)
 
 
 SET(SRC_WATCHMAN
-            src/watchman_pi.h
-            src/watchman_pi.cpp
-            src/WatchmanDialog.h
-            src/WatchmanDialog.cpp
-            src/WatchmanPrefsDialog.h
-            src/WatchmanPrefsDialog.cpp
-            src/AboutDialog.h
-            src/AboutDialog.cpp
-            src/WatchmanUI.h
-            src/WatchmanUI.cpp
+            src/watchdog_pi.h
+            src/watchdog_pi.cpp
+            src/WatchdogDialog.h
+            src/WatchdogDialog.cpp
+            src/WatchdogPrefsDialog.h
+            src/WatchdogPrefsDialog.cpp
+            src/WatchdogUI.h
+            src/WatchdogUI.cpp
             src/icons.h
             src/icons.cpp
 	)

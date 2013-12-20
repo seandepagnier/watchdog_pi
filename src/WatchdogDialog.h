@@ -1,11 +1,12 @@
-/***************************************************************************
+/******************************************************************************
  *
- * Project:  OpenCPN Watchman plugin
+ * Project:  OpenCPN
+ * Purpose:  watchdog Plugin
  * Author:   Sean D'Epagnier
  *
  ***************************************************************************
  *   Copyright (C) 2013 by Sean D'Epagnier                                 *
- *   sean@depagnier.com                                                    *
+ *   sean at depagnier dot com                                             *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -22,19 +23,34 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,  USA.         *
  ***************************************************************************
- *
  */
 
-#include <wx/wx.h>
+#include "WatchdogUI.h"
 
-#include <stdlib.h>
-#include <math.h>
-#include <time.h>
+class watchdog_pi;
 
-#include "AboutDialog.h"
-#include "watchman_pi.h"
-
-void AboutDialog::OnDonate( wxCommandEvent& event )
+class WatchdogDialog: public WatchdogDialogBase
 {
-      wxLaunchDefaultBrowser(_T("https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=sean%40depagnier%2ecom&lc=US&item_name=watchman&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest"));
-}
+public:
+    WatchdogDialog( watchdog_pi &_watchdog_pi, wxWindow* parent);
+    ~WatchdogDialog();
+
+    void UpdateAlarms();
+
+    void OnDisableAllAlarms( wxComdogdEvent& event );
+    void OnPreferences( wxComdogdEvent& event );
+    void OnResetLastAlarm( wxComdogdEvent& event );
+    void OnClose( wxComdogdEvent& event ) { Hide(); }
+
+    void Update(double anchor_distance, double nmea_seconds,
+                double courseerror, double sog);
+
+protected:
+    watchdog_pi &m_watchdog_pi;
+
+private:
+    void UpdateAlarm(wxControl *ctrl1,  wxControl *ctrl2, bool show);
+
+    void OnTimer( wxTimerEvent & );
+    wxTimer m_Timer;
+};

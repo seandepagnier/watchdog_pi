@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Project:  OpenCPN
- * Purpose:  watch man Plugin
+ * Purpose:  watch dog Plugin
  * Author:   Sean D'Epagnier
  *
  ***************************************************************************
@@ -37,7 +37,7 @@
 #include <wx/fileconf.h>
 
 #define     PLUGIN_VERSION_MAJOR    0
-#define     PLUGIN_VERSION_MINOR    6
+#define     PLUGIN_VERSION_MINOR    8
 
 #define     MY_API_VERSION_MAJOR    1
 #define     MY_API_VERSION_MINOR    8
@@ -80,22 +80,23 @@ inline double round(double n) { return n < 0.0 ? ceil(n - 0.5) : floor(n + 0.5);
 
 double heading_resolve(double degrees);
 
-//----------------------------------------------------------------------------------------------------------
+//----------------------------------
 //    The PlugIn Class Definition
-//----------------------------------------------------------------------------------------------------------
+//----------------------------------
 
 #define WATCHMAN_TOOL_POSITION    -1          // Request default positioning of toolbar tool
 
 class ocpnDC;
-class WatchmanDialog;
+class WatchdogDialog;
+class WatchdogPrefsDialog;
 
-class watchman_pi : public wxEvtHandler, public opencpn_plugin_18
+class watchdog_pi : public wxEvtHandler, public opencpn_plugin_18
 {
 public:
-    enum Alarm {LANDFALLTIME=1, LANDFALLDISTANCE=2, ANCHOR=4, DEADMAN=8,
-                GPS=16, AIS=32, UNDERSPEED=64, OVERSPEED=128, OFFCOURSE=256};
 
-      watchman_pi(void *ppimgr);
+    Alarm Alarms[ALARMCOUNT];
+
+    watchdog_pi(void *ppimgr);
 
 //    The required PlugIn Methods
       int Init(void);
@@ -127,51 +128,17 @@ public:
       void SetColorScheme(PI_ColorScheme cs);
 
 //    Other public methods
-      void SetWatchmanDialogX    (int x){ m_watchman_dialog_x = x;}
-      void SetWatchmanDialogY    (int x){ m_watchman_dialog_y = x;}
+      void SetWatchdogDialogX    (int x){ m_watchdog_dialog_x = x;}
+      void SetWatchdogDialogY    (int x){ m_watchdog_dialog_y = x;}
 
-      void OnWatchmanDialogClose();
+      void OnWatchdogDialogClose();
       void ShowPreferencesDialog( wxWindow* parent );
 
-      void    RunAlarm(wxString sound, wxString command, bool mb);
-      void ResetLastAlarm();
+      void Alarm(enum AlarmName alarm);
 
       wxWindow         *m_parent_window;
 
-      wxTimeSpan m_LandFallTime;
-      double m_dLandFallTimeMinutes, m_dLandFallDistance;
-
-      bool m_bLandFallTime, m_bLandFallDistance;
-
-      bool m_bDeadman;
-      wxTimeSpan m_DeadmanSpan;
-
-      bool m_bAnchor;
-      double m_dAnchorLatitude, m_dAnchorLongitude;
-      double m_iAnchorRadius;
-
-      bool m_bGPSAlarm;
-      double m_dGPSSeconds;
-      bool m_bAISAlarm;
-      double m_dAISSeconds;
-
-      bool m_bUnderSpeedAlarm;
-      double m_dUnderSpeed;
-      bool m_bOverSpeedAlarm;
-      double m_dOverSpeed;
-
-      bool m_bOffCourseAlarm;
-      double m_dOffCourseDegrees, m_dCourseDegrees;
-
-      bool m_bSound;
-      wxString m_sSound;
-      bool m_bCommand;
-      wxString m_sCommand;
-      bool m_bMessageBox;
-      int m_iRepeatSeconds;
-      bool m_bAutoReset;
-
-      wxDateTime m_DeadmanUpdateTime;
+      wxDateTime m_DeaddogUpdateTime;
 
       wxFileConfig     *m_pconfig;
       PlugIn_Position_Fix_Ex m_lastfix, m_lasttimerfix;
@@ -181,7 +148,7 @@ public:
       double sog, cog;
 
 private:
-      void ResetDeadman();
+      void ResetDeaddog();
 
       bool    LoadConfig(void);
       bool    SaveConfig(void);
@@ -189,10 +156,10 @@ private:
       void    Alarm();
       void    SetCursorLatLon(double lat, double lon);
       void    SetPositionFixEx(PlugIn_Position_Fix_Ex &pfix);
-      void    SetAISSentence(wxString &);
 
-      WatchmanDialog   *m_pWatchmanDialog;
-      int               m_watchman_dialog_x, m_watchman_dialog_y;
+      WatchdogDialog   *m_pWatchdogDialog;
+      WatchdogPrefsDialog *m_pWatchdogPrefsDialog;
+      int               m_watchdog_dialog_x, m_watchdog_dialog_y;
       int               m_display_width, m_display_height;
 
       int               m_leftclick_tool_id;
@@ -205,7 +172,7 @@ private:
       wxDateTime m_LastLandFallCheck;
       wxDateTime m_LastAlarmTime;
 
-      wxDateTime m_LastPositionFix, m_LastAISSentence;
+      wxDateTime m_LastPositionFix;
 
       wxDateTime m_LastTimerFix;
 

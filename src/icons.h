@@ -9,6 +9,6 @@
 
 extern void initialize_images(void);
 
-extern wxBitmap *_img_watchman;
+extern wxBitmap *_img_watchdog;
 
 #endif /* ICONS_H */

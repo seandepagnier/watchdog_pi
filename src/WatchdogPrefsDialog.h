@@ -1,11 +1,12 @@
-/***************************************************************************
+/******************************************************************************
  *
- * Project:  OpenCPN Watchman plugin
+ * Project:  OpenCPN
+ * Purpose:  watchdog Plugin
  * Author:   Sean D'Epagnier
  *
  ***************************************************************************
  *   Copyright (C) 2013 by Sean D'Epagnier                                 *
- *   sean@depagnier.com                                                    *
+ *   sean at depagnier dot com                                             *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -20,21 +21,29 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,  USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,  USA.         *
  ***************************************************************************
  */
 
-#ifndef _WATCHMAN_ABOUT_H_
-#define _WATCHMAN_ABOUT_H_
+#include "WatchdogUI.h"
 
-#include "WatchmanUI.h"
+class watchdog_pi;
 
-class AboutDialog : public AboutDialogBase
+class WatchdogPrefsDialog: public WatchdogPrefsDialogBase
 {
 public:
-    AboutDialog( wxWindow *parent ) : AboutDialogBase(parent) { }
-    void OnDonate( wxCommandEvent& event );
-    void OnClose( wxCommandEvent& event ) { EndModal(wxID_OK); }   
-};
+    WatchdogPrefsDialog( watchdog_pi &_watchdog_pi, wxWindow* parent);
+    ~WatchdogPrefsDialog();
 
-#endif
+    void OnAlarmChanged( wxListbookEvent& event );
+    void SetAlarmActions();
+    void OnSyncToBoat( wxComdogdEvent& event );
+    void OnCurrentCourse( wxComdogdEvent& event );
+    void OnTestAlarm( wxComdogdEvent& event );
+    void OnInformation( wxComdogdEvent& event );
+    void OnAbout( wxComdogdEvent& event );
+    void OnDonate( wxComdogdEvent& event );
+
+protected:
+    watchdog_pi &m_watchdog_pi;
+};

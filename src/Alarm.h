@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Project:  OpenCPN
- * Purpose:  watchman Plugin
+ * Purpose:  watch dog Plugin
  * Author:   Sean D'Epagnier
  *
  ***************************************************************************
@@ -25,35 +25,40 @@
  ***************************************************************************
  */
 
-#include "WatchmanUI.h"
-
-class watchman_pi;
-
-class WatchmanDialog: public WatchmanDialogBase
-{
+class Alarm {
 public:
-    WatchmanDialog( watchman_pi &_watchman_pi, wxWindow* parent);
-    ~WatchmanDialog();
+    wxString m_sName;
 
-    void UpdateAlarms();
+    bool m_bFired;
 
-    void OnPreferences( wxCommandEvent& event );
-    void OnResetLastAlarm( wxCommandEvent& event );
-    void OnClose( wxCommandEvent& event ) { Hide(); }
-    void UpdateLandFallTime();
-    void UpdateAnchorDistance(double distance);
-    void UpdateGPSTime(double seconds);
-    void UpdateAISTime(double seconds);
-    void UpdateUnderSpeed(double speed);
-    void UpdateOverSpeed(double speed);
-    void UpdateCourseError(double courseerror);
+    bool m_bEnabled, m_bgfxenabled;
+    bool m_bSound, m_bComdogd, m_bMessageBox, m_bAutoReset;
+    
+    virtual bool TestAlarm();
+    void Reset() {
+        if(m_bAutoReset)
+            m_bFired = false;
+    }
 
-protected:
-    watchman_pi &m_watchman_pi;
+    void RunAlarm(enum AlarmName alarm);
 
 private:
-    void UpdateAlarm(wxControl *ctrl1,  wxControl *ctrl2, bool show);
-
-    void OnTimer( wxTimerEvent & );
-    wxTimer m_Timer;
+    wxDateTime m_LastAlarmTime;
 };
+
+
+class LandFallAlarm : public Alarm
+{
+public:
+    wxDateTime m_LastLandFallCheck;
+    LandFallAlarm() {
+        m_LastLandFallCheck = wxDateTime::Now();
+    }
+    virtual bool TestAlarm();
+};
+
+class NMEAAlarm : public Alarm
+{
+public:
+    enum AlarmName {LANDFALL, NMEADATA, DEADMAN, ANCHOR, COURSE,
+                    UNDERSPEED, OVERSPEED, ALARMCOUNT};
