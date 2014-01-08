@@ -37,20 +37,14 @@ public:
 
     void UpdateAlarms();
 
-    void OnDisableAllAlarms( wxComdogdEvent& event );
-    void OnPreferences( wxComdogdEvent& event );
-    void OnResetLastAlarm( wxComdogdEvent& event );
-    void OnClose( wxComdogdEvent& event ) { Hide(); }
-
-    void Update(double anchor_distance, double nmea_seconds,
-                double courseerror, double sog);
+    void OnDisableAllAlarms( wxCommandEvent& event );
+    void OnPreferences( wxCommandEvent& event );
+    void OnResetLastAlarm( wxCommandEvent& event );
+    void OnClose( wxCommandEvent& event ) { Hide(); }
 
 protected:
     watchdog_pi &m_watchdog_pi;
 
 private:
     void UpdateAlarm(wxControl *ctrl1,  wxControl *ctrl2, bool show);
-
-    void OnTimer( wxTimerEvent & );
-    wxTimer m_Timer;
 };

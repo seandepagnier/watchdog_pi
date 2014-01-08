@@ -31,13 +31,11 @@
   #include "wx/wx.h"
 #endif //precompiled headers
 
-#include "wx/process.h"
-
 #include "../../../include/ocpndc.h"
 
-#include "WatchdogPrefsDialog.h"
 #include "watchdog_pi.h"
 #include "WatchdogDialog.h"
+#include "WatchdogPrefsDialog.h"
 #include "icons.h"
 
 
@@ -67,15 +65,18 @@ extern "C" DECL_EXP void destroy_pi(opencpn_plugin* p)
 //    Watchdog PlugIn Implementation
 //
 //-----------------------------------------------------------------------------
+watchdog_pi *g_watchdog_pi = NULL;
 
 watchdog_pi::watchdog_pi(void *ppimgr)
-    : opencpn_plugin_18(ppimgr),
+    : opencpn_plugin_18(ppimgr)
 {
     // Create the PlugIn icons
     initialize_images();
     m_lastfix.Lat = NAN;
     m_lasttimerfix.Lat = NAN;
-    sog = cog = NAN;
+    m_sog = m_cog = NAN;
+
+    g_watchdog_pi = this;
 }
 
 //---------------------------------------------------------------------------------------------------------
@@ -94,10 +95,6 @@ int watchdog_pi::Init(void)
 
     ::wxDisplaySize(&m_display_width, &m_display_height);
     
-    //    Get a pointer to the opencpn display canvas, to use as a parent for the POI Manager dialog
-    m_parent_window = GetOCPNCanvasWindow();
-    m_pconfig = GetOCPNConfigObject(); //    Get opencpn configuration object
-    
     LoadConfig(); //    And load the configuration items
     
     m_leftclick_tool_id  = InsertPlugInTool
@@ -114,7 +111,7 @@ int watchdog_pi::Init(void)
                     ( watchdog_pi::OnTimer ), NULL, this);
     m_Timer.Start(3000);
 
-    m_DeaddogUpdateTime = now;
+//    m_DeadmanUpdateTime = now;
 
     return (WANTS_OVERLAY_CALLBACK |
             WANTS_OPENGL_OVERLAY_CALLBACK |
@@ -225,7 +222,7 @@ void watchdog_pi::OnToolbarToolCallback(int id)
 {
     if(!m_pWatchdogDialog)
     {
-        m_pWatchdogDialog = new WatchdogDialog(*this, m_parent_window);
+        m_pWatchdogDialog = new WatchdogDialog(*this, GetOCPNCanvasWindow());
         m_pWatchdogDialog->Move(wxPoint(m_watchdog_dialog_x, m_watchdog_dialog_y));
     }
 
@@ -240,7 +237,7 @@ void watchdog_pi::OnToolbarToolCallback(int id)
 void watchdog_pi::OnContextMenuItemCallback(int id)
 {
     if(id == m_anchor_menu_id) {
-        wxFileConfig *pConf = m_pconfig;
+        wxFileConfig *pConf = GetOCPNConfigObject();
 
         pConf->Write ( _T ( "AnchorAlarm" ), true );
         pConf->Write ( _T ( "AnchorLatitude" ), m_cursor_lat);
@@ -248,6 +245,7 @@ void watchdog_pi::OnContextMenuItemCallback(int id)
     }
 }
 
+#if 0
 wxColour watchdog_pi::Color(enum Alarm alarm_mask)
 {
     if(m_iAlarm & alarm_mask)
@@ -257,6 +255,7 @@ wxColour watchdog_pi::Color(enum Alarm alarm_mask)
 
     return *wxGREEN;
 }
+#endif
 
 bool watchdog_pi::RenderOverlay(wxDC &dc, PlugIn_ViewPort *vp)
 {
@@ -285,162 +284,27 @@ void watchdog_pi::Render(ocpnDC &dc, PlugIn_ViewPort &vp)
     if(!m_pWatchdogDialog || !m_pWatchdogDialog->IsShown())
         return;
 
-    wxFileConfig *pConf = m_pconfig;
-
-    if(pConf->Read ( _T ( "LandFallTimeAlarm" ), 0L )) {
-    }
-
-    if(pConf->Read ( _T ( "AnchorAlarm" ), 0L)) {
-        wxPoint r1, r2;
-        double AnchorLatitude, AnchorLongitude;
-        pConf->Read ( _T ( "AnchorLatitude" ), &AnchorLatitude, NAN );
-        pConf->Read ( _T ( "AnchorLongitude" ), &AnchorLatitude, NAN );
-
-        GetCanvasPixLL(&vp, &r1, AnchorLatitude, AnchorLongitude);
-        GetCanvasPixLL(&vp, &r2, AnchorLatitude +
-                       pConf->Read ( _T ( "AnchorRadius" ), 50 )/1853.0/60.0,
-                       AnchorLongitude);
-
-        dc.SetPen(wxPen(Color(ANCHOR), 2));
-        dc.DrawCircle( r1.x, r1.y, r2.y - r1.y );
-    }
+    Alarm::RenderAlarms(vp);
 }
 
 void watchdog_pi::OnTimer( wxTimerEvent & )
 {
-    wxFileConfig *pConf = m_pconfig;
-
-    wxDateTime now = wxDateTime::Now();
-
-    for(int alarm = 0; alarm < ALARMCOUNT; alarm++)
-        Alarms[alarm].Reset();
-
-    /* kind of slow, don't perform as often */
-    if((now - m_LastLandFallCheck).GetSeconds() > 10) {
-        m_LastLandFallCheck = now;
-
-        if(pConf->Read ( _T ( "LandFallTimeAlarm" ), 0L )) {
-            double lat1 = m_lastfix.Lat, lon1 = m_lastfix.Lon, lat2, lon2;
-            double dist = 0, dist1 = 1000;
-            int count = 0;
-            wxTimeSpan LandFallTime;
-
-            double LandFallTimeMinutes;
-            pConf->Read ( _T ( "LandFallTimeMinutes" ), &LandFallTimeMinutes, 20 );
-
-            while(count < 10) {
-                PositionBearingDistanceMercator_Plugin
-                    (m_lastfix.Lat, m_lastfix.Lon, m_lastfix.Cog, dist + dist1, &lat2, &lon2);
-                if(PlugIn_GSHHS_CrossesLand(lat1, lon1, lat2, lon2)) {
-                if(dist1 < 1) {
-                    LandFallTime = wxTimeSpan::Seconds(3600.0 * dist / m_lastfix.Sog);
-                    if(LandFallTime.GetMinutes() <= LandFallTimeMinutes)
-                        Alarm(LANDFALL);
-                    break;
-                }
-                count = 0;
-                dist1 /= 2;
-                } else {
-                    dist += dist1;
-                    lat1 = lat2;
-                    lon1 = lon2;
-                    count++;
-                }
-            }
-        }
-
-        if(pConf->Read ( _T ( "LandFallDistanceAlarm" ), 0L)) {
-            for(double t = 0; t<360; t+=18) {
-                double dlat, dlon;
-                double LandFallDistance;
-                pConf->Read ( _T ( "LandFallDistance" ), &LandFallDistance, 3 );
-                PositionBearingDistanceMercator_Plugin(m_lastfix.Lat, m_lastfix.Lon, t,
-                                                       LandFallDistance, &dlat, &dlon);
-            
-                if(PlugIn_GSHHS_CrossesLand(m_lastfix.Lat, m_lastfix.Lon, dlat, dlon)) {
-                    Alarm |= LANDFALLDISTANCE;
-                    break;
-                }
-            }
-        }
-    }
-
-    /* anchor */
-    double AnchorLatitude, AnchorLongitude;
-    pConf->Read ( _T ( "AnchorLatitude" ), &AnchorLatitude, NAN );
-    pConf->Read ( _T ( "AnchorLongitude" ), &AnchorLatitude, NAN );
-
-    double anchordist;
-    DistanceBearingMercator_Plugin(m_lastfix.Lat, m_lastfix.Lon,
-                                   AnchorLatitude, AnchorLongitude,
-                                   0, &anchordist);
-    anchordist *= 1853.248; /* in meters */
-    long AnchorRadius = pConf->Read ( _T ( "AnchorRadius" ), 50L );
-    if(pConf->Read ( _T ( "AnchorAlarm" ), 0L ) && anchordist > AnchorRadius)
-        Alarm(ANCHOR);
-
-    double gpsseconds =
-        //m_LastPositionFix.IsValid() ?
-        //(now - m_LastPositionFix).GetSeconds().ToLong() :
-        NAN;
-
-    if(pConf->Read ( _T ( "NMEADataAlarm" ), 0L ) &&
-       gpsseconds > pConf->Read ( _T ( "NMEADataSeconds" ), 0L ))
-        Alarm(NMEADATA);
-
-    wxTimeSpan DeaddogSpan = wxTimeSpan::Minutes(pConf->Read ( _T ( "DeaddogMinutes" ), 20L ));
-    if(pConf->Read ( _T ( "DeaddogAlarm" ), 0L ) &&
-       (now - m_DeaddogUpdateTime) > DeaddogSpan)
-        Alarm(DEADMAN);
-
     /* calculate course and speed over ground from gps */
-    if(m_LastPositionFix.IsValid()) {
-        if(!m_LastTimerFix.IsValid())
-            goto setfix;
 
-        if((m_LastPositionFix - m_LastTimerFix).GetSeconds() > 10) {
-            if(!isnan(m_lastfix.Lat) && !isnan(m_lasttimerfix.Lat)) {
-                DistanceBearingMercator_Plugin(m_lastfix.Lat, m_lastfix.Lon,
-                                               m_lasttimerfix.Lat, m_lasttimerfix.Lon, &cog, &sog);
-                /* this way helps avoid surge speed from gps from surfing waves etc... */
-                sog *= 3600.0 / (m_lastfix.FixTime - m_lasttimerfix.FixTime);
-            } else
-                sog = cog = NAN;
-
-        setfix:
-            m_lasttimerfix = m_lastfix;
-            m_LastTimerFix = m_LastPositionFix;
-        }
-    }
-
-    double OffCourseDegrees = pConf->Read ( _T ( "OffCourseDegrees" ), &d, 20L );
-    double courseerror = fabs(heading_resolve(cog - OffCourseDegrees));
-    if(pConf->Read ( _T ( "OffCourseAlarm" ), 0L ) &&
-       courseerror > OffCourseDegrees)
-        Alarm(OFFCOURSE);
-
-    double UnderSpeed;
-    pConf->Read ( _T ( "UnderSpeed" ), &UnderSpeed, 1 );
-    if(pConf->Read ( _T ( "UnderSpeedAlarm" ), 0L ) && sog < UnderSpeed)
-        Alarm(UNDERSPEED);
-
-    double OverSpeed;
-    pConf->Read ( _T ( "OverSpeed" ), &OverSpeed, 1 );
-    if(pConf->Read ( _T ( "OverSpeedAlarm" ), 0L ) && sog < OverSpeed)
-        Alarm(OVERSPEED);
-
-    if(m_pWatchdogDialog)
-        m_pWatchdogDialog->Update(anchordist, nmea_seconds, courseerror, sog);
-}
-
-void watchdog_pi::ResetDeaddog()
-{
-    m_DeaddogUpdateTime = wxDateTime::Now();
+    if(!isnan(m_lastfix.Lat) && !isnan(m_lasttimerfix.Lat)) {
+        DistanceBearingMercator_Plugin(m_lastfix.Lat, m_lastfix.Lon,
+                                               m_lasttimerfix.Lat, m_lasttimerfix.Lon, &m_cog, &m_sog);
+        /* this way helps avoid surge speed from gps from surfing waves etc... */
+        m_sog *= 3600.0 / (m_lastfix.FixTime - m_lasttimerfix.FixTime);
+    } else
+        m_sog = m_cog = NAN;
+    
+    m_lasttimerfix = m_lastfix;
 }
 
 bool watchdog_pi::LoadConfig(void)
 {
-    wxFileConfig *pConf = m_pconfig;
+    wxFileConfig *pConf = GetOCPNConfigObject();
 
     if(!pConf)
         return false;
@@ -455,7 +319,7 @@ bool watchdog_pi::LoadConfig(void)
 
 bool watchdog_pi::SaveConfig(void)
 {
-    wxFileConfig *pConf = m_pconfig;
+    wxFileConfig *pConf = GetOCPNConfigObject();
 
     if(!pConf)
         return false;
@@ -468,27 +332,17 @@ bool watchdog_pi::SaveConfig(void)
     return true;
 }
 
-void watchdog_pi::RunAlarm(enum AlarmName alarm)
-{
-    if(pConf->Read ( _T ( "DisableAllAlarms" ), 0L))
-        return;
-
-    Alarms[alarm].RunAlarm();
-}
-
-
 void watchdog_pi::SetCursorLatLon(double lat, double lon)
 {
-    ResetDeaddog();
-
     m_cursor_lat = lat;
     m_cursor_lon = lon;
+    m_cursor_time = wxDateTime::Now();
 }
 
 void watchdog_pi::SetPositionFixEx(PlugIn_Position_Fix_Ex &pfix)
 {
     if(pfix.FixTime && pfix.nSats)
-        m_LastPositionFix = wxDateTime::Now();
+        m_LastFixTime = wxDateTime::Now();
 
     m_lastfix = pfix;
 }
@@ -496,7 +350,7 @@ void watchdog_pi::SetPositionFixEx(PlugIn_Position_Fix_Ex &pfix)
 void watchdog_pi::ShowPreferencesDialog( wxWindow* parent )
 {
     if(!m_pWatchdogPrefsDialog)
-        m_pWatchdogPrefsDialog = new WatchdogPrefsDialog(*this, m_parent_window);
+        m_pWatchdogPrefsDialog = new WatchdogPrefsDialog(*this, GetOCPNCanvasWindow());
 
     m_pWatchdogPrefsDialog->Show();
 }

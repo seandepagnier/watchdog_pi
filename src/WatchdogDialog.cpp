@@ -31,9 +31,6 @@
 WatchdogDialog::WatchdogDialog( watchdog_pi &_watchdog_pi, wxWindow* parent)
     : WatchdogDialogBase( parent ), m_watchdog_pi(_watchdog_pi)
 {
-    m_Timer.Connect(wxEVT_TIMER, wxTimerEventHandler
-                    ( WatchdogDialog::OnTimer ), NULL, this);
-    m_Timer.Start(1000);
 }
 
 WatchdogDialog::~WatchdogDialog()
@@ -42,108 +39,24 @@ WatchdogDialog::~WatchdogDialog()
 
 void WatchdogDialog::UpdateAlarms()
 {
-    UpdateAlarm(m_stTextLandFallTime, m_stLandFallTime, m_watchdog_pi.m_bLandFallTime);
-    UpdateAlarm(m_stTextLandFallDistance, m_stLandFallDistance, m_watchdog_pi.m_bLandFallDistance);
-    UpdateAlarm(m_stTextActivity, m_stActivity, m_watchdog_pi.m_bDeaddog);
-    UpdateAlarm(m_stTextAnchor, m_stAnchorDistance, m_watchdog_pi.m_bAnchor);
-    UpdateAlarm(m_stTextGPS, m_stGPS, m_watchdog_pi.m_bGPSAlarm);
-    UpdateAlarm(m_stTextAIS, m_stAIS, m_watchdog_pi.m_bAISAlarm);
-    UpdateAlarm(m_stTextUnderSpeed, m_stUnderSpeed, m_watchdog_pi.m_bUnderSpeedAlarm);
-    UpdateAlarm(m_stTextOverSpeed, m_stOverSpeed, m_watchdog_pi.m_bOverSpeedAlarm);
-    UpdateAlarm(m_stTextCourseError, m_stCourseError, m_watchdog_pi.m_bOffCourseAlarm);
-
     Fit();
     Refresh();
 }
 
-void WatchdogDialog::OnDisableAllAlarms( wxComdogdEvent& event )
+void WatchdogDialog::OnDisableAllAlarms( wxCommandEvent& event )
 {
-    wxFileConfig *pConf = m_watchdog_pi.m_pconfig;
-    pConf->Write ( _T ( "DisableAllAlarms" ), event.GetValue());
+    wxFileConfig *pConf = GetOCPNConfigObject();
+    pConf->Write ( _T ( "DisableAllAlarms" ), m_cbDisableAllAlarms->GetValue());
 }
 
-void WatchdogDialog::OnPreferences( wxComdogdEvent& event )
+void WatchdogDialog::OnPreferences( wxCommandEvent& event )
 {
     m_watchdog_pi.ShowPreferencesDialog(this);
 }
 
-void WatchdogDialog::OnResetLastAlarm( wxComdogdEvent& event )
+void WatchdogDialog::OnResetLastAlarm( wxCommandEvent& event )
 {
-    m_watchdog_pi.ResetLastAlarm();
-}
-
-void WatchdogDialog::Update(double anchor_distance, double nmea_seconds,
-                            double courseerror, double sog)
-{
-    // landfall
-    wxString s, fmt(_T("%d "));
-    wxTimeSpan span = m_watchdog_pi.m_LandFallTime;
-    if(span.IsNull())
-        s = _("LandFall not Detected");
-    else {
-        if(span.GetDays())
-            s = wxString::Format(fmt + _("Days "), span.GetDays());
-        else if(span.GetHours())
-            s = wxString::Format(fmt + _("Hours "), span.GetHours());
-        else if(span.GetMinutes())
-            s = wxString::Format(fmt + _("Minutes "), span.GetMinutes());
-        else
-            s = wxString::Format(fmt + _("Seconds"), span.GetSeconds());
-                    
-        m_stLandFallTime->SetForegroundColour(m_watchdog_pi.Color(watchdog_pi::LANDFALLTIME));
-        m_stLandFallTime->SetLabel(s);
-    }                    
-
-    m_stLandFallTime->SetForegroundColour(m_watchdog_pi.Color(watchdog_pi::LANDFALLDISTANCE));
-    m_stLandFallDistance->SetLabel(wxString::Format(_T("%.2f nm"), m_watchdog_pi.m_dLandFallDistance));
-
-    // anchor
-    m_stAnchorDistance->SetForegroundColour(m_watchdog_pi.Color(watchdog_pi::ANCHOR));
-
-    if(isnan(anchor_distance))
-        m_stAnchorDistance->SetLabel(_T("N/A"));
-    else {
-        wxString fmt(_T("%.0f "));
-        m_stAnchorDistance->SetLabel(
-            wxString::Format(fmt + _("meter(s)"), anchor_distance));
-    }
-
-    // nmea data
-    m_stGPS->SetForegroundColour(m_watchdog_pi.Color(watchdog_pi::GPS));
-    if(isnan(nmea_seconds))
-        m_stGPS->SetLabel(_T("N/A"));
-    else {
-        wxString fmt(_T("%.0f "));
-        m_stGPS->SetLabel(
-            wxString::Format(fmt + _("second(s)"), nmea_seconds));
-    }
-
-    // course
-    m_stCourseError->SetForegroundColour(m_watchdog_pi.Color(watchdog_pi::OFFCOURSE));
-    if(isnan(courseerror))
-        m_stCourseError->SetLabel(_T("N/A"));
-    else {
-        wxString fmt(_T("%.0f "));
-        m_stCourseError->SetLabel(
-            wxString::Format(fmt + _("degrees(s)"), courseerror));
-    }
-
-    // speed
-    m_stUnderSpeed->SetForegroundColour(m_watchdog_pi.Color(watchdog_pi::UNDERSPEED));
-    if(isnan(sog))
-        m_stUnderSpeed->SetLabel(_T("N/A"));
-    else {
-        wxString fmt(_T("%.1f "));
-        m_stUnderSpeed->SetLabel(wxString::Format(fmt, sog));
-    }
-
-    m_stOverSpeed->SetForegroundColour(m_watchdog_pi.Color(watchdog_pi::OVERSPEED));
-    if(isnan(sog))
-        m_stOverSpeed->SetLabel(_T("N/A"));
-    else {
-        wxString fmt(_T("%.1f "));
-        m_stOverSpeed->SetLabel(wxString::Format(fmt, sog));
-    }
+//    m_watchdog_pi.ResetLastAlarm();
 }
 
 
@@ -156,24 +69,5 @@ void WatchdogDialog::UpdateAlarm(wxControl *ctrl1,  wxControl *ctrl2, bool show)
         ctrl1->Hide();
         ctrl2->Hide();
     }
-}
-
-void WatchdogDialog::OnTimer( wxTimerEvent & )
-{
-    m_stActivity->SetForegroundColour(m_watchdog_pi.Color(watchdog_pi::DEADMAN));
-
-    wxTimeSpan span = wxDateTime::Now() - m_watchdog_pi.m_DeaddogUpdateTime;
-    int days = span.GetDays();
-    span -= wxTimeSpan::Days(days);
-    int hours = span.GetHours();
-    span -= wxTimeSpan::Hours(hours);
-    int minutes = span.GetMinutes();
-    span -= wxTimeSpan::Minutes(minutes);
-    int seconds = span.GetSeconds().ToLong();
-    wxString d, fmt(_T("%d "));
-    if(days)
-        d = wxString::Format(fmt + _T("days"), days);
-    m_stActivity->SetLabel(wxString::Format(days + _T("%02d:%02d:%02d"),
-                                            hours, minutes, seconds));
 }
 

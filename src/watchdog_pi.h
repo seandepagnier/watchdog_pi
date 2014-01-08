@@ -86,6 +86,8 @@ double heading_resolve(double degrees);
 
 #define WATCHMAN_TOOL_POSITION    -1          // Request default positioning of toolbar tool
 
+#include "Alarm.h"
+
 class ocpnDC;
 class WatchdogDialog;
 class WatchdogPrefsDialog;
@@ -93,8 +95,6 @@ class WatchdogPrefsDialog;
 class watchdog_pi : public wxEvtHandler, public opencpn_plugin_18
 {
 public:
-
-    Alarm Alarms[ALARMCOUNT];
 
     watchdog_pi(void *ppimgr);
 
@@ -116,8 +116,6 @@ public:
       void OnToolbarToolCallback(int id);
       void OnContextMenuItemCallback(int id);
 
-      wxColour Color(enum Alarm alarm_mask);
-
       bool RenderOverlay(wxDC &dc, PlugIn_ViewPort *vp);
       bool RenderGLOverlay(wxGLContext *pcontext, PlugIn_ViewPort *vp);
       void Render(ocpnDC &dc, PlugIn_ViewPort &vp);
@@ -134,26 +132,24 @@ public:
       void OnWatchdogDialogClose();
       void ShowPreferencesDialog( wxWindow* parent );
 
-      void Alarm(enum AlarmName alarm);
+      PlugIn_Position_Fix_Ex &LastFix() { return m_lastfix; }
 
-      wxWindow         *m_parent_window;
+      double m_sog, m_cog;
 
-      wxDateTime m_DeaddogUpdateTime;
+      wxDateTime m_LastFixTime;
+      wxDateTime m_cursor_time;
 
-      wxFileConfig     *m_pconfig;
+protected:
+      double m_cursor_lat, m_cursor_lon;
+
       PlugIn_Position_Fix_Ex m_lastfix, m_lasttimerfix;
 
       int m_iAlarm, m_iLastAlarm;
 
-      double sog, cog;
-
 private:
-      void ResetDeaddog();
-
       bool    LoadConfig(void);
       bool    SaveConfig(void);
 
-      void    Alarm();
       void    SetCursorLatLon(double lat, double lon);
       void    SetPositionFixEx(PlugIn_Position_Fix_Ex &pfix);
 
@@ -167,16 +163,9 @@ private:
 
       void              RearrangeWindow();
 
-      double m_cursor_lat, m_cursor_lon;
-
-      wxDateTime m_LastLandFallCheck;
-      wxDateTime m_LastAlarmTime;
-
-      wxDateTime m_LastPositionFix;
-
-      wxDateTime m_LastTimerFix;
-
       wxTimer m_Timer;
 };
+
+extern watchdog_pi *g_watchdog_pi;
 
 #endif

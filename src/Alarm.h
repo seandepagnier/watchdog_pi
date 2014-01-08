@@ -25,40 +25,44 @@
  ***************************************************************************
  */
 
-class Alarm {
+class Alarm : public wxEvtHandler {
 public:
+    static void RenderAlarms(PlugIn_ViewPort &vp);
+
+    Alarm(wxString name, int interval=1);
+
+    void Run();
+    void Reset();
+    virtual void SaveConfig();
+    virtual void LoadConfig();
+
+    virtual bool Test() = 0;
+    virtual void Render(PlugIn_ViewPort &vp) {}
+    virtual wxString AlarmStatus() = 0;
+
+    void OnTimer( wxTimerEvent & );
+
+protected:
+    wxFileConfig *GetConfigObject();
+
+    bool m_bEnabled, m_bgfxEnabled;
+
+private:
+    friend class WatchdogPrefsDialog;
+
+    void ConfigItem(bool read, wxString name, wxControl *control);
+
     wxString m_sName;
 
     bool m_bFired;
 
-    bool m_bEnabled, m_bgfxenabled;
-    bool m_bSound, m_bComdogd, m_bMessageBox, m_bAutoReset;
-    
-    virtual bool TestAlarm();
-    void Reset() {
-        if(m_bAutoReset)
-            m_bFired = false;
-    }
+    bool m_bSound, m_bCommand, m_bMessageBox, m_bAutoReset;
+    wxString m_sSound, m_sCommand;
+    int m_iRepeatSeconds;
 
-    void RunAlarm(enum AlarmName alarm);
-
-private:
+    wxTimer    m_Timer;
     wxDateTime m_LastAlarmTime;
 };
 
-
-class LandFallAlarm : public Alarm
-{
-public:
-    wxDateTime m_LastLandFallCheck;
-    LandFallAlarm() {
-        m_LastLandFallCheck = wxDateTime::Now();
-    }
-    virtual bool TestAlarm();
-};
-
-class NMEAAlarm : public Alarm
-{
-public:
-    enum AlarmName {LANDFALL, NMEADATA, DEADMAN, ANCHOR, COURSE,
-                    UNDERSPEED, OVERSPEED, ALARMCOUNT};
+enum AlarmNames {LANDFALL, NMEADATA, DEADMAN, ANCHOR, COURSE, UNDERSPEED, OVERSPEED, DEPTH, WIND};
+extern Alarm *Alarms[];

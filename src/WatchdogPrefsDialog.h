@@ -36,14 +36,25 @@ public:
     ~WatchdogPrefsDialog();
 
     void OnAlarmChanged( wxListbookEvent& event );
-    void SetAlarmActions();
-    void OnSyncToBoat( wxComdogdEvent& event );
-    void OnCurrentCourse( wxComdogdEvent& event );
-    void OnTestAlarm( wxComdogdEvent& event );
-    void OnInformation( wxComdogdEvent& event );
-    void OnAbout( wxComdogdEvent& event );
-    void OnDonate( wxComdogdEvent& event );
+    void OnAlarmUpdate();
+    void OnAlarmUpdate( wxFileDirPickerEvent& event ) { OnAlarmUpdate(); }
+    void OnAlarmUpdate( wxCommandEvent& event ) { OnAlarmUpdate(); }
+    void OnAlarmUpdate( wxSpinEvent& event ) { OnAlarmUpdate(); }
 
-protected:
+    void OnSyncToBoat( wxCommandEvent& event );
+    void OnCurrentCourse( wxCommandEvent& event );
+    void OnTestAlarm( wxCommandEvent& event );
+
+private:
+    void ReadAlarmActions() { AlarmActions(true); }
+    void WriteAlarmActions() { AlarmActions(false); }
+    void AlarmActions(bool read);
+
+    Alarm &CurrentAlarm();
+
+    void OnInformation( wxCommandEvent& event );
+    void OnAbout( wxCommandEvent& event );
+    void OnDonate( wxCommandEvent& event );
+
     watchdog_pi &m_watchdog_pi;
 };
