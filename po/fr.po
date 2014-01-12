@@ -291,7 +291,7 @@ msgid "Watchdog Preferences"
 msgstr "Préférences du complément Watchdog"
 #
 #, fuzzy
-msgid "Watchman"
+msgid "Watchdog"
 msgstr "Homme de quart"
 #
 msgid "Wind"

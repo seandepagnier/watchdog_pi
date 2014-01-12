@@ -98,7 +98,7 @@ WatchdogDialogBase::WatchdogDialogBase( wxWindow* parent, wxWindowID id, const w
 	fgSizer71->SetFlexibleDirection( wxBOTH );
 	fgSizer71->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_cbDisableAllAlarms = new wxCheckBox( this, wxID_ANY, _("DIsable All Alarms"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_cbDisableAllAlarms = new wxCheckBox( this, wxID_ANY, _("Disable All Alarms"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer71->Add( m_cbDisableAllAlarms, 0, wxALL, 5 );
 	
 	m_bPreferences = new wxButton( this, wxID_ANY, _("Preferences"), wxDefaultPosition, wxDefaultSize, 0 );
