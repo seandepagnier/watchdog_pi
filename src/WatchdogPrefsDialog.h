@@ -53,8 +53,7 @@ private:
     Alarm &CurrentAlarm();
 
     void OnInformation( wxCommandEvent& event );
-    void OnAbout( wxCommandEvent& event );
-    void OnDonate( wxCommandEvent& event );
+    void OnAboutAuthor( wxCommandEvent& event );
 
     watchdog_pi &m_watchdog_pi;
 };

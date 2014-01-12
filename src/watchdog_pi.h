@@ -36,8 +36,8 @@
 
 #include <wx/fileconf.h>
 
-#define     PLUGIN_VERSION_MAJOR    0
-#define     PLUGIN_VERSION_MINOR    8
+#define     PLUGIN_VERSION_MAJOR    1
+#define     PLUGIN_VERSION_MINOR    0
 
 #define     MY_API_VERSION_MAJOR    1
 #define     MY_API_VERSION_MINOR    8
@@ -138,6 +138,7 @@ public:
 
       wxDateTime m_LastFixTime;
       wxDateTime m_cursor_time;
+      WatchdogDialog   *m_pWatchdogDialog;
 
 protected:
       double m_cursor_lat, m_cursor_lon;
@@ -153,7 +154,6 @@ private:
       void    SetCursorLatLon(double lat, double lon);
       void    SetPositionFixEx(PlugIn_Position_Fix_Ex &pfix);
 
-      WatchdogDialog   *m_pWatchdogDialog;
       WatchdogPrefsDialog *m_pWatchdogPrefsDialog;
       int               m_watchdog_dialog_x, m_watchdog_dialog_y;
       int               m_display_width, m_display_height;

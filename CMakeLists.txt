@@ -1,7 +1,7 @@
 ##---------------------------------------------------------------------------
 ## Author:      Sean D'Epagnier
 ## Copyright:   
-## License:     GPLv3
+## License:     GPLv3+
 ##---------------------------------------------------------------------------
  
 # define minimum cmake version
@@ -43,6 +43,12 @@ IF(WIN32)
     ADD_DEFINITIONS(-D_CRT_NONSTDC_NO_DEPRECATE -D_CRT_SECURE_NO_DEPRECATE)
 ENDIF(WIN32)
 
+IF(NOT DEFINED wxWidgets_USE_FILE)
+  SET(wxWidgets_USE_LIBS base core net xml html adv)
+  SET(BUILD_SHARED_LIBS TRUE)
+  FIND_PACKAGE(wxWidgets REQUIRED)
+ENDIF(NOT DEFINED wxWidgets_USE_FILE)
+
 INCLUDE(${wxWidgets_USE_FILE})
 
 FIND_PACKAGE(Gettext REQUIRED)
@@ -51,7 +57,7 @@ FIND_PACKAGE(Gettext REQUIRED)
 # header files and cpp/c files and CMake will sort them out
 
 
-SET(SRC_WATCHMAN
+SET(SRC_WATCHDOG
             src/watchdog_pi.h
             src/watchdog_pi.cpp
             src/watchdog_pi.h
@@ -67,7 +73,7 @@ SET(SRC_WATCHMAN
             src/icons.h
             src/icons.cpp
 	)
-ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRC_WATCHMAN})
+ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRC_WATCHDOG})
 
 IF(WIN32)
   SET(OPENCPN_IMPORT_LIB "../../${CMAKE_CFG_INTDIR}/${PARENT}")
@@ -76,11 +82,6 @@ IF(WIN32)
 ENDIF(WIN32)
 
 TARGET_LINK_LIBRARIES( ${PACKAGE_NAME} ${wxWidgets_LIBRARIES} )
-
-IF(APPLE)
- FIND_PACKAGE(ZLIB REQUIRED)
- TARGET_LINK_LIBRARIES( ${PACKAGE_NAME} ${ZLIB_LIBRARIES} )
-ENDIF(APPLE)
 
 IF(APPLE)
 	INSTALL(TARGETS ${PACKAGE_NAME} RUNTIME LIBRARY DESTINATION ${CMAKE_BINARY_DIR}/OpenCPN.app/Contents/SharedSupport/plugins)
@@ -92,6 +93,12 @@ ENDIF(UNIX AND NOT APPLE)
 
 IF(WIN32)
 INSTALL(TARGETS ${PACKAGE_NAME} RUNTIME DESTINATION "plugins")
+ENDIF(WIN32)
+
+IF(WIN32)
+  INSTALL(DIRECTORY data DESTINATION "plugins\\\\watchdog")
+ELSE(WIN32)
+  INSTALL(DIRECTORY data DESTINATION ${PREFIX_PARENTDATA}/plugins/watchdog)
 ENDIF(WIN32)
  	  	 
 INCLUDE("../PluginLocalization.cmake")

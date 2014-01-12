@@ -39,6 +39,9 @@ WatchdogDialog::~WatchdogDialog()
 
 void WatchdogDialog::UpdateAlarms()
 {
+    if(!IsShown())
+        m_fgAlarms->Show(false);
+
     Fit();
     Refresh();
 }

@@ -25,9 +25,10 @@
  ***************************************************************************
  */
 
+class ocpnDC;
 class Alarm : public wxEvtHandler {
 public:
-    static void RenderAlarms(PlugIn_ViewPort &vp);
+    static void RenderAlarms(ocpnDC &dc, PlugIn_ViewPort &vp);
 
     Alarm(wxString name, int interval=1);
 
@@ -37,8 +38,8 @@ public:
     virtual void LoadConfig();
 
     virtual bool Test() = 0;
-    virtual void Render(PlugIn_ViewPort &vp) {}
-    virtual wxString AlarmStatus() = 0;
+    virtual void UpdateStatus() = 0;
+    virtual void Render(ocpnDC &dc, PlugIn_ViewPort &vp) {}
 
     void OnTimer( wxTimerEvent & );
 

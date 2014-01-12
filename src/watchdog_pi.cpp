@@ -189,10 +189,7 @@ wxString watchdog_pi::GetShortDescription()
 wxString watchdog_pi::GetLongDescription()
 {
     return _("Watchdog PlugIn for OpenCPN\n\
-Alarm user of possible dangerous situations. \n\
-\n\
-The Watchdog plugin was written by Sean D'Epagnier\n\
-");
+Alarm user of changing conditions.");
 }
 
 int watchdog_pi::GetToolbarToolCount(void)
@@ -284,13 +281,12 @@ void watchdog_pi::Render(ocpnDC &dc, PlugIn_ViewPort &vp)
     if(!m_pWatchdogDialog || !m_pWatchdogDialog->IsShown())
         return;
 
-    Alarm::RenderAlarms(vp);
+    Alarm::RenderAlarms(dc, vp);
 }
 
 void watchdog_pi::OnTimer( wxTimerEvent & )
 {
     /* calculate course and speed over ground from gps */
-
     if(!isnan(m_lastfix.Lat) && !isnan(m_lasttimerfix.Lat)) {
         DistanceBearingMercator_Plugin(m_lastfix.Lat, m_lastfix.Lon,
                                                m_lasttimerfix.Lat, m_lasttimerfix.Lon, &m_cog, &m_sog);
@@ -300,6 +296,9 @@ void watchdog_pi::OnTimer( wxTimerEvent & )
         m_sog = m_cog = NAN;
     
     m_lasttimerfix = m_lastfix;
+
+    if(m_pWatchdogDialog)
+        m_pWatchdogDialog->Fit();
 }
 
 bool watchdog_pi::LoadConfig(void)

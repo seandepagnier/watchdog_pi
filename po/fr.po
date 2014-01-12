@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AIS Radar, Plugin for OpenCPN\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-05 22:29+1200\n"
+"POT-Creation-Date: 2014-01-12 13:30+0800\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Gilletarom <contact@gilletarom.fr>\n"
 "Language-Team: Gilletarom <contact@gilletarom.fr>\n"
@@ -11,190 +11,352 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.5.5\n"
-
-#: src/WatchdogDialog.cpp:57
-msgid "Days "
-msgstr "Jours"
-
-#: src/WatchdogDialog.cpp:59
-msgid "Hours "
-msgstr "Heures"
-
-#: src/WatchdogDialog.cpp:61
-msgid "Minutes "
-msgstr "Minutes"
-
-#: src/WatchdogDialog.cpp:63
-msgid "Seconds"
-msgstr "Secondes"
-
-# Touché terre non détecté
-# ???
-# Gilletarom
-# ----------
-#: src/WatchdogDialog.cpp:76
-msgid "LandFall not Detected"
-msgstr "Atterage non détecté"
-
-#: src/WatchdogDialog.cpp:86
-msgid "meters from anchor"
-msgstr "Distance depuis le mouillage"
-
-# Touché terre suivant
-# ???
-# Gilletarom
-# --------
-#: src/WatchdogUI.cpp:30
-msgid "Next LandFall in"
-msgstr "Atterage suivant"
-
-#: src/WatchdogUI.cpp:34
-msgid "No NMEA Messages"
-msgstr "Pas de phrase NMEA"
-
-#: src/WatchdogUI.cpp:38
-msgid "Last activity"
-msgstr "Dernière activité"
-
-#: src/WatchdogUI.cpp:42
-msgid "No Updates"
-msgstr "Aucune mise à jour"
-
-# Distance jusqu'au point de mouillage
-# ??
-# Gilletarom
-# --------
-#: src/WatchdogUI.cpp:46
-msgid "Distance to Anchor"
-msgstr "Distance jusqu'à l'ancre"
-
-#: src/WatchdogUI.cpp:62
-msgid "Preferences"
-msgstr "Préférences"
-
-#: src/WatchdogUI.cpp:65
-msgid "Close"
-msgstr "Fermer"
-
-# Alarme de touché terre
-# ???
-# Gilletarom
-# -------
-#: src/WatchdogUI.cpp:101
-msgid "Landfall Alarm"
-msgstr "Alarme d'atterage"
-
-#: src/WatchdogUI.cpp:108
-msgid "If Distance is <"
-msgstr "Si la distance est < "
-
-#: src/WatchdogUI.cpp:111
+#
+msgid "$GPGGA"
+msgstr ""
+#
+msgid "1"
+msgstr ""
+#
+msgid "12"
+msgstr ""
+#
 msgid "3"
 msgstr "3"
-
-#: src/WatchdogUI.cpp:114
-msgid "nm"
-msgstr "Nm"
-
-# ?
-# Gilletarom
-# ---------
-#: src/WatchdogUI.cpp:125
-msgid "Deaddog Alarm"
-msgstr "Alarme d'homme mort"
-
-#: src/WatchdogUI.cpp:132
-msgid "No Activity for"
-msgstr "Pas d'activité pour "
-
-#: src/WatchdogUI.cpp:138
-msgid "min"
-msgstr "min"
-
-#: src/WatchdogUI.cpp:149
-msgid "Anchor Watch"
-msgstr "Surveillance de mouillage"
-
-#: src/WatchdogUI.cpp:156
-msgid "Enabled"
-msgstr "Autorisé"
-
-#: src/WatchdogUI.cpp:159
-msgid "Sync to Boat"
-msgstr "Sync to Boat"
-
-#: src/WatchdogUI.cpp:162
-msgid "Latitude"
-msgstr "Latitude"
-
-#: src/WatchdogUI.cpp:169
-msgid "Longitude"
-msgstr "Longitude"
-
-#: src/WatchdogUI.cpp:176
-msgid "Radius (m)"
-msgstr "Rayon (m)"
-
+#
+msgid "ALARM!!!!"
+msgstr "Alerte !!!"
+#
+msgid "About Author"
+msgstr ""
+#
 # Action sur alarme
 # ou
 # Action d'alerte
 # ???
 # Gilletarom
 # -------
-#: src/WatchdogUI.cpp:190
 msgid "Alarm Action"
 msgstr "Action d'alarme"
-
-#: src/WatchdogUI.cpp:198
-msgid "Sound"
-msgstr "Son"
-
-#: src/WatchdogUI.cpp:203
-msgid "Select a file"
-msgstr "Sélectionner un fichier"
-
-#: src/WatchdogUI.cpp:208
-msgid "Comdogd"
-msgstr "Comdogde"
-
-#: src/WatchdogUI.cpp:214
+#
+#, fuzzy
+msgid "Anchor"
+msgstr "Surveillance de mouillage"
+#
+msgid "Anchor Watch"
+msgstr "Surveillance de mouillage"
+#
+msgid "Automatically  Reset"
+msgstr ""
+#
+msgid "Close"
+msgstr "Fermer"
+#
+msgid "Command"
+msgstr ""
+#
+msgid "Course Error"
+msgstr ""
+#
+msgid "Current Course"
+msgstr ""
+#
+msgid "DIsable All Alarms"
+msgstr ""
+#
+msgid "Days "
+msgstr "Jours"
+#
+msgid "Deadman"
+msgstr ""
+#
+#, fuzzy
+msgid "Deadman activity"
+msgstr "Dernière activité"
+#
+msgid "Degrees"
+msgstr ""
+#
+msgid "Depth"
+msgstr ""
+#
+#, fuzzy
+msgid "Disabled"
+msgstr "Autorisé"
+#
+# Distance jusqu'au point de mouillage
+# ??
+# Gilletarom
+# --------
+msgid "Distance to Anchor"
+msgstr "Distance jusqu'à l'ancre"
+#
+msgid "Enabled"
+msgstr "Autorisé"
+#
+msgid "Failed to execute command: "
+msgstr ""
+#
+msgid "GPS course crosses land in <"
+msgstr ""
+#
+msgid "GPS fix is <"
+msgstr ""
+#
+msgid "Graphical Overlay Display"
+msgstr ""
+#
+msgid "Graphical overlay displays bounding anchor area"
+msgstr ""
+#
+msgid "Graphical overlay displays circle with radius of this speed"
+msgstr ""
+#
+msgid "Graphical overlay displays lines bounding valid courses"
+msgstr ""
+#
+msgid ""
+"Graphical overlay for time displays line from boat to location of land "
+"crossing"
+msgstr ""
+#
+msgid "Hours "
+msgstr "Heures"
+#
+msgid "Information"
+msgstr ""
+#
+#, fuzzy
+msgid "Land Distance >"
+msgstr "Si la distance est < "
+#
+# Touché terre suivant
+# ???
+# Gilletarom
+# --------
+#, fuzzy
+msgid "LandFall"
+msgstr "Atterage suivant"
+#
+# Touché terre suivant
+# ???
+# Gilletarom
+# --------
+#, fuzzy
+msgid "LandFall in"
+msgstr "Atterage suivant"
+#
+# Touché terre non détecté
+# ???
+# Gilletarom
+# ----------
+msgid "LandFall not Detected"
+msgstr "Atterage non détecté"
+#
+# Alarme de touché terre
+# ???
+# Gilletarom
+# -------
+#, fuzzy
+msgid "Landfall"
+msgstr "Alarme d'atterage"
+#
+#, fuzzy
+msgid "Last NMEA Updates"
+msgstr "Aucune mise à jour"
+#
+msgid "Latitude"
+msgstr "Latitude"
+#
+msgid "Longitude"
+msgstr "Longitude"
+#
 msgid "Message Box"
 msgstr "Boite à message"
-
-#: src/WatchdogUI.h:56
+#
+msgid "Minutes "
+msgstr "Minutes"
+#
+msgid ""
+"Most alarms should be self-explanatory\n"
+"Normally a sound is played, however you can execute any command you like, "
+"eg:  \"aplay /usr/local/share/opencpn/sounds/2bells.wav\""
+msgstr ""
+#
+msgid "NMEA Data"
+msgstr ""
+#
+msgid "No NMEA Messages"
+msgstr "Pas de phrase NMEA"
+#
+msgid "No Updates"
+msgstr "Aucune mise à jour"
+#
+#, fuzzy
+msgid "No User Activity for"
+msgstr "Pas d'activité pour "
+#
+msgid "Not implemented"
+msgstr ""
+#
+msgid "Off Course"
+msgstr ""
+#
+msgid "Off Course By >"
+msgstr ""
+#
+msgid "Over Speed"
+msgstr ""
+#
+msgid "OverSpeed"
+msgstr ""
+#
+msgid "Preferences"
+msgstr "Préférences"
+#
+#, fuzzy
+msgid "Radius"
+msgstr "Rayon (m)"
+#
+msgid "Repeat Alarm after seconds"
+msgstr ""
+#
+msgid "Require following NMEA sentences:"
+msgstr ""
+#
+msgid "Reset Last Alarm"
+msgstr ""
+#
+msgid "Seconds"
+msgstr "Secondes"
+#
+msgid "Select a file"
+msgstr "Sélectionner un fichier"
+#
+msgid "Sound"
+msgstr "Son"
+#
+# ?
+# Gilletarom
+# ---------
+#, fuzzy
+msgid "Speed Alarm"
+msgstr "Alarme d'homme mort"
+#
+msgid "Speed over ground <"
+msgstr ""
+#
+msgid "Speed over ground >"
+msgstr ""
+#
+msgid "Sync to Boat"
+msgstr "Sync to Boat"
+#
+# ?
+# Gilletarom
+# ---------
+#, fuzzy
+msgid "Test Alarm"
+msgstr "Alarme d'homme mort"
+#
+msgid "Under Speed"
+msgstr ""
+#
+msgid "UnderSpeed"
+msgstr ""
+#
 msgid "Watch Man"
 msgstr "Homme de quart"
-
-#: src/WatchdogUI.h:98
-msgid "Watchdog Preferences"
-msgstr "Préférences du complément Watchdog"
-
-#: src/watchdog_pi.cpp:94 src/watchdog_pi.cpp:163 src/watchdog_pi.cpp:353
+#
 msgid "Watchdog"
 msgstr "Homme de quart"
-
-#: src/watchdog_pi.cpp:98
+#
 msgid "Watchdog Anchor Watch"
 msgstr "Homme de quart pour la sécurisation du mouillage"
-
-#: src/watchdog_pi.cpp:169
+#
+#, fuzzy
+msgid "Watchdog Information"
+msgstr "Homme de quart pour la sécurisation du mouillage"
+#
 msgid "Watchdog PlugIn for OpenCPN"
 msgstr "Complément \"Watchdog\" pour OpenCPN."
-
-#: src/watchdog_pi.cpp:174
+#
+#, fuzzy
 msgid ""
-"Watchdog Fax PlugIn for OpenCPN\n"
-"Alarm user of possible dangerous situations. \n"
-"Currently only supports coastline detection. \n"
-"\n"
-"The Watchdog plugin was written by Sean D'Epagnier\n"
+"Watchdog PlugIn for OpenCPN\n"
+"Alarm user of changing conditions."
+msgstr "Complément \"Watchdog\" pour OpenCPN."
+#
+msgid "Watchdog Preferences"
+msgstr "Préférences du complément Watchdog"
+#
+#, fuzzy
+msgid "Watchman"
+msgstr "Homme de quart"
+#
+msgid "Wind"
 msgstr ""
-"Complément de sécurisation du mouillage pour OpenCPN\n"
-"Utilisation en situations potentiellement dangereuses. \n"
-"Cette version détecte seulement la ligne de côte. \n"
-"\n"
-"Le complément Watchdog plugin a été développé par Sean D'Epagnier\n"
-
-#: src/watchdog_pi.cpp:352
-msgid "ALARM!!!!"
-msgstr "Alerte !!!"
+#
+msgid "With Course Of"
+msgstr ""
+#
+msgid "at least every"
+msgstr ""
+#
+msgid "degrees(s)"
+msgstr ""
+#
+msgid "knots"
+msgstr ""
+#
+msgid "meter(s)"
+msgstr ""
+#
+msgid "meters"
+msgstr ""
+#
+#, fuzzy
+msgid "minute(s)"
+msgstr "Minutes"
+#
+#, fuzzy
+msgid "minutes"
+msgstr "Minutes"
+#
+msgid ""
+"nm from coastline\n"
+"(any direction)"
+msgstr ""
+#
+#, fuzzy
+msgid "second(s)"
+msgstr "Secondes"
+#
+#, fuzzy
+msgid "seconds"
+msgstr "Secondes"
+#
+#~ msgid "Comdogd"
+#~ msgstr "Comdogde"
+#
+#~ msgid ""
+#~ "Watchdog Fax PlugIn for OpenCPN\n"
+#~ "Alarm user of possible dangerous situations. \n"
+#~ "Currently only supports coastline detection. \n"
+#~ "\n"
+#~ "The Watchdog plugin was written by Sean D'Epagnier\n"
+#~ msgstr ""
+#~ "Complément de sécurisation du mouillage pour OpenCPN\n"
+#~ "Utilisation en situations potentiellement dangereuses. \n"
+#~ "Cette version détecte seulement la ligne de côte. \n"
+#~ "\n"
+#~ "Le complément Watchdog plugin a été développé par Sean D'Epagnier\n"
+#
+#~ msgid "meters from anchor"
+#~ msgstr "Distance depuis le mouillage"
+#
+#~ msgid "min"
+#~ msgstr "min"
+#
+#~ msgid "nm"
+#~ msgstr "Nm"

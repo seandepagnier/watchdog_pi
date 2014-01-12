@@ -72,8 +72,12 @@ void WatchdogPrefsDialog::AlarmActions(bool read)
 
     Alarm *alarm = Alarms[selection];
 
+    if(!alarm)
+        return;
+
     if(read) {
         m_rbEnabled->SetValue(alarm->m_bEnabled);
+        m_rbDisabled->SetValue(!alarm->m_bEnabled);
         m_cbGraphicsEnabled->SetValue(alarm->m_bgfxEnabled);
         m_cbSound->SetValue(alarm->m_bSound);
         m_fpSound->SetPath(alarm->m_sSound);
@@ -94,6 +98,8 @@ void WatchdogPrefsDialog::AlarmActions(bool read)
         alarm->m_iRepeatSeconds = m_sRepeatSeconds->GetValue();
     }
 
+    m_cbGraphicsEnabled->Enable();
+
     switch(selection) {
     case LANDFALL:
         alarm->ConfigItem(read, _T ( "TimeAlarm" ), m_cbLandFallTime);
@@ -105,10 +111,12 @@ void WatchdogPrefsDialog::AlarmActions(bool read)
     case NMEADATA:
         alarm->ConfigItem(read, _T ( "Sentences" ), m_tNMEASentences);
         alarm->ConfigItem(read,  _T ( "Seconds" ), m_sNMEASeconds);;
+        m_cbGraphicsEnabled->Disable();
         break;
 
     case DEADMAN:
         alarm->ConfigItem(read, _T ( "Minutes" ), m_sDeadmanMinutes);
+        m_cbGraphicsEnabled->Disable();
         break;
 
     case ANCHOR:
@@ -147,13 +155,9 @@ Normally a sound is played, however you can execute any command you like, eg:  \
     mdlg.ShowModal();
 }
 
-void WatchdogPrefsDialog::OnAbout( wxCommandEvent& event )
+void WatchdogPrefsDialog::OnAboutAuthor( wxCommandEvent& event )
 {
-    AboutDialog dlg(this);
-    dlg.ShowModal();
-}
-
-void WatchdogPrefsDialog::OnDonate( wxCommandEvent& event )
-{
+/*
       wxLaunchDefaultBrowser(_T("https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=sean%40depagnier%2ecom&lc=US&item_name=watchdog&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest"));
+*/
 }
