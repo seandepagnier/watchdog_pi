@@ -158,7 +158,10 @@ void WatchdogPrefsDialog::OnInformation( wxCommandEvent& event )
     wxMessageDialog mdlg(this, _("\
 Most alarms should be self-explanatory\n\
 Normally a sound is played, however you can execute any command you like, eg:  \
-\"aplay /usr/local/share/opencpn/sounds/2bells.wav\""),
+\"aplay /usr/local/share/opencpn/sounds/2bells.wav\"\
+Messagebox may be useful to interrupt other applications (like a movie player)\n\
+Automatically Reset will reset the alarm once it is no longer triggered, and it may \
+be triggered again later."),
                          _("Watchdog Information"), wxOK | wxICON_INFORMATION);
     mdlg.ShowModal();
 }
