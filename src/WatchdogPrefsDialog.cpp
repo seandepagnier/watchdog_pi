@@ -29,7 +29,7 @@
 #include "WatchdogPrefsDialog.h"
 
 WatchdogPrefsDialog::WatchdogPrefsDialog( watchdog_pi &_watchdog_pi, wxWindow* parent)
-    : WatchdogPrefsDialogBase( parent ), m_watchdog_pi(_watchdog_pi)
+    : WatchdogPrefsDialogBase( parent ), m_watchdog_pi(_watchdog_pi), m_breading(false)
 {
     ReadAlarmActions();
 }
@@ -71,11 +71,14 @@ void WatchdogPrefsDialog::AlarmActions(bool read)
     int selection = m_lbAlarm->GetSelection();
 
     Alarm *alarm = Alarms[selection];
-
     if(!alarm)
         return;
 
+    if(m_breading)
+        return;
+
     if(read) {
+        m_breading = true;
         m_rbEnabled->SetValue(alarm->m_bEnabled);
         m_rbDisabled->SetValue(!alarm->m_bEnabled);
         m_cbGraphicsEnabled->SetValue(alarm->m_bgfxEnabled);
@@ -85,6 +88,7 @@ void WatchdogPrefsDialog::AlarmActions(bool read)
         m_tCommand->SetValue(alarm->m_sCommand);
         m_cbMessageBox->SetValue(alarm->m_bMessageBox);
         m_cbAutoReset->SetValue(alarm->m_bAutoReset);
+        m_cbRepeat->SetValue(alarm->m_bRepeat);
         m_sRepeatSeconds->SetValue(alarm->m_iRepeatSeconds);
     } else {
         alarm->m_bEnabled = m_rbEnabled->GetValue();
@@ -95,6 +99,7 @@ void WatchdogPrefsDialog::AlarmActions(bool read)
         alarm->m_sCommand = m_tCommand->GetValue();
         alarm->m_bMessageBox = m_cbMessageBox->GetValue();
         alarm->m_bAutoReset = m_cbAutoReset->GetValue();
+        alarm->m_bRepeat = m_cbRepeat->GetValue();
         alarm->m_iRepeatSeconds = m_sRepeatSeconds->GetValue();
     }
 
@@ -138,6 +143,9 @@ void WatchdogPrefsDialog::AlarmActions(bool read)
         alarm->ConfigItem(read, _T ( "Knots" ), m_tOverSpeed);
         break;
     }
+
+    if(read)
+        m_breading = false;
 }
 
 Alarm &WatchdogPrefsDialog::CurrentAlarm()

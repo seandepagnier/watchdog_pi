@@ -56,4 +56,6 @@ private:
     void OnAboutAuthor( wxCommandEvent& event );
 
     watchdog_pi &m_watchdog_pi;
+
+    bool m_breading;
 };

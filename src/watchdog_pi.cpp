@@ -118,6 +118,7 @@ int watchdog_pi::Init(void)
             WANTS_TOOLBAR_CALLBACK    |
             WANTS_CURSOR_LATLON       |
             WANTS_PREFERENCES         |
+            WANTS_NMEA_SENTENCES |
             WANTS_NMEA_EVENTS         |
             WANTS_AIS_SENTENCES       |
             WANTS_CONFIG);
@@ -281,7 +282,7 @@ void watchdog_pi::Render(ocpnDC &dc, PlugIn_ViewPort &vp)
     if(!m_pWatchdogDialog || !m_pWatchdogDialog->IsShown())
         return;
 
-    Alarm::RenderAlarms(dc, vp);
+    Alarm::RenderAll(dc, vp);
 }
 
 void watchdog_pi::OnTimer( wxTimerEvent & )
@@ -312,6 +313,8 @@ bool watchdog_pi::LoadConfig(void)
     
     m_watchdog_dialog_x =  pConf->Read ( _T ( "DialogPosX" ), 20L );
     m_watchdog_dialog_y =  pConf->Read ( _T ( "DialogPosY" ), 20L );
+
+    Alarm::ConfigAll(true);
     
     return true;
 }
@@ -327,6 +330,8 @@ bool watchdog_pi::SaveConfig(void)
 
     pConf->Write ( _T ( "DialogPosX" ),   m_watchdog_dialog_x );
     pConf->Write ( _T ( "DialogPosY" ),   m_watchdog_dialog_y );
+
+    Alarm::ConfigAll(false);
     
     return true;
 }
@@ -336,6 +341,11 @@ void watchdog_pi::SetCursorLatLon(double lat, double lon)
     m_cursor_lat = lat;
     m_cursor_lon = lon;
     m_cursor_time = wxDateTime::Now();
+}
+
+void watchdog_pi::SetNMEASentence(wxString &sentence)
+{
+    Alarm::NMEAString(sentence);
 }
 
 void watchdog_pi::SetPositionFixEx(PlugIn_Position_Fix_Ex &pfix)

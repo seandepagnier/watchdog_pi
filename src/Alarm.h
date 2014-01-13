@@ -28,17 +28,22 @@
 class ocpnDC;
 class Alarm : public wxEvtHandler {
 public:
-    static void RenderAlarms(ocpnDC &dc, PlugIn_ViewPort &vp);
+    static void RenderAll(ocpnDC &dc, PlugIn_ViewPort &vp);
+    static void ConfigAll(bool load);
+    static void ResetAll();
+    static void UpdateStatusAll();
+    static void NMEAString(const wxString &string);
 
     Alarm(wxString name, int interval=1);
 
     void Run();
-    void Reset();
     virtual void SaveConfig();
     virtual void LoadConfig();
 
+    void UpdateStatus();
+
     virtual bool Test() = 0;
-    virtual void UpdateStatus() = 0;
+    virtual wxString GetStatus() = 0;
     virtual void Render(ocpnDC &dc, PlugIn_ViewPort &vp) {}
 
     void OnTimer( wxTimerEvent & );
@@ -47,17 +52,18 @@ protected:
     wxFileConfig *GetConfigObject();
 
     bool m_bEnabled, m_bgfxEnabled;
+    bool m_bFired;
 
 private:
     friend class WatchdogPrefsDialog;
 
     void ConfigItem(bool read, wxString name, wxControl *control);
 
+    virtual void GetStatusControls(wxControl *&Text, wxControl *&status) { Text = status = NULL; }
+
     wxString m_sName;
 
-    bool m_bFired;
-
-    bool m_bSound, m_bCommand, m_bMessageBox, m_bAutoReset;
+    bool m_bSound, m_bCommand, m_bMessageBox, m_bRepeat, m_bAutoReset;
     wxString m_sSound, m_sCommand;
     int m_iRepeatSeconds;
 

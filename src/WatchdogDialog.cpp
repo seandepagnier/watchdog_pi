@@ -31,6 +31,8 @@
 WatchdogDialog::WatchdogDialog( watchdog_pi &_watchdog_pi, wxWindow* parent)
     : WatchdogDialogBase( parent ), m_watchdog_pi(_watchdog_pi)
 {
+    wxFileConfig *pConf = GetOCPNConfigObject();
+    m_cbDisableAllAlarms->SetValue(pConf->Read ( _T ( "DisableAllAlarms" ), 0L ));
 }
 
 WatchdogDialog::~WatchdogDialog()
@@ -39,7 +41,9 @@ WatchdogDialog::~WatchdogDialog()
 
 void WatchdogDialog::UpdateAlarms()
 {
-    if(!IsShown())
+    if(IsShown())
+        Alarm::UpdateStatusAll();
+    else
         m_fgAlarms->Show(false);
 
     Fit();
@@ -57,20 +61,8 @@ void WatchdogDialog::OnPreferences( wxCommandEvent& event )
     m_watchdog_pi.ShowPreferencesDialog(this);
 }
 
-void WatchdogDialog::OnResetLastAlarm( wxCommandEvent& event )
+void WatchdogDialog::OnReset( wxCommandEvent& event )
 {
-//    m_watchdog_pi.ResetLastAlarm();
+    Alarm::ResetAll();
+    UpdateAlarms();
 }
-
-
-void WatchdogDialog::UpdateAlarm(wxControl *ctrl1,  wxControl *ctrl2, bool show)
-{
-    if(show) {
-        ctrl1->Show();
-        ctrl2->Show();
-    } else {
-        ctrl1->Hide();
-        ctrl2->Hide();
-    }
-}
-

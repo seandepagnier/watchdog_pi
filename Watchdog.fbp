@@ -45,7 +45,7 @@
             <property name="size">-1,-1</property>
             <property name="style">wxCAPTION|wxDEFAULT_DIALOG_STYLE</property>
             <property name="subclass"></property>
-            <property name="title">Watch Dog</property>
+            <property name="title">WatchDog</property>
             <property name="tooltip"></property>
             <property name="window_extra_style"></property>
             <property name="window_name"></property>
@@ -1669,7 +1669,7 @@
                                 <property name="gripper">0</property>
                                 <property name="hidden">0</property>
                                 <property name="id">wxID_ANY</property>
-                                <property name="label">Reset Last Alarm</property>
+                                <property name="label">Reset</property>
                                 <property name="max_size"></property>
                                 <property name="maximize_button">0</property>
                                 <property name="maximum_size"></property>
@@ -1677,7 +1677,7 @@
                                 <property name="minimize_button">0</property>
                                 <property name="minimum_size"></property>
                                 <property name="moveable">1</property>
-                                <property name="name">m_bResetLastAlarm</property>
+                                <property name="name">m_bReset</property>
                                 <property name="pane_border">1</property>
                                 <property name="pane_position"></property>
                                 <property name="pane_size"></property>
@@ -1698,7 +1698,7 @@
                                 <property name="window_extra_style"></property>
                                 <property name="window_name"></property>
                                 <property name="window_style"></property>
-                                <event name="OnButtonClick">OnResetLastAlarm</event>
+                                <event name="OnButtonClick">OnReset</event>
                                 <event name="OnChar"></event>
                                 <event name="OnEnterWindow"></event>
                                 <event name="OnEraseBackground"></event>

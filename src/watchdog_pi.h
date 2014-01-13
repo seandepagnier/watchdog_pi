@@ -152,6 +152,7 @@ private:
       bool    SaveConfig(void);
 
       void    SetCursorLatLon(double lat, double lon);
+      void    SetNMEASentence(wxString &sentence);
       void    SetPositionFixEx(PlugIn_Position_Fix_Ex &pfix);
 
       WatchdogPrefsDialog *m_pWatchdogPrefsDialog;

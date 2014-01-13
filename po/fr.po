@@ -265,12 +265,6 @@ msgstr ""
 msgid "UnderSpeed"
 msgstr ""
 #
-msgid "Watch Man"
-msgstr "Homme de quart"
-#
-msgid "Watchdog"
-msgstr "Homme de quart"
-#
 msgid "Watchdog Anchor Watch"
 msgstr "Homme de quart pour la sécurisation du mouillage"
 #
@@ -289,10 +283,6 @@ msgstr "Complément \"Watchdog\" pour OpenCPN."
 #
 msgid "Watchdog Preferences"
 msgstr "Préférences du complément Watchdog"
-#
-#, fuzzy
-msgid "Watchdog"
-msgstr "Homme de quart"
 #
 msgid "Wind"
 msgstr ""

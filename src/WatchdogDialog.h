@@ -39,12 +39,9 @@ public:
 
     void OnDisableAllAlarms( wxCommandEvent& event );
     void OnPreferences( wxCommandEvent& event );
-    void OnResetLastAlarm( wxCommandEvent& event );
+    void OnReset( wxCommandEvent& event );
     void OnClose( wxCommandEvent& event ) { Hide(); }
 
-protected:
-    watchdog_pi &m_watchdog_pi;
-
 private:
-    void UpdateAlarm(wxControl *ctrl1,  wxControl *ctrl2, bool show);
+    watchdog_pi &m_watchdog_pi;
 };

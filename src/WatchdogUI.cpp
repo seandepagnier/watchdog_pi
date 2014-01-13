@@ -104,8 +104,8 @@ WatchdogDialogBase::WatchdogDialogBase( wxWindow* parent, wxWindowID id, const w
 	m_bPreferences = new wxButton( this, wxID_ANY, _("Preferences"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer71->Add( m_bPreferences, 0, wxALL, 5 );
 	
-	m_bResetLastAlarm = new wxButton( this, wxID_ANY, _("Reset Last Alarm"), wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer71->Add( m_bResetLastAlarm, 0, wxALL, 5 );
+	m_bReset = new wxButton( this, wxID_ANY, _("Reset"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer71->Add( m_bReset, 0, wxALL, 5 );
 	
 	m_bClose = new wxButton( this, wxID_ANY, _("Close"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer71->Add( m_bClose, 0, wxALL, 5 );
@@ -123,7 +123,7 @@ WatchdogDialogBase::WatchdogDialogBase( wxWindow* parent, wxWindowID id, const w
 	// Connect Events
 	m_cbDisableAllAlarms->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( WatchdogDialogBase::OnDisableAllAlarms ), NULL, this );
 	m_bPreferences->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchdogDialogBase::OnPreferences ), NULL, this );
-	m_bResetLastAlarm->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchdogDialogBase::OnResetLastAlarm ), NULL, this );
+	m_bReset->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchdogDialogBase::OnReset ), NULL, this );
 	m_bClose->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchdogDialogBase::OnClose ), NULL, this );
 }
 
@@ -132,7 +132,7 @@ WatchdogDialogBase::~WatchdogDialogBase()
 	// Disconnect Events
 	m_cbDisableAllAlarms->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( WatchdogDialogBase::OnDisableAllAlarms ), NULL, this );
 	m_bPreferences->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchdogDialogBase::OnPreferences ), NULL, this );
-	m_bResetLastAlarm->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchdogDialogBase::OnResetLastAlarm ), NULL, this );
+	m_bReset->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchdogDialogBase::OnReset ), NULL, this );
 	m_bClose->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchdogDialogBase::OnClose ), NULL, this );
 	
 }

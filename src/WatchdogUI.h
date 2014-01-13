@@ -46,13 +46,13 @@ class WatchdogDialogBase : public wxDialog
 	protected:
 		wxCheckBox* m_cbDisableAllAlarms;
 		wxButton* m_bPreferences;
-		wxButton* m_bResetLastAlarm;
+		wxButton* m_bReset;
 		wxButton* m_bClose;
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnDisableAllAlarms( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnPreferences( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnResetLastAlarm( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnReset( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnClose( wxCommandEvent& event ) { event.Skip(); }
 		
 	
@@ -75,7 +75,7 @@ class WatchdogDialogBase : public wxDialog
 		wxStaticText* m_stTextOverSpeed;
 		wxStaticText* m_stOverSpeed;
 		
-		WatchdogDialogBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Watch Dog"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxCAPTION|wxDEFAULT_DIALOG_STYLE|wxTAB_TRAVERSAL ); 
+		WatchdogDialogBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("WatchDog"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxCAPTION|wxDEFAULT_DIALOG_STYLE|wxTAB_TRAVERSAL ); 
 		~WatchdogDialogBase();
 	
 };
