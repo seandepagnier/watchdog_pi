@@ -62,6 +62,7 @@ private:
     virtual void GetStatusControls(wxControl *&Text, wxControl *&status) { Text = status = NULL; }
 
     wxString m_sName;
+    int m_interval;
 
     bool m_bSound, m_bCommand, m_bMessageBox, m_bRepeat, m_bAutoReset;
     wxString m_sSound, m_sCommand;

@@ -544,10 +544,8 @@ void Alarm::NMEAString(const wxString &string)
 }
 
 Alarm::Alarm(wxString name, int interval)
-    : m_sName(name)
+    : m_sName(name), m_interval(interval)
 {
-    m_Timer.Connect(wxEVT_TIMER, wxTimerEventHandler( Alarm::OnTimer ), NULL, this);
-    m_Timer.Start(interval * 1000, wxTIMER_CONTINUOUS);
 }
 
 void Alarm::Run()
@@ -599,6 +597,9 @@ void Alarm::LoadConfig()
     pConf->Read ( _T ( "Repeat" ), &m_bRepeat, 0);
     pConf->Read ( _T ( "RepeatSeconds" ), &m_iRepeatSeconds, 60);
     pConf->Read ( _T ( "AutoReset" ), &m_bAutoReset, 1);
+
+    m_Timer.Connect(wxEVT_TIMER, wxTimerEventHandler( Alarm::OnTimer ), NULL, this);
+    m_Timer.Start(m_interval * 1000, wxTIMER_CONTINUOUS);
 }
 
 void Alarm::ConfigItem(bool read, wxString name, wxControl *control)
