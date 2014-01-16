@@ -650,6 +650,7 @@ void Alarm::ConfigItem(bool read, wxString name, wxControl *control)
 void Alarm::OnTimer( wxTimerEvent & )
 {
     wxFileConfig *pConf = GetOCPNConfigObject();
+    pConf->SetPath ( _T( "/Settings/Watchdog" ) );
     if(!pConf->Read ( _T ( "DisableAllAlarms" ), 0L ) && m_bEnabled) {
         if(Test()) {        
             wxDateTime now = wxDateTime::Now();

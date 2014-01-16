@@ -162,7 +162,6 @@ private:
       int               m_display_width, m_display_height;
 
       int               m_leftclick_tool_id;
-      int               m_anchor_menu_id;
 
       void              RearrangeWindow();
 

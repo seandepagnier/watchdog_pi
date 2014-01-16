@@ -101,17 +101,11 @@ int watchdog_pi::Init(void)
         (_T(""), _img_watchdog, _img_watchdog, wxITEM_NORMAL,
          _("Watchdog"), _T(""), NULL, WATCHMAN_TOOL_POSITION, 0, this);
     
-    wxMenu dummy_menu;
-    m_anchor_menu_id = AddCanvasContextMenuItem
-        (new wxMenuItem(&dummy_menu, -1, _("Watchdog Anchor Watch")), this );
-    
     m_pWatchdogDialog = NULL;
     m_pWatchdogPrefsDialog = NULL;
     m_Timer.Connect(wxEVT_TIMER, wxTimerEventHandler
                     ( watchdog_pi::OnTimer ), NULL, this);
     m_Timer.Start(3000);
-
-//    m_DeadmanUpdateTime = now;
 
     return (WANTS_OVERLAY_CALLBACK |
             WANTS_OPENGL_OVERLAY_CALLBACK |
@@ -234,13 +228,6 @@ void watchdog_pi::OnToolbarToolCallback(int id)
 
 void watchdog_pi::OnContextMenuItemCallback(int id)
 {
-    if(id == m_anchor_menu_id) {
-        wxFileConfig *pConf = GetOCPNConfigObject();
-
-        pConf->Write ( _T ( "AnchorAlarm" ), true );
-        pConf->Write ( _T ( "AnchorLatitude" ), m_cursor_lat);
-        pConf->Write ( _T ( "AnchorLongitude" ), m_cursor_lon);
-    }
 }
 
 #if 0
