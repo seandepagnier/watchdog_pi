@@ -5,7 +5,7 @@
  * Author:   Sean D'Epagnier
  *
  ***************************************************************************
- *   Copyright (C) 2013 by Sean D'Epagnier                                 *
+ *   Copyright (C) 2014 by Sean D'Epagnier                                 *
  *   sean at depagnier dot com                                             *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -26,6 +26,7 @@
  */
 
 #include "watchdog_pi.h"
+#include "WatchdogDialog.h"
 #include "WatchdogPrefsDialog.h"
 
 WatchdogPrefsDialog::WatchdogPrefsDialog( watchdog_pi &_watchdog_pi, wxWindow* parent)
@@ -46,6 +47,8 @@ void WatchdogPrefsDialog::OnAlarmChanged( wxListbookEvent& event )
 void WatchdogPrefsDialog::OnAlarmUpdate()
 {
     WriteAlarmActions();
+
+    m_watchdog_pi.m_pWatchdogDialog->UpdateAlarms();
 }
 
 void WatchdogPrefsDialog::OnSyncToBoat( wxCommandEvent& event )
@@ -59,6 +62,8 @@ void WatchdogPrefsDialog::OnSyncToBoat( wxCommandEvent& event )
 void WatchdogPrefsDialog::OnCurrentCourse( wxCommandEvent& event )
 {
     m_sCourse->SetValue(m_watchdog_pi.m_cog);
+
+    OnAlarmUpdate();
 }
 
 void WatchdogPrefsDialog::OnTestAlarm( wxCommandEvent& event )
@@ -158,7 +163,7 @@ void WatchdogPrefsDialog::OnInformation( wxCommandEvent& event )
     wxMessageDialog mdlg(this, _("\
 Most alarms should be self-explanatory\n\
 Normally a sound is played, however you can execute any command you like, eg:  \
-\"aplay /usr/local/share/opencpn/sounds/2bells.wav\"\
+\"aplay /usr/local/share/opencpn/sounds/2bells.wav\"\n\
 Messagebox may be useful to interrupt other applications (like a movie player)\n\
 Automatically Reset will reset the alarm once it is no longer triggered, and it may \
 be triggered again later."),

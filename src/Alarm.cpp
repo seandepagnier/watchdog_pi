@@ -39,17 +39,21 @@
 class LandFallAlarm : public Alarm
 {
 public:
-    LandFallAlarm() : Alarm(_("LandFall"), 15 /* seconds */), m_bFiredTime(false) {}
+    LandFallAlarm() : Alarm(_("LandFall"), 5 /* seconds */), m_bFiredTime(false) {}
 
     bool Test() {
         PlugIn_Position_Fix_Ex lastfix = g_watchdog_pi->LastFix();
+
+        if(isnan(lastfix.Lat))
+            return false;
+
         double lat1 = lastfix.Lat, lon1 = lastfix.Lon, lat2, lon2;
         double dist = 0, dist1 = 1000;
         int count = 0;
-        wxTimeSpan LandFallTime;
                 
         wxFileConfig *pConf = GetConfigObject();
         m_crossinglat1 = m_crossinglon1 = NAN;
+        m_LandFallTime = wxTimeSpan();
 
         if(pConf->Read ( _T ( "TimeAlarm" ), 1L)) {
             double LandFallTimeMinutes;
@@ -61,13 +65,12 @@ public:
                     (lastfix.Lat, lastfix.Lon, lastfix.Cog, dist + dist1, &lat2, &lon2);
                 if(PlugIn_GSHHS_CrossesLand(lat1, lon1, lat2, lon2)) {
                     if(dist1 < 1) {
-                        LandFallTime = wxTimeSpan::Seconds(3600.0 * dist / lastfix.Sog);
-                        if(LandFallTime.GetMinutes() <= LandFallTimeMinutes) {
-                            m_crossinglat1 = lat1, m_crossinglon1 = lon1;
-                            m_crossinglat2 = lat2, m_crossinglon2 = lon2;
+                        m_LandFallTime = wxTimeSpan::Seconds(3600.0 * dist / lastfix.Sog);
+                        m_crossinglat1 = lat1, m_crossinglon1 = lon1;
+                        m_crossinglat2 = lat2, m_crossinglon2 = lon2;
+                        if(m_LandFallTime.GetMinutes() <= LandFallTimeMinutes)
                             m_bFiredTime = true;
-                            return true;
-                        }
+                        break;
                     }
                     count = 0;
                     dist1 /= 2;
@@ -89,13 +92,14 @@ public:
                                                        LandFallDistance, &dlat, &dlon);
             
                 if(PlugIn_GSHHS_CrossesLand(lastfix.Lat, lastfix.Lon, dlat, dlon)) {
-                    m_crossinglat1 = lastfix.Lat, m_crossinglon1 = lastfix.Lon;
+                    m_crossinglat1 = dlat, m_crossinglon1 = dlon;
                     m_crossinglat2 = dlat, m_crossinglon2 = dlon;
                     return true;
                 }
             }
         }
-        return false;
+
+        return m_bFiredTime;
     }
 
     wxString GetStatus() {
@@ -109,26 +113,42 @@ public:
             return _T("");
         }
 
-        wxString s, fmt(_T("%d "));
+        wxString s, fmt(_T(" %d "));
         wxFileConfig *pConf = GetConfigObject();
 
         if(pConf->Read ( _T ( "TimeAlarm" ), 1L)) {
-            double LandFallTimeMinutes;
-            pConf->Read ( _T ( "TimeMinutes" ), &LandFallTimeMinutes, 20 );
-
-            wxTimeSpan span = wxTimeSpan::Minutes(LandFallTimeMinutes);
-            if(span.IsNull())
+            if(m_LandFallTime.IsNull())
                 s = _("LandFall not Detected");
             else {
-                if(span.GetDays())
-                    s = wxString::Format(fmt + _("Days "), span.GetDays());
-                else if(span.GetHours())
-                    s = wxString::Format(fmt + _("Hours "), span.GetHours());
-                else if(span.GetMinutes())
-                    s = wxString::Format(fmt + _("Minutes "), span.GetMinutes());
-                else
-                    s = wxString::Format(fmt + _("Seconds"), span.GetSeconds());
-                
+                int days = m_LandFallTime.GetDays();
+                if(days > 1)
+                    s = wxString::Format(fmt + _("Days"), days);
+                else {
+                    if(days)
+                        s = wxString::Format(fmt + _("Day"), days);
+                    
+                    int hours = m_LandFallTime.GetHours();
+                    if(hours > 1)
+                        s += wxString::Format(fmt + _("Hours"), hours);
+                    else {
+                        if(hours)
+                            s += wxString::Format(fmt + _("Hour"), hours);
+
+                        int minutes = m_LandFallTime.GetMinutes() - 60*hours;
+                        if(minutes > 1)
+                            s += wxString::Format(fmt + _("Minutes"), minutes);
+                        else {
+                            if(minutes)
+                                s += wxString::Format(fmt + _("Minute"), minutes);
+                            
+                            int seconds = m_LandFallTime.GetSeconds().ToLong() - 60*minutes;
+                            if(seconds > 1)
+                                s += wxString::Format(fmt + _("Seconds"), seconds);
+                            else
+                                s += wxString::Format(fmt + _("Second"), seconds);
+                        }
+                    }
+                }
             } 
             if(m_bFired && m_bFiredTime)
                 dlg.m_stLandFallTime->SetForegroundColour(*wxRED);
@@ -146,7 +166,8 @@ public:
         if(pConf->Read ( _T ( "DistanceAlarm" ), 0L)) {
             double LandFallDistance;
             pConf->Read ( _T ( "Distance" ), &LandFallDistance, 3 );
-            s += wxString::Format(_T(" Distance %.2f nm"), LandFallDistance);
+            s = wxString::Format(_T(" ") + wxString(_("Distance")) +
+                                 _T(" < %.2f nm"), LandFallDistance);
             
             if(m_bFired && !m_bFiredTime)
                 dlg.m_stLandFallDistance->SetForegroundColour(*wxRED);
@@ -178,13 +199,19 @@ public:
         dc.SetPen(wxPen(wxColour(255, 255, 0), 2));
         dc.DrawLine( r1.x, r1.y, r4.x, r4.y );
         
-        dc.SetPen(wxPen(*wxRED, 3));
+        if(m_bFired)
+            dc.SetPen(wxPen(*wxRED, 3));
+        else
+            dc.SetPen(wxPen(*wxGREEN, 3));
+
         dc.DrawCircle( r4.x, r4.y, hypot(r2.x-r3.x, r2.y-r3.y) / 2 );
     }
 
 private:
     double m_crossinglat1, m_crossinglon1;
     double m_crossinglat2, m_crossinglon2;
+
+    wxTimeSpan m_LandFallTime;
 
     bool m_bFiredTime;
 } g_LandfallAlarm;
@@ -336,7 +363,14 @@ public:
                        pConf->Read ( _T ( "Radius" ), 50 )/1853.0/60.0,
                        AnchorLongitude);
         
-        dc.SetPen(wxPen(*wxRED, 2));
+        if(m_bEnabled) {
+            if(m_bFired)
+                dc.SetPen(wxPen(*wxRED, 2));
+            else
+                dc.SetPen(wxPen(*wxGREEN, 2));
+        } else
+            dc.SetPen(wxPen(wxColour(128, 192, 0, 128), 2, wxLONG_DASH));
+         
         dc.DrawCircle( r1.x, r1.y, hypot(r1.x-r2.x, r1.y-r2.y) );
     }
 
@@ -402,19 +436,24 @@ public:
 
         double lat1 = lastfix.Lat, lon1 = lastfix.Lon, lat2, lon2, lat3, lon3;
         double dist = lastfix.Sog;
+
         if(isnan(dist))
             return;
+
         PositionBearingDistanceMercator_Plugin(lat1, lon1, Course+Tolerance,
                                                dist, &lat2, &lon2);
         PositionBearingDistanceMercator_Plugin(lat1, lon1, Course-Tolerance,
                                                dist, &lat3, &lon3);
-
         wxPoint r1, r2, r3;
         GetCanvasPixLL(&vp, &r1, lat1, lon1);
         GetCanvasPixLL(&vp, &r2, lat2, lon2);
         GetCanvasPixLL(&vp, &r3, lat3, lon3);
 
-        dc.SetPen(wxPen(*wxGREEN, 2));
+        if(m_bFired)
+            dc.SetPen(wxPen(*wxRED, 2));
+        else
+            dc.SetPen(wxPen(*wxGREEN, 2));
+
         dc.DrawLine( r1.x, r1.y, r2.x, r2.y );
         dc.DrawLine( r1.x, r1.y, r3.x, r3.y );
     }
@@ -424,7 +463,7 @@ private:
         wxFileConfig *pConf = GetConfigObject();
 
         double Course;
-        pConf->Read ( _T ( "Course" ), &Course, 20L );
+        pConf->Read ( _T ( "Course" ), &Course, 0L );
 
         return fabs(heading_resolve(g_watchdog_pi->m_cog - Course));
     }
@@ -467,7 +506,10 @@ public:
         GetCanvasPixLL(&vp, &r1, lat1, lon1);
         GetCanvasPixLL(&vp, &r2, lat2, lon2);
 
-        dc.SetPen(wxPen(*wxBLUE, 2));
+        if(m_bFired)
+            dc.SetPen(wxPen(*wxRED, 2));
+        else
+            dc.SetPen(wxPen(*wxBLUE, 2));
         dc.DrawCircle( r1.x, r1.y, hypot(r1.x-r2.x, r1.y-r2.y) );
     }
 };
@@ -513,7 +555,7 @@ Alarm *Alarms[] = {&g_LandfallAlarm, &g_NMEADataAlarm, &g_DeadmanAlarm,
 void Alarm::RenderAll(ocpnDC &dc, PlugIn_ViewPort &vp)
 {
     for(Alarm **alarm = Alarms; *alarm; alarm++)
-        if((*alarm)->m_bEnabled && (*alarm)->m_bgfxEnabled)
+        if((*alarm)->m_bgfxEnabled)
             (*alarm)->Render(dc, vp);
 }
 
@@ -574,6 +616,7 @@ void Alarm::SaveConfig()
     wxFileConfig *pConf = GetConfigObject();
 
     pConf->Write ( _T ( "Enabled" ), m_bEnabled);
+    pConf->Write ( _T ( "gfxEnabled" ), m_bgfxEnabled);
     pConf->Write ( _T ( "SoundEnabled" ), m_bSound);
     pConf->Write ( _T ( "SoundFilepath" ), m_sSound);
     pConf->Write ( _T ( "CommandEnabled" ), m_bCommand);
@@ -589,6 +632,7 @@ void Alarm::LoadConfig()
     wxFileConfig *pConf = GetConfigObject();
 
     pConf->Read ( _T ( "Enabled" ), &m_bEnabled, 0 );
+    pConf->Read ( _T ( "gfxEnabled" ), &m_bgfxEnabled, 0 );
     pConf->Read ( _T ( "SoundEnabled" ), &m_bSound, 1 );
     pConf->Read ( _T ( "SoundFilepath" ), &m_sSound, _T("") );
     pConf->Read ( _T ( "CommandEnabled" ), &m_bCommand, 0 );
