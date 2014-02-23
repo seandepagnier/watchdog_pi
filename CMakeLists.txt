@@ -22,19 +22,12 @@ INCLUDE("cmake/PluginConfigure.cmake")
 
 
 SET(SRC_WATCHDOG
-            src/watchdog_pi.h
             src/watchdog_pi.cpp
-            src/watchdog_pi.h
             src/watchdog_pi.cpp
-            src/WatchdogDialog.h
             src/WatchdogDialog.cpp
-            src/WatchdogPrefsDialog.h
             src/WatchdogPrefsDialog.cpp
-            src/Alarm.h
             src/Alarm.cpp
-            src/WatchdogUI.h
             src/WatchdogUI.cpp
-            src/icons.h
             src/icons.cpp
 	)
 ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRC_WATCHDOG})
