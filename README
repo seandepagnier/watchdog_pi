@@ -14,8 +14,11 @@ Build as normally:
 * cd ..
 * cd build
 * cmake ..
-* cmake --build .
+* make
+* sudo make install
+
+* make package (to build deb, or installers for windows or mac)
 
 License
 =======
-The plugin code is licensed under the terms of the GPL v2 or, at your will, later.
+The plugin code is licensed under the terms of the GPL v3 or, at your will, later.

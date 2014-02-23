@@ -25,13 +25,9 @@
  ***************************************************************************
  */
 
-#include "wx/wxprec.h"
+#include <wx/wx.h>
 
-#ifndef  WX_PRECOMP
-  #include "wx/wx.h"
-#endif //precompiled headers
-
-#include "../../../include/ocpndc.h"
+#include "ocpndc.h"
 
 #include "watchdog_pi.h"
 #include "WatchdogDialog.h"
@@ -68,7 +64,7 @@ extern "C" DECL_EXP void destroy_pi(opencpn_plugin* p)
 watchdog_pi *g_watchdog_pi = NULL;
 
 watchdog_pi::watchdog_pi(void *ppimgr)
-    : opencpn_plugin_18(ppimgr)
+    : opencpn_plugin_110(ppimgr)
 {
     // Create the PlugIn icons
     initialize_images();

@@ -28,23 +28,18 @@
 #ifndef _WATCHMANPI_H_
 #define _WATCHMANPI_H_
 
-#include "wx/wxprec.h"
-
-#ifndef  WX_PRECOMP
-  #include "wx/wx.h"
-#endif //precompiled headers
+#include "wx/wx.h"
 
 #include <wx/fileconf.h>
 
-#define     PLUGIN_VERSION_MAJOR    1
-#define     PLUGIN_VERSION_MINOR    0
+#include "version.h"
 
 #define     MY_API_VERSION_MAJOR    1
-#define     MY_API_VERSION_MINOR    8
+#define     MY_API_VERSION_MINOR    10
 
 #define ABOUT_AUTHOR_URL "http://seandepagnier.users.sourceforge.net"
 
-#include "../../../include/ocpn_plugin.h"
+#include "ocpn_plugin.h"
 
 #ifdef __MSVC__
 #include <float.h>
@@ -94,7 +89,7 @@ class ocpnDC;
 class WatchdogDialog;
 class WatchdogPrefsDialog;
 
-class watchdog_pi : public wxEvtHandler, public opencpn_plugin_18
+class watchdog_pi : public wxEvtHandler, public opencpn_plugin_110
 {
 public:
 
