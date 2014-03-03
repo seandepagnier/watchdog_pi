@@ -9,17 +9,13 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.6.2)
 
 PROJECT(watchdog_pi)
 SET(PACKAGE_NAME watchdog_pi)
-SET(PLUGIN_SOURCE_DIR .)
+SET(CPACK_PACKAGE_CONTACT "Sean D'Epagnier ")
 MESSAGE (STATUS "*** Building ${PACKAGE_NAME} ***")
 
 SET(VERSION_MAJOR "1")
 SET(VERSION_MINOR "0")
 
 INCLUDE("cmake/PluginConfigure.cmake")
-
-# For convenience we define the sources as a variable. You can add 
-# header files and cpp/c files and CMake will sort them out
-
 
 SET(SRC_WATCHDOG
             src/watchdog_pi.cpp
