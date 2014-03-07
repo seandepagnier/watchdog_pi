@@ -29,5 +29,5 @@ SET(SRC_WATCHDOG
 ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRC_WATCHDOG})
 
 INCLUDE("cmake/PluginInstall.cmake")
-INCLUDE("cmake/PluginLocalization.cmake")
+#INCLUDE("cmake/PluginLocalization.cmake")
 INCLUDE("cmake/PluginPackage.cmake")

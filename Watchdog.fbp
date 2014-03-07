@@ -2248,7 +2248,7 @@
                                                     <event name="OnRightUp"></event>
                                                     <event name="OnSetFocus"></event>
                                                     <event name="OnSize"></event>
-                                                    <event name="OnSpinCtrl">OnAlarmUpdate</event>
+                                                    <event name="OnSpinCtrl">OnAlarmUpdateSpin</event>
                                                     <event name="OnSpinCtrlText"></event>
                                                     <event name="OnUpdateUI"></event>
                                                 </object>
@@ -3149,7 +3149,7 @@
                                                     <event name="OnRightUp"></event>
                                                     <event name="OnSetFocus"></event>
                                                     <event name="OnSize"></event>
-                                                    <event name="OnSpinCtrl">OnAlarmUpdate</event>
+                                                    <event name="OnSpinCtrl">OnAlarmUpdateSpin</event>
                                                     <event name="OnSpinCtrlText"></event>
                                                     <event name="OnUpdateUI"></event>
                                                 </object>
@@ -3497,7 +3497,7 @@
                                             <event name="OnRightUp"></event>
                                             <event name="OnSetFocus"></event>
                                             <event name="OnSize"></event>
-                                            <event name="OnSpinCtrl">OnAlarmUpdate</event>
+                                            <event name="OnSpinCtrl">OnAlarmUpdateSpin</event>
                                             <event name="OnSpinCtrlText"></event>
                                             <event name="OnUpdateUI"></event>
                                         </object>
@@ -4305,7 +4305,7 @@
                                                     <event name="OnRightUp"></event>
                                                     <event name="OnSetFocus"></event>
                                                     <event name="OnSize"></event>
-                                                    <event name="OnSpinCtrl">OnAlarmUpdate</event>
+                                                    <event name="OnSpinCtrl">OnAlarmUpdateSpin</event>
                                                     <event name="OnSpinCtrlText"></event>
                                                     <event name="OnUpdateUI"></event>
                                                 </object>
@@ -4752,7 +4752,7 @@
                                                     <event name="OnRightUp"></event>
                                                     <event name="OnSetFocus"></event>
                                                     <event name="OnSize"></event>
-                                                    <event name="OnSpinCtrl">OnAlarmUpdate</event>
+                                                    <event name="OnSpinCtrl">OnAlarmUpdateSpin</event>
                                                     <event name="OnSpinCtrlText"></event>
                                                     <event name="OnUpdateUI"></event>
                                                 </object>
@@ -5005,7 +5005,7 @@
                                                     <event name="OnRightUp"></event>
                                                     <event name="OnSetFocus"></event>
                                                     <event name="OnSize"></event>
-                                                    <event name="OnSpinCtrl">OnAlarmUpdate</event>
+                                                    <event name="OnSpinCtrl">OnAlarmUpdateSpin</event>
                                                     <event name="OnSpinCtrlText"></event>
                                                     <event name="OnUpdateUI"></event>
                                                 </object>
@@ -6898,7 +6898,7 @@
                                         <event name="OnChar"></event>
                                         <event name="OnEnterWindow"></event>
                                         <event name="OnEraseBackground"></event>
-                                        <event name="OnFileChanged">OnAlarmUpdate</event>
+                                        <event name="OnFileChanged">OnAlarmUpdateFile</event>
                                         <event name="OnKeyDown"></event>
                                         <event name="OnKeyUp"></event>
                                         <event name="OnKillFocus"></event>
@@ -7368,7 +7368,7 @@
                                         <event name="OnRightUp"></event>
                                         <event name="OnSetFocus"></event>
                                         <event name="OnSize"></event>
-                                        <event name="OnSpinCtrl">OnAlarmUpdate</event>
+                                        <event name="OnSpinCtrl">OnAlarmUpdateSpin</event>
                                         <event name="OnSpinCtrlText"></event>
                                         <event name="OnUpdateUI"></event>
                                     </object>

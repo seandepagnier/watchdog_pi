@@ -11,7 +11,7 @@ configure_file(cmake/version.h.in ${CMAKE_SOURCE_DIR}/src/version.h)
 SET(PACKAGE_VERSION "${VERSION_MAJOR}.${VERSION_MINOR}" )
 
 #SET(CMAKE_BUILD_TYPE Debug)
-#SET(CMAKE_VERBOSE_MAKEFILE ON)
+SET(CMAKE_VERBOSE_MAKEFILE ON)
 
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/include ${CMAKE_SOURCE_DIR}/src)
 
@@ -35,21 +35,27 @@ IF(NOT WIN32)
 ENDIF(NOT WIN32)
 
 # Add some definitions to satisfy MS
-IF(WIN32)
+IF(MSVC)
     ADD_DEFINITIONS(-D__MSVC__)
     ADD_DEFINITIONS(-D_CRT_NONSTDC_NO_DEPRECATE -D_CRT_SECURE_NO_DEPRECATE)
-ENDIF(WIN32)
+ENDIF(MSVC)
 
 SET(wxWidgets_USE_LIBS base core net xml html adv)
 SET(BUILD_SHARED_LIBS TRUE)
+
 FIND_PACKAGE(wxWidgets REQUIRED)
+
+IF(MSYS)
+# this is just a hack. I think the bug is in FindwxWidgets.cmake
+STRING( REGEX REPLACE "/usr/local" "\\\\;C:/MinGW/msys/1.0/usr/local" wxWidgets_INCLUDE_DIRS ${wxWidgets_INCLUDE_DIRS} )
+ENDIF(MSYS)
 
 INCLUDE(${wxWidgets_USE_FILE})
 
 FIND_PACKAGE(OpenGL)
 IF(OPENGL_GLU_FOUND)
 
-    SET(wxWidgets_USE_LIBS ${wxWidgets_USE_LIBS} gl )
+    SET(wxWidgets_USE_LIBS ${wxWidgets_USE_LIBS} gl)
     INCLUDE_DIRECTORIES(${OPENGL_INCLUDE_DIR})
 
     MESSAGE (STATUS "Found OpenGL..." )
@@ -61,8 +67,7 @@ ELSE(OPENGL_GLU_FOUND)
     MESSAGE (STATUS "OpenGL not found..." )
 ENDIF(OPENGL_GLU_FOUND)
 
-
 SET(BUILD_SHARED_LIBS TRUE)
-#SET( wxWidgets_USE_DEBUG ON)
 
 FIND_PACKAGE(Gettext REQUIRED)
+

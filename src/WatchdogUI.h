@@ -139,10 +139,10 @@ class WatchdogPrefsDialogBase : public wxDialog
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnAlarmChanged( wxListbookEvent& event ) { event.Skip(); }
 		virtual void OnAlarmUpdate( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnAlarmUpdate( wxSpinEvent& event ) { event.Skip(); }
+		virtual void OnAlarmUpdateSpin( wxSpinEvent& event ) { event.Skip(); }
 		virtual void OnSyncToBoat( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnCurrentCourse( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnAlarmUpdate( wxFileDirPickerEvent& event ) { event.Skip(); }
+		virtual void OnAlarmUpdateFile( wxFileDirPickerEvent& event ) { event.Skip(); }
 		virtual void OnTestAlarm( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnInformation( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAboutAuthor( wxCommandEvent& event ) { event.Skip(); }

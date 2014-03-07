@@ -37,9 +37,9 @@ public:
 
     void OnAlarmChanged( wxListbookEvent& event );
     void OnAlarmUpdate();
-    void OnAlarmUpdate( wxFileDirPickerEvent& event ) { OnAlarmUpdate(); }
+    void OnAlarmUpdateFile( wxFileDirPickerEvent& event ) { OnAlarmUpdate(); }
     void OnAlarmUpdate( wxCommandEvent& event ) { OnAlarmUpdate(); }
-    void OnAlarmUpdate( wxSpinEvent& event ) { OnAlarmUpdate(); }
+    void OnAlarmUpdateSpin( wxSpinEvent& event ) { OnAlarmUpdate(); }
 
     void OnSyncToBoat( wxCommandEvent& event );
     void OnCurrentCourse( wxCommandEvent& event );
