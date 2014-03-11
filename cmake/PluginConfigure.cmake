@@ -1,3 +1,9 @@
+##---------------------------------------------------------------------------
+## Author:      Sean D'Epagnier
+## Copyright:   
+## License:     GPLv3+
+##---------------------------------------------------------------------------
+
 SET(PLUGIN_SOURCE_DIR .)
 
 # This should be 2.8.0 to have FindGTK2 module
@@ -7,23 +13,25 @@ IF (COMMAND cmake_policy)
   CMAKE_POLICY(SET CMP0011 OLD)
 ENDIF (COMMAND cmake_policy)
 
+MESSAGE (STATUS "*** Staging to build ${PACKAGE_NAME} ***")
+
 configure_file(cmake/version.h.in ${CMAKE_SOURCE_DIR}/src/version.h)
 SET(PACKAGE_VERSION "${VERSION_MAJOR}.${VERSION_MINOR}" )
 
 #SET(CMAKE_BUILD_TYPE Debug)
-SET(CMAKE_VERBOSE_MAKEFILE ON)
+#SET(CMAKE_VERBOSE_MAKEFILE ON)
 
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/include ${CMAKE_SOURCE_DIR}/src)
 
 # SET(PROFILING 1)
 
 #  IF NOT DEBUGGING CFLAGS="-O2 -march=native"
-IF(NOT WIN32)
+IF(NOT MSVC)
  IF(PROFILING)
   ADD_DEFINITIONS( "-Wall -g -fprofile-arcs -ftest-coverage -fexceptions" )
  ELSE(PROFILING)
-  ADD_DEFINITIONS( "-Wall -g -fexceptions" )
-# ADD_DEFINITIONS( "-Wall -g -O2 -fexceptions" )
+#  ADD_DEFINITIONS( "-Wall -g -fexceptions" )
+ ADD_DEFINITIONS( "-Wall -g -O2 -fexceptions" )
  ENDIF(PROFILING)
 
  IF(NOT APPLE)
@@ -32,7 +40,7 @@ IF(NOT WIN32)
   SET(CMAKE_SHARED_LINKER_FLAGS "-Wl -undefined dynamic_lookup")
  ENDIF(NOT APPLE)
 
-ENDIF(NOT WIN32)
+ENDIF(NOT MSVC)
 
 # Add some definitions to satisfy MS
 IF(MSVC)

@@ -1,3 +1,9 @@
+##---------------------------------------------------------------------------
+## Author:      Sean D'Epagnier
+## Copyright:   
+## License:     GPLv3+
+##---------------------------------------------------------------------------
+
 IF(NOT APPLE)
   TARGET_LINK_LIBRARIES( ${PACKAGE_NAME} ${wxWidgets_LIBRARIES} ${EXTRA_LIBS} )
 ENDIF(NOT APPLE)
@@ -15,15 +21,12 @@ IF(WIN32)
   IF(MINGW)
 # assuming wxwidgets is compiled with unicode, this is needed for mingw headers
     ADD_DEFINITIONS( " -DUNICODE" )
-    TARGET_LINK_LIBRARIES(${PACKAGE_NAME} ${OPENGL_LIBRARIES} )
+    TARGET_LINK_LIBRARIES(${PACKAGE_NAME} ${OPENGL_LIBRARIES})
     SET(OPENCPN_IMPORT_LIB "${PARENT}.dll")
+    SET( CMAKE_SHARED_LINKER_FLAGS "-L../buildwin" )
   ENDIF(MINGW)
 
-  SET( CMAKE_SHARED_LINKER_FLAGS "-L../buildwin" )
-  MESSAGE (STATUS "import lib: ${OPENCPN_IMPORT_LIB}")
-
   TARGET_LINK_LIBRARIES( ${PACKAGE_NAME} ${OPENCPN_IMPORT_LIB} )
-  ADD_DEPENDENCIES(${PACKAGE_NAME} ${PARENT})
 ENDIF(WIN32)
 
 IF(UNIX)
@@ -70,9 +73,9 @@ IF(WIN32)
     SET(INSTALL_DIRECTORY "plugins\\\\${PACKAGE_NAME}")
   ENDIF(CMAKE_CROSSCOMPILING)
 
-  IF(EXISTS ${INSTALL_DIRECTORY}/data)
+  IF(EXISTS ${CMAKE_SOURCE_DIR}/data)
     INSTALL(DIRECTORY data DESTINATION "${INSTALL_DIRECTORY}")
-  ENDIF(EXISTS ${INSTALL_DIRECTORY}/data)
+  ENDIF(EXISTS ${CMAKE_SOURCE_DIR}/data)
 ENDIF(WIN32)
 
 IF(UNIX AND NOT APPLE)
