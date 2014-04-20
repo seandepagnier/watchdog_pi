@@ -60,7 +60,7 @@ void WatchdogDialog::OnDisableAllAlarms( wxCommandEvent& event )
 
 void WatchdogDialog::OnPreferences( wxCommandEvent& event )
 {
-    m_watchdog_pi.ShowPreferencesDialog(this);
+    m_watchdog_pi.ShowPreferencesDialog( this );
 }
 
 void WatchdogDialog::OnReset( wxCommandEvent& event )

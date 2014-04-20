@@ -107,6 +107,7 @@ int watchdog_pi::Init(void)
             WANTS_OPENGL_OVERLAY_CALLBACK |
             WANTS_TOOLBAR_CALLBACK    |
             WANTS_CURSOR_LATLON       |
+//            WANTS_PREFERENCES         |
             WANTS_NMEA_SENTENCES |
             WANTS_NMEA_EVENTS         |
             WANTS_AIS_SENTENCES       |
@@ -126,11 +127,6 @@ bool watchdog_pi::DeInit(void)
             m_pWatchdogDialog->Close();
             delete m_pWatchdogDialog;
             m_pWatchdogDialog = NULL;
-        }
-
-        if(m_pWatchdogPrefsDialog) {
-            m_pWatchdogPrefsDialog->Close();
-            delete m_pWatchdogPrefsDialog;
             m_pWatchdogPrefsDialog = NULL;
         }
     }
@@ -212,7 +208,7 @@ void watchdog_pi::OnToolbarToolCallback(int id)
         m_pWatchdogDialog = new WatchdogDialog(*this, GetOCPNCanvasWindow());
         m_pWatchdogDialog->Move(wxPoint(m_watchdog_dialog_x, m_watchdog_dialog_y));
 
-        m_pWatchdogPrefsDialog = new WatchdogPrefsDialog(*this, GetOCPNCanvasWindow());
+        m_pWatchdogPrefsDialog = new WatchdogPrefsDialog(*this, m_pWatchdogDialog);
     }
 
     m_pWatchdogDialog->Show(!m_pWatchdogDialog->IsShown());
@@ -339,4 +335,9 @@ void watchdog_pi::SetPositionFixEx(PlugIn_Position_Fix_Ex &pfix)
         m_LastFixTime = wxDateTime::Now();
 
     m_lastfix = pfix;
+}
+
+void watchdog_pi::ShowPreferencesDialog( wxWindow* )
+{
+    m_pWatchdogPrefsDialog->Show();
 }

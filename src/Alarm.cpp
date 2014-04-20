@@ -571,6 +571,7 @@ public:
             dc.SetPen(wxPen(*wxRED, 2));
         else
             dc.SetPen(wxPen(*wxBLUE, 2));
+        dc.SetBrush(*wxTRANSPARENT_BRUSH);
         dc.DrawCircle( r1.x, r1.y, hypot(r1.x-r2.x, r1.y-r2.y) );
     }
 };
