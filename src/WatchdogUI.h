@@ -70,6 +70,8 @@ class WatchdogDialogBase : public wxDialog
 		wxStaticText* m_stAnchorDistance;
 		wxStaticText* m_stTextCourseError;
 		wxStaticText* m_stCourseError;
+		wxStaticText* m_stTextStarboardCourseError;
+		wxStaticText* m_stStarboardCourseError;
 		wxStaticText* m_stTextUnderSpeed;
 		wxStaticText* m_stUnderSpeed;
 		wxStaticText* m_stTextOverSpeed;
@@ -108,12 +110,15 @@ class WatchdogPrefsDialogBase : public wxDialog
 		wxStaticText* m_staticText9;
 		wxStaticText* m_staticText39;
 		wxStaticText* m_staticText39121;
-		wxPanel* m_panel6;
+		wxPanel* m_pCourse;
 		wxStaticText* m_staticText32;
 		wxStaticText* m_staticText18;
 		wxStaticText* m_staticText21;
 		wxButton* m_bCurrentCourse;
+		wxCheckBox* m_cbSeparatePortAndStarboard;
 		wxStaticText* m_staticText3912;
+		wxPanel* m_pCourseStarboard;
+		wxStaticText* m_staticText50;
 		wxPanel* m_panel5;
 		wxStaticText* m_staticText44;
 		wxStaticText* m_staticText24;
@@ -142,6 +147,7 @@ class WatchdogPrefsDialogBase : public wxDialog
 		virtual void OnAlarmUpdateSpin( wxSpinEvent& event ) { event.Skip(); }
 		virtual void OnSyncToBoat( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnCurrentCourse( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnCheckSeparatePortAndStarboard( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAlarmUpdateFile( wxFileDirPickerEvent& event ) { event.Skip(); }
 		virtual void OnTestAlarm( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnInformation( wxCommandEvent& event ) { event.Skip(); }

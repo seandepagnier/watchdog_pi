@@ -33,6 +33,7 @@ public:
     static void ResetAll();
     static void UpdateStatusAll();
     static void NMEAString(const wxString &string);
+    static void ConfigCoursePort(bool read, wxCheckBox *control);
 
     Alarm(wxString name, int interval=1);
 
@@ -48,20 +49,20 @@ public:
 
     void OnTimer( wxTimerEvent & );
 
-protected:
     wxFileConfig *GetConfigObject();
 
+protected:
     bool m_bEnabled, m_bgfxEnabled;
     bool m_bFired;
+
+    wxString m_sName;
 
 private:
     friend class WatchdogPrefsDialog;
 
     void ConfigItem(bool read, wxString name, wxControl *control);
-
     virtual void GetStatusControls(wxControl *&Text, wxControl *&status) { Text = status = NULL; }
 
-    wxString m_sName;
     int m_interval;
 
     bool m_bSound, m_bCommand, m_bMessageBox, m_bRepeat, m_bAutoReset;
@@ -72,5 +73,6 @@ private:
     wxDateTime m_LastAlarmTime;
 };
 
-enum AlarmNames {LANDFALL, NMEADATA, DEADMAN, ANCHOR, COURSE, UNDERSPEED, OVERSPEED, DEPTH, WIND};
+enum AlarmNames {LANDFALL, NMEADATA, DEADMAN, ANCHOR, COURSE, COURSESTARBOARD,
+                 UNDERSPEED, OVERSPEED, DEPTH, WIND};
 extern Alarm *Alarms[];

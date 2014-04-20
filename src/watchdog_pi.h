@@ -127,7 +127,6 @@ public:
       void SetWatchdogDialogY    (int x){ m_watchdog_dialog_y = x;}
 
       void OnWatchdogDialogClose();
-      void ShowPreferencesDialog( wxWindow* parent );
 
       PlugIn_Position_Fix_Ex &LastFix() { return m_lastfix; }
 

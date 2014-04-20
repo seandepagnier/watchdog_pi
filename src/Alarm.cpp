@@ -167,7 +167,8 @@ public:
             double LandFallDistance;
             pConf->Read ( _T ( "Distance" ), &LandFallDistance, 3 );
             s = wxString::Format(_T(" ") + wxString(_("Distance")) +
-                                 _T(" < %.2f nm"), LandFallDistance);
+                                 (m_bFired ? _T(" <") : _T(" >")) +
+                                 _T(" %.2f nm"), LandFallDistance);
             
             if(m_bFired && !m_bFiredTime)
                 dlg.m_stLandFallDistance->SetForegroundColour(*wxRED);
@@ -395,7 +396,10 @@ private:
 class CourseAlarm : public Alarm
 {
 public:
-    CourseAlarm() : Alarm(_("Off Course")) {}
+    CourseAlarm() : Alarm(_("Off Course")), m_Mode(BOTH) {}
+    void SetPort(bool port) {
+        m_Mode = port ? PORT : BOTH;
+    }
 
     void GetStatusControls(wxControl *&Text, wxControl *&status) {
         WatchdogDialog &dlg = *g_watchdog_pi->m_pWatchdogDialog;
@@ -420,6 +424,9 @@ public:
             wxString fmt(_T("%.0f "));
             s = wxString::Format(fmt + _("degrees(s)"), courseerror);
         }
+
+        if(m_Mode == PORT)
+            s += _T(" Port");
 
         return s;
     }
@@ -465,9 +472,60 @@ private:
         double Course;
         pConf->Read ( _T ( "Course" ), &Course, 0L );
 
-        return fabs(heading_resolve(g_watchdog_pi->m_cog - Course));
+        double error = heading_resolve(g_watchdog_pi->m_cog - Course);
+
+        if(m_Mode == PORT)
+            return -error;
+
+        return fabs(error);
     }
+    
+    enum Mode { PORT, BOTH } m_Mode;
 } g_CourseAlarm;
+
+class CourseStarboardAlarm : public Alarm
+{
+public:
+    CourseStarboardAlarm() : Alarm(_("Off Course Starboard")) {}
+
+    void GetStatusControls(wxControl *&Text, wxControl *&status) {
+        WatchdogDialog &dlg = *g_watchdog_pi->m_pWatchdogDialog;
+        Text = dlg.m_stTextStarboardCourseError;
+        status = dlg.m_stStarboardCourseError;
+    }
+
+    bool Test() {
+        wxFileConfig *pConf = g_CourseAlarm.GetConfigObject();
+        double Tolerance;
+        pConf->Read ( _T ( "Tolerance" ), &Tolerance, 20L );
+
+        return CourseError() > Tolerance;
+    }
+
+    wxString GetStatus() {
+        double courseerror = CourseError();
+        wxString s;
+        if(isnan(courseerror))
+            s = _T("N/A");
+        else {
+            wxString fmt(_T("%.0f "));
+            s = wxString::Format(fmt + _("degrees(s) Starboard"), courseerror);
+        }
+
+        return s;
+    }
+
+private:
+    double CourseError() {
+        wxFileConfig *pConf = g_CourseAlarm.GetConfigObject();
+
+        double Course;
+        pConf->Read ( _T ( "Course" ), &Course, 0L );
+
+        return heading_resolve(g_watchdog_pi->m_cog - Course);
+    }
+    
+} g_CourseStarboardAlarm;
 
 class SpeedAlarm : public Alarm
 {
@@ -487,8 +545,11 @@ public:
         if(isnan(g_watchdog_pi->m_sog))
             s = _T("N/A");
         else {
-            wxString fmt(_T("%.1f "));
-            s = wxString::Format(fmt, g_watchdog_pi->m_sog);
+            wxString fmt(_T("%.1f"));
+            double knots = Knots();
+            s = wxString::Format(fmt + (g_watchdog_pi->m_sog < knots ?
+                                        _T(" < ") : _T(" > "))
+                                 + fmt, g_watchdog_pi->m_sog, knots);
         }
 
         return s;
@@ -549,7 +610,8 @@ public:
 ////////// Alarm Base Class /////////////////
 
 Alarm *Alarms[] = {&g_LandfallAlarm, &g_NMEADataAlarm, &g_DeadmanAlarm,
-                   &g_AnchorAlarm, &g_CourseAlarm, &g_UnderSpeedAlarm,
+                   &g_AnchorAlarm, &g_CourseAlarm, &g_CourseStarboardAlarm,
+                   &g_UnderSpeedAlarm,
                    &g_OverSpeedAlarm, 0, 0, 0};
 
 void Alarm::RenderAll(ocpnDC &dc, PlugIn_ViewPort &vp)
@@ -583,6 +645,17 @@ void Alarm::UpdateStatusAll()
 void Alarm::NMEAString(const wxString &string)
 {
     g_NMEADataAlarm.NMEAString(string);
+}
+
+void Alarm::ConfigCoursePort(bool read, wxCheckBox *control)
+{
+    g_CourseAlarm.ConfigItem(read, _T ( "SeparatePortAndStarboard" ), control);
+    g_CourseAlarm.SetPort(control->GetValue());
+
+    if(control->GetValue())
+       g_CourseStarboardAlarm.m_bEnabled = g_CourseAlarm.m_bEnabled;
+    else
+        g_CourseStarboardAlarm.m_bEnabled = false;
 }
 
 Alarm::Alarm(wxString name, int interval)

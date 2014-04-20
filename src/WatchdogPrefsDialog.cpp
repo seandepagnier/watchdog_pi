@@ -33,6 +33,8 @@ WatchdogPrefsDialog::WatchdogPrefsDialog( watchdog_pi &_watchdog_pi, wxWindow* p
     : WatchdogPrefsDialogBase( parent ), m_watchdog_pi(_watchdog_pi), m_breading(false)
 {
     ReadAlarmActions();
+    Alarm::ConfigCoursePort(true, m_cbSeparatePortAndStarboard);
+    ConfigurePortAlarms();
 }
 
 WatchdogPrefsDialog::~WatchdogPrefsDialog()
@@ -49,6 +51,13 @@ void WatchdogPrefsDialog::OnAlarmUpdate()
     WriteAlarmActions();
 
     m_watchdog_pi.m_pWatchdogDialog->UpdateAlarms();
+}
+
+void WatchdogPrefsDialog::OnCheckSeparatePortAndStarboard( wxCommandEvent& event )
+{
+    Alarm::ConfigCoursePort(false, m_cbSeparatePortAndStarboard);
+    ConfigurePortAlarms();
+    m_lbAlarm->SetSelection(COURSE);
 }
 
 void WatchdogPrefsDialog::OnSyncToBoat( wxCommandEvent& event )
@@ -89,6 +98,7 @@ void WatchdogPrefsDialog::AlarmActions(bool read)
         m_cbGraphicsEnabled->SetValue(alarm->m_bgfxEnabled);
         m_cbSound->SetValue(alarm->m_bSound);
         m_fpSound->SetPath(alarm->m_sSound);
+        
         m_cbCommand->SetValue(alarm->m_bCommand);
         m_tCommand->SetValue(alarm->m_sCommand);
         m_cbMessageBox->SetValue(alarm->m_bMessageBox);
@@ -140,6 +150,10 @@ void WatchdogPrefsDialog::AlarmActions(bool read)
         alarm->ConfigItem(read, _T ( "Course" ), m_sCourse);
         break;
 
+    case COURSESTARBOARD:
+        m_cbGraphicsEnabled->Disable();
+        break;
+
     case UNDERSPEED:
         alarm->ConfigItem(read, _T ( "Knots" ), m_tUnderSpeed);
         break;
@@ -156,6 +170,22 @@ void WatchdogPrefsDialog::AlarmActions(bool read)
 Alarm &WatchdogPrefsDialog::CurrentAlarm()
 {
     return *Alarms[m_lbAlarm->GetSelection()];
+}
+
+void WatchdogPrefsDialog::ConfigurePortAlarms()
+{
+    wxString offcourse = _("Off Course"), courseerror = _("Course Error"), port = _("Port");
+    m_lbAlarm->RemovePage(COURSE);
+    if(m_cbSeparatePortAndStarboard->GetValue()) {
+        m_lbAlarm->InsertPage(COURSE, m_pCourse, offcourse + _T(" ") + port);
+        m_lbAlarm->InsertPage(COURSESTARBOARD, m_pCourseStarboard, _("Off Course Starboard"));
+        m_watchdog_pi.m_pWatchdogDialog->m_stTextCourseError
+            ->SetLabel(courseerror + _T(" ") + port);
+    } else {
+        m_lbAlarm->InsertPage(COURSE, m_pCourse, offcourse);
+        m_lbAlarm->RemovePage(COURSESTARBOARD);
+        m_watchdog_pi.m_pWatchdogDialog->m_stTextCourseError->SetLabel(courseerror);
+    }
 }
 
 void WatchdogPrefsDialog::OnInformation( wxCommandEvent& event )

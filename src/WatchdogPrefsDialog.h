@@ -41,6 +41,8 @@ public:
     void OnAlarmUpdate( wxCommandEvent& event ) { OnAlarmUpdate(); }
     void OnAlarmUpdateSpin( wxSpinEvent& event ) { OnAlarmUpdate(); }
 
+    void OnCheckSeparatePortAndStarboard( wxCommandEvent& event );
+
     void OnSyncToBoat( wxCommandEvent& event );
     void OnCurrentCourse( wxCommandEvent& event );
     void OnTestAlarm( wxCommandEvent& event );
@@ -51,6 +53,8 @@ private:
     void AlarmActions(bool read);
 
     Alarm &CurrentAlarm();
+    
+    void ConfigurePortAlarms();
 
     void OnInformation( wxCommandEvent& event );
     void OnAboutAuthor( wxCommandEvent& event );
