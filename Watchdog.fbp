@@ -5562,7 +5562,7 @@
                                             <property name="gripper">0</property>
                                             <property name="hidden">0</property>
                                             <property name="id">wxID_ANY</property>
-                                            <property name="label">Settings the same as Off Course Port, but different with different Alarm Actions possible</property>
+                                            <property name="label">Settings the same as Off Course Port, with different Alarm Actions possible.</property>
                                             <property name="max_size"></property>
                                             <property name="maximize_button">0</property>
                                             <property name="maximum_size"></property>

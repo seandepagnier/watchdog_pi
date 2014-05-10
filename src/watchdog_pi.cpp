@@ -270,10 +270,18 @@ void watchdog_pi::OnTimer( wxTimerEvent & )
     /* calculate course and speed over ground from gps */
     double dt = m_lastfix.FixTime - m_lasttimerfix.FixTime;
     if(!isnan(m_lastfix.Lat) && !isnan(m_lasttimerfix.Lat) && dt > 0) {
-        DistanceBearingMercator_Plugin(m_lastfix.Lat, m_lastfix.Lon,
-                                       m_lasttimerfix.Lat, m_lasttimerfix.Lon, &m_cog, &m_sog);
         /* this way helps avoid surge speed from gps from surfing waves etc... */
-        m_sog *= 3600.0 / dt;
+        double cog, sog;
+        DistanceBearingMercator_Plugin(m_lastfix.Lat, m_lastfix.Lon,
+                                       m_lasttimerfix.Lat, m_lasttimerfix.Lon, &cog, &sog);
+        sog *= 3600.0 / dt;
+
+        if(isnan(m_cog))
+            m_cog = cog, m_sog = sog;
+        else {
+            m_cog = .25*cog + .75*m_cog;
+            m_sog = .25*sog + .75*m_sog;
+        }
     } else
         m_sog = m_cog = NAN;
     
