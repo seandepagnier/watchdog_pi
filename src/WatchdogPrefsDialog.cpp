@@ -34,8 +34,10 @@ WatchdogPrefsDialog::WatchdogPrefsDialog( watchdog_pi &_watchdog_pi, wxWindow* p
 {
     ReadAlarmActions();
     Alarm::ConfigCoursePort(true, m_cbSeparatePortAndStarboard);
+
     m_lbAlarm->RemovePage(COURSESTARBOARD);
-    ConfigurePortAlarms();
+    if(m_cbSeparatePortAndStarboard->GetValue())
+        ConfigurePortAlarms();
 }
 
 WatchdogPrefsDialog::~WatchdogPrefsDialog()
