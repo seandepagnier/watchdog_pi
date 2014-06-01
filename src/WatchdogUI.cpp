@@ -211,7 +211,7 @@ WatchdogPrefsDialogBase::WatchdogPrefsDialogBase( wxWindow* parent, wxWindowID i
 	m_panel2 = new wxPanel( m_lbAlarm, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxFlexGridSizer* fgSizer91;
 	fgSizer91 = new wxFlexGridSizer( 0, 1, 0, 0 );
-	fgSizer91->AddGrowableCol( 1 );
+	fgSizer91->AddGrowableCol( 0 );
 	fgSizer91->SetFlexibleDirection( wxBOTH );
 	fgSizer91->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
@@ -375,7 +375,7 @@ WatchdogPrefsDialogBase::WatchdogPrefsDialogBase( wxWindow* parent, wxWindowID i
 	fgSizer221->SetFlexibleDirection( wxBOTH );
 	fgSizer221->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_staticText50 = new wxStaticText( m_pCourseStarboard, wxID_ANY, _("Settings the same as Off Course Port, but different with different Alarm Actions possible"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText50 = new wxStaticText( m_pCourseStarboard, wxID_ANY, _("Settings the same as Off Course Port, with different Alarm Actions possible."), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText50->Wrap( 300 );
 	fgSizer221->Add( m_staticText50, 0, wxALL, 5 );
 	

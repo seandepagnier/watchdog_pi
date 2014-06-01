@@ -2138,11 +2138,11 @@
                         <event name="OnSetFocus"></event>
                         <event name="OnSize"></event>
                         <event name="OnUpdateUI"></event>
-                        <object class="listbookpage" expanded="0">
+                        <object class="listbookpage" expanded="1">
                             <property name="bitmap"></property>
                             <property name="label">Landfall</property>
                             <property name="select">0</property>
-                            <object class="wxPanel" expanded="0">
+                            <object class="wxPanel" expanded="1">
                                 <property name="BottomDockable">1</property>
                                 <property name="LeftDockable">1</property>
                                 <property name="RightDockable">1</property>
@@ -2870,11 +2870,11 @@
                                 </object>
                             </object>
                         </object>
-                        <object class="listbookpage" expanded="0">
+                        <object class="listbookpage" expanded="1">
                             <property name="bitmap"></property>
                             <property name="label">NMEA Data</property>
                             <property name="select">1</property>
-                            <object class="wxPanel" expanded="0">
+                            <object class="wxPanel" expanded="1">
                                 <property name="BottomDockable">1</property>
                                 <property name="LeftDockable">1</property>
                                 <property name="RightDockable">1</property>
@@ -2951,7 +2951,7 @@
                                 <object class="wxFlexGridSizer" expanded="0">
                                     <property name="cols">1</property>
                                     <property name="flexible_direction">wxBOTH</property>
-                                    <property name="growablecols">1</property>
+                                    <property name="growablecols">0</property>
                                     <property name="growablerows"></property>
                                     <property name="hgap">0</property>
                                     <property name="minimum_size"></property>
