@@ -1,169 +1,157 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: AIS Radar, Plugin for OpenCPN\n"
+"Project-Id-Version: Complément WatchDog pour openCPN\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-12 13:30+0800\n"
+"POT-Creation-Date: 2014-06-12 19:35+0800\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Gilletarom <contact@gilletarom.fr>\n"
 "Language-Team: Gilletarom <contact@gilletarom.fr>\n"
-"Language: French\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.5.5\n"
+"X-Generator: Poedit 1.6.4\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+#
+#, fuzzy
+msgid " ALARM!"
+msgstr "Alerte !!!"
 #
 msgid "$GPGGA"
-msgstr ""
+msgstr "$GPGGA"
 #
 msgid "1"
-msgstr ""
+msgstr "1"
 #
 msgid "12"
-msgstr ""
+msgstr "12"
 #
 msgid "3"
 msgstr "3"
 #
-msgid "ALARM!!!!"
-msgstr "Alerte !!!"
-#
 msgid "About Author"
-msgstr ""
+msgstr "Au sujet de l'auteur"
 #
-# Action sur alarme
-# ou
-# Action d'alerte
-# ???
-# Gilletarom
-# -------
 msgid "Alarm Action"
 msgstr "Action d'alarme"
 #
-#, fuzzy
 msgid "Anchor"
-msgstr "Surveillance de mouillage"
+msgstr "Ancre"
 #
 msgid "Anchor Watch"
-msgstr "Surveillance de mouillage"
+msgstr "Sécurisation du mouillage"
 #
 msgid "Automatically  Reset"
-msgstr ""
+msgstr "Remettre à zéro automatique"
 #
 msgid "Close"
 msgstr "Fermer"
 #
 msgid "Command"
-msgstr ""
+msgstr "Commande"
 #
 msgid "Course Error"
-msgstr ""
+msgstr "Erreur de cap"
+#
+#, fuzzy
+msgid "Course Error Starboard"
+msgstr "Erreur de cap"
 #
 msgid "Current Course"
-msgstr ""
+msgstr "Cap courant"
 #
-msgid "DIsable All Alarms"
-msgstr ""
+#, fuzzy
+msgid "Day"
+msgstr "Jours"
 #
-msgid "Days "
+#, fuzzy
+msgid "Days"
 msgstr "Jours"
 #
 msgid "Deadman"
-msgstr ""
+msgstr "Homme mort"
 #
 #, fuzzy
 msgid "Deadman activity"
-msgstr "Dernière activité"
+msgstr "Activité de l'homme mort"
 #
 msgid "Degrees"
-msgstr ""
+msgstr "Degrés"
 #
 msgid "Depth"
-msgstr ""
+msgstr "Profondeur"
 #
 #, fuzzy
-msgid "Disabled"
-msgstr "Autorisé"
+msgid "Disable All Alarms"
+msgstr "Désactiver toutes les alarmes"
 #
-# Distance jusqu'au point de mouillage
-# ??
-# Gilletarom
-# --------
+msgid "Disabled"
+msgstr "Désactivé"
+#
+#, fuzzy
+msgid "Distance"
+msgstr "Distance à la terre >"
+#
 msgid "Distance to Anchor"
-msgstr "Distance jusqu'à l'ancre"
+msgstr "Distance à l'ancre"
 #
 msgid "Enabled"
-msgstr "Autorisé"
+msgstr "Activé"
 #
 msgid "Failed to execute command: "
-msgstr ""
+msgstr "Echec d'éxecution de la commande : "
 #
 msgid "GPS course crosses land in <"
-msgstr ""
+msgstr "Le cap du GPS atteint la terre à <"
 #
 msgid "GPS fix is <"
-msgstr ""
+msgstr "Le fix du GPS est <"
 #
 msgid "Graphical Overlay Display"
-msgstr ""
+msgstr "Affichage graphique avec superposition"
 #
 msgid "Graphical overlay displays bounding anchor area"
-msgstr ""
+msgstr "Affichage de la zone de mouillage"
 #
 msgid "Graphical overlay displays circle with radius of this speed"
-msgstr ""
+msgstr "Affichage du cercle ayant pour rayon cette vitesse"
 #
 msgid "Graphical overlay displays lines bounding valid courses"
-msgstr ""
+msgstr "Affichage de la délimitation de la zone garantie"
 #
 msgid ""
 "Graphical overlay for time displays line from boat to location of land "
 "crossing"
-msgstr ""
+msgstr "Affichage du temps restant à courir avant d'atteindre la ligne de côte"
 #
-msgid "Hours "
+#, fuzzy
+msgid "Hour"
+msgstr "Heures"
+#
+#, fuzzy
+msgid "Hours"
 msgstr "Heures"
 #
 msgid "Information"
-msgstr ""
+msgstr "Information"
 #
-#, fuzzy
 msgid "Land Distance >"
-msgstr "Si la distance est < "
+msgstr "Distance à la terre >"
 #
-# Touché terre suivant
-# ???
-# Gilletarom
-# --------
-#, fuzzy
 msgid "LandFall"
-msgstr "Atterage suivant"
+msgstr "Terre atteinte"
 #
-# Touché terre suivant
-# ???
-# Gilletarom
-# --------
-#, fuzzy
 msgid "LandFall in"
-msgstr "Atterage suivant"
+msgstr "Aterrissage"
 #
-# Touché terre non détecté
-# ???
-# Gilletarom
-# ----------
 msgid "LandFall not Detected"
-msgstr "Atterage non détecté"
+msgstr "Terre non détectée"
 #
-# Alarme de touché terre
-# ???
-# Gilletarom
-# -------
-#, fuzzy
 msgid "Landfall"
-msgstr "Alarme d'atterage"
+msgstr "Terre atteinte"
 #
-#, fuzzy
 msgid "Last NMEA Updates"
-msgstr "Aucune mise à jour"
+msgstr "Dernière mise à jour NMEA"
 #
 msgid "Latitude"
 msgstr "Latitude"
@@ -174,58 +162,83 @@ msgstr "Longitude"
 msgid "Message Box"
 msgstr "Boite à message"
 #
-msgid "Minutes "
+#, fuzzy
+msgid "Minute"
 msgstr "Minutes"
 #
+#, fuzzy
+msgid "Minutes"
+msgstr "Minutes"
+#
+#, fuzzy
 msgid ""
 "Most alarms should be self-explanatory\n"
 "Normally a sound is played, however you can execute any command you like, "
-"eg:  \"aplay /usr/local/share/opencpn/sounds/2bells.wav\""
+"eg:  \"aplay /usr/local/share/opencpn/sounds/2bells.wav\"\n"
+"Messagebox may be useful to interrupt other applications (like a movie "
+"player)\n"
+"Automatically Reset will reset the alarm once it is no longer triggered, and "
+"it may be triggered again later."
 msgstr ""
+"La plupart des alarmes doivent être explicites \n"
+"Normalement, un son est joué, mais vous pouvez exécuter n'importe quelle "
+"commande que vous aimez, par exemple : \"aplay / usr/local/share/opencpn/"
+"sounds/2bells.wav \""
 #
 msgid "NMEA Data"
-msgstr ""
+msgstr "Données NMEA"
 #
 msgid "No NMEA Messages"
 msgstr "Pas de phrase NMEA"
 #
 msgid "No Updates"
-msgstr "Aucune mise à jour"
+msgstr "Pas de mise à jour"
 #
-#, fuzzy
 msgid "No User Activity for"
-msgstr "Pas d'activité pour "
+msgstr "Pas d'activité de l'utilisateur pour"
 #
 msgid "Not implemented"
-msgstr ""
+msgstr "Non implémenté"
 #
+#, fuzzy
 msgid "Off Course"
-msgstr ""
+msgstr "Off Course"
 #
+#, fuzzy
 msgid "Off Course By >"
-msgstr ""
+msgstr "Off Course By >"
+#
+#, fuzzy
+msgid "Off Course Starboard"
+msgstr "Off Course"
 #
 msgid "Over Speed"
-msgstr ""
+msgstr "Vitesse excessive"
 #
 msgid "OverSpeed"
+msgstr "Vitesse excessive"
+#
+msgid "Port"
 msgstr ""
 #
 msgid "Preferences"
 msgstr "Préférences"
 #
-#, fuzzy
 msgid "Radius"
-msgstr "Rayon (m)"
+msgstr "Rayon"
 #
 msgid "Repeat Alarm after seconds"
-msgstr ""
+msgstr "Répéter l'alarme après seondes"
 #
 msgid "Require following NMEA sentences:"
+msgstr "Les phrases NMEA suivante sont requises :"
+#
+msgid "Reset"
 msgstr ""
 #
-msgid "Reset Last Alarm"
-msgstr ""
+#, fuzzy
+msgid "Second"
+msgstr "Secondes"
 #
 msgid "Seconds"
 msgstr "Secondes"
@@ -233,120 +246,630 @@ msgstr "Secondes"
 msgid "Select a file"
 msgstr "Sélectionner un fichier"
 #
+msgid "Separate Port and Starboard Alarms"
+msgstr ""
+#
+msgid ""
+"Settings the same as Off Course Port, with different Alarm Actions possible."
+msgstr ""
+#
 msgid "Sound"
 msgstr "Son"
 #
-# ?
-# Gilletarom
-# ---------
-#, fuzzy
 msgid "Speed Alarm"
-msgstr "Alarme d'homme mort"
+msgstr "Alarm de vitesse"
 #
 msgid "Speed over ground <"
-msgstr ""
+msgstr "Vitesse fond <"
 #
 msgid "Speed over ground >"
-msgstr ""
+msgstr "Vitesse fond >"
 #
 msgid "Sync to Boat"
-msgstr "Sync to Boat"
+msgstr "Sinchronisation au bateau"
 #
-# ?
-# Gilletarom
-# ---------
-#, fuzzy
 msgid "Test Alarm"
-msgstr "Alarme d'homme mort"
+msgstr "Test d'alarme"
 #
 msgid "Under Speed"
-msgstr ""
+msgstr "Sous vitesse"
 #
 msgid "UnderSpeed"
-msgstr ""
-#
-msgid "Watchdog Anchor Watch"
-msgstr "Homme de quart pour la sécurisation du mouillage"
+msgstr "Sous-vitesse"
 #
 #, fuzzy
+msgid "WatchDog"
+msgstr "Chien de garde"
+#
+msgid "Watchdog"
+msgstr "Chien de garde"
+#
 msgid "Watchdog Information"
-msgstr "Homme de quart pour la sécurisation du mouillage"
+msgstr "Information"
 #
 msgid "Watchdog PlugIn for OpenCPN"
-msgstr "Complément \"Watchdog\" pour OpenCPN."
+msgstr "Complément Wtacdog pour openCPN"
 #
-#, fuzzy
 msgid ""
 "Watchdog PlugIn for OpenCPN\n"
 "Alarm user of changing conditions."
-msgstr "Complément \"Watchdog\" pour OpenCPN."
+msgstr ""
+"Complément Watcdog (chien de garde) pour openCPN\n"
+"Alerte l'utilisateur lorsque les conditions changent."
 #
 msgid "Watchdog Preferences"
-msgstr "Préférences du complément Watchdog"
+msgstr "Préférences"
+#
+msgid "Watchman"
+msgstr "Homme de garde"
 #
 msgid "Wind"
-msgstr ""
+msgstr "Vent"
 #
+#, fuzzy
 msgid "With Course Of"
-msgstr ""
+msgstr "With Course Of"
 #
 msgid "at least every"
-msgstr ""
+msgstr "au moins chaque"
 #
 msgid "degrees(s)"
-msgstr ""
+msgstr "Degrés"
+#
+#, fuzzy
+msgid "degrees(s) Starboard"
+msgstr "Degrés"
 #
 msgid "knots"
-msgstr ""
+msgstr "Noeuds"
 #
 msgid "meter(s)"
-msgstr ""
+msgstr "mètre(s)"
 #
 msgid "meters"
-msgstr ""
+msgstr "mètres"
 #
-#, fuzzy
 msgid "minute(s)"
-msgstr "Minutes"
+msgstr "minute(s)"
 #
-#, fuzzy
 msgid "minutes"
-msgstr "Minutes"
+msgstr "minutes"
 #
 msgid ""
 "nm from coastline\n"
 "(any direction)"
 msgstr ""
+"Nm depuis la ligne de côte\n"
+"(dans toutes les directions)"
 #
-#, fuzzy
 msgid "second(s)"
-msgstr "Secondes"
+msgstr "seconde(s)"
 #
-#, fuzzy
 msgid "seconds"
-msgstr "Secondes"
+msgstr "secondes"
 #
-#~ msgid "Comdogd"
-#~ msgstr "Comdogde"
+#~ msgid "\r\n"
+#~ msgstr "\r\n"
+#
+#~ msgid "\""
+#~ msgstr "\""
+#
+#~ msgid "\"No\""
+#~ msgstr "\"Non\""
+#
+#~ msgid "'"
+#~ msgstr "'"
+#
+#~ msgid "*.*"
+#~ msgstr "*.*"
+#
+#~ msgid "/PlugIns/ROUTE"
+#~ msgstr "/PlugIns/ROUTE"
+#
+#~ msgid "Actuell"
+#~ msgstr ""
+#~ "Stock\n"
+#~ "actuel"
+#
+#~ msgid "Add Line"
+#~ msgstr "Ajouter une ligne"
 #
 #~ msgid ""
-#~ "Watchdog Fax PlugIn for OpenCPN\n"
-#~ "Alarm user of possible dangerous situations. \n"
-#~ "Currently only supports coastline detection. \n"
-#~ "\n"
-#~ "The Watchdog plugin was written by Sean D'Epagnier\n"
+#~ "Append a row\n"
+#~ "Delete a row = Key <Del>"
 #~ msgstr ""
-#~ "Complément de sécurisation du mouillage pour OpenCPN\n"
-#~ "Utilisation en situations potentiellement dangereuses. \n"
-#~ "Cette version détecte seulement la ligne de côte. \n"
+#~ "Ajouter une ligne\n"
+#~ "Supprimer une ligne = Touche <Del>"
+#
+#~ msgid "Balance"
+#~ msgstr ""
+#~ "Complément\n"
+#~ "nécessaire"
+#
+#~ msgid "Brent's method not converging, check result"
+#~ msgstr "Brent's method not converging, check result"
+#
+#~ msgid "Buy"
+#~ msgstr "Acheter"
+#
+#~ msgid "Buy it"
+#~ msgstr "Acheter ceci"
+#
+#~ msgid "C"
+#~ msgstr "C"
+#
+#~ msgid "Calculate"
+#~ msgstr "Calculer"
+#
+#, fuzzy
+#~ msgid "Calculate speed-bullets for x degrees "
+#~ msgstr "Calculer la vitesse-balles pour x degrés"
+#
+#~ msgid "Choose a file"
+#~ msgstr "Choisir un fichier"
+#
+#~ msgid "Clear Data"
+#~ msgstr "Effacer les données"
+#
+#~ msgid "Collecting Data from: "
+#~ msgstr "Collecte des données depuis : "
+#
+#~ msgid "Collecting: "
+#~ msgstr "Collecte :"
+#
+#~ msgid "Convert to Degree"
+#~ msgstr "Convertir en degré"
+#
+#~ msgid "Create"
+#~ msgstr "Créer"
+#
+#~ msgid "DILG1"
+#~ msgstr "DILG1"
+#
+#~ msgid "Dashboard"
+#~ msgstr "Tableau de bord"
+#
+#~ msgid "Data from Logbooks"
+#~ msgstr "Données extraite du livre de bord"
+#
+#~ msgid "Data from NMEA"
+#~ msgstr "Données extraites du réseau NMEA"
+#
+#~ msgid "Data from VDR"
+#~ msgstr "Données extraites de VDR"
+#
+#~ msgid "Decimal Degree"
+#~ msgstr "Degré décimal"
+#
+#~ msgid "E"
+#~ msgstr "E"
+#
+#~ msgid "Edit manuell"
+#~ msgstr "Editer manuellement"
+#
+#~ msgid "End     "
+#~ msgstr "Fin"
+#
+#~ msgid "End of Route"
+#~ msgstr "Fin de la route"
+#
+#~ msgid "Engine started / Recording is stopped"
+#~ msgstr "Moteur démarré / Enregistrement stoppé"
+#
+#~ msgid "Enter Searchstring:"
+#~ msgstr "Entrer le texte cherché :"
+#
+#~ msgid "Error in calculation. Please check input!"
+#~ msgstr "Erreur dans le calcul. Vérifier vos entrées."
+#
+#~ msgid "Error occured, aborting GCL calc!"
+#~ msgstr "Une erreur s'est produite. Calcul avorté du grand cercle"
+#
+#~ msgid ""
+#~ "Example:\n"
+#~ "Max-Speed = 2,5 kts\n"
+#~ "Selected 10 % = 0,25 kts\n"
+#~ "Range from 2,25 to 2,5 kts"
+#~ msgstr ""
+#~ "Exemple :\n"
+#~ "Vitesse maxi = 2,5 knts\n"
+#~ "Sélection 10% = 0,25kts\n"
+#~ "Ecart de 2,25 à 2,5 kts."
+#
+#~ msgid "Export"
+#~ msgstr "Exporter"
+#
+#~ msgid "Export GPX file as"
+#~ msgstr "Exporter comme un fichier GPX"
+#
+#~ msgid "Export Great Circle GPX file as"
+#~ msgstr "Exporter la route orthodromique comme un fichier GPX"
+#
+#~ msgid "Export Rhumb Line GPX file as"
+#~ msgstr "Exporter la route loxodromique comme un fichier GPX"
+#
+#~ msgid "Filter"
+#~ msgstr "Filtrer"
+#
+#~ msgid "Filtered by:"
+#~ msgstr "Filtrer par :"
+#
+#~ msgid "FindIt"
+#~ msgstr "FindIt"
+#
+#~ msgid "FindIt Options"
+#~ msgstr "Options du FindIt"
+#
+#~ msgid "GPS"
+#~ msgstr "GPS"
+#
+#~ msgid "General settings"
+#~ msgstr "Réglage"
+#
+#~ msgid "Great Circle"
+#~ msgstr "Routes directes"
+#
+#~ msgid ""
+#~ "Great Circle\n"
+#~ "Distance"
+#~ msgstr ""
+#~ "Orthodromie\n"
+#~ "Longueur"
+#
+#~ msgid ""
+#~ "Great Circle\n"
+#~ "Route"
+#~ msgstr ""
+#~ "Routes naturelles\n"
+#~ " "
+#
+#~ msgid ""
+#~ "Great Circle     \n"
+#~ "Distance"
+#~ msgstr ""
+#~ "Orthodromie   \n"
+#~ "Longueur"
+#
+#~ msgid "Great Circle (shortest) GPX"
+#~ msgstr "Orthodromie (Plus courte)   ---> GPX"
+#
+#~ msgid "If Value of Column \"Balance\" = 0, set Value to"
+#~ msgstr "Si valeur de la colonne \"à acheter\"= 0, écrire"
+#
+#~ msgid "If Value of Column \"Buy\" = No, set Value to"
+#~ msgstr "Si la valeur de la colonne \"Acheter\"= Non, écrire"
+#
+#~ msgid ""
+#~ "If the logbook-plugin is installed send a list\n"
+#~ "with checked items to 'Logbook/Maintenace/Buy Parts'"
+#~ msgstr ""
+#~ "Si le complément \"Journal de bord\" est installé, transférer une liste\n"
+#~ "avec les articles cochés à 'Livre de bord / Maintenance / Pièces achetées''"
+#
+#~ msgid "Input"
+#~ msgstr "Entrée"
+#
+#~ msgid "InputFilename"
+#~ msgstr "Nom de fichier source"
+#
+#~ msgid "Interval"
+#~ msgstr "Intervalle"
+#
+#~ msgid "Lat "
+#~ msgstr "Lat."
+#
+#~ msgid ""
+#~ "Latitude  \n"
+#~ "Limit"
+#~ msgstr ""
+#~ "Latitude   \n"
+#~ "Limite"
+#
+#~ msgid "Limited Circle"
+#~ msgstr "Route limitée"
+#
+#~ msgid ""
+#~ "Limited Circle\n"
+#~ "Distance"
+#~ msgstr ""
+#~ "Route limitée\n"
+#~ "Longueur"
+#
+#~ msgid ""
+#~ "Limited Circle\n"
+#~ "Route"
+#~ msgstr ""
+#~ "Route limitée\n"
+#~ "(en latitude N ou S)"
+#
+#~ msgid "Limited Circle GPX"
+#~ msgstr "Route avec limite ---> GPX"
+#
+#~ msgid "Load"
+#~ msgstr "Charger"
+#
+#~ msgid "Locations"
+#~ msgstr "Emplacement"
+#
+#~ msgid "Lon"
+#~ msgstr "Lon"
+#
+#~ msgid "Material"
+#~ msgstr "Matériel"
+#
+#~ msgid "Max. only"
+#~ msgstr "Maxi seulement"
+#
+#~ msgid "Menu"
+#~ msgstr "Menu"
+#
+#~ msgid "Mode:"
+#~ msgstr "Mode :"
+#
+#~ msgid "MyLabel"
+#~ msgstr "Mon contenu"
+#
+#~ msgid "N"
+#~ msgstr "N"
+#
+#~ msgid "NM"
+#~ msgstr "NM"
+#
+#~ msgid "Naming"
+#~ msgstr "Nom"
+#
+#~ msgid "No Lat Limit!"
+#~ msgstr "Pas de limite de latitude"
+#
+#~ msgid "Opacity"
+#~ msgstr "Opacité"
+#
+#~ msgid "OutputFilename"
+#~ msgstr "Nom de fichier but"
+#
+#~ msgid "Please wait."
+#~ msgstr "Veuillez attendre."
+#
+#~ msgid "Polar"
+#~ msgstr "Polaire"
+#
+#~ msgid "Polar Diagram"
+#~ msgstr "Polaire"
+#
+#~ msgid "Polar Filter"
+#~ msgstr "Filtrer la polaire"
+#
+#~ msgid "Polar PlugIn for OpenCPN\n"
+#~ msgstr "Complément Polaire pour OpenCPN\n"
+#
+#~ msgid "Priority"
+#~ msgstr "Priorité"
+#
+#~ msgid "Progress:"
+#~ msgstr "Progression :"
+#
+#~ msgid "Provisions"
+#~ msgstr "Provisions"
+#
+#~ msgid "Quota"
+#~ msgstr ""
+#~ "Stock\n"
+#~ "nécessaire"
+#
+#~ msgid "ROUTE"
+#~ msgstr "Route"
+#
+#~ msgid "ROUTE replay"
+#~ msgstr "Refaire un route"
+#
+#~ msgid "Range"
+#~ msgstr "Ecart"
+#
+#~ msgid "Range from maximum speed to minus"
+#~ msgstr "Ecart entre vitesse maxi et mini"
+#
+#~ msgid "Record "
+#~ msgstr "Enregistrer"
+#
+#~ msgid "Record Start"
+#~ msgstr "Enregistrement démarré"
+#
+#~ msgid "Reset Last Alarm"
+#~ msgstr "Remettre à zéro l'alarme"
+#
+#~ msgid "Result"
+#~ msgstr "Résultat"
+#
+#~ msgid ""
+#~ "Rhumb Line\n"
+#~ "Distance"
+#~ msgstr ""
+#~ "Loxodromie\n"
+#~ "Longueur"
+#
+#~ msgid ""
+#~ "Rhumb Line     \n"
+#~ "Distance"
+#~ msgstr ""
+#~ "Loxodromie   \n"
+#~ "Longueur"
+#
+#~ msgid "Rhumb Line (fixed heading) GPX"
+#~ msgstr "Loxodromie (Cap constant) ---> GPX"
+#
+#~ msgid "Rings:"
+#~ msgstr "Cercles :"
+#
+#~ msgid "Route"
+#~ msgstr "Route"
+#
+#~ msgid "Route Plotting plugin for OpenCPN"
+#~ msgstr "Complément \"Créateur de routes pour OpenCPN\""
+#
+#~ msgid ""
+#~ "Route Plotting plugin for OpenCPN\n"
+#~ "Plots Great Circle routes, Limited Circle Routes and Rhumb lines."
+#~ msgstr ""
+#~ "Complément pour OpenCPN : Créateur de routes\n"
+#~ "Créateur de routes orthodromiques, de routes loxodromiques et de routes "
+#~ "limitées en latitude."
+#
+#~ msgid "Route Plugin by SaltyPaws"
+#~ msgstr "Complément \"Routes\" par Salty Paws"
+#
+#~ msgid "Route Preferences"
+#~ msgstr "Préférences"
+#
+#~ msgid "Route preferences"
+#~ msgstr "Préférences de la route"
+#
+#~ msgid "S"
+#~ msgstr "S"
+#
+#~ msgid "SRT"
+#~ msgstr "SRT"
+#
+#~ msgid "SRT AIS class B OEM board configuration plugin for OpenCPN"
+#~ msgstr "SRT classe B AIS OEM configuration de la carte plug-in pour OpenCPN"
+#
+#~ msgid ""
+#~ "SRT AIS class B OEM board configuration plugin for OpenCPN\n"
+#~ "This OEM board is widely used."
+#~ msgstr ""
+#~ "Classe SRT AIS B OEM configuration de la carte plug-in pour OpenCPN \n"
+#~ "Cette carte OEM est largement utilisé."
+#
+#~ msgid "Sails"
+#~ msgstr "Voiles"
+#
+#~ msgid "Save"
+#~ msgstr "Sauver"
+#
+#~ msgid "Save Polar File"
+#~ msgstr "Sauver le fichier de la polaire"
+#
+#~ msgid "Select a Polar-File"
+#~ msgstr "Sélectionner un fichier de polaire"
+#
+#~ msgid "Separate more than one string with a blank"
+#~ msgstr "Separer chaque mot cherché par un espace"
+#
+#~ msgid "Set diagramm to x knots"
+#~ msgstr "Produire le diagramme pour x noeuds"
+#
+#~ msgid "Show FindIt Icon"
+#~ msgstr "Afficher l'icône du complément FindIt"
+#
+#~ msgid "Show Polar icon"
+#~ msgstr "Montrer l'icône du complément Polaire"
+#
+#~ msgid "Show metres/sec for Wind Speed"
+#~ msgstr "Utiliser mètres/seconde pour la vitesse du vent"
+#
+#~ msgid "Source:"
+#~ msgstr "Source :"
+#
+#~ msgid ""
+#~ "Speedo uses column STW\n"
+#~ "GPS uses column SOG"
+#~ msgstr ""
+#~ "Le compteur de vitesse utilise la colonne STW\n"
+#~ "Le GPS utilise la colonne SOG"
+#
+#~ msgid "Start"
+#~ msgstr "Démarrer"
+#
+#~ msgid "Start Latitude>Limit!"
+#~ msgstr "Latitude de début > Latitude limite"
+#
+#~ msgid "Start of Route"
+#~ msgstr "Début de la route"
+#
+#~ msgid "Stop"
+#~ msgstr "Arrêter"
+#
+#~ msgid "Text"
+#~ msgstr "Texte"
+#
+#~ msgid ""
+#~ "The plugin logbookkonni isn't installed\n"
 #~ "\n"
-#~ "Le complément Watchdog plugin a été développé par Sean D'Epagnier\n"
+#~ "It's needed to collect wind/speed-data from all available logbooks\n"
+#~ "\n"
+#~ "The create-button is hidden and the mode isn't useable"
+#~ msgstr ""
+#~ "Le complément logbookkonni n'est pas installé \n"
+#~ "\n"
+#~ "Il est nécessaire de récupérer les données vent/vitesse dans tous les "
+#~ "journaux de bord disponibles \n"
+#~ "\n"
+#~ "Le bouton créer est caché et le mode n'est pas utilisable."
 #
-#~ msgid "meters from anchor"
-#~ msgstr "Distance depuis le mouillage"
+#~ msgid "To Buy"
+#~ msgstr "A acheter"
 #
-#~ msgid "min"
-#~ msgstr "min"
+#~ msgid "Unit"
+#~ msgstr "Unité"
 #
-#~ msgid "nm"
-#~ msgstr "Nm"
+#~ msgid "Units"
+#~ msgstr "Unités"
+#
+#~ msgid "Use Average from all speed-data"
+#~ msgstr "Utiliser la moyenne pour toutes les données de vietesse"
+#
+#~ msgid "Use Max-Speed only"
+#~ msgstr "Utiliser la vitesse maxi seulement"
+#
+#~ msgid "Use last row values  as default for new row"
+#~ msgstr "Dupliquer la ligne précédente"
+#
+#~ msgid "W"
+#~ msgstr "O"
+#
+#~ msgid "Watch Man"
+#~ msgstr "Homme de garde"
+#
+#~ msgid "Watchdog Anchor Watch"
+#~ msgstr "Chien de garde de la sécurisation du mouillage"
+#
+#~ msgid "Wavehight"
+#~ msgstr "Hauteur de vague"
+#
+#~ msgid "Wavehight from"
+#~ msgstr "Hauteur de vague depuis "
+#
+#~ msgid "Yes"
+#~ msgstr "Oui"
+#
+#~ msgid "\\u00b0"
+#~ msgstr "\\u00b0"
+#
+#~ msgid "\\u00b0 ' \""
+#~ msgstr "\\u00b0 ' \""
+#
+#~ msgid "any"
+#~ msgstr "tous"
+#
+#~ msgid "blank"
+#~ msgstr "Blanc"
+#
+#~ msgid "error in input range validation"
+#~ msgstr "Erreur de validation de donnée entrée"
+#
+#~ msgid "kts"
+#~ msgstr "kts"
+#
+#~ msgid "less than 3 entries found"
+#~ msgstr "Moins de trois entrées  ont été trouvées"
+#
+#~ msgid "less than 5 entries found"
+#~ msgstr "Moins de 5 entrées ont ete trouvées"
+#
+#~ msgid "more than 10 entries found"
+#~ msgstr "Plus de 10 entrées ont été trouvées"
+#
+#~ msgid "opencpn-route_pi"
+#~ msgstr "opencpn-route_pi"
+#
+#~ msgid "to"
+#~ msgstr "à"
