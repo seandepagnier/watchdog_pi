@@ -13,7 +13,6 @@ msgstr ""
 "X-Generator: Poedit 1.6.4\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 #
-#, fuzzy
 msgid " ALARM!"
 msgstr "Alerte !!!"
 #
@@ -53,25 +52,21 @@ msgstr "Commande"
 msgid "Course Error"
 msgstr "Erreur de cap"
 #
-#, fuzzy
 msgid "Course Error Starboard"
 msgstr "Erreur de cap"
 #
 msgid "Current Course"
 msgstr "Cap courant"
 #
-#, fuzzy
 msgid "Day"
 msgstr "Jours"
 #
-#, fuzzy
 msgid "Days"
 msgstr "Jours"
 #
 msgid "Deadman"
 msgstr "Homme mort"
 #
-#, fuzzy
 msgid "Deadman activity"
 msgstr "Activité de l'homme mort"
 #
@@ -81,14 +76,12 @@ msgstr "Degrés"
 msgid "Depth"
 msgstr "Profondeur"
 #
-#, fuzzy
 msgid "Disable All Alarms"
 msgstr "Désactiver toutes les alarmes"
 #
 msgid "Disabled"
 msgstr "Désactivé"
 #
-#, fuzzy
 msgid "Distance"
 msgstr "Distance à la terre >"
 #
@@ -124,11 +117,9 @@ msgid ""
 "crossing"
 msgstr "Affichage du temps restant à courir avant d'atteindre la ligne de côte"
 #
-#, fuzzy
 msgid "Hour"
 msgstr "Heures"
 #
-#, fuzzy
 msgid "Hours"
 msgstr "Heures"
 #
@@ -162,15 +153,12 @@ msgstr "Longitude"
 msgid "Message Box"
 msgstr "Boite à message"
 #
-#, fuzzy
 msgid "Minute"
 msgstr "Minutes"
 #
-#, fuzzy
 msgid "Minutes"
 msgstr "Minutes"
 #
-#, fuzzy
 msgid ""
 "Most alarms should be self-explanatory\n"
 "Normally a sound is played, however you can execute any command you like, "
@@ -200,15 +188,12 @@ msgstr "Pas d'activité de l'utilisateur pour"
 msgid "Not implemented"
 msgstr "Non implémenté"
 #
-#, fuzzy
 msgid "Off Course"
 msgstr "Off Course"
 #
-#, fuzzy
 msgid "Off Course By >"
 msgstr "Off Course By >"
 #
-#, fuzzy
 msgid "Off Course Starboard"
 msgstr "Off Course"
 #
@@ -236,7 +221,6 @@ msgstr "Les phrases NMEA suivante sont requises :"
 msgid "Reset"
 msgstr ""
 #
-#, fuzzy
 msgid "Second"
 msgstr "Secondes"
 #
@@ -277,7 +261,6 @@ msgstr "Sous vitesse"
 msgid "UnderSpeed"
 msgstr "Sous-vitesse"
 #
-#, fuzzy
 msgid "WatchDog"
 msgstr "Chien de garde"
 #
@@ -306,7 +289,6 @@ msgstr "Homme de garde"
 msgid "Wind"
 msgstr "Vent"
 #
-#, fuzzy
 msgid "With Course Of"
 msgstr "With Course Of"
 #
@@ -316,7 +298,6 @@ msgstr "au moins chaque"
 msgid "degrees(s)"
 msgstr "Degrés"
 #
-#, fuzzy
 msgid "degrees(s) Starboard"
 msgstr "Degrés"
 #
@@ -401,7 +382,6 @@ msgstr "secondes"
 #~ msgid "Calculate"
 #~ msgstr "Calculer"
 #
-#, fuzzy
 #~ msgid "Calculate speed-bullets for x degrees "
 #~ msgstr "Calculer la vitesse-balles pour x degrés"
 #
