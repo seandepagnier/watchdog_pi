@@ -4,10 +4,12 @@ Implement watchdog ability for opencpn
 
 Compiling
 =========
-You have to be able to compile OpenCPN itself - Get the info at http://opencpn.org/ocpn/developers_dogual
 
-* go to the plugin subdirectory in your OpenCPN source tree
 * git clone git://github.com/seandepagnier/watchdog_pi.git
+
+Do NOT attempt to build this plugin from within the OpenCPN source tree.
+
+Under windows, you must find the file "opencpn.lib" (Visual Studio) or "libopencpn.dll.a" (mingw) which is built in the build directory after compiling opencpn.  This file must be copied to the plugin directory.
 
 Build as normally:
 
@@ -15,9 +17,7 @@ Build as normally:
 * cd build
 * cmake ..
 * make
-* sudo make install
-
-* make package (to build deb, or installers for windows or mac)
+* make install
 
 License
 =======
