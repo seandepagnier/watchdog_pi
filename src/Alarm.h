@@ -35,7 +35,7 @@ public:
     static void NMEAString(const wxString &string);
     static void ConfigCoursePort(bool read, wxCheckBox *control);
 
-    Alarm(wxString name, int interval=1);
+    Alarm(int interval=1);
 
     void Run();
     virtual void SaveConfig();
@@ -43,6 +43,7 @@ public:
 
     void UpdateStatus();
 
+    virtual wxString Name() = 0;
     virtual bool Test() = 0;
     virtual wxString GetStatus() = 0;
     virtual void Render(ocpnDC &dc, PlugIn_ViewPort &vp) {}
@@ -54,8 +55,6 @@ public:
 protected:
     bool m_bEnabled, m_bgfxEnabled;
     bool m_bFired;
-
-    wxString m_sName;
 
 private:
     friend class WatchdogPrefsDialog;

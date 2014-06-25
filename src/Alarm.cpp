@@ -39,8 +39,9 @@
 class LandFallAlarm : public Alarm
 {
 public:
-    LandFallAlarm() : Alarm(_("LandFall"), 5 /* seconds */), m_bFiredTime(false) {}
+    LandFallAlarm() : Alarm(5 /* seconds */), m_bFiredTime(false) {}
 
+    wxString Name() { return _("LandFall"); }
     bool Test() {
         PlugIn_Position_Fix_Ex lastfix = g_watchdog_pi->LastFix();
 
@@ -220,8 +221,9 @@ private:
 class NMEADataAlarm : public Alarm
 {
 public:
-    NMEADataAlarm() : Alarm(_("NMEA Data")) { start = wxDateTime::Now(); }
+    NMEADataAlarm() { start = wxDateTime::Now(); }
 
+    wxString Name() { return _("NMEA Data"); }
     void GetStatusControls(wxControl *&Text, wxControl *&status) {
         WatchdogDialog &dlg = *g_watchdog_pi->m_pWatchdogDialog;
         Text = dlg.m_stTextNMEAData;
@@ -287,8 +289,9 @@ private:
 class DeadmanAlarm : public Alarm
 {
 public:
-    DeadmanAlarm() : Alarm(_("Deadman")) {}
+    DeadmanAlarm() {}
 
+    wxString Name() { return _("Deadman"); }
     void GetStatusControls(wxControl *&Text, wxControl *&status) {
         WatchdogDialog &dlg = *g_watchdog_pi->m_pWatchdogDialog;
         Text = dlg.m_stTextDeadman;
@@ -322,8 +325,9 @@ public:
 class AnchorAlarm : public Alarm
 {
 public:
-    AnchorAlarm() : Alarm(_("Anchor")) {}
+    AnchorAlarm() {}
 
+    wxString Name() { return _("Anchor"); }
     void GetStatusControls(wxControl *&Text, wxControl *&status) {
         WatchdogDialog &dlg = *g_watchdog_pi->m_pWatchdogDialog;
         Text = dlg.m_stTextAnchor;
@@ -396,7 +400,11 @@ private:
 class CourseAlarm : public Alarm
 {
 public:
-    CourseAlarm() : Alarm(_("Off Course")), m_Mode(BOTH) {}
+    CourseAlarm() : m_Mode(BOTH) {}
+
+    wxString Name() { return _("Off Course") +
+            (m_Mode == PORT ? _T(" ") + _("Port") : _T("")); }
+
     void SetPort(bool port) {
         m_Mode = port ? PORT : BOTH;
     }
@@ -486,8 +494,9 @@ private:
 class CourseStarboardAlarm : public Alarm
 {
 public:
-    CourseStarboardAlarm() : Alarm(_("Off Course Starboard")) {}
+    CourseStarboardAlarm() : Alarm() {}
 
+    wxString Name() { return _("Off Course") + _T(" ") + _("Starboard"); }
     void GetStatusControls(wxControl *&Text, wxControl *&status) {
         WatchdogDialog &dlg = *g_watchdog_pi->m_pWatchdogDialog;
         Text = dlg.m_stTextStarboardCourseError;
@@ -530,7 +539,7 @@ private:
 class SpeedAlarm : public Alarm
 {
 public:
-    SpeedAlarm(wxString name) : Alarm(name, 1) {}
+    SpeedAlarm() {}
 
     double Knots() {
         wxFileConfig *pConf = GetConfigObject();
@@ -579,8 +588,9 @@ public:
 class UnderSpeedAlarm : public SpeedAlarm
 {
 public:
-    UnderSpeedAlarm() : SpeedAlarm(_("UnderSpeed")) {}
+    UnderSpeedAlarm() {}
 
+    wxString Name() { return _("Under Speed"); }
     void GetStatusControls(wxControl *&Text, wxControl *&status) {
         WatchdogDialog &dlg = *g_watchdog_pi->m_pWatchdogDialog;
         Text = dlg.m_stTextUnderSpeed;
@@ -595,8 +605,9 @@ public:
 class OverSpeedAlarm : public SpeedAlarm
 {
 public:
-    OverSpeedAlarm() : SpeedAlarm(_("OverSpeed")) {}
+    OverSpeedAlarm() {}
 
+    wxString Name() { return _("Over Speed"); }
     void GetStatusControls(wxControl *&Text, wxControl *&status) {
         WatchdogDialog &dlg = *g_watchdog_pi->m_pWatchdogDialog;
         Text = dlg.m_stTextOverSpeed;
@@ -659,8 +670,8 @@ void Alarm::ConfigCoursePort(bool read, wxCheckBox *control)
         g_CourseStarboardAlarm.m_bEnabled = false;
 }
 
-Alarm::Alarm(wxString name, int interval)
-    : m_sName(name), m_interval(interval)
+Alarm::Alarm(int interval)
+    : m_interval(interval)
 {
 }
 
@@ -679,7 +690,7 @@ void Alarm::Run()
         }
 
     if(m_bMessageBox) {
-        wxMessageDialog mdlg(GetOCPNCanvasWindow(), m_sName + _(" ALARM!"),
+        wxMessageDialog mdlg(GetOCPNCanvasWindow(), Name() + _(" ALARM!"),
                              _("Watchman"), wxOK | wxICON_WARNING);
         mdlg.ShowModal();
     }
@@ -821,6 +832,6 @@ wxFileConfig *Alarm::GetConfigObject()
     if(!pConf)
         return NULL;
         
-    pConf->SetPath ( _T( "/Settings/Watchdog/Alarms/" ) + m_sName );
+    pConf->SetPath ( _T( "/Settings/Watchdog/Alarms/" ) + Name() );
     return pConf;
 }
