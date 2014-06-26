@@ -203,6 +203,10 @@ WatchdogPrefsDialogBase::WatchdogPrefsDialogBase( wxWindow* parent, wxWindowID i
 	m_staticText39122->Wrap( 400 );
 	fgSizer17->Add( m_staticText39122, 0, wxALL, 5 );
 	
+	m_staticText45 = new wxStaticText( m_panel1, wxID_ANY, _("i"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText45->Wrap( 350 );
+	fgSizer17->Add( m_staticText45, 0, wxALL, 5 );
+	
 	
 	m_panel1->SetSizer( fgSizer17 );
 	m_panel1->Layout();

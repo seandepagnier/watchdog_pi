@@ -95,6 +95,7 @@ class WatchdogPrefsDialogBase : public wxDialog
 		wxStaticText* m_staticText30;
 		wxStaticText* m_staticText7;
 		wxStaticText* m_staticText39122;
+		wxStaticText* m_staticText45;
 		wxPanel* m_panel2;
 		wxStaticText* m_staticText34;
 		wxTextCtrl* m_tNMEASentences;
