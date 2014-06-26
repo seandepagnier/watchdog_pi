@@ -203,7 +203,7 @@ WatchdogPrefsDialogBase::WatchdogPrefsDialogBase( wxWindow* parent, wxWindowID i
 	m_staticText39122->Wrap( 400 );
 	fgSizer17->Add( m_staticText39122, 0, wxALL, 5 );
 	
-	m_staticText45 = new wxStaticText( m_panel1, wxID_ANY, _("i"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText45 = new wxStaticText( m_panel1, wxID_ANY, _("Landfall detection uses gshhs (global heirarchical high-resolution shoreline data.)\nConsider installing the highest resolution database for best accuracy."), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText45->Wrap( 350 );
 	fgSizer17->Add( m_staticText45, 0, wxALL, 5 );
 	
@@ -211,7 +211,7 @@ WatchdogPrefsDialogBase::WatchdogPrefsDialogBase( wxWindow* parent, wxWindowID i
 	m_panel1->SetSizer( fgSizer17 );
 	m_panel1->Layout();
 	fgSizer17->Fit( m_panel1 );
-	m_lbAlarm->AddPage( m_panel1, _("Landfall"), false );
+	m_lbAlarm->AddPage( m_panel1, _("Landfall"), true );
 	m_panel2 = new wxPanel( m_lbAlarm, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxFlexGridSizer* fgSizer91;
 	fgSizer91 = new wxFlexGridSizer( 0, 1, 0, 0 );
@@ -249,7 +249,7 @@ WatchdogPrefsDialogBase::WatchdogPrefsDialogBase( wxWindow* parent, wxWindowID i
 	m_panel2->SetSizer( fgSizer91 );
 	m_panel2->Layout();
 	fgSizer91->Fit( m_panel2 );
-	m_lbAlarm->AddPage( m_panel2, _("NMEA Data"), true );
+	m_lbAlarm->AddPage( m_panel2, _("NMEA Data"), false );
 	m_panel3 = new wxPanel( m_lbAlarm, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxFlexGridSizer* fgSizer5;
 	fgSizer5 = new wxFlexGridSizer( 0, 3, 0, 0 );
