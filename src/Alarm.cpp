@@ -403,7 +403,7 @@ public:
     CourseAlarm() : m_Mode(BOTH) {}
 
     wxString Name() { return _("Off Course") +
-            (m_Mode == PORT ? _T(" ") + _("Port") : _T("")); }
+            (m_Mode == PORT ? wxString(_T(" ")) + _("Port") : _T("")); }
 
     void SetPort(bool port) {
         m_Mode = port ? PORT : BOTH;
@@ -496,7 +496,7 @@ class CourseStarboardAlarm : public Alarm
 public:
     CourseStarboardAlarm() : Alarm() {}
 
-    wxString Name() { return _("Off Course") + _T(" ") + _("Starboard"); }
+    wxString Name() { return _("Off Course") + wxString(_T(" ")) + _("Starboard"); }
     void GetStatusControls(wxControl *&Text, wxControl *&status) {
         WatchdogDialog &dlg = *g_watchdog_pi->m_pWatchdogDialog;
         Text = dlg.m_stTextStarboardCourseError;
