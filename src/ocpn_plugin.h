@@ -60,6 +60,7 @@ class       wxFileConfig;
 class       wxNotebook;
 class       wxFont;
 class       wxAuiManager;
+class       wxScrolledWindow;
 
 //---------------------------------------------------------------------------------------------------------
 //
@@ -699,7 +700,7 @@ extern  DECL_EXP wxString GetOCPN_ExePath( void );
 extern "C"  DECL_EXP wxString *GetpPlugInLocation();
 extern  DECL_EXP wxString GetPlugInPath(opencpn_plugin *pplugin);
 
-extern "C"  DECL_EXP int AddChartToDBInPlace( wxString &full_path, bool b_ProgressDialog );
+extern "C"  DECL_EXP int AddChartToDBInPlace( wxString &full_path, bool b_RefreshCanvas );
 extern "C"  DECL_EXP int RemoveChartFromDBInPlace( wxString &full_path );
 
 
@@ -875,6 +876,7 @@ PI_DisPrio DECL_EXP PI_GetObjectDisplayPriority( PI_S57Obj *pObj );
 PI_DisCat DECL_EXP PI_GetObjectDisplayCategory( PI_S57Obj *pObj );
 void DECL_EXP PI_PLIBSetLineFeaturePriority( PI_S57Obj *pObj, int prio );
 void DECL_EXP PI_PLIBPrepareForNewRender(void);
+void DECL_EXP PI_PLIBFreeContext( void *pContext );
 
 
 bool DECL_EXP PI_PLIBSetContext( PI_S57Obj *pObj );
@@ -888,6 +890,38 @@ int DECL_EXP PI_PLIBRenderAreaToGL( const wxGLContext &glcc, PI_S57Obj *pObj,
 
 int DECL_EXP PI_PLIBRenderObjectToGL( const wxGLContext &glcc, PI_S57Obj *pObj,
                                     PlugIn_ViewPort *vp, wxRect &render_rect );
+
+/* API 1.11 OpenGL Display List and vertex buffer object routines
+
+   Effectively these two routines cancel each other so all
+   of the translation, scaling and rotation can be done by opengl.
+
+   Display lists need only be built infrequently, but used in each frame
+   greatly accelerates the speed of rendering.  This avoids costly calculations,
+   and also allows the vertexes to be stored in graphics memory.
+
+   static int dl = 0;
+   glPushMatrix();
+   PlugInMultMatrixViewport(current_viewport);
+   if(dl)
+      glCallList(dl);
+   else {
+      dl = glGenLists(1);
+      PlugInViewPort norm_viewport = current_viewport;
+      NormalizeViewPort(norm_viewport);
+      glNewList(dl, GL_COMPILE_AND_EXECUTE);
+      ... // use norm_viewport with GetCanvasLLPix here
+      glEndList();
+   }      
+   glPopMatrix();
+   ... // use current_viewport with GetCanvasLLPix again
+*/
+
+extern DECL_EXP void PlugInMultMatrixViewport ( PlugIn_ViewPort *vp );
+extern DECL_EXP void PlugInNormalizeViewport ( PlugIn_ViewPort *vp );
+
+class wxPoint2DDouble;
+extern "C"  DECL_EXP void GetDoubleCanvasPixLL(PlugIn_ViewPort *vp, wxPoint2DDouble *pp, double lat, double lon);
 
 
 #endif //_PLUGIN_H_
