@@ -738,7 +738,7 @@ void Alarm::ConfigItem(bool read, wxString name, wxControl *control)
     wxCheckBox *cb = dynamic_cast<wxCheckBox*>(control);
     if(cb) {
         if(read)
-            cb->SetValue(pConf->Read(name, (bool)cb->GetValue()));
+            cb->SetValue(pConf->Read(name, (long)cb->GetValue()));
         else
             pConf->Write(name, cb->GetValue());
         return;
