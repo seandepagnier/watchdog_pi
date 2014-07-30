@@ -33,7 +33,7 @@ WatchdogDialog::WatchdogDialog( watchdog_pi &_watchdog_pi, wxWindow* parent)
 {
     wxFileConfig *pConf = GetOCPNConfigObject();
     pConf->SetPath ( _T( "/Settings/Watchdog" ) );
-    m_cbDisableAllAlarms->SetValue((bool)pConf->Read ( _T ( "DisableAllAlarms" ), 0L ));
+    m_cbDisableAllAlarms->SetValue(pConf->Read ( _T ( "DisableAllAlarms" ), 0L ));
 }
 
 WatchdogDialog::~WatchdogDialog()
