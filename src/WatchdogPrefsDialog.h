@@ -33,7 +33,6 @@ class WatchdogPrefsDialog: public WatchdogPrefsDialogBase
 {
 public:
     WatchdogPrefsDialog( watchdog_pi &_watchdog_pi, wxWindow* parent);
-    ~WatchdogPrefsDialog();
 
     void OnAlarmChanged( wxListbookEvent& event );
     void OnAlarmUpdate();
@@ -52,7 +51,8 @@ private:
     void WriteAlarmActions() { AlarmActions(false); }
     void AlarmActions(bool read);
 
-    Alarm &CurrentAlarm();
+    int CurrentSelection();
+    Alarm *CurrentAlarm();
     
     void ConfigurePortAlarms();
 

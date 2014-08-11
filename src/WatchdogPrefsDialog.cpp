@@ -40,10 +40,6 @@ WatchdogPrefsDialog::WatchdogPrefsDialog( watchdog_pi &_watchdog_pi, wxWindow* p
         ConfigurePortAlarms();
 }
 
-WatchdogPrefsDialog::~WatchdogPrefsDialog()
-{
-}
-
 void WatchdogPrefsDialog::OnAlarmChanged( wxListbookEvent& event )
 {
     ReadAlarmActions();
@@ -80,14 +76,16 @@ void WatchdogPrefsDialog::OnCurrentCourse( wxCommandEvent& event )
 
 void WatchdogPrefsDialog::OnTestAlarm( wxCommandEvent& event )
 {
-    CurrentAlarm().Run();
+    Alarm *alarm = CurrentAlarm();
+    if(!alarm)
+        wxMessageBox(_("Invalid Alarm"), _("Watchdog"), wxOK | wxICON_ERROR, this);
+    else
+        alarm->Run();
 }
 
 void WatchdogPrefsDialog::AlarmActions(bool read)
 {
-    int selection = m_lbAlarm->GetSelection();
-
-    Alarm *alarm = Alarms[selection];
+    Alarm *alarm = CurrentAlarm();
     if(!alarm)
         return;
 
@@ -123,7 +121,7 @@ void WatchdogPrefsDialog::AlarmActions(bool read)
 
     m_cbGraphicsEnabled->Enable();
 
-    switch(selection) {
+    switch(CurrentSelection()) {
     case LANDFALL:
         alarm->ConfigItem(read, _T ( "TimeAlarm" ), m_cbLandFallTime);
         alarm->ConfigItem(read, _T ( "Minutes" ), m_sLandFallTimeMinutes);
@@ -170,9 +168,19 @@ void WatchdogPrefsDialog::AlarmActions(bool read)
         m_breading = false;
 }
 
-Alarm &WatchdogPrefsDialog::CurrentAlarm()
+int WatchdogPrefsDialog::CurrentSelection()
 {
-    return *Alarms[m_lbAlarm->GetSelection()];
+    int selection = m_lbAlarm->GetSelection();
+    if(!m_cbSeparatePortAndStarboard->GetValue() &&
+       selection > COURSE)
+        selection++;
+
+    return selection;
+}
+
+Alarm *WatchdogPrefsDialog::CurrentAlarm()
+{
+    return Alarms[CurrentSelection()];
 }
 
 void WatchdogPrefsDialog::ConfigurePortAlarms()
