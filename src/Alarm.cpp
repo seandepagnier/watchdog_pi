@@ -780,7 +780,15 @@ void Alarm::OnTimer( wxTimerEvent & )
 {
     wxFileConfig *pConf = GetOCPNConfigObject();
     pConf->SetPath ( _T( "/Settings/Watchdog" ) );
-    if(!pConf->Read ( _T ( "DisableAllAlarms" ), 0L ) && m_bEnabled) {
+    int enabled = pConf->Read ( _T ( "Enabled" ), 0L );
+
+    if(enabled == 2 && !g_watchdog_pi->m_pWatchdogDialog)
+        enabled = 0;
+
+    if(enabled == 3 && !g_watchdog_pi->m_pWatchdogDialog->IsShown())
+       enabled = 0;
+
+    if(enabled && m_bEnabled) {
         if(Test()) {        
             wxDateTime now = wxDateTime::Now();
             if(m_bFired) {

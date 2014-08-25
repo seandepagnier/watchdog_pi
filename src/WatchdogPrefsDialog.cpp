@@ -32,12 +32,39 @@
 WatchdogPrefsDialog::WatchdogPrefsDialog( watchdog_pi &_watchdog_pi, wxWindow* parent)
     : WatchdogPrefsDialogBase( parent ), m_watchdog_pi(_watchdog_pi), m_breading(false)
 {
+    wxFileConfig *pConf = GetOCPNConfigObject();
+    pConf->SetPath ( _T( "/Settings/Watchdog" ) );
+    int enabled = pConf->Read ( _T ( "Enabled" ), 1L );
+
+    m_rbAlways->SetValue(enabled == 1);
+    m_rbOnce->SetValue(enabled == 2);
+    m_rbVisible->SetValue(enabled == 3);
+    m_rbNever->SetValue(enabled == 0);
+
     ReadAlarmActions();
     Alarm::ConfigCoursePort(true, m_cbSeparatePortAndStarboard);
 
     m_lbAlarm->RemovePage(COURSESTARBOARD);
     if(m_cbSeparatePortAndStarboard->GetValue())
         ConfigurePortAlarms();
+}
+
+void WatchdogPrefsDialog::OnEnabled( wxCommandEvent& event )
+{
+    int enabled = 1;
+    if(m_rbAlways->GetValue())
+        enabled = 1;
+    else if(m_rbOnce->GetValue())
+        enabled = 2;
+    else if(m_rbVisible->GetValue())
+        enabled = 3;
+    else if(m_rbNever->GetValue())
+        enabled = 0;
+
+    wxFileConfig *pConf = GetOCPNConfigObject();
+    pConf->SetPath ( _T( "/Settings/Watchdog" ) );
+
+    pConf->Write ( _T ( "Enabled" ), enabled );
 }
 
 void WatchdogPrefsDialog::OnAlarmChanged( wxListbookEvent& event )

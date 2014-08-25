@@ -12,7 +12,7 @@ SET(PACKAGE_NAME watchdog_pi)
 SET(CPACK_PACKAGE_CONTACT "Sean D'Epagnier ")
 
 SET(VERSION_MAJOR "1")
-SET(VERSION_MINOR "1")
+SET(VERSION_MINOR "2")
 
 INCLUDE("cmake/PluginConfigure.cmake")
 

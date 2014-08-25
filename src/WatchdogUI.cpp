@@ -106,9 +106,6 @@ WatchdogDialogBase::WatchdogDialogBase( wxWindow* parent, wxWindowID id, const w
 	fgSizer71->SetFlexibleDirection( wxBOTH );
 	fgSizer71->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_cbDisableAllAlarms = new wxCheckBox( this, wxID_ANY, _("Disable All Alarms"), wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer71->Add( m_cbDisableAllAlarms, 0, wxALL, 5 );
-	
 	m_bPreferences = new wxButton( this, wxID_ANY, _("Preferences"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer71->Add( m_bPreferences, 0, wxALL, 5 );
 	
@@ -129,7 +126,6 @@ WatchdogDialogBase::WatchdogDialogBase( wxWindow* parent, wxWindowID id, const w
 	this->Centre( wxBOTH );
 	
 	// Connect Events
-	m_cbDisableAllAlarms->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( WatchdogDialogBase::OnDisableAllAlarms ), NULL, this );
 	m_bPreferences->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchdogDialogBase::OnPreferences ), NULL, this );
 	m_bReset->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchdogDialogBase::OnReset ), NULL, this );
 	m_bClose->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchdogDialogBase::OnClose ), NULL, this );
@@ -138,7 +134,6 @@ WatchdogDialogBase::WatchdogDialogBase( wxWindow* parent, wxWindowID id, const w
 WatchdogDialogBase::~WatchdogDialogBase()
 {
 	// Disconnect Events
-	m_cbDisableAllAlarms->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( WatchdogDialogBase::OnDisableAllAlarms ), NULL, this );
 	m_bPreferences->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchdogDialogBase::OnPreferences ), NULL, this );
 	m_bReset->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchdogDialogBase::OnReset ), NULL, this );
 	m_bClose->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchdogDialogBase::OnClose ), NULL, this );
@@ -153,6 +148,32 @@ WatchdogPrefsDialogBase::WatchdogPrefsDialogBase( wxWindow* parent, wxWindowID i
 	fgSizer4 = new wxFlexGridSizer( 0, 1, 0, 0 );
 	fgSizer4->SetFlexibleDirection( wxBOTH );
 	fgSizer4->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	wxStaticBoxSizer* sbSizer41;
+	sbSizer41 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("General Setup") ), wxVERTICAL );
+	
+	wxFlexGridSizer* fgSizer241;
+	fgSizer241 = new wxFlexGridSizer( 0, 2, 0, 0 );
+	fgSizer241->SetFlexibleDirection( wxBOTH );
+	fgSizer241->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_rbAlways = new wxRadioButton( this, wxID_ANY, _("Enable Alarms"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer241->Add( m_rbAlways, 0, wxALL, 5 );
+	
+	m_rbOnce = new wxRadioButton( this, wxID_ANY, _("Enabled first time Dialog is opened"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer241->Add( m_rbOnce, 0, wxALL, 5 );
+	
+	m_rbVisible = new wxRadioButton( this, wxID_ANY, _("Enabled only if Dialog is visible"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer241->Add( m_rbVisible, 0, wxALL, 5 );
+	
+	m_rbNever = new wxRadioButton( this, wxID_ANY, _("Disable Alarms"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer241->Add( m_rbNever, 0, wxALL, 5 );
+	
+	
+	sbSizer41->Add( fgSizer241, 1, wxEXPAND, 5 );
+	
+	
+	fgSizer4->Add( sbSizer41, 1, wxEXPAND, 5 );
 	
 	m_lbAlarm = new wxListbook( this, wxID_ANY, wxDefaultPosition, wxSize( -1,-1 ), wxLB_DEFAULT );
 	m_lbAlarm->SetMinSize( wxSize( -1,200 ) );
@@ -496,7 +517,7 @@ WatchdogPrefsDialogBase::WatchdogPrefsDialogBase( wxWindow* parent, wxWindowID i
 	fgSizer171->SetFlexibleDirection( wxBOTH );
 	fgSizer171->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_rbEnabled = new wxRadioButton( this, wxID_ANY, _("Enabled"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_rbEnabled = new wxRadioButton( this, wxID_ANY, _("Enabled"), wxDefaultPosition, wxDefaultSize, wxRB_GROUP );
 	fgSizer171->Add( m_rbEnabled, 0, wxALL, 5 );
 	
 	m_rbDisabled = new wxRadioButton( this, wxID_ANY, _("Disabled"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -591,6 +612,10 @@ WatchdogPrefsDialogBase::WatchdogPrefsDialogBase( wxWindow* parent, wxWindowID i
 	this->Centre( wxBOTH );
 	
 	// Connect Events
+	m_rbAlways->Connect( wxEVT_COMMAND_RADIOBUTTON_SELECTED, wxCommandEventHandler( WatchdogPrefsDialogBase::OnEnabled ), NULL, this );
+	m_rbOnce->Connect( wxEVT_COMMAND_RADIOBUTTON_SELECTED, wxCommandEventHandler( WatchdogPrefsDialogBase::OnEnabled ), NULL, this );
+	m_rbVisible->Connect( wxEVT_COMMAND_RADIOBUTTON_SELECTED, wxCommandEventHandler( WatchdogPrefsDialogBase::OnEnabled ), NULL, this );
+	m_rbNever->Connect( wxEVT_COMMAND_RADIOBUTTON_SELECTED, wxCommandEventHandler( WatchdogPrefsDialogBase::OnEnabled ), NULL, this );
 	m_lbAlarm->Connect( wxEVT_COMMAND_LISTBOOK_PAGE_CHANGED, wxListbookEventHandler( WatchdogPrefsDialogBase::OnAlarmChanged ), NULL, this );
 	m_cbLandFallTime->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( WatchdogPrefsDialogBase::OnAlarmUpdate ), NULL, this );
 	m_sLandFallTimeMinutes->Connect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( WatchdogPrefsDialogBase::OnAlarmUpdateSpin ), NULL, this );
@@ -627,6 +652,10 @@ WatchdogPrefsDialogBase::WatchdogPrefsDialogBase( wxWindow* parent, wxWindowID i
 WatchdogPrefsDialogBase::~WatchdogPrefsDialogBase()
 {
 	// Disconnect Events
+	m_rbAlways->Disconnect( wxEVT_COMMAND_RADIOBUTTON_SELECTED, wxCommandEventHandler( WatchdogPrefsDialogBase::OnEnabled ), NULL, this );
+	m_rbOnce->Disconnect( wxEVT_COMMAND_RADIOBUTTON_SELECTED, wxCommandEventHandler( WatchdogPrefsDialogBase::OnEnabled ), NULL, this );
+	m_rbVisible->Disconnect( wxEVT_COMMAND_RADIOBUTTON_SELECTED, wxCommandEventHandler( WatchdogPrefsDialogBase::OnEnabled ), NULL, this );
+	m_rbNever->Disconnect( wxEVT_COMMAND_RADIOBUTTON_SELECTED, wxCommandEventHandler( WatchdogPrefsDialogBase::OnEnabled ), NULL, this );
 	m_lbAlarm->Disconnect( wxEVT_COMMAND_LISTBOOK_PAGE_CHANGED, wxListbookEventHandler( WatchdogPrefsDialogBase::OnAlarmChanged ), NULL, this );
 	m_cbLandFallTime->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( WatchdogPrefsDialogBase::OnAlarmUpdate ), NULL, this );
 	m_sLandFallTimeMinutes->Disconnect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( WatchdogPrefsDialogBase::OnAlarmUpdateSpin ), NULL, this );

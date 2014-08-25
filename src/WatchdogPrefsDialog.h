@@ -34,6 +34,8 @@ class WatchdogPrefsDialog: public WatchdogPrefsDialogBase
 public:
     WatchdogPrefsDialog( watchdog_pi &_watchdog_pi, wxWindow* parent);
 
+    void OnEnabled( wxCommandEvent& event );
+
     void OnAlarmChanged( wxListbookEvent& event );
     void OnAlarmUpdate();
     void OnAlarmUpdateFile( wxFileDirPickerEvent& event ) { OnAlarmUpdate(); }

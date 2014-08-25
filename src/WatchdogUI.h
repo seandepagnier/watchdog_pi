@@ -18,19 +18,19 @@
 #include <wx/colour.h>
 #include <wx/settings.h>
 #include <wx/sizer.h>
-#include <wx/checkbox.h>
 #include <wx/button.h>
 #include <wx/dialog.h>
+#include <wx/radiobut.h>
+#include <wx/statbox.h>
+#include <wx/checkbox.h>
 #include <wx/spinctrl.h>
 #include <wx/textctrl.h>
 #include <wx/panel.h>
 #include <wx/bitmap.h>
 #include <wx/image.h>
 #include <wx/icon.h>
-#include <wx/statbox.h>
 #include <wx/listbook.h>
 #include <wx/listctrl.h>
-#include <wx/radiobut.h>
 #include <wx/filepicker.h>
 
 ///////////////////////////////////////////////////////////////////////////
@@ -44,13 +44,11 @@ class WatchdogDialogBase : public wxDialog
 	private:
 	
 	protected:
-		wxCheckBox* m_cbDisableAllAlarms;
 		wxButton* m_bPreferences;
 		wxButton* m_bReset;
 		wxButton* m_bClose;
 		
 		// Virtual event handlers, overide them in your derived class
-		virtual void OnDisableAllAlarms( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnPreferences( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnReset( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnClose( wxCommandEvent& event ) { event.Skip(); }
@@ -90,6 +88,10 @@ class WatchdogPrefsDialogBase : public wxDialog
 	private:
 	
 	protected:
+		wxRadioButton* m_rbAlways;
+		wxRadioButton* m_rbOnce;
+		wxRadioButton* m_rbVisible;
+		wxRadioButton* m_rbNever;
 		wxListbook* m_lbAlarm;
 		wxPanel* m_panel1;
 		wxStaticText* m_staticText30;
@@ -143,6 +145,7 @@ class WatchdogPrefsDialogBase : public wxDialog
 		wxButton* m_sdbSizer1OK;
 		
 		// Virtual event handlers, overide them in your derived class
+		virtual void OnEnabled( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAlarmChanged( wxListbookEvent& event ) { event.Skip(); }
 		virtual void OnAlarmUpdate( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAlarmUpdateSpin( wxSpinEvent& event ) { event.Skip(); }

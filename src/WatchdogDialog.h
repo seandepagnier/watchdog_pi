@@ -33,11 +33,9 @@ class WatchdogDialog: public WatchdogDialogBase
 {
 public:
     WatchdogDialog( watchdog_pi &_watchdog_pi, wxWindow* parent);
-    ~WatchdogDialog();
 
     void UpdateAlarms();
 
-    void OnDisableAllAlarms( wxCommandEvent& event );
     void OnPreferences( wxCommandEvent& event );
     void OnReset( wxCommandEvent& event );
     void OnClose( wxCommandEvent& event ) { Hide(); }
