@@ -25,8 +25,8 @@
  ***************************************************************************
  */
 
-#ifndef _WATCHMANPI_H_
-#define _WATCHMANPI_H_
+#ifndef _WATCHDOGPI_H_
+#define _WATCHDOGPI_H_
 
 #include "wx/wx.h"
 
@@ -81,7 +81,7 @@ double heading_resolve(double degrees);
 //    The PlugIn Class Definition
 //----------------------------------
 
-#define WATCHMAN_TOOL_POSITION    -1          // Request default positioning of toolbar tool
+#define WATCHDOG_TOOL_POSITION    -1          // Request default positioning of toolbar tool
 
 #include "Alarm.h"
 

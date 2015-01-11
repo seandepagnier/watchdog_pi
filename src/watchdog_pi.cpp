@@ -95,7 +95,7 @@ int watchdog_pi::Init(void)
     
     m_leftclick_tool_id  = InsertPlugInTool
         (_T(""), _img_watchdog, _img_watchdog, wxITEM_NORMAL,
-         _("Watchdog"), _T(""), NULL, WATCHMAN_TOOL_POSITION, 0, this);
+         _("Watchdog"), _T(""), NULL, WATCHDOG_TOOL_POSITION, 0, this);
     
     m_pWatchdogDialog = NULL;
     m_pWatchdogPrefsDialog = NULL;
