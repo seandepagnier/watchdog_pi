@@ -5,8 +5,7 @@
  * Author:   Sean D'Epagnier
  *
  ***************************************************************************
- *   Copyright (C) 2013 by Sean D'Epagnier                                 *
- *   sean at depagnier dot com                                             *
+ *   Copyright (C) 2015 by Sean D'Epagnier                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -32,6 +31,7 @@ public:
     static void ConfigAll(bool load);
     static void ResetAll();
     static void UpdateStatusAll();
+    static void RepopulateAll();
     static void NMEAString(const wxString &string);
     static void ConfigCoursePort(bool read, wxCheckBox *control);
 
@@ -42,6 +42,8 @@ public:
     virtual void LoadConfig();
 
     void UpdateStatus();
+
+    virtual void Repopulate();
 
     virtual wxString Name() = 0;
     virtual bool Test() = 0;

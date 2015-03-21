@@ -5,8 +5,7 @@
  * Author:   Sean D'Epagnier
  *
  ***************************************************************************
- *   Copyright (C) 2013 by Sean D'Epagnier                                 *
- *   sean at depagnier dot com                                             *
+ *   Copyright (C) 2015 by Sean D'Epagnier                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -31,17 +30,40 @@
 WatchdogDialog::WatchdogDialog( watchdog_pi &_watchdog_pi, wxWindow* parent)
     : WatchdogDialogBase( parent ), m_watchdog_pi(_watchdog_pi)
 {
+    wxFileConfig *pConf = GetOCPNConfigObject();
+
+    pConf->SetPath ( _T( "/Settings/Watchdog" ) );
+
+    Move(pConf->Read ( _T ( "DialogPosX" ), 20L ), pConf->Read ( _T ( "DialogPosY" ), 20L ));
+}
+
+WatchdogDialog::~WatchdogDialog()
+{
+    wxFileConfig *pConf = GetOCPNConfigObject();
+    pConf->SetPath ( _T ( "/Settings/Watchdog" ) );
+
+    wxPoint p = GetPosition();
+
+    pConf->Write ( _T ( "DialogPosX" ), p.x );
+    pConf->Write ( _T ( "DialogPosY" ), p.y );
 }
 
 void WatchdogDialog::UpdateAlarms()
 {
-    if(IsShown())
-        Alarm::UpdateStatusAll();
-    else
-        m_fgAlarms->Show(false);
+    Alarm::UpdateStatusAll();
+
+    m_fgAlarms->Clear();
+    Alarm::RepopulateAll();
 
     Fit();
-    Refresh();
+
+    wxPoint p = GetPosition();
+    Hide();
+    Show();
+#ifdef __WXGTK__
+    Move(0, 0);        // workaround for gtk autocentre dialog behavior
+    Move(p);
+#endif
 }
 
 void WatchdogDialog::OnPreferences( wxCommandEvent& event )

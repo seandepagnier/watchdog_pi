@@ -5,8 +5,7 @@
  * Author:   Sean D'Epagnier
  *
  ***************************************************************************
- *   Copyright (C) 2014 by Sean D'Epagnier                                 *
- *   sean at depagnier dot com                                             *
+ *   Copyright (C) 2015 by Sean D'Epagnier                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -72,8 +71,14 @@ void WatchdogPrefsDialog::OnAlarmChanged( wxListbookEvent& event )
     ReadAlarmActions();
 }
 
-void WatchdogPrefsDialog::OnAlarmUpdate()
+void WatchdogPrefsDialog::OnAlarmUpdate(bool enable)
 {
+    if(m_breading)
+        return;
+
+    if(enable)
+        m_rbEnabled->SetValue(true);
+
     WriteAlarmActions();
 
     m_watchdog_pi.m_pWatchdogDialog->UpdateAlarms();
@@ -84,6 +89,7 @@ void WatchdogPrefsDialog::OnCheckSeparatePortAndStarboard( wxCommandEvent& event
     Alarm::ConfigCoursePort(false, m_cbSeparatePortAndStarboard);
     ConfigurePortAlarms();
     m_lbAlarm->SetSelection(COURSE);
+    m_watchdog_pi.m_pWatchdogDialog->UpdateAlarms();
 }
 
 void WatchdogPrefsDialog::OnSyncToBoat( wxCommandEvent& event )
@@ -114,9 +120,6 @@ void WatchdogPrefsDialog::AlarmActions(bool read)
 {
     Alarm *alarm = CurrentAlarm();
     if(!alarm)
-        return;
-
-    if(m_breading)
         return;
 
     if(read) {

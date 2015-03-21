@@ -5,8 +5,7 @@
  * Author:   Sean D'Epagnier
  *
  ***************************************************************************
- *   Copyright (C) 2013 by Sean D'Epagnier                                 *
- *   sean at depagnier dot com                                             *
+ *   Copyright (C) 2015 by Sean D'Epagnier                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -106,14 +105,6 @@ public:
     wxString GetStatus() {
         WatchdogDialog &dlg = *g_watchdog_pi->m_pWatchdogDialog;
 
-        if(!m_bEnabled) {
-            dlg.m_stTextLandFallTime->Hide();
-            dlg.m_stLandFallTime->Hide();
-            dlg.m_stTextLandFallDistance->Hide();
-            dlg.m_stLandFallDistance->Hide();
-            return _T("");
-        }
-
         wxString s, fmt(_T(" %d "));
         wxFileConfig *pConf = GetConfigObject();
 
@@ -157,11 +148,6 @@ public:
                 dlg.m_stLandFallTime->SetForegroundColour(*wxBLACK);
 
             dlg.m_stLandFallTime->SetLabel(s);
-            dlg.m_stTextLandFallTime->Show();
-            dlg.m_stLandFallTime->Show();
-        } else {
-            dlg.m_stTextLandFallTime->Hide();
-            dlg.m_stLandFallTime->Hide();
         }
         
         if(pConf->Read ( _T ( "DistanceAlarm" ), 0L)) {
@@ -177,14 +163,38 @@ public:
                 dlg.m_stLandFallDistance->SetForegroundColour(*wxBLACK);
 
             dlg.m_stLandFallDistance->SetLabel(s);
+        }
+
+        return _T("");
+    }
+
+    void Repopulate() {
+        wxFileConfig *pConf = GetConfigObject();
+
+        WatchdogDialog &dlg = *g_watchdog_pi->m_pWatchdogDialog;
+        wxFlexGridSizer &sizer = *dlg.m_fgAlarms;
+
+        if(pConf->Read ( _T ( "TimeAlarm" ), 1L) && m_bEnabled) {
+            sizer.Add(dlg.m_stTextLandFallTime, 0, wxALL, 5);
+            sizer.Add(dlg.m_stLandFallTime, 0, wxALL, 5);
+
+            dlg.m_stTextLandFallTime->Show();
+            dlg.m_stLandFallTime->Show();
+        } else {
+            dlg.m_stTextLandFallTime->Hide();
+            dlg.m_stLandFallTime->Hide();
+        }
+
+        if(pConf->Read ( _T ( "DistanceAlarm" ), 0L) && m_bEnabled) {
+            sizer.Add(dlg.m_stTextLandFallDistance, 0, wxALL, 5);
+            sizer.Add(dlg.m_stLandFallDistance, 0, wxALL, 5);
+
             dlg.m_stTextLandFallDistance->Show();
             dlg.m_stLandFallDistance->Show();
         } else {
             dlg.m_stTextLandFallDistance->Hide();
             dlg.m_stLandFallDistance->Hide();
         }
-
-        return _T("");
     }
 
     void Render(ocpnDC &dc, PlugIn_ViewPort &vp) {
@@ -654,6 +664,12 @@ void Alarm::UpdateStatusAll()
         (*alarm)->UpdateStatus();
 }
 
+void Alarm::RepopulateAll()
+{
+    for(Alarm **alarm = Alarms; *alarm; alarm++)
+        (*alarm)->Repopulate();
+}
+
 void Alarm::NMEAString(const wxString &string)
 {
     g_NMEADataAlarm.NMEAString(string);
@@ -683,6 +699,7 @@ void Alarm::Run()
     if(m_bCommand)
         if(!wxProcess::Open(m_sCommand)) {
             wxMessageDialog mdlg(GetOCPNCanvasWindow(),
+                                 Name() + _T(" ") +
                                  _("Failed to execute command: ") + m_sCommand,
                                  _("Watchdog"), wxOK | wxICON_ERROR);
             mdlg.ShowModal();
@@ -690,7 +707,7 @@ void Alarm::Run()
         }
 
     if(m_bMessageBox) {
-        wxMessageDialog mdlg(GetOCPNCanvasWindow(), Name() + _(" ALARM!"),
+        wxMessageDialog mdlg(GetOCPNCanvasWindow(), Name() + _T(" ") + _("ALARM!"),
                              _("Watchman"), wxOK | wxICON_WARNING);
         mdlg.ShowModal();
     }
@@ -811,26 +828,38 @@ void Alarm::OnTimer( wxTimerEvent & )
 
 void Alarm::UpdateStatus()
 {
-    wxControl *Text, *status;
-    GetStatusControls(Text, status);
+    wxControl *text, *status;
+    GetStatusControls(text, status);
 
-    if(status && Text) {
-        if(m_bEnabled) {
-            wxString s = GetStatus();
-            if(m_bFired)
-                status->SetForegroundColour(*wxRED);
-            else
-                status->SetForegroundColour(*wxBLACK);
+    if(!status || !m_bEnabled)
+        return;
+
+    wxString s = GetStatus();
+    if(m_bFired)
+        status->SetForegroundColour(*wxRED);
+    else
+        status->SetForegroundColour(*wxBLACK);
             
-            status->SetLabel(s);
-            Text->Show();
-            status->Show();
-        } else {
-            Text->Hide();
-            status->Hide();
-        }
-    } else
-        GetStatus();
+    status->SetLabel(s);
+}
+
+void Alarm::Repopulate()
+{
+    wxControl *text, *status;
+    GetStatusControls(text, status);
+
+    if(!status || !text)
+        return;
+
+    wxFlexGridSizer &sizer = *g_watchdog_pi->m_pWatchdogDialog->m_fgAlarms;
+
+    text->Show(m_bEnabled);
+    status->Show(m_bEnabled);
+
+    if(m_bEnabled) {
+        sizer.Add(text, 0, wxALL, 5);
+        sizer.Add(status, 0, wxALL, 5);
+    }
 }
 
 wxFileConfig *Alarm::GetConfigObject()

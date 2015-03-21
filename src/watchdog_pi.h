@@ -5,8 +5,7 @@
  * Author:   Sean D'Epagnier
  *
  ***************************************************************************
- *   Copyright (C) 2013 by Sean D'Epagnier                                 *
- *   sean at depagnier dot com                                             *
+ *   Copyright (C) 2015 by Sean D'Epagnier                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -123,9 +122,6 @@ public:
       void SetColorScheme(PI_ColorScheme cs);
 
 //    Other public methods
-      void SetWatchdogDialogX    (int x){ m_watchdog_dialog_x = x;}
-      void SetWatchdogDialogY    (int x){ m_watchdog_dialog_y = x;}
-
       void OnWatchdogDialogClose();
       void    ShowPreferencesDialog( wxWindow* );
 
@@ -153,9 +149,6 @@ private:
       void    SetPositionFixEx(PlugIn_Position_Fix_Ex &pfix);
 
       WatchdogPrefsDialog *m_pWatchdogPrefsDialog;
-      int               m_watchdog_dialog_x, m_watchdog_dialog_y;
-      int               m_display_width, m_display_height;
-
       int               m_leftclick_tool_id;
 
       void              RearrangeWindow();

@@ -105,8 +105,8 @@
                     <object class="wxFlexGridSizer" expanded="0">
                         <property name="cols">2</property>
                         <property name="flexible_direction">wxBOTH</property>
-                        <property name="growablecols">0</property>
-                        <property name="growablerows">0</property>
+                        <property name="growablecols">0,1</property>
+                        <property name="growablerows"></property>
                         <property name="hgap">0</property>
                         <property name="minimum_size"></property>
                         <property name="name">m_fgAlarms</property>
@@ -2437,7 +2437,7 @@
                         <object class="listbookpage" expanded="1">
                             <property name="bitmap"></property>
                             <property name="label">Landfall</property>
-                            <property name="select">0</property>
+                            <property name="select">1</property>
                             <object class="wxPanel" expanded="1">
                                 <property name="BottomDockable">1</property>
                                 <property name="LeftDockable">1</property>
@@ -4801,7 +4801,7 @@
                                                     <property name="hidden">0</property>
                                                     <property name="id">wxID_ANY</property>
                                                     <property name="initial">50</property>
-                                                    <property name="max">1000</property>
+                                                    <property name="max">100000</property>
                                                     <property name="max_size"></property>
                                                     <property name="maximize_button">0</property>
                                                     <property name="maximum_size"></property>
@@ -6445,7 +6445,7 @@
                         <object class="listbookpage" expanded="0">
                             <property name="bitmap"></property>
                             <property name="label">Over Speed</property>
-                            <property name="select">1</property>
+                            <property name="select">0</property>
                             <object class="wxPanel" expanded="0">
                                 <property name="BottomDockable">1</property>
                                 <property name="LeftDockable">1</property>
@@ -7338,7 +7338,7 @@
                                 <event name="OnMouseEvents"></event>
                                 <event name="OnMouseWheel"></event>
                                 <event name="OnPaint"></event>
-                                <event name="OnRadioButton">OnAlarmUpdate</event>
+                                <event name="OnRadioButton">OnAlarmUpdateRB</event>
                                 <event name="OnRightDClick"></event>
                                 <event name="OnRightDown"></event>
                                 <event name="OnRightUp"></event>
@@ -7426,7 +7426,7 @@
                                 <event name="OnMouseEvents"></event>
                                 <event name="OnMouseWheel"></event>
                                 <event name="OnPaint"></event>
-                                <event name="OnRadioButton">OnAlarmUpdate</event>
+                                <event name="OnRadioButton">OnAlarmUpdateRB</event>
                                 <event name="OnRightDClick"></event>
                                 <event name="OnRightDown"></event>
                                 <event name="OnRightUp"></event>
@@ -7707,7 +7707,7 @@
                                         <event name="OnChar"></event>
                                         <event name="OnEnterWindow"></event>
                                         <event name="OnEraseBackground"></event>
-                                        <event name="OnFileChanged">OnAlarmUpdateFile</event>
+                                        <event name="OnFileChanged">OnAlarmUpdateSound</event>
                                         <event name="OnKeyDown"></event>
                                         <event name="OnKeyUp"></event>
                                         <event name="OnKillFocus"></event>
@@ -7902,7 +7902,7 @@
                                         <event name="OnRightUp"></event>
                                         <event name="OnSetFocus"></event>
                                         <event name="OnSize"></event>
-                                        <event name="OnText">OnAlarmUpdate</event>
+                                        <event name="OnText">OnAlarmUpdateCommand</event>
                                         <event name="OnTextEnter"></event>
                                         <event name="OnTextMaxLen"></event>
                                         <event name="OnTextURL"></event>
@@ -8177,7 +8177,7 @@
                                         <event name="OnRightUp"></event>
                                         <event name="OnSetFocus"></event>
                                         <event name="OnSize"></event>
-                                        <event name="OnSpinCtrl">OnAlarmUpdateSpin</event>
+                                        <event name="OnSpinCtrl">OnAlarmUpdateRepeat</event>
                                         <event name="OnSpinCtrlText"></event>
                                         <event name="OnUpdateUI"></event>
                                     </object>

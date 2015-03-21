@@ -152,7 +152,10 @@ class WatchdogPrefsDialogBase : public wxDialog
 		virtual void OnSyncToBoat( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnCurrentCourse( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnCheckSeparatePortAndStarboard( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnAlarmUpdateFile( wxFileDirPickerEvent& event ) { event.Skip(); }
+		virtual void OnAlarmUpdateRB( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnAlarmUpdateSound( wxFileDirPickerEvent& event ) { event.Skip(); }
+		virtual void OnAlarmUpdateCommand( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnAlarmUpdateRepeat( wxSpinEvent& event ) { event.Skip(); }
 		virtual void OnTestAlarm( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnInformation( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAboutAuthor( wxCommandEvent& event ) { event.Skip(); }

@@ -5,8 +5,7 @@
  * Author:   Sean D'Epagnier
  *
  ***************************************************************************
- *   Copyright (C) 2013 by Sean D'Epagnier                                 *
- *   sean at depagnier dot com                                             *
+ *   Copyright (C) 2015 by Sean D'Epagnier                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -29,18 +28,24 @@
 
 class watchdog_pi;
 
-class WatchdogPrefsDialog: public WatchdogPrefsDialogBase
+class WatchdogPrefsDialog : public WatchdogPrefsDialogBase
 {
 public:
     WatchdogPrefsDialog( watchdog_pi &_watchdog_pi, wxWindow* parent);
 
     void OnEnabled( wxCommandEvent& event );
 
-    void OnAlarmChanged( wxListbookEvent& event );
-    void OnAlarmUpdate();
-    void OnAlarmUpdateFile( wxFileDirPickerEvent& event ) { OnAlarmUpdate(); }
-    void OnAlarmUpdate( wxCommandEvent& event ) { OnAlarmUpdate(); }
+    void OnAlarmUpdateSound( wxFileDirPickerEvent& event ) { m_cbSound->SetValue(true); OnAlarmUpdate(); }
+    void OnAlarmUpdateCommand( wxCommandEvent& event ) { m_cbCommand->SetValue(true); OnAlarmUpdate(); }
+    void OnAlarmUpdateRepeat( wxSpinEvent& event ) { m_cbRepeat->SetValue(true); OnAlarmUpdate(); }
+
+    void OnAlarmUpdate( wxCommandEvent& event ) { OnAlarmUpdate(event.IsChecked()); }
     void OnAlarmUpdateSpin( wxSpinEvent& event ) { OnAlarmUpdate(); }
+    void OnAlarmUpdateRB( wxCommandEvent& event ) { OnAlarmUpdate(false); }
+
+    void OnAlarmUpdate(bool enable=true);
+
+    void OnAlarmChanged( wxListbookEvent& event );
 
     void OnCheckSeparatePortAndStarboard( wxCommandEvent& event );
 
