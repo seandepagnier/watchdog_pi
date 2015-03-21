@@ -57,7 +57,6 @@ void WatchdogDialog::UpdateAlarms()
 
     Fit();
 
-    wxPoint p = GetPosition();
     Hide();
     Show();
 #ifdef __WXGTK__
