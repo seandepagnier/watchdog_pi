@@ -58,11 +58,12 @@ void WatchdogDialog::UpdateAlarms()
     Fit();
 
     Hide();
-    Show();
 #ifdef __WXGTK__
+    wxPoint p = GetPosition();
     Move(0, 0);        // workaround for gtk autocentre dialog behavior
     Move(p);
 #endif
+    Show();
 }
 
 void WatchdogDialog::OnPreferences( wxCommandEvent& event )
