@@ -332,10 +332,23 @@ public:
     }
 } g_DeadmanAlarm;
 
+class SecondDeadmanAlarm : public DeadmanAlarm
+{
+public:
+    SecondDeadmanAlarm() {}
+
+    wxString Name() { return _("Second Deadman"); }
+    void GetStatusControls(wxControl *&Text, wxControl *&status) {
+        WatchdogDialog &dlg = *g_watchdog_pi->m_pWatchdogDialog;
+        Text = dlg.m_stTextSecondDeadman;
+        status = dlg.m_stSecondDeadman;
+    }
+} g_SecondDeadmanAlarm;
+
 class AnchorAlarm : public Alarm
 {
 public:
-    AnchorAlarm() {}
+    AnchorAlarm() { minoldfix.FixTime = 0; }
 
     wxString Name() { return _("Anchor"); }
     void GetStatusControls(wxControl *&Text, wxControl *&status) {
@@ -347,8 +360,30 @@ public:
     bool Test() {
         wxFileConfig *pConf = GetConfigObject();
 
-        double anchordist = Distance();
         long AnchorRadius = pConf->Read ( _T ( "Radius" ), 50L );
+
+        if( pConf->Read ( _T ( "AutoSync" ), 0L ) ) {
+            PlugIn_Position_Fix_Ex lastfix = g_watchdog_pi->LastFix();
+            if(lastfix.FixTime - minoldfix.FixTime >= 60) {
+                if(minoldfix.FixTime) {
+                    double dist;
+                    DistanceBearingMercator_Plugin(lastfix.Lat, lastfix.Lon,
+                                                   minoldfix.Lat, minoldfix.Lon,
+                                       0, &dist);
+                    dist *= 1853.248; /* in meters */
+
+                    if(dist < AnchorRadius) {
+                        pConf->Write(_T("Latitude"), lastfix.Lat);
+                        pConf->Write(_T("Longitude"), lastfix.Lon);
+                        g_watchdog_pi->UpdatePreferences();
+                    }
+                }
+                minoldfix = lastfix;
+            }
+        }
+
+        double anchordist = Distance();
+
         return anchordist > AnchorRadius;
     }
 
@@ -405,6 +440,9 @@ private:
         anchordist *= 1853.248; /* in meters */
         return anchordist;
     }
+
+    PlugIn_Position_Fix_Ex minoldfix;
+
 } g_AnchorAlarm;
 
 class CourseAlarm : public Alarm
@@ -414,6 +452,8 @@ public:
 
     wxString Name() { return _("Off Course") +
             (m_Mode == PORT ? wxString(_T(" ")) + _("Port") : _T("")); }
+
+    wxString ConfigName() { return _("Off Course"); }
 
     void SetPort(bool port) {
         m_Mode = port ? PORT : BOTH;
@@ -631,10 +671,9 @@ public:
 
 ////////// Alarm Base Class /////////////////
 
-Alarm *Alarms[] = {&g_LandfallAlarm, &g_NMEADataAlarm, &g_DeadmanAlarm,
+Alarm *Alarms[] = {&g_LandfallAlarm, &g_NMEADataAlarm, &g_DeadmanAlarm, &g_SecondDeadmanAlarm,
                    &g_AnchorAlarm, &g_CourseAlarm, &g_CourseStarboardAlarm,
-                   &g_UnderSpeedAlarm,
-                   &g_OverSpeedAlarm, 0, 0, 0};
+                   &g_UnderSpeedAlarm, &g_OverSpeedAlarm, 0, 0, 0};
 
 void Alarm::RenderAll(ocpnDC &dc, PlugIn_ViewPort &vp)
 {
@@ -673,6 +712,16 @@ void Alarm::RepopulateAll()
 void Alarm::NMEAString(const wxString &string)
 {
     g_NMEADataAlarm.NMEAString(string);
+}
+
+void Alarm::ConfigSecondDeadman(bool read, wxCheckBox *control)
+{
+    g_DeadmanAlarm.ConfigItem(read, _T ( "SecondDeadman" ), control);
+
+    if(control->GetValue())
+       g_SecondDeadmanAlarm.m_bEnabled = g_DeadmanAlarm.m_bEnabled;
+    else
+        g_SecondDeadmanAlarm.m_bEnabled = false;
 }
 
 void Alarm::ConfigCoursePort(bool read, wxCheckBox *control)
@@ -869,6 +918,6 @@ wxFileConfig *Alarm::GetConfigObject()
     if(!pConf)
         return NULL;
         
-    pConf->SetPath ( _T( "/Settings/Watchdog/Alarms/" ) + Name() );
+    pConf->SetPath ( _T( "/Settings/Watchdog/Alarms/" ) + ConfigName() );
     return pConf;
 }

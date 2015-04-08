@@ -47,20 +47,25 @@ public:
 
     void OnAlarmChanged( wxListbookEvent& event );
 
+    void OnCheckSecondDeadman( wxCommandEvent& );
     void OnCheckSeparatePortAndStarboard( wxCommandEvent& event );
 
     void OnSyncToBoat( wxCommandEvent& event );
     void OnCurrentCourse( wxCommandEvent& event );
     void OnTestAlarm( wxCommandEvent& event );
 
-private:
     void ReadAlarmActions() { AlarmActions(true); }
     void WriteAlarmActions() { AlarmActions(false); }
+
+private:
     void AlarmActions(bool read);
 
     int CurrentSelection();
+    int PanelIndex(int alarm);
+
     Alarm *CurrentAlarm();
     
+    void ConfigureDeadmanAlarms();
     void ConfigurePortAlarms();
 
     void OnInformation( wxCommandEvent& event );

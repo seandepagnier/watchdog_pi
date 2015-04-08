@@ -125,6 +125,8 @@ public:
       void OnWatchdogDialogClose();
       void    ShowPreferencesDialog( wxWindow* );
 
+      void UpdatePreferences();
+
       PlugIn_Position_Fix_Ex &LastFix() { return m_lastfix; }
 
       double m_sog, m_cog;

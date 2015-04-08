@@ -33,6 +33,7 @@ public:
     static void UpdateStatusAll();
     static void RepopulateAll();
     static void NMEAString(const wxString &string);
+    static void ConfigSecondDeadman(bool read, wxCheckBox *control);
     static void ConfigCoursePort(bool read, wxCheckBox *control);
 
     Alarm(int interval=1);
@@ -46,13 +47,13 @@ public:
     virtual void Repopulate();
 
     virtual wxString Name() = 0;
+    virtual wxString ConfigName() { return Name(); }
     virtual bool Test() = 0;
     virtual wxString GetStatus() = 0;
     virtual void Render(ocpnDC &dc, PlugIn_ViewPort &vp) {}
 
     void OnTimer( wxTimerEvent & );
-
-    wxFileConfig *GetConfigObject();
+    virtual wxFileConfig *GetConfigObject();
 
 protected:
     bool m_bEnabled, m_bgfxEnabled;
@@ -74,6 +75,6 @@ private:
     wxDateTime m_LastAlarmTime;
 };
 
-enum AlarmNames {LANDFALL, NMEADATA, DEADMAN, ANCHOR, COURSE, COURSESTARBOARD,
-                 UNDERSPEED, OVERSPEED, DEPTH, WIND};
+enum AlarmNames {LANDFALL, NMEADATA, DEADMAN, SECOND_DEADMAN, ANCHOR,
+                 COURSE, COURSE_STARBOARD, UNDERSPEED, OVERSPEED, DEPTH, WIND};
 extern Alarm *Alarms[];

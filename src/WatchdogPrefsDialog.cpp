@@ -41,9 +41,13 @@ WatchdogPrefsDialog::WatchdogPrefsDialog( watchdog_pi &_watchdog_pi, wxWindow* p
     m_rbNever->SetValue(enabled == 0);
 
     ReadAlarmActions();
-    Alarm::ConfigCoursePort(true, m_cbSeparatePortAndStarboard);
 
-    m_lbAlarm->RemovePage(COURSESTARBOARD);
+    Alarm::ConfigSecondDeadman(true, m_cbSecondDeadman);
+    if(!m_cbSecondDeadman->GetValue())
+        ConfigureDeadmanAlarms();
+
+    Alarm::ConfigCoursePort(true, m_cbSeparatePortAndStarboard);
+    m_lbAlarm->RemovePage(PanelIndex(COURSE_STARBOARD));
     if(m_cbSeparatePortAndStarboard->GetValue())
         ConfigurePortAlarms();
 }
@@ -84,11 +88,18 @@ void WatchdogPrefsDialog::OnAlarmUpdate(bool enable)
     m_watchdog_pi.m_pWatchdogDialog->UpdateAlarms();
 }
 
+void WatchdogPrefsDialog::OnCheckSecondDeadman( wxCommandEvent& event )
+{
+    Alarm::ConfigSecondDeadman(false, m_cbSecondDeadman);
+    ConfigureDeadmanAlarms();
+    m_watchdog_pi.m_pWatchdogDialog->UpdateAlarms();
+}
+
 void WatchdogPrefsDialog::OnCheckSeparatePortAndStarboard( wxCommandEvent& event )
 {
     Alarm::ConfigCoursePort(false, m_cbSeparatePortAndStarboard);
     ConfigurePortAlarms();
-    m_lbAlarm->SetSelection(COURSE);
+    m_lbAlarm->SetSelection(PanelIndex(COURSE));
     m_watchdog_pi.m_pWatchdogDialog->UpdateAlarms();
 }
 
@@ -170,10 +181,16 @@ void WatchdogPrefsDialog::AlarmActions(bool read)
         m_cbGraphicsEnabled->Disable();
         break;
 
+    case SECOND_DEADMAN:
+        alarm->ConfigItem(read, _T ( "Minutes" ), m_sSecondDeadmanMinutes);
+        m_cbGraphicsEnabled->Disable();
+        break;
+
     case ANCHOR:
         alarm->ConfigItem(read, _T ( "Latitude" ), m_tAnchorLatitude);
         alarm->ConfigItem(read, _T ( "Longitude" ), m_tAnchorLongitude);
         alarm->ConfigItem(read, _T ( "Radius" ), m_sAnchorRadius);
+        alarm->ConfigItem(read, _T ( "AutoSync" ), m_cbAutoSync);
         break;
 
     case COURSE:
@@ -181,7 +198,7 @@ void WatchdogPrefsDialog::AlarmActions(bool read)
         alarm->ConfigItem(read, _T ( "Course" ), m_sCourse);
         break;
 
-    case COURSESTARBOARD:
+    case COURSE_STARBOARD:
         m_cbGraphicsEnabled->Disable();
         break;
 
@@ -201,6 +218,11 @@ void WatchdogPrefsDialog::AlarmActions(bool read)
 int WatchdogPrefsDialog::CurrentSelection()
 {
     int selection = m_lbAlarm->GetSelection();
+
+    if(!m_cbSecondDeadman->GetValue() &&
+       selection > DEADMAN)
+        selection++;
+
     if(!m_cbSeparatePortAndStarboard->GetValue() &&
        selection > COURSE)
         selection++;
@@ -208,23 +230,44 @@ int WatchdogPrefsDialog::CurrentSelection()
     return selection;
 }
 
+int WatchdogPrefsDialog::PanelIndex(int alarm)
+{
+    if(!m_cbSecondDeadman->GetValue() &&
+       alarm > SECOND_DEADMAN)
+        alarm--;
+
+    if(!m_cbSeparatePortAndStarboard->GetValue() &&
+       alarm > COURSE_STARBOARD)
+        alarm--;
+
+    return alarm;
+}
+
 Alarm *WatchdogPrefsDialog::CurrentAlarm()
 {
     return Alarms[CurrentSelection()];
 }
 
+void WatchdogPrefsDialog::ConfigureDeadmanAlarms()
+{
+    if(m_cbSecondDeadman->GetValue())
+        m_lbAlarm->InsertPage(PanelIndex(SECOND_DEADMAN), m_pSecondDeadman, _("Second Deadman"));
+    else
+        m_lbAlarm->RemovePage(PanelIndex(SECOND_DEADMAN));
+}
+
 void WatchdogPrefsDialog::ConfigurePortAlarms()
 {
     wxString offcourse = _("Off Course"), courseerror = _("Course Error"), port = _("Port");
-    m_lbAlarm->RemovePage(COURSE);
+    m_lbAlarm->RemovePage(PanelIndex(COURSE));
     if(m_cbSeparatePortAndStarboard->GetValue()) {
-        m_lbAlarm->InsertPage(COURSE, m_pCourse, offcourse + _T(" ") + port);
-        m_lbAlarm->InsertPage(COURSESTARBOARD, m_pCourseStarboard, _("Off Course Starboard"));
+        m_lbAlarm->InsertPage(PanelIndex(COURSE), m_pCourse, offcourse + _T(" ") + port);
+        m_lbAlarm->InsertPage(PanelIndex(COURSE_STARBOARD), m_pCourseStarboard, _("Off Course Starboard"));
         m_watchdog_pi.m_pWatchdogDialog->m_stTextCourseError
             ->SetLabel(courseerror + _T(" ") + port);
     } else {
-        m_lbAlarm->InsertPage(COURSE, m_pCourse, offcourse);
-        m_lbAlarm->RemovePage(COURSESTARBOARD);
+        m_lbAlarm->InsertPage(PanelIndex(COURSE), m_pCourse, offcourse);
+        m_lbAlarm->RemovePage(PanelIndex(COURSE_STARBOARD));
         m_watchdog_pi.m_pWatchdogDialog->m_stTextCourseError->SetLabel(courseerror);
     }
 }

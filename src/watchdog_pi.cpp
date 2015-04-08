@@ -100,8 +100,7 @@ int watchdog_pi::Init(void)
             WANTS_OPENGL_OVERLAY_CALLBACK |
             WANTS_TOOLBAR_CALLBACK    |
             WANTS_CURSOR_LATLON       |
-//            WANTS_PREFERENCES         |
-            WANTS_NMEA_SENTENCES |
+            WANTS_NMEA_SENTENCES      |
             WANTS_NMEA_EVENTS         |
             WANTS_AIS_SENTENCES       |
             WANTS_CONFIG);
@@ -320,4 +319,10 @@ void watchdog_pi::SetPositionFixEx(PlugIn_Position_Fix_Ex &pfix)
 void watchdog_pi::ShowPreferencesDialog( wxWindow* )
 {
     m_pWatchdogPrefsDialog->Show();
+}
+
+void watchdog_pi::UpdatePreferences()
+{
+    if(m_pWatchdogPrefsDialog)
+        m_pWatchdogPrefsDialog->ReadAlarmActions();
 }

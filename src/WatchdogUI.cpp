@@ -58,6 +58,14 @@ WatchdogDialogBase::WatchdogDialogBase( wxWindow* parent, wxWindowID id, const w
 	m_stDeadman->Wrap( -1 );
 	m_fgAlarms->Add( m_stDeadman, 0, wxALL, 5 );
 	
+	m_stTextSecondDeadman = new wxStaticText( this, wxID_ANY, _("Second Deadman activity"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_stTextSecondDeadman->Wrap( -1 );
+	m_fgAlarms->Add( m_stTextSecondDeadman, 0, wxALL, 5 );
+	
+	m_stSecondDeadman = new wxStaticText( this, wxID_ANY, _("No Updates"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_stSecondDeadman->Wrap( -1 );
+	m_fgAlarms->Add( m_stSecondDeadman, 0, wxALL, 5 );
+	
 	m_stTextAnchor = new wxStaticText( this, wxID_ANY, _("Distance to Anchor"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_stTextAnchor->Wrap( -1 );
 	m_fgAlarms->Add( m_stTextAnchor, 0, wxALL, 5 );
@@ -232,7 +240,7 @@ WatchdogPrefsDialogBase::WatchdogPrefsDialogBase( wxWindow* parent, wxWindowID i
 	m_panel1->SetSizer( fgSizer17 );
 	m_panel1->Layout();
 	fgSizer17->Fit( m_panel1 );
-	m_lbAlarm->AddPage( m_panel1, _("Landfall"), true );
+	m_lbAlarm->AddPage( m_panel1, _("Landfall"), false );
 	m_panel2 = new wxPanel( m_lbAlarm, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxFlexGridSizer* fgSizer91;
 	fgSizer91 = new wxFlexGridSizer( 0, 1, 0, 0 );
@@ -272,6 +280,11 @@ WatchdogPrefsDialogBase::WatchdogPrefsDialogBase( wxWindow* parent, wxWindowID i
 	fgSizer91->Fit( m_panel2 );
 	m_lbAlarm->AddPage( m_panel2, _("NMEA Data"), false );
 	m_panel3 = new wxPanel( m_lbAlarm, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxFlexGridSizer* fgSizer25;
+	fgSizer25 = new wxFlexGridSizer( 0, 1, 0, 0 );
+	fgSizer25->SetFlexibleDirection( wxBOTH );
+	fgSizer25->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
 	wxFlexGridSizer* fgSizer5;
 	fgSizer5 = new wxFlexGridSizer( 0, 3, 0, 0 );
 	fgSizer5->SetFlexibleDirection( wxBOTH );
@@ -289,10 +302,46 @@ WatchdogPrefsDialogBase::WatchdogPrefsDialogBase( wxWindow* parent, wxWindowID i
 	fgSizer5->Add( m_staticText6, 0, wxALL, 5 );
 	
 	
-	m_panel3->SetSizer( fgSizer5 );
+	fgSizer25->Add( fgSizer5, 1, wxEXPAND, 5 );
+	
+	m_cbSecondDeadman = new wxCheckBox( m_panel3, wxID_ANY, _("Second Deadman"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer25->Add( m_cbSecondDeadman, 0, wxALL, 5 );
+	
+	
+	m_panel3->SetSizer( fgSizer25 );
 	m_panel3->Layout();
-	fgSizer5->Fit( m_panel3 );
-	m_lbAlarm->AddPage( m_panel3, _("Deadman"), false );
+	fgSizer25->Fit( m_panel3 );
+	m_lbAlarm->AddPage( m_panel3, _("Deadman"), true );
+	m_pSecondDeadman = new wxPanel( m_lbAlarm, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxFlexGridSizer* fgSizer251;
+	fgSizer251 = new wxFlexGridSizer( 0, 1, 0, 0 );
+	fgSizer251->SetFlexibleDirection( wxBOTH );
+	fgSizer251->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	wxFlexGridSizer* fgSizer51;
+	fgSizer51 = new wxFlexGridSizer( 0, 3, 0, 0 );
+	fgSizer51->SetFlexibleDirection( wxBOTH );
+	fgSizer51->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_staticText331 = new wxStaticText( m_pSecondDeadman, wxID_ANY, _("No User Activity for"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText331->Wrap( -1 );
+	fgSizer51->Add( m_staticText331, 0, wxALL, 5 );
+	
+	m_sSecondDeadmanMinutes = new wxSpinCtrl( m_pSecondDeadman, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 1000, 20 );
+	fgSizer51->Add( m_sSecondDeadmanMinutes, 0, wxALL, 5 );
+	
+	m_staticText61 = new wxStaticText( m_pSecondDeadman, wxID_ANY, _("minute(s)"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText61->Wrap( -1 );
+	fgSizer51->Add( m_staticText61, 0, wxALL, 5 );
+	
+	
+	fgSizer251->Add( fgSizer51, 1, wxEXPAND, 5 );
+	
+	
+	m_pSecondDeadman->SetSizer( fgSizer251 );
+	m_pSecondDeadman->Layout();
+	fgSizer251->Fit( m_pSecondDeadman );
+	m_lbAlarm->AddPage( m_pSecondDeadman, _("Second Deadman"), false );
 	m_panel4 = new wxPanel( m_lbAlarm, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxFlexGridSizer* fgSizer24;
 	fgSizer24 = new wxFlexGridSizer( 0, 1, 0, 0 );
@@ -337,6 +386,9 @@ WatchdogPrefsDialogBase::WatchdogPrefsDialogBase( wxWindow* parent, wxWindowID i
 	
 	
 	fgSizer24->Add( fgSizer9, 1, wxEXPAND, 5 );
+	
+	m_cbAutoSync = new wxCheckBox( m_panel4, wxID_ANY, _("Automatically sync position when the boat\nstops for more than 1 minute"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer24->Add( m_cbAutoSync, 0, wxALL, 5 );
 	
 	m_staticText39121 = new wxStaticText( m_panel4, wxID_ANY, _("Graphical overlay displays bounding anchor area"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText39121->Wrap( -1 );
@@ -524,6 +576,7 @@ WatchdogPrefsDialogBase::WatchdogPrefsDialogBase( wxWindow* parent, wxWindowID i
 	fgSizer171->Add( m_rbDisabled, 0, wxALL, 5 );
 	
 	m_cbGraphicsEnabled = new wxCheckBox( this, wxID_ANY, _("Graphical Overlay Display"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_cbGraphicsEnabled->SetValue(true); 
 	fgSizer171->Add( m_cbGraphicsEnabled, 0, wxALL, 5 );
 	
 	
@@ -624,10 +677,13 @@ WatchdogPrefsDialogBase::WatchdogPrefsDialogBase( wxWindow* parent, wxWindowID i
 	m_tNMEASentences->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( WatchdogPrefsDialogBase::OnAlarmUpdate ), NULL, this );
 	m_sNMEASeconds->Connect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( WatchdogPrefsDialogBase::OnAlarmUpdateSpin ), NULL, this );
 	m_sDeadmanMinutes->Connect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( WatchdogPrefsDialogBase::OnAlarmUpdateSpin ), NULL, this );
+	m_cbSecondDeadman->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( WatchdogPrefsDialogBase::OnCheckSecondDeadman ), NULL, this );
+	m_sSecondDeadmanMinutes->Connect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( WatchdogPrefsDialogBase::OnAlarmUpdateSpin ), NULL, this );
 	m_tAnchorLatitude->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( WatchdogPrefsDialogBase::OnAlarmUpdate ), NULL, this );
 	m_tAnchorLongitude->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( WatchdogPrefsDialogBase::OnAlarmUpdate ), NULL, this );
 	m_bSyncToBoat->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchdogPrefsDialogBase::OnSyncToBoat ), NULL, this );
 	m_sAnchorRadius->Connect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( WatchdogPrefsDialogBase::OnAlarmUpdateSpin ), NULL, this );
+	m_cbAutoSync->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( WatchdogPrefsDialogBase::f ), NULL, this );
 	m_sCourseTolerance->Connect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( WatchdogPrefsDialogBase::OnAlarmUpdateSpin ), NULL, this );
 	m_sCourse->Connect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( WatchdogPrefsDialogBase::OnAlarmUpdateSpin ), NULL, this );
 	m_bCurrentCourse->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchdogPrefsDialogBase::OnCurrentCourse ), NULL, this );
@@ -665,10 +721,13 @@ WatchdogPrefsDialogBase::~WatchdogPrefsDialogBase()
 	m_tNMEASentences->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( WatchdogPrefsDialogBase::OnAlarmUpdate ), NULL, this );
 	m_sNMEASeconds->Disconnect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( WatchdogPrefsDialogBase::OnAlarmUpdateSpin ), NULL, this );
 	m_sDeadmanMinutes->Disconnect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( WatchdogPrefsDialogBase::OnAlarmUpdateSpin ), NULL, this );
+	m_cbSecondDeadman->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( WatchdogPrefsDialogBase::OnCheckSecondDeadman ), NULL, this );
+	m_sSecondDeadmanMinutes->Disconnect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( WatchdogPrefsDialogBase::OnAlarmUpdateSpin ), NULL, this );
 	m_tAnchorLatitude->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( WatchdogPrefsDialogBase::OnAlarmUpdate ), NULL, this );
 	m_tAnchorLongitude->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( WatchdogPrefsDialogBase::OnAlarmUpdate ), NULL, this );
 	m_bSyncToBoat->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchdogPrefsDialogBase::OnSyncToBoat ), NULL, this );
 	m_sAnchorRadius->Disconnect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( WatchdogPrefsDialogBase::OnAlarmUpdateSpin ), NULL, this );
+	m_cbAutoSync->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( WatchdogPrefsDialogBase::f ), NULL, this );
 	m_sCourseTolerance->Disconnect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( WatchdogPrefsDialogBase::OnAlarmUpdateSpin ), NULL, this );
 	m_sCourse->Disconnect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( WatchdogPrefsDialogBase::OnAlarmUpdateSpin ), NULL, this );
 	m_bCurrentCourse->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchdogPrefsDialogBase::OnCurrentCourse ), NULL, this );
