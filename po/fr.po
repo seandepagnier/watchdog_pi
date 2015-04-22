@@ -1,855 +1,445 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Complément WatchDog pour openCPN\n"
+"Project-Id-Version: opencpn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-06-12 19:35+0800\n"
-"PO-Revision-Date: \n"
-"Last-Translator: Gilletarom <contact@gilletarom.fr>\n"
-"Language-Team: Gilletarom <contact@gilletarom.fr>\n"
-"Language: fr\n"
+"POT-Creation-Date: 2015-04-22 11:57-0500\n"
+"PO-Revision-Date: 2015-04-22 13:08-0400\n"
+"Last-Translator: nohal <pavel@kalian.cz>\n"
+"Language-Team: French\n"
+"Language: fr_FR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.6.4\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-#
-msgid " ALARM!"
-msgstr "Alerte !!!"
-#
-msgid "$GPGGA"
-msgstr "$GPGGA"
-#
-msgid "1"
-msgstr "1"
-#
-msgid "12"
-msgstr "12"
-#
-msgid "3"
-msgstr "3"
-#
-msgid "About Author"
-msgstr "Au sujet de l'auteur"
-#
-msgid "Alarm Action"
-msgstr "Action d'alarme"
-#
-msgid "Anchor"
-msgstr "Ancre"
-#
-msgid "Anchor Watch"
-msgstr "Sécurisation du mouillage"
-#
-msgid "Automatically  Reset"
-msgstr "Remettre à zéro automatique"
-#
-msgid "Close"
-msgstr "Fermer"
-#
-msgid "Command"
-msgstr "Commande"
-#
-msgid "Course Error"
-msgstr "Erreur de cap"
-#
-msgid "Course Error Starboard"
-msgstr "Erreur de cap"
-#
-msgid "Current Course"
-msgstr "Cap courant"
-#
-msgid "Day"
-msgstr "Jours"
-#
-msgid "Days"
-msgstr "Jours"
-#
-msgid "Deadman"
-msgstr "Homme mort"
-#
-msgid "Deadman activity"
-msgstr "Activité de l'homme mort"
-#
-msgid "Degrees"
-msgstr "Degrés"
-#
-msgid "Depth"
-msgstr "Profondeur"
-#
-msgid "Disable All Alarms"
-msgstr "Désactiver toutes les alarmes"
-#
-msgid "Disabled"
-msgstr "Désactivé"
-#
-msgid "Distance"
-msgstr "Distance à la terre >"
-#
-msgid "Distance to Anchor"
-msgstr "Distance à l'ancre"
-#
-msgid "Enabled"
-msgstr "Activé"
-#
-msgid "Failed to execute command: "
-msgstr "Echec d'éxecution de la commande : "
-#
-msgid "GPS course crosses land in <"
-msgstr "Le cap du GPS atteint la terre à <"
-#
-msgid "GPS fix is <"
-msgstr "Le fix du GPS est <"
-#
-msgid "Graphical Overlay Display"
-msgstr "Affichage graphique avec superposition"
-#
-msgid "Graphical overlay displays bounding anchor area"
-msgstr "Affichage de la zone de mouillage"
-#
-msgid "Graphical overlay displays circle with radius of this speed"
-msgstr "Affichage du cercle ayant pour rayon cette vitesse"
-#
-msgid "Graphical overlay displays lines bounding valid courses"
-msgstr "Affichage de la délimitation de la zone garantie"
-#
-msgid ""
-"Graphical overlay for time displays line from boat to location of land "
-"crossing"
-msgstr "Affichage du temps restant à courir avant d'atteindre la ligne de côte"
-#
-msgid "Hour"
-msgstr "Heures"
-#
-msgid "Hours"
-msgstr "Heures"
-#
-msgid "Information"
-msgstr "Information"
-#
-msgid "Land Distance >"
-msgstr "Distance à la terre >"
-#
+"X-Generator: crowdin.com\n"
+"X-Crowdin-Project: opencpn\n"
+"X-Crowdin-Language: fr\n"
+"X-Crowdin-File: /plugins/watchdog_pi/po/watchdog_pi.pot\n"
+
+#: src/Alarm.cpp:43
 msgid "LandFall"
 msgstr "Terre atteinte"
-#
-msgid "LandFall in"
-msgstr "Aterrissage"
-#
+
+#: src/Alarm.cpp:113
 msgid "LandFall not Detected"
 msgstr "Terre non détectée"
-#
-msgid "Landfall"
-msgstr "Terre atteinte"
-#
-msgid "Last NMEA Updates"
-msgstr "Dernière mise à jour NMEA"
-#
-msgid "Latitude"
-msgstr "Latitude"
-#
-msgid "Longitude"
-msgstr "Longitude"
-#
-msgid "Message Box"
-msgstr "Boite à message"
-#
-msgid "Minute"
-msgstr "Minutes"
-#
+
+#: src/Alarm.cpp:117
+msgid "Days"
+msgstr "Jours"
+
+#: src/Alarm.cpp:120
+msgid "Day"
+msgstr "Jour"
+
+#: src/Alarm.cpp:124
+msgid "Hours"
+msgstr "Heures"
+
+#: src/Alarm.cpp:127
+msgid "Hour"
+msgstr "Heure"
+
+#: src/Alarm.cpp:131
 msgid "Minutes"
 msgstr "Minutes"
-#
-msgid ""
-"Most alarms should be self-explanatory\n"
-"Normally a sound is played, however you can execute any command you like, "
-"eg:  \"aplay /usr/local/share/opencpn/sounds/2bells.wav\"\n"
-"Messagebox may be useful to interrupt other applications (like a movie "
-"player)\n"
-"Automatically Reset will reset the alarm once it is no longer triggered, and "
-"it may be triggered again later."
-msgstr ""
-"La plupart des alarmes doivent être explicites \n"
-"Normalement, un son est joué, mais vous pouvez exécuter n'importe quelle "
-"commande que vous aimez, par exemple : \"aplay / usr/local/share/opencpn/"
-"sounds/2bells.wav \""
-#
-msgid "NMEA Data"
-msgstr "Données NMEA"
-#
-msgid "No NMEA Messages"
-msgstr "Pas de phrase NMEA"
-#
-msgid "No Updates"
-msgstr "Pas de mise à jour"
-#
-msgid "No User Activity for"
-msgstr "Pas d'activité de l'utilisateur pour"
-#
-msgid "Not implemented"
-msgstr "Non implémenté"
-#
-msgid "Off Course"
-msgstr "Off Course"
-#
-msgid "Off Course By >"
-msgstr "Off Course By >"
-#
-msgid "Off Course Starboard"
-msgstr "Off Course"
-#
-msgid "Over Speed"
-msgstr "Vitesse excessive"
-#
-msgid "OverSpeed"
-msgstr "Vitesse excessive"
-#
-msgid "Port"
-msgstr ""
-#
-msgid "Preferences"
-msgstr "Préférences"
-#
-msgid "Radius"
-msgstr "Rayon"
-#
-msgid "Repeat Alarm after seconds"
-msgstr "Répéter l'alarme après seondes"
-#
-msgid "Require following NMEA sentences:"
-msgstr "Les phrases NMEA suivante sont requises :"
-#
-msgid "Reset"
-msgstr ""
-#
-msgid "Second"
-msgstr "Secondes"
-#
+
+#: src/Alarm.cpp:134
+msgid "Minute"
+msgstr "Minute"
+
+#: src/Alarm.cpp:138
 msgid "Seconds"
 msgstr "Secondes"
-#
-msgid "Select a file"
-msgstr "Sélectionner un fichier"
-#
-msgid "Separate Port and Starboard Alarms"
-msgstr ""
-#
-msgid ""
-"Settings the same as Off Course Port, with different Alarm Actions possible."
-msgstr ""
-#
-msgid "Sound"
-msgstr "Son"
-#
-msgid "Speed Alarm"
-msgstr "Alarm de vitesse"
-#
-msgid "Speed over ground <"
-msgstr "Vitesse fond <"
-#
-msgid "Speed over ground >"
-msgstr "Vitesse fond >"
-#
-msgid "Sync to Boat"
-msgstr "Sinchronisation au bateau"
-#
-msgid "Test Alarm"
-msgstr "Test d'alarme"
-#
-msgid "Under Speed"
-msgstr "Sous vitesse"
-#
-msgid "UnderSpeed"
-msgstr "Sous-vitesse"
-#
-msgid "WatchDog"
-msgstr "Chien de garde"
-#
-msgid "Watchdog"
-msgstr "Chien de garde"
-#
-msgid "Watchdog Information"
-msgstr "Information"
-#
-msgid "Watchdog PlugIn for OpenCPN"
-msgstr "Complément Wtacdog pour openCPN"
-#
-msgid ""
-"Watchdog PlugIn for OpenCPN\n"
-"Alarm user of changing conditions."
-msgstr ""
-"Complément Watcdog (chien de garde) pour openCPN\n"
-"Alerte l'utilisateur lorsque les conditions changent."
-#
-msgid "Watchdog Preferences"
-msgstr "Préférences"
-#
-msgid "Watchman"
-msgstr "Homme de garde"
-#
-msgid "Wind"
-msgstr "Vent"
-#
-msgid "With Course Of"
-msgstr "With Course Of"
-#
-msgid "at least every"
-msgstr "au moins chaque"
-#
-msgid "degrees(s)"
-msgstr "Degrés"
-#
-msgid "degrees(s) Starboard"
-msgstr "Degrés"
-#
-msgid "knots"
-msgstr "Noeuds"
-#
-msgid "meter(s)"
-msgstr "mètre(s)"
-#
-msgid "meters"
-msgstr "mètres"
-#
-msgid "minute(s)"
-msgstr "minute(s)"
-#
-msgid "minutes"
-msgstr "minutes"
-#
-msgid ""
-"nm from coastline\n"
-"(any direction)"
-msgstr ""
-"Nm depuis la ligne de côte\n"
-"(dans toutes les directions)"
-#
+
+#: src/Alarm.cpp:140
+msgid "Second"
+msgstr "Seconde"
+
+#: src/Alarm.cpp:156
+msgid "Distance"
+msgstr "Distance à la terre >"
+
+#: src/Alarm.cpp:236 src/WatchdogUI.cpp:281
+msgid "NMEA Data"
+msgstr "Données NMEA"
+
+#: src/Alarm.cpp:255
 msgid "second(s)"
 msgstr "seconde(s)"
-#
+
+#: src/Alarm.cpp:304 src/WatchdogUI.cpp:314
+msgid "Deadman"
+msgstr "Homme mort"
+
+#: src/Alarm.cpp:340 src/WatchdogPrefsDialog.cpp:254 src/WatchdogUI.cpp:307
+#: src/WatchdogUI.cpp:344
+msgid "Second Deadman"
+msgstr ""
+
+#: src/Alarm.cpp:353
+msgid "Anchor"
+msgstr "Ancre"
+
+#: src/Alarm.cpp:397
+msgid "meter(s)"
+msgstr "mètre(s)"
+
+#: src/Alarm.cpp:453 src/Alarm.cpp:456 src/Alarm.cpp:549
+#: src/WatchdogPrefsDialog.cpp:261 src/WatchdogUI.cpp:448
+msgid "Off Course"
+msgstr "Ecart route"
+
+#: src/Alarm.cpp:454 src/WatchdogPrefsDialog.cpp:261
+msgid "Port"
+msgstr "."
+
+#: src/Alarm.cpp:483
+msgid "degrees(s)"
+msgstr "degré(s)"
+
+#: src/Alarm.cpp:549
+msgid "Starboard"
+msgstr ""
+
+#: src/Alarm.cpp:571
+msgid "degrees(s) Starboard"
+msgstr "degré(s) tribord"
+
+#: src/Alarm.cpp:643 src/WatchdogUI.cpp:93 src/WatchdogUI.cpp:495
+msgid "Under Speed"
+msgstr "Sous vitesse"
+
+#: src/Alarm.cpp:660 src/WatchdogUI.cpp:101 src/WatchdogUI.cpp:527
+msgid "Over Speed"
+msgstr "Vitesse excessive"
+
+#: src/Alarm.cpp:752
+msgid "Failed to execute command: "
+msgstr "échec de la commande : "
+
+#: src/Alarm.cpp:753 src/WatchdogPrefsDialog.cpp:125 src/watchdog_pi.cpp:91
+#: src/watchdog_pi.cpp:154
+msgid "Watchdog"
+msgstr "Chien de garde"
+
+#: src/Alarm.cpp:759
+msgid "ALARM!"
+msgstr ""
+
+#: src/Alarm.cpp:760
+msgid "Watchman"
+msgstr "Gardien"
+
+#: src/WatchdogPrefsDialog.cpp:125
+msgid "Invalid Alarm"
+msgstr ""
+
+#: src/WatchdogPrefsDialog.cpp:261 src/WatchdogUI.cpp:77
+msgid "Course Error"
+msgstr "Erreur de route"
+
+#: src/WatchdogPrefsDialog.cpp:265 src/WatchdogUI.cpp:463
+msgid "Off Course Starboard"
+msgstr "Ecart route Tribord"
+
+#: src/WatchdogPrefsDialog.cpp:277
+msgid "Most alarms should be self-explanatory\nNormally a sound is played, however you can execute any command you like, eg:  \"aplay /usr/local/share/opencpn/sounds/2bells.wav\"\nMessagebox may be useful to interrupt other applications (like a movie player)\nAutomatically Reset will reset the alarm once it is no longer triggered, and it may be triggered again later."
+msgstr "La plupart des alarmes doivent être explicites \nNormalement, un son est joué, mais vous pouvez exécuter n'importe quelle commande que vous aimez\n, par exemple : \"aplay / usr/local/share/opencpn/sounds/2bells.wav \"\nLa notification peut être utile pour interrompre une application (exemple MoviePlayer)\nLa ZAZ automatique de l'alarme ne fonctionne qu'une fois et doit être ré-activé."
+
+#: src/WatchdogPrefsDialog.cpp:284
+msgid "Watchdog Information"
+msgstr "Information"
+
+#: src/WatchdogUI.cpp:29
+msgid "LandFall in"
+msgstr "Atterrissage"
+
+#: src/WatchdogUI.cpp:33 src/WatchdogUI.cpp:41
+msgid "No NMEA Messages"
+msgstr "Pas de phrase NMEA"
+
+#: src/WatchdogUI.cpp:37
+msgid "Land Distance >"
+msgstr "Distance à la terre >"
+
+#: src/WatchdogUI.cpp:45
+msgid "Last NMEA Updates"
+msgstr "Dernière mise à jour NMEA"
+
+#: src/WatchdogUI.cpp:53
+msgid "Deadman activity"
+msgstr "Activité de l'homme mort"
+
+#: src/WatchdogUI.cpp:57 src/WatchdogUI.cpp:65
+msgid "No Updates"
+msgstr "Pas de mise à jour"
+
+#: src/WatchdogUI.cpp:61
+msgid "Second Deadman activity"
+msgstr ""
+
+#: src/WatchdogUI.cpp:69
+msgid "Distance to Anchor"
+msgstr "Distance à la zone de mouillage"
+
+#: src/WatchdogUI.cpp:85
+msgid "Course Error Starboard"
+msgstr "Erreur de route tribord"
+
+#: src/WatchdogUI.cpp:117
+msgid "Preferences"
+msgstr "Préférences"
+
+#: src/WatchdogUI.cpp:120
+msgid "Reset"
+msgstr "RAZ"
+
+#: src/WatchdogUI.cpp:123
+msgid "Close"
+msgstr "Fermer"
+
+#: src/WatchdogUI.cpp:161
+msgid "General Setup"
+msgstr ""
+
+#: src/WatchdogUI.cpp:168
+msgid "Enable Alarms"
+msgstr ""
+
+#: src/WatchdogUI.cpp:171
+msgid "Enabled first time Dialog is opened"
+msgstr ""
+
+#: src/WatchdogUI.cpp:174
+msgid "Enabled only if Dialog is visible"
+msgstr ""
+
+#: src/WatchdogUI.cpp:177
+msgid "Disable Alarms"
+msgstr ""
+
+#: src/WatchdogUI.cpp:200
+msgid "GPS course crosses land in <"
+msgstr "Le COG du GPS atteint la terre dans  <"
+
+#: src/WatchdogUI.cpp:206
+msgid "minutes"
+msgstr "minutes"
+
+#: src/WatchdogUI.cpp:218
+msgid "GPS fix is <"
+msgstr "Le fix du GPS est <"
+
+#: src/WatchdogUI.cpp:221
+msgid "3"
+msgstr "3"
+
+#: src/WatchdogUI.cpp:224
+msgid "nm from coastline\n(any direction)"
+msgstr "Nm depuis la ligne de côte\n(dans toutes les directions)"
+
+#: src/WatchdogUI.cpp:231
+msgid "Graphical overlay for time displays line from boat to location of land crossing"
+msgstr "Affichage du temps restant à courir avant d'atteindre la ligne de côte"
+
+#: src/WatchdogUI.cpp:235
+msgid "Landfall detection uses gshhs (global heirarchical high-resolution shoreline data.)\nConsider installing the highest resolution database for best accuracy."
+msgstr ""
+
+#: src/WatchdogUI.cpp:243
+msgid "Landfall"
+msgstr "Terre atteinte"
+
+#: src/WatchdogUI.cpp:251
+msgid "Require following NMEA sentences:"
+msgstr "Les phrases NMEA suivantes sont requises :"
+
+#: src/WatchdogUI.cpp:255
+msgid "$GPGGA"
+msgstr "$GPGGA"
+
+#: src/WatchdogUI.cpp:263
+msgid "at least every"
+msgstr "au moins chaque"
+
+#: src/WatchdogUI.cpp:270
 msgid "seconds"
 msgstr "secondes"
-#
-#~ msgid "\r\n"
-#~ msgstr "\r\n"
-#
-#~ msgid "\""
-#~ msgstr "\""
-#
-#~ msgid "\"No\""
-#~ msgstr "\"Non\""
-#
-#~ msgid "'"
-#~ msgstr "'"
-#
-#~ msgid "*.*"
-#~ msgstr "*.*"
-#
-#~ msgid "/PlugIns/ROUTE"
-#~ msgstr "/PlugIns/ROUTE"
-#
-#~ msgid "Actuell"
-#~ msgstr ""
-#~ "Stock\n"
-#~ "actuel"
-#
-#~ msgid "Add Line"
-#~ msgstr "Ajouter une ligne"
-#
-#~ msgid ""
-#~ "Append a row\n"
-#~ "Delete a row = Key <Del>"
-#~ msgstr ""
-#~ "Ajouter une ligne\n"
-#~ "Supprimer une ligne = Touche <Del>"
-#
-#~ msgid "Balance"
-#~ msgstr ""
-#~ "Complément\n"
-#~ "nécessaire"
-#
-#~ msgid "Brent's method not converging, check result"
-#~ msgstr "Brent's method not converging, check result"
-#
-#~ msgid "Buy"
-#~ msgstr "Acheter"
-#
-#~ msgid "Buy it"
-#~ msgstr "Acheter ceci"
-#
-#~ msgid "C"
-#~ msgstr "C"
-#
-#~ msgid "Calculate"
-#~ msgstr "Calculer"
-#
-#~ msgid "Calculate speed-bullets for x degrees "
-#~ msgstr "Calculer la vitesse-balles pour x degrés"
-#
-#~ msgid "Choose a file"
-#~ msgstr "Choisir un fichier"
-#
-#~ msgid "Clear Data"
-#~ msgstr "Effacer les données"
-#
-#~ msgid "Collecting Data from: "
-#~ msgstr "Collecte des données depuis : "
-#
-#~ msgid "Collecting: "
-#~ msgstr "Collecte :"
-#
-#~ msgid "Convert to Degree"
-#~ msgstr "Convertir en degré"
-#
-#~ msgid "Create"
-#~ msgstr "Créer"
-#
-#~ msgid "DILG1"
-#~ msgstr "DILG1"
-#
-#~ msgid "Dashboard"
-#~ msgstr "Tableau de bord"
-#
-#~ msgid "Data from Logbooks"
-#~ msgstr "Données extraite du livre de bord"
-#
-#~ msgid "Data from NMEA"
-#~ msgstr "Données extraites du réseau NMEA"
-#
-#~ msgid "Data from VDR"
-#~ msgstr "Données extraites de VDR"
-#
-#~ msgid "Decimal Degree"
-#~ msgstr "Degré décimal"
-#
-#~ msgid "E"
-#~ msgstr "E"
-#
-#~ msgid "Edit manuell"
-#~ msgstr "Editer manuellement"
-#
-#~ msgid "End     "
-#~ msgstr "Fin"
-#
-#~ msgid "End of Route"
-#~ msgstr "Fin de la route"
-#
-#~ msgid "Engine started / Recording is stopped"
-#~ msgstr "Moteur démarré / Enregistrement stoppé"
-#
-#~ msgid "Enter Searchstring:"
-#~ msgstr "Entrer le texte cherché :"
-#
-#~ msgid "Error in calculation. Please check input!"
-#~ msgstr "Erreur dans le calcul. Vérifier vos entrées."
-#
-#~ msgid "Error occured, aborting GCL calc!"
-#~ msgstr "Une erreur s'est produite. Calcul avorté du grand cercle"
-#
-#~ msgid ""
-#~ "Example:\n"
-#~ "Max-Speed = 2,5 kts\n"
-#~ "Selected 10 % = 0,25 kts\n"
-#~ "Range from 2,25 to 2,5 kts"
-#~ msgstr ""
-#~ "Exemple :\n"
-#~ "Vitesse maxi = 2,5 knts\n"
-#~ "Sélection 10% = 0,25kts\n"
-#~ "Ecart de 2,25 à 2,5 kts."
-#
-#~ msgid "Export"
-#~ msgstr "Exporter"
-#
-#~ msgid "Export GPX file as"
-#~ msgstr "Exporter comme un fichier GPX"
-#
-#~ msgid "Export Great Circle GPX file as"
-#~ msgstr "Exporter la route orthodromique comme un fichier GPX"
-#
-#~ msgid "Export Rhumb Line GPX file as"
-#~ msgstr "Exporter la route loxodromique comme un fichier GPX"
-#
-#~ msgid "Filter"
-#~ msgstr "Filtrer"
-#
-#~ msgid "Filtered by:"
-#~ msgstr "Filtrer par :"
-#
-#~ msgid "FindIt"
-#~ msgstr "FindIt"
-#
-#~ msgid "FindIt Options"
-#~ msgstr "Options du FindIt"
-#
-#~ msgid "GPS"
-#~ msgstr "GPS"
-#
-#~ msgid "General settings"
-#~ msgstr "Réglage"
-#
-#~ msgid "Great Circle"
-#~ msgstr "Routes directes"
-#
-#~ msgid ""
-#~ "Great Circle\n"
-#~ "Distance"
-#~ msgstr ""
-#~ "Orthodromie\n"
-#~ "Longueur"
-#
-#~ msgid ""
-#~ "Great Circle\n"
-#~ "Route"
-#~ msgstr ""
-#~ "Routes naturelles\n"
-#~ " "
-#
-#~ msgid ""
-#~ "Great Circle     \n"
-#~ "Distance"
-#~ msgstr ""
-#~ "Orthodromie   \n"
-#~ "Longueur"
-#
-#~ msgid "Great Circle (shortest) GPX"
-#~ msgstr "Orthodromie (Plus courte)   ---> GPX"
-#
-#~ msgid "If Value of Column \"Balance\" = 0, set Value to"
-#~ msgstr "Si valeur de la colonne \"à acheter\"= 0, écrire"
-#
-#~ msgid "If Value of Column \"Buy\" = No, set Value to"
-#~ msgstr "Si la valeur de la colonne \"Acheter\"= Non, écrire"
-#
-#~ msgid ""
-#~ "If the logbook-plugin is installed send a list\n"
-#~ "with checked items to 'Logbook/Maintenace/Buy Parts'"
-#~ msgstr ""
-#~ "Si le complément \"Journal de bord\" est installé, transférer une liste\n"
-#~ "avec les articles cochés à 'Livre de bord / Maintenance / Pièces achetées''"
-#
-#~ msgid "Input"
-#~ msgstr "Entrée"
-#
-#~ msgid "InputFilename"
-#~ msgstr "Nom de fichier source"
-#
-#~ msgid "Interval"
-#~ msgstr "Intervalle"
-#
-#~ msgid "Lat "
-#~ msgstr "Lat."
-#
-#~ msgid ""
-#~ "Latitude  \n"
-#~ "Limit"
-#~ msgstr ""
-#~ "Latitude   \n"
-#~ "Limite"
-#
-#~ msgid "Limited Circle"
-#~ msgstr "Route limitée"
-#
-#~ msgid ""
-#~ "Limited Circle\n"
-#~ "Distance"
-#~ msgstr ""
-#~ "Route limitée\n"
-#~ "Longueur"
-#
-#~ msgid ""
-#~ "Limited Circle\n"
-#~ "Route"
-#~ msgstr ""
-#~ "Route limitée\n"
-#~ "(en latitude N ou S)"
-#
-#~ msgid "Limited Circle GPX"
-#~ msgstr "Route avec limite ---> GPX"
-#
-#~ msgid "Load"
-#~ msgstr "Charger"
-#
-#~ msgid "Locations"
-#~ msgstr "Emplacement"
-#
-#~ msgid "Lon"
-#~ msgstr "Lon"
-#
-#~ msgid "Material"
-#~ msgstr "Matériel"
-#
-#~ msgid "Max. only"
-#~ msgstr "Maxi seulement"
-#
-#~ msgid "Menu"
-#~ msgstr "Menu"
-#
-#~ msgid "Mode:"
-#~ msgstr "Mode :"
-#
-#~ msgid "MyLabel"
-#~ msgstr "Mon contenu"
-#
-#~ msgid "N"
-#~ msgstr "N"
-#
-#~ msgid "NM"
-#~ msgstr "NM"
-#
-#~ msgid "Naming"
-#~ msgstr "Nom"
-#
-#~ msgid "No Lat Limit!"
-#~ msgstr "Pas de limite de latitude"
-#
-#~ msgid "Opacity"
-#~ msgstr "Opacité"
-#
-#~ msgid "OutputFilename"
-#~ msgstr "Nom de fichier but"
-#
-#~ msgid "Please wait."
-#~ msgstr "Veuillez attendre."
-#
-#~ msgid "Polar"
-#~ msgstr "Polaire"
-#
-#~ msgid "Polar Diagram"
-#~ msgstr "Polaire"
-#
-#~ msgid "Polar Filter"
-#~ msgstr "Filtrer la polaire"
-#
-#~ msgid "Polar PlugIn for OpenCPN\n"
-#~ msgstr "Complément Polaire pour OpenCPN\n"
-#
-#~ msgid "Priority"
-#~ msgstr "Priorité"
-#
-#~ msgid "Progress:"
-#~ msgstr "Progression :"
-#
-#~ msgid "Provisions"
-#~ msgstr "Provisions"
-#
-#~ msgid "Quota"
-#~ msgstr ""
-#~ "Stock\n"
-#~ "nécessaire"
-#
-#~ msgid "ROUTE"
-#~ msgstr "Route"
-#
-#~ msgid "ROUTE replay"
-#~ msgstr "Refaire un route"
-#
-#~ msgid "Range"
-#~ msgstr "Ecart"
-#
-#~ msgid "Range from maximum speed to minus"
-#~ msgstr "Ecart entre vitesse maxi et mini"
-#
-#~ msgid "Record "
-#~ msgstr "Enregistrer"
-#
-#~ msgid "Record Start"
-#~ msgstr "Enregistrement démarré"
-#
-#~ msgid "Reset Last Alarm"
-#~ msgstr "Remettre à zéro l'alarme"
-#
-#~ msgid "Result"
-#~ msgstr "Résultat"
-#
-#~ msgid ""
-#~ "Rhumb Line\n"
-#~ "Distance"
-#~ msgstr ""
-#~ "Loxodromie\n"
-#~ "Longueur"
-#
-#~ msgid ""
-#~ "Rhumb Line     \n"
-#~ "Distance"
-#~ msgstr ""
-#~ "Loxodromie   \n"
-#~ "Longueur"
-#
-#~ msgid "Rhumb Line (fixed heading) GPX"
-#~ msgstr "Loxodromie (Cap constant) ---> GPX"
-#
-#~ msgid "Rings:"
-#~ msgstr "Cercles :"
-#
-#~ msgid "Route"
-#~ msgstr "Route"
-#
-#~ msgid "Route Plotting plugin for OpenCPN"
-#~ msgstr "Complément \"Créateur de routes pour OpenCPN\""
-#
-#~ msgid ""
-#~ "Route Plotting plugin for OpenCPN\n"
-#~ "Plots Great Circle routes, Limited Circle Routes and Rhumb lines."
-#~ msgstr ""
-#~ "Complément pour OpenCPN : Créateur de routes\n"
-#~ "Créateur de routes orthodromiques, de routes loxodromiques et de routes "
-#~ "limitées en latitude."
-#
-#~ msgid "Route Plugin by SaltyPaws"
-#~ msgstr "Complément \"Routes\" par Salty Paws"
-#
-#~ msgid "Route Preferences"
-#~ msgstr "Préférences"
-#
-#~ msgid "Route preferences"
-#~ msgstr "Préférences de la route"
-#
-#~ msgid "S"
-#~ msgstr "S"
-#
-#~ msgid "SRT"
-#~ msgstr "SRT"
-#
-#~ msgid "SRT AIS class B OEM board configuration plugin for OpenCPN"
-#~ msgstr "SRT classe B AIS OEM configuration de la carte plug-in pour OpenCPN"
-#
-#~ msgid ""
-#~ "SRT AIS class B OEM board configuration plugin for OpenCPN\n"
-#~ "This OEM board is widely used."
-#~ msgstr ""
-#~ "Classe SRT AIS B OEM configuration de la carte plug-in pour OpenCPN \n"
-#~ "Cette carte OEM est largement utilisé."
-#
-#~ msgid "Sails"
-#~ msgstr "Voiles"
-#
-#~ msgid "Save"
-#~ msgstr "Sauver"
-#
-#~ msgid "Save Polar File"
-#~ msgstr "Sauver le fichier de la polaire"
-#
-#~ msgid "Select a Polar-File"
-#~ msgstr "Sélectionner un fichier de polaire"
-#
-#~ msgid "Separate more than one string with a blank"
-#~ msgstr "Separer chaque mot cherché par un espace"
-#
-#~ msgid "Set diagramm to x knots"
-#~ msgstr "Produire le diagramme pour x noeuds"
-#
-#~ msgid "Show FindIt Icon"
-#~ msgstr "Afficher l'icône du complément FindIt"
-#
-#~ msgid "Show Polar icon"
-#~ msgstr "Montrer l'icône du complément Polaire"
-#
-#~ msgid "Show metres/sec for Wind Speed"
-#~ msgstr "Utiliser mètres/seconde pour la vitesse du vent"
-#
-#~ msgid "Source:"
-#~ msgstr "Source :"
-#
-#~ msgid ""
-#~ "Speedo uses column STW\n"
-#~ "GPS uses column SOG"
-#~ msgstr ""
-#~ "Le compteur de vitesse utilise la colonne STW\n"
-#~ "Le GPS utilise la colonne SOG"
-#
-#~ msgid "Start"
-#~ msgstr "Démarrer"
-#
-#~ msgid "Start Latitude>Limit!"
-#~ msgstr "Latitude de début > Latitude limite"
-#
-#~ msgid "Start of Route"
-#~ msgstr "Début de la route"
-#
-#~ msgid "Stop"
-#~ msgstr "Arrêter"
-#
-#~ msgid "Text"
-#~ msgstr "Texte"
-#
-#~ msgid ""
-#~ "The plugin logbookkonni isn't installed\n"
-#~ "\n"
-#~ "It's needed to collect wind/speed-data from all available logbooks\n"
-#~ "\n"
-#~ "The create-button is hidden and the mode isn't useable"
-#~ msgstr ""
-#~ "Le complément logbookkonni n'est pas installé \n"
-#~ "\n"
-#~ "Il est nécessaire de récupérer les données vent/vitesse dans tous les "
-#~ "journaux de bord disponibles \n"
-#~ "\n"
-#~ "Le bouton créer est caché et le mode n'est pas utilisable."
-#
-#~ msgid "To Buy"
-#~ msgstr "A acheter"
-#
-#~ msgid "Unit"
-#~ msgstr "Unité"
-#
-#~ msgid "Units"
-#~ msgstr "Unités"
-#
-#~ msgid "Use Average from all speed-data"
-#~ msgstr "Utiliser la moyenne pour toutes les données de vietesse"
-#
-#~ msgid "Use Max-Speed only"
-#~ msgstr "Utiliser la vitesse maxi seulement"
-#
-#~ msgid "Use last row values  as default for new row"
-#~ msgstr "Dupliquer la ligne précédente"
-#
-#~ msgid "W"
-#~ msgstr "O"
-#
-#~ msgid "Watch Man"
-#~ msgstr "Homme de garde"
-#
-#~ msgid "Watchdog Anchor Watch"
-#~ msgstr "Chien de garde de la sécurisation du mouillage"
-#
-#~ msgid "Wavehight"
-#~ msgstr "Hauteur de vague"
-#
-#~ msgid "Wavehight from"
-#~ msgstr "Hauteur de vague depuis "
-#
-#~ msgid "Yes"
-#~ msgstr "Oui"
-#
-#~ msgid "\\u00b0"
-#~ msgstr "\\u00b0"
-#
-#~ msgid "\\u00b0 ' \""
-#~ msgstr "\\u00b0 ' \""
-#
-#~ msgid "any"
-#~ msgstr "tous"
-#
-#~ msgid "blank"
-#~ msgstr "Blanc"
-#
-#~ msgid "error in input range validation"
-#~ msgstr "Erreur de validation de donnée entrée"
-#
-#~ msgid "kts"
-#~ msgstr "kts"
-#
-#~ msgid "less than 3 entries found"
-#~ msgstr "Moins de trois entrées  ont été trouvées"
-#
-#~ msgid "less than 5 entries found"
-#~ msgstr "Moins de 5 entrées ont ete trouvées"
-#
-#~ msgid "more than 10 entries found"
-#~ msgstr "Plus de 10 entrées ont été trouvées"
-#
-#~ msgid "opencpn-route_pi"
-#~ msgstr "opencpn-route_pi"
-#
-#~ msgid "to"
-#~ msgstr "à"
+
+#: src/WatchdogUI.cpp:293 src/WatchdogUI.cpp:326
+msgid "No User Activity for"
+msgstr "Inactivité de l'utilisateur pendant"
+
+#: src/WatchdogUI.cpp:300 src/WatchdogUI.cpp:333
+msgid "minute(s)"
+msgstr "minute(s)"
+
+#: src/WatchdogUI.cpp:356
+msgid "Latitude"
+msgstr "Latitude"
+
+#: src/WatchdogUI.cpp:366
+msgid "Longitude"
+msgstr "Longitude"
+
+#: src/WatchdogUI.cpp:373
+msgid "Sync to Boat"
+msgstr "Synchronisation avec le bateau"
+
+#: src/WatchdogUI.cpp:376
+msgid "Radius"
+msgstr "Rayon"
+
+#: src/WatchdogUI.cpp:383
+msgid "meters"
+msgstr "mètres"
+
+#: src/WatchdogUI.cpp:390
+msgid "Automatically sync position when the boat\nstops for more than 1 minute"
+msgstr ""
+
+#: src/WatchdogUI.cpp:393
+msgid "Graphical overlay displays bounding anchor area"
+msgstr "Affichage de la zone de mouillage"
+
+#: src/WatchdogUI.cpp:401
+msgid "Anchor Watch"
+msgstr "Sécurisation du mouillage"
+
+#: src/WatchdogUI.cpp:413
+msgid "Off Course By >"
+msgstr "Ecart de route >"
+
+#: src/WatchdogUI.cpp:420
+msgid "Degrees"
+msgstr "Degrés"
+
+#: src/WatchdogUI.cpp:424
+msgid "With Course Of"
+msgstr "Avec le COG vers"
+
+#: src/WatchdogUI.cpp:431
+msgid "Current Course"
+msgstr "Cap actuel"
+
+#: src/WatchdogUI.cpp:437
+msgid "Separate Port and Starboard Alarms"
+msgstr "Différencier les alarmes babord et tribord"
+
+#: src/WatchdogUI.cpp:440
+msgid "Graphical overlay displays lines bounding valid courses"
+msgstr "Affichage des limites de la zone garantie"
+
+#: src/WatchdogUI.cpp:455
+msgid "Settings the same as Off Course Port, with different Alarm Actions possible."
+msgstr "Paramétrage CAP et COG identiques à ceux de l'alarme \"Ecart route Babord\" avec choix d'actions spécifiques possible."
+
+#: src/WatchdogUI.cpp:466 src/WatchdogUI.cpp:498
+msgid "Speed Alarm"
+msgstr "Alarme de vitesse"
+
+#: src/WatchdogUI.cpp:473
+msgid "Speed over ground <"
+msgstr "Vitesse fond <"
+
+#: src/WatchdogUI.cpp:477
+msgid "1"
+msgstr "1"
+
+#: src/WatchdogUI.cpp:480 src/WatchdogUI.cpp:512
+msgid "knots"
+msgstr "Noeuds"
+
+#: src/WatchdogUI.cpp:487 src/WatchdogUI.cpp:519
+msgid "Graphical overlay displays circle with radius of this speed"
+msgstr "Affichage du cercle ayant pour rayon cette vitesse"
+
+#: src/WatchdogUI.cpp:505
+msgid "Speed over ground >"
+msgstr "Vitesse fond >"
+
+#: src/WatchdogUI.cpp:509
+msgid "12"
+msgstr "12"
+
+#: src/WatchdogUI.cpp:534 src/WatchdogUI.cpp:549
+msgid "Not implemented"
+msgstr "Non implémenté"
+
+#: src/WatchdogUI.cpp:542
+msgid "Depth"
+msgstr "Profondeur"
+
+#: src/WatchdogUI.cpp:557
+msgid "Wind"
+msgstr "Vent"
+
+#: src/WatchdogUI.cpp:572
+msgid "Enabled"
+msgstr "Activé"
+
+#: src/WatchdogUI.cpp:575
+msgid "Disabled"
+msgstr "Désactivé"
+
+#: src/WatchdogUI.cpp:578
+msgid "Graphical Overlay Display"
+msgstr "Affichage graphique avec superposition"
+
+#: src/WatchdogUI.cpp:586
+msgid "Alarm Action"
+msgstr "Action d'alarme"
+
+#: src/WatchdogUI.cpp:594
+msgid "Sound"
+msgstr "Son"
+
+#: src/WatchdogUI.cpp:597
+msgid "Select a file"
+msgstr "Sélectionner un fichier"
+
+#: src/WatchdogUI.cpp:600
+msgid "Command"
+msgstr "Commande"
+
+#: src/WatchdogUI.cpp:606
+msgid "Message Box"
+msgstr "Notification"
+
+#: src/WatchdogUI.cpp:612
+msgid "Repeat Alarm after seconds"
+msgstr "Répéter l'alarme après X secondes"
+
+#: src/WatchdogUI.cpp:618
+msgid "Automatically  Reset"
+msgstr "RAZ automatique"
+
+#: src/WatchdogUI.cpp:621
+msgid "Test Alarm"
+msgstr "Test de l'alarme"
+
+#: src/WatchdogUI.cpp:641
+msgid "Information"
+msgstr "Information"
+
+#: src/WatchdogUI.cpp:644
+msgid "About Author"
+msgstr "Au sujet de l'auteur"
+
+#: src/WatchdogUI.h:80
+msgid "WatchDog"
+msgstr "Chien de garde"
+
+#: src/WatchdogUI.h:196
+msgid "Watchdog Preferences"
+msgstr "Préférences"
+
+#: src/watchdog_pi.cpp:159
+msgid "Watchdog PlugIn for OpenCPN"
+msgstr "Complément Watchdog pour OpenCPN"
+
+#: src/watchdog_pi.cpp:164
+msgid "Watchdog PlugIn for OpenCPN\nAlarm user of changing conditions."
+msgstr "Complément Watchdog (chien de garde) pour OpenCPN\nMise en place d'alarmes paramétrables."
+
