@@ -32,6 +32,9 @@ SET(SRC_WATCHDOG
             src/Alarm.cpp
             src/WatchdogUI.cpp
             src/icons.cpp
+
+            src/wddc.cpp
+            src/TexFont.cpp
 	)
 ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRC_WATCHDOG})
 

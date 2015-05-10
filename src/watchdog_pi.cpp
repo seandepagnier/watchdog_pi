@@ -26,7 +26,7 @@
 
 #include <wx/wx.h>
 
-#include "ocpndc.h"
+#include "wddc.h"
 
 #include "watchdog_pi.h"
 #include "WatchdogDialog.h"
@@ -228,7 +228,7 @@ wxColour watchdog_pi::Color(enum Alarm alarm_mask)
 
 bool watchdog_pi::RenderOverlay(wxDC &dc, PlugIn_ViewPort *vp)
 {
-    ocpnDC odc(dc);
+    wdDC odc(dc);
     Render(odc, *vp);
     return true;
 }
@@ -241,14 +241,14 @@ bool watchdog_pi::RenderGLOverlay(wxGLContext *pcontext, PlugIn_ViewPort *vp)
     glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
     glHint( GL_LINE_SMOOTH_HINT, GL_NICEST );
 
-    ocpnDC odc;
+    wdDC odc;
     Render(odc, *vp);
 
     glPopAttrib();
     return true;
 }
 
-void watchdog_pi::Render(ocpnDC &dc, PlugIn_ViewPort &vp)
+void watchdog_pi::Render(wdDC &dc, PlugIn_ViewPort &vp)
 {
     if(!m_pWatchdogDialog || !m_pWatchdogDialog->IsShown())
         return;
