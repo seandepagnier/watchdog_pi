@@ -24,10 +24,10 @@
  ***************************************************************************
  */
 
-class ocpnDC;
+class wdDC;
 class Alarm : public wxEvtHandler {
 public:
-    static void RenderAll(ocpnDC &dc, PlugIn_ViewPort &vp);
+    static void RenderAll(wdDC &dc, PlugIn_ViewPort &vp);
     static void ConfigAll(bool load);
     static void ResetAll();
     static void UpdateStatusAll();
@@ -50,7 +50,7 @@ public:
     virtual wxString ConfigName() { return Name(); }
     virtual bool Test() = 0;
     virtual wxString GetStatus() = 0;
-    virtual void Render(ocpnDC &dc, PlugIn_ViewPort &vp) {}
+    virtual void Render(wdDC &dc, PlugIn_ViewPort &vp) {}
 
     void OnTimer( wxTimerEvent & );
     virtual wxFileConfig *GetConfigObject();
