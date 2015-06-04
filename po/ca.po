@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: opencpn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-04-22 11:57-0500\n"
-"PO-Revision-Date: 2015-04-22 13:08-0400\n"
+"PO-Revision-Date: 2015-05-23 05:01-0400\n"
 "Last-Translator: nohal <pavel@kalian.cz>\n"
 "Language-Team: Catalan\n"
 "Language: ca_ES\n"
@@ -18,72 +18,72 @@ msgstr ""
 
 #: src/Alarm.cpp:43
 msgid "LandFall"
-msgstr ""
+msgstr "Recalada"
 
 #: src/Alarm.cpp:113
 msgid "LandFall not Detected"
-msgstr ""
+msgstr "Recalada no detectada"
 
 #: src/Alarm.cpp:117
 msgid "Days"
-msgstr ""
+msgstr "Dies"
 
 #: src/Alarm.cpp:120
 msgid "Day"
-msgstr ""
+msgstr "Dia"
 
 #: src/Alarm.cpp:124
 msgid "Hours"
-msgstr ""
+msgstr "Hores"
 
 #: src/Alarm.cpp:127
 msgid "Hour"
-msgstr ""
+msgstr "Hora"
 
 #: src/Alarm.cpp:131
 msgid "Minutes"
-msgstr ""
+msgstr "Minuts"
 
 #: src/Alarm.cpp:134
 msgid "Minute"
-msgstr ""
+msgstr "Minut"
 
 #: src/Alarm.cpp:138
 msgid "Seconds"
-msgstr ""
+msgstr "Segons"
 
 #: src/Alarm.cpp:140
 msgid "Second"
-msgstr ""
+msgstr "Segon"
 
 #: src/Alarm.cpp:156
 msgid "Distance"
-msgstr ""
+msgstr "Distància"
 
 #: src/Alarm.cpp:236 src/WatchdogUI.cpp:281
 msgid "NMEA Data"
-msgstr ""
+msgstr "Dades NMEA"
 
 #: src/Alarm.cpp:255
 msgid "second(s)"
-msgstr ""
+msgstr "Segon(s)"
 
 #: src/Alarm.cpp:304 src/WatchdogUI.cpp:314
 msgid "Deadman"
-msgstr ""
+msgstr "Home mort"
 
 #: src/Alarm.cpp:340 src/WatchdogPrefsDialog.cpp:254 src/WatchdogUI.cpp:307
 #: src/WatchdogUI.cpp:344
 msgid "Second Deadman"
-msgstr ""
+msgstr "Segon Home mort"
 
 #: src/Alarm.cpp:353
 msgid "Anchor"
-msgstr ""
+msgstr "Àncora"
 
 #: src/Alarm.cpp:397
 msgid "meter(s)"
-msgstr ""
+msgstr "metre(s)"
 
 #: src/Alarm.cpp:453 src/Alarm.cpp:456 src/Alarm.cpp:549
 #: src/WatchdogPrefsDialog.cpp:261 src/WatchdogUI.cpp:448
@@ -92,60 +92,66 @@ msgstr ""
 
 #: src/Alarm.cpp:454 src/WatchdogPrefsDialog.cpp:261
 msgid "Port"
-msgstr ""
+msgstr "Babord"
 
 #: src/Alarm.cpp:483
 msgid "degrees(s)"
-msgstr ""
+msgstr "grau(s)"
 
 #: src/Alarm.cpp:549
 msgid "Starboard"
-msgstr ""
+msgstr "Estribord"
 
 #: src/Alarm.cpp:571
 msgid "degrees(s) Starboard"
-msgstr ""
+msgstr "grau(s) Estribord"
 
 #: src/Alarm.cpp:643 src/WatchdogUI.cpp:93 src/WatchdogUI.cpp:495
 msgid "Under Speed"
-msgstr ""
+msgstr "Velocitat baixa"
 
 #: src/Alarm.cpp:660 src/WatchdogUI.cpp:101 src/WatchdogUI.cpp:527
 msgid "Over Speed"
-msgstr ""
+msgstr "Velocitat alta"
 
 #: src/Alarm.cpp:752
 msgid "Failed to execute command: "
-msgstr ""
+msgstr "No s'ha pogut executar l'ordre: "
 
 #: src/Alarm.cpp:753 src/WatchdogPrefsDialog.cpp:125 src/watchdog_pi.cpp:91
 #: src/watchdog_pi.cpp:154
 msgid "Watchdog"
-msgstr ""
+msgstr "Watchdog"
 
 #: src/Alarm.cpp:759
 msgid "ALARM!"
-msgstr ""
+msgstr "ALARMA!"
 
 #: src/Alarm.cpp:760
 msgid "Watchman"
-msgstr ""
+msgstr "Vigilant"
 
 #: src/WatchdogPrefsDialog.cpp:125
 msgid "Invalid Alarm"
-msgstr ""
+msgstr "Alarma no vàlida"
 
 #: src/WatchdogPrefsDialog.cpp:261 src/WatchdogUI.cpp:77
 msgid "Course Error"
-msgstr ""
+msgstr "Error de Rumb"
 
 #: src/WatchdogPrefsDialog.cpp:265 src/WatchdogUI.cpp:463
 msgid "Off Course Starboard"
 msgstr ""
 
 #: src/WatchdogPrefsDialog.cpp:277
-msgid "Most alarms should be self-explanatory\nNormally a sound is played, however you can execute any command you like, eg:  \"aplay /usr/local/share/opencpn/sounds/2bells.wav\"\nMessagebox may be useful to interrupt other applications (like a movie player)\nAutomatically Reset will reset the alarm once it is no longer triggered, and it may be triggered again later."
-msgstr ""
+msgid "Most alarms should be self-explanatory\n"
+"Normally a sound is played, however you can execute any command you like, eg:  \"aplay /usr/local/share/opencpn/sounds/2bells.wav\"\n"
+"Messagebox may be useful to interrupt other applications (like a movie player)\n"
+"Automatically Reset will reset the alarm once it is no longer triggered, and it may be triggered again later."
+msgstr "La majoria de les alarmes s'han d'explicar per si mateix\n"
+"Normalment es reprodueix un so, però es pot executar qualsevol altre ordre que preferiu, per exemple: \"aplay/usr/local/share/opencpn/sounds/2bells.wav\"\n"
+"Una notificació pot ser útil per interrompre altres aplicacions (com un reproductor de vídeo)\n"
+"Reiniciar Automàticament es restablirà quan l'alarma ja no estigui activa i posteriorment podeu tornar a activar-la."
 
 #: src/WatchdogPrefsDialog.cpp:284
 msgid "Watchdog Information"
@@ -153,11 +159,11 @@ msgstr ""
 
 #: src/WatchdogUI.cpp:29
 msgid "LandFall in"
-msgstr ""
+msgstr "Recalar en"
 
 #: src/WatchdogUI.cpp:33 src/WatchdogUI.cpp:41
 msgid "No NMEA Messages"
-msgstr ""
+msgstr "No hi ha missatges NMEA"
 
 #: src/WatchdogUI.cpp:37
 msgid "Land Distance >"
@@ -165,7 +171,7 @@ msgstr ""
 
 #: src/WatchdogUI.cpp:45
 msgid "Last NMEA Updates"
-msgstr ""
+msgstr "Últimes actualitzacions NMEA"
 
 #: src/WatchdogUI.cpp:53
 msgid "Deadman activity"
@@ -173,7 +179,7 @@ msgstr ""
 
 #: src/WatchdogUI.cpp:57 src/WatchdogUI.cpp:65
 msgid "No Updates"
-msgstr ""
+msgstr "No hi ha actualitzacions"
 
 #: src/WatchdogUI.cpp:61
 msgid "Second Deadman activity"
@@ -181,43 +187,43 @@ msgstr ""
 
 #: src/WatchdogUI.cpp:69
 msgid "Distance to Anchor"
-msgstr ""
+msgstr "Distància a l'àncora"
 
 #: src/WatchdogUI.cpp:85
 msgid "Course Error Starboard"
-msgstr ""
+msgstr "Error de Rumb Estribord"
 
 #: src/WatchdogUI.cpp:117
 msgid "Preferences"
-msgstr ""
+msgstr "Preferències"
 
 #: src/WatchdogUI.cpp:120
 msgid "Reset"
-msgstr ""
+msgstr "Reiniciar"
 
 #: src/WatchdogUI.cpp:123
 msgid "Close"
-msgstr ""
+msgstr "Tancar"
 
 #: src/WatchdogUI.cpp:161
 msgid "General Setup"
-msgstr ""
+msgstr "Configuració general"
 
 #: src/WatchdogUI.cpp:168
 msgid "Enable Alarms"
-msgstr ""
+msgstr "Activar alarmes"
 
 #: src/WatchdogUI.cpp:171
 msgid "Enabled first time Dialog is opened"
-msgstr ""
+msgstr "Habilitat el primer cop que s'obre el quadre de Diàleg"
 
 #: src/WatchdogUI.cpp:174
 msgid "Enabled only if Dialog is visible"
-msgstr ""
+msgstr "Habilitat només si el Diàleg és visible"
 
 #: src/WatchdogUI.cpp:177
 msgid "Disable Alarms"
-msgstr ""
+msgstr "Desactivar alarmes"
 
 #: src/WatchdogUI.cpp:200
 msgid "GPS course crosses land in <"
@@ -236,7 +242,8 @@ msgid "3"
 msgstr ""
 
 #: src/WatchdogUI.cpp:224
-msgid "nm from coastline\n(any direction)"
+msgid "nm from coastline\n"
+"(any direction)"
 msgstr ""
 
 #: src/WatchdogUI.cpp:231
@@ -244,7 +251,8 @@ msgid "Graphical overlay for time displays line from boat to location of land cr
 msgstr ""
 
 #: src/WatchdogUI.cpp:235
-msgid "Landfall detection uses gshhs (global heirarchical high-resolution shoreline data.)\nConsider installing the highest resolution database for best accuracy."
+msgid "Landfall detection uses gshhs (global heirarchical high-resolution shoreline data.)\n"
+"Consider installing the highest resolution database for best accuracy."
 msgstr ""
 
 #: src/WatchdogUI.cpp:243
@@ -296,7 +304,8 @@ msgid "meters"
 msgstr ""
 
 #: src/WatchdogUI.cpp:390
-msgid "Automatically sync position when the boat\nstops for more than 1 minute"
+msgid "Automatically sync position when the boat\n"
+"stops for more than 1 minute"
 msgstr ""
 
 #: src/WatchdogUI.cpp:393
@@ -397,35 +406,35 @@ msgstr ""
 
 #: src/WatchdogUI.cpp:597
 msgid "Select a file"
-msgstr ""
+msgstr "Seleccioneu un fitxer"
 
 #: src/WatchdogUI.cpp:600
 msgid "Command"
-msgstr ""
+msgstr "Ordre"
 
 #: src/WatchdogUI.cpp:606
 msgid "Message Box"
-msgstr ""
+msgstr "Quadre de missatge"
 
 #: src/WatchdogUI.cpp:612
 msgid "Repeat Alarm after seconds"
-msgstr ""
+msgstr "Repetir l'alarma després segons"
 
 #: src/WatchdogUI.cpp:618
 msgid "Automatically  Reset"
-msgstr ""
+msgstr "Reinici automàtic"
 
 #: src/WatchdogUI.cpp:621
 msgid "Test Alarm"
-msgstr ""
+msgstr "Prova d'alarma"
 
 #: src/WatchdogUI.cpp:641
 msgid "Information"
-msgstr ""
+msgstr "Informació"
 
 #: src/WatchdogUI.cpp:644
 msgid "About Author"
-msgstr ""
+msgstr "Sobre l'autor"
 
 #: src/WatchdogUI.h:80
 msgid "WatchDog"
@@ -437,9 +446,11 @@ msgstr ""
 
 #: src/watchdog_pi.cpp:159
 msgid "Watchdog PlugIn for OpenCPN"
-msgstr ""
+msgstr "Complement Watchdog per a OpenCPN"
 
 #: src/watchdog_pi.cpp:164
-msgid "Watchdog PlugIn for OpenCPN\nAlarm user of changing conditions."
-msgstr ""
+msgid "Watchdog PlugIn for OpenCPN\n"
+"Alarm user of changing conditions."
+msgstr "Connector Watchdog per a OpenCPN\n"
+"Alarma d'usuari de les condicions canviants."
 

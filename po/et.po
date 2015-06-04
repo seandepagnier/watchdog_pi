@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: opencpn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-04-22 11:57-0500\n"
-"PO-Revision-Date: 2015-04-22 13:08-0400\n"
+"PO-Revision-Date: 2015-06-02 20:34-0400\n"
 "Last-Translator: nohal <pavel@kalian.cz>\n"
 "Language-Team: Estonian\n"
 "Language: et_EE\n"
@@ -75,7 +75,7 @@ msgstr "Surnu-lüliti"
 #: src/Alarm.cpp:340 src/WatchdogPrefsDialog.cpp:254 src/WatchdogUI.cpp:307
 #: src/WatchdogUI.cpp:344
 msgid "Second Deadman"
-msgstr ""
+msgstr "Teine surnu-lüliti"
 
 #: src/Alarm.cpp:353
 msgid "Anchor"
@@ -100,7 +100,7 @@ msgstr "kraadi"
 
 #: src/Alarm.cpp:549
 msgid "Starboard"
-msgstr ""
+msgstr "Tüürpoord"
 
 #: src/Alarm.cpp:571
 msgid "degrees(s) Starboard"
@@ -125,7 +125,7 @@ msgstr "Watchdog"
 
 #: src/Alarm.cpp:759
 msgid "ALARM!"
-msgstr ""
+msgstr "HÄIRE!"
 
 #: src/Alarm.cpp:760
 msgid "Watchman"
@@ -133,7 +133,7 @@ msgstr "Vahimees"
 
 #: src/WatchdogPrefsDialog.cpp:125
 msgid "Invalid Alarm"
-msgstr ""
+msgstr "Kehtetu häire"
 
 #: src/WatchdogPrefsDialog.cpp:261 src/WatchdogUI.cpp:77
 msgid "Course Error"
@@ -144,8 +144,14 @@ msgid "Off Course Starboard"
 msgstr "Kursilt kõrval tüürpoordis"
 
 #: src/WatchdogPrefsDialog.cpp:277
-msgid "Most alarms should be self-explanatory\nNormally a sound is played, however you can execute any command you like, eg:  \"aplay /usr/local/share/opencpn/sounds/2bells.wav\"\nMessagebox may be useful to interrupt other applications (like a movie player)\nAutomatically Reset will reset the alarm once it is no longer triggered, and it may be triggered again later."
-msgstr "Enamus häireid peaksid olema iseenesestmõitetavad\nHarilikult on helisignaal, kuid te saate käivitada iga käsu nagu soovite, näiteks:  \"aplay /usr/local/share/opencpn/sounds/2bells.wav\"\nTeatekast võib olla kasulik teiste rakenduste katkestamiseks\nAutomaatne tühistamine algseadistab häire ükskord kui teda enam ei käivitata ning teda võib hiljem jälle valla päästa."
+msgid "Most alarms should be self-explanatory\n"
+"Normally a sound is played, however you can execute any command you like, eg:  \"aplay /usr/local/share/opencpn/sounds/2bells.wav\"\n"
+"Messagebox may be useful to interrupt other applications (like a movie player)\n"
+"Automatically Reset will reset the alarm once it is no longer triggered, and it may be triggered again later."
+msgstr "Enamus häireid peaksid olema iseenesestmõitetavad\n"
+"Harilikult on helisignaal, kuid te saate käivitada iga käsu nagu soovite, näiteks:  \"aplay /usr/local/share/opencpn/sounds/2bells.wav\"\n"
+"Teatekast võib olla kasulik teiste rakenduste katkestamiseks\n"
+"Automaatne tühistamine algseadistab häire ükskord kui teda enam ei käivitata ning teda võib hiljem jälle valla päästa."
 
 #: src/WatchdogPrefsDialog.cpp:284
 msgid "Watchdog Information"
@@ -177,7 +183,7 @@ msgstr "Uuendusi ei ole"
 
 #: src/WatchdogUI.cpp:61
 msgid "Second Deadman activity"
-msgstr ""
+msgstr "Teise surnu-lüliti aktiveerija"
 
 #: src/WatchdogUI.cpp:69
 msgid "Distance to Anchor"
@@ -201,23 +207,23 @@ msgstr "Sulge"
 
 #: src/WatchdogUI.cpp:161
 msgid "General Setup"
-msgstr ""
+msgstr "Üldine seadistus"
 
 #: src/WatchdogUI.cpp:168
 msgid "Enable Alarms"
-msgstr ""
+msgstr "Võimalda häired"
 
 #: src/WatchdogUI.cpp:171
 msgid "Enabled first time Dialog is opened"
-msgstr ""
+msgstr "Lubatud esimesel dialoogiboksi avamisel"
 
 #: src/WatchdogUI.cpp:174
 msgid "Enabled only if Dialog is visible"
-msgstr ""
+msgstr "Lubatud ainult siis, kui dialoogboks on nähtav"
 
 #: src/WatchdogUI.cpp:177
 msgid "Disable Alarms"
-msgstr ""
+msgstr "Blokeeri häired"
 
 #: src/WatchdogUI.cpp:200
 msgid "GPS course crosses land in <"
@@ -236,16 +242,20 @@ msgid "3"
 msgstr "3"
 
 #: src/WatchdogUI.cpp:224
-msgid "nm from coastline\n(any direction)"
-msgstr "nm rannajoonest\n(igal suunal)"
+msgid "nm from coastline\n"
+"(any direction)"
+msgstr "nm rannajoonest\n"
+"(igal suunal)"
 
 #: src/WatchdogUI.cpp:231
 msgid "Graphical overlay for time displays line from boat to location of land crossing"
 msgstr "Aja graafiline ülekate kuvab joont alusest kuni maaga lõikumise kohani"
 
 #: src/WatchdogUI.cpp:235
-msgid "Landfall detection uses gshhs (global heirarchical high-resolution shoreline data.)\nConsider installing the highest resolution database for best accuracy."
-msgstr ""
+msgid "Landfall detection uses gshhs (global heirarchical high-resolution shoreline data.)\n"
+"Consider installing the highest resolution database for best accuracy."
+msgstr "Ranniku tuvastamine kasutab gshhs'i (global heirarchical high-resolution shoreline data.)\n"
+"Kaalutle kõrgeima eraldusvõimega andmebaasi paigaldamist parima täpsuse jaoks."
 
 #: src/WatchdogUI.cpp:243
 msgid "Landfall"
@@ -296,8 +306,10 @@ msgid "meters"
 msgstr "meetrit"
 
 #: src/WatchdogUI.cpp:390
-msgid "Automatically sync position when the boat\nstops for more than 1 minute"
-msgstr ""
+msgid "Automatically sync position when the boat\n"
+"stops for more than 1 minute"
+msgstr "Sünkroniseeri asukoht automaatselt kui alus\n"
+"peatub rohkem kui 1 minutiks"
 
 #: src/WatchdogUI.cpp:393
 msgid "Graphical overlay displays bounding anchor area"
@@ -440,6 +452,8 @@ msgid "Watchdog PlugIn for OpenCPN"
 msgstr "Watchdog'i plugin OpenCPN'i jaoks"
 
 #: src/watchdog_pi.cpp:164
-msgid "Watchdog PlugIn for OpenCPN\nAlarm user of changing conditions."
-msgstr "Watchdog'i plugin OpenCPN'i jaoks\nHoiatab kasutajat muutuvatest tingimustest."
+msgid "Watchdog PlugIn for OpenCPN\n"
+"Alarm user of changing conditions."
+msgstr "Watchdog'i plugin OpenCPN'i jaoks\n"
+"Hoiatab kasutajat muutuvatest tingimustest."
 

@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: opencpn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-04-22 11:57-0500\n"
-"PO-Revision-Date: 2015-04-22 13:08-0400\n"
+"PO-Revision-Date: 2015-06-02 20:34-0400\n"
 "Last-Translator: nohal <pavel@kalian.cz>\n"
 "Language-Team: Dutch\n"
 "Language: nl_NL\n"
@@ -100,7 +100,7 @@ msgstr "graden"
 
 #: src/Alarm.cpp:549
 msgid "Starboard"
-msgstr ""
+msgstr "Stuurboord"
 
 #: src/Alarm.cpp:571
 msgid "degrees(s) Starboard"
@@ -125,7 +125,7 @@ msgstr "'Watchdog'"
 
 #: src/Alarm.cpp:759
 msgid "ALARM!"
-msgstr ""
+msgstr "ALARM!"
 
 #: src/Alarm.cpp:760
 msgid "Watchman"
@@ -133,7 +133,7 @@ msgstr "Wachtsman"
 
 #: src/WatchdogPrefsDialog.cpp:125
 msgid "Invalid Alarm"
-msgstr ""
+msgstr "Ongeldige Alarm"
 
 #: src/WatchdogPrefsDialog.cpp:261 src/WatchdogUI.cpp:77
 msgid "Course Error"
@@ -144,8 +144,14 @@ msgid "Off Course Starboard"
 msgstr "Koersafwijking SB"
 
 #: src/WatchdogPrefsDialog.cpp:277
-msgid "Most alarms should be self-explanatory\nNormally a sound is played, however you can execute any command you like, eg:  \"aplay /usr/local/share/opencpn/sounds/2bells.wav\"\nMessagebox may be useful to interrupt other applications (like a movie player)\nAutomatically Reset will reset the alarm once it is no longer triggered, and it may be triggered again later."
-msgstr "De meeste alarmen spreken vanzelf.\nStandaard wordt een alarmgeluid gegeven, maar u kunt elke opdracht uitvoeren die u wilt. Een voorbeeld is: \"aplay /usr/local/share/opencpn/sounds/2bells.wav\"\nHet berichtenvenster  kan handig zijn om andere applicaties te onderbreken (zoals met een videospeler)\nDe Automatische Reset reset het alarm als de aanleiding wegvalt (het alarm kan later weer worden gegeven)."
+msgid "Most alarms should be self-explanatory\n"
+"Normally a sound is played, however you can execute any command you like, eg:  \"aplay /usr/local/share/opencpn/sounds/2bells.wav\"\n"
+"Messagebox may be useful to interrupt other applications (like a movie player)\n"
+"Automatically Reset will reset the alarm once it is no longer triggered, and it may be triggered again later."
+msgstr "De meeste alarmen spreken vanzelf.\n"
+"Standaard wordt een alarmgeluid gegeven, maar u kunt elke opdracht uitvoeren die u wilt. Een voorbeeld is: \"aplay /usr/local/share/opencpn/sounds/2bells.wav\"\n"
+"Het berichtenvenster  kan handig zijn om andere applicaties te onderbreken (zoals met een videospeler)\n"
+"De Automatische Reset reset het alarm als de aanleiding wegvalt (het alarm kan later weer worden gegeven)."
 
 #: src/WatchdogPrefsDialog.cpp:284
 msgid "Watchdog Information"
@@ -201,11 +207,11 @@ msgstr "Sluiten"
 
 #: src/WatchdogUI.cpp:161
 msgid "General Setup"
-msgstr ""
+msgstr "Algemene Setup"
 
 #: src/WatchdogUI.cpp:168
 msgid "Enable Alarms"
-msgstr ""
+msgstr "Inschakelen alarmen"
 
 #: src/WatchdogUI.cpp:171
 msgid "Enabled first time Dialog is opened"
@@ -213,11 +219,11 @@ msgstr ""
 
 #: src/WatchdogUI.cpp:174
 msgid "Enabled only if Dialog is visible"
-msgstr ""
+msgstr "Alleen ingeschakeld als dialoogvenster zichtbaar is"
 
 #: src/WatchdogUI.cpp:177
 msgid "Disable Alarms"
-msgstr ""
+msgstr "Alarmen uitschakelen"
 
 #: src/WatchdogUI.cpp:200
 msgid "GPS course crosses land in <"
@@ -236,16 +242,20 @@ msgid "3"
 msgstr "3"
 
 #: src/WatchdogUI.cpp:224
-msgid "nm from coastline\n(any direction)"
-msgstr "NM van kustlijn\n (alle richtingen)"
+msgid "nm from coastline\n"
+"(any direction)"
+msgstr "NM van kustlijn\n"
+" (alle richtingen)"
 
 #: src/WatchdogUI.cpp:231
 msgid "Graphical overlay for time displays line from boat to location of land crossing"
 msgstr "Grafische overlay voor tijd toont lijn van schip naar landaanlooppunt"
 
 #: src/WatchdogUI.cpp:235
-msgid "Landfall detection uses gshhs (global heirarchical high-resolution shoreline data.)\nConsider installing the highest resolution database for best accuracy."
-msgstr ""
+msgid "Landfall detection uses gshhs (global heirarchical high-resolution shoreline data.)\n"
+"Consider installing the highest resolution database for best accuracy."
+msgstr "Landaanloop detectie gebruikt gshhs (globale hiërarchische hoge-resolutie kustlijn gegevens.) \n"
+"Overweeg het installeren van de hoogste resolutie database voor beste nauwkeurigheid."
 
 #: src/WatchdogUI.cpp:243
 msgid "Landfall"
@@ -296,8 +306,10 @@ msgid "meters"
 msgstr "meter"
 
 #: src/WatchdogUI.cpp:390
-msgid "Automatically sync position when the boat\nstops for more than 1 minute"
-msgstr ""
+msgid "Automatically sync position when the boat\n"
+"stops for more than 1 minute"
+msgstr "Sync positie automatisch wanneer de boot\n"
+"voor meer dan 1 minuut stopt"
 
 #: src/WatchdogUI.cpp:393
 msgid "Graphical overlay displays bounding anchor area"
@@ -440,6 +452,8 @@ msgid "Watchdog PlugIn for OpenCPN"
 msgstr "Watchdog PlugIn voor OpenCPN"
 
 #: src/watchdog_pi.cpp:164
-msgid "Watchdog PlugIn for OpenCPN\nAlarm user of changing conditions."
-msgstr "Watchdog PlugIn voor OpenCPN\nGeeft alarm bij veranderende omstandigheden."
+msgid "Watchdog PlugIn for OpenCPN\n"
+"Alarm user of changing conditions."
+msgstr "Watchdog PlugIn voor OpenCPN\n"
+"Geeft alarm bij veranderende omstandigheden."
 

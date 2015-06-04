@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: opencpn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-04-22 11:57-0500\n"
-"PO-Revision-Date: 2015-04-22 13:08-0400\n"
+"PO-Revision-Date: 2015-05-31 23:22-0400\n"
 "Last-Translator: nohal <pavel@kalian.cz>\n"
 "Language-Team: Danish\n"
 "Language: da_DK\n"
@@ -144,7 +144,10 @@ msgid "Off Course Starboard"
 msgstr "Ude af kurs styrbord"
 
 #: src/WatchdogPrefsDialog.cpp:277
-msgid "Most alarms should be self-explanatory\nNormally a sound is played, however you can execute any command you like, eg:  \"aplay /usr/local/share/opencpn/sounds/2bells.wav\"\nMessagebox may be useful to interrupt other applications (like a movie player)\nAutomatically Reset will reset the alarm once it is no longer triggered, and it may be triggered again later."
+msgid "Most alarms should be self-explanatory\n"
+"Normally a sound is played, however you can execute any command you like, eg:  \"aplay /usr/local/share/opencpn/sounds/2bells.wav\"\n"
+"Messagebox may be useful to interrupt other applications (like a movie player)\n"
+"Automatically Reset will reset the alarm once it is no longer triggered, and it may be triggered again later."
 msgstr ""
 
 #: src/WatchdogPrefsDialog.cpp:284
@@ -236,15 +239,18 @@ msgid "3"
 msgstr "3"
 
 #: src/WatchdogUI.cpp:224
-msgid "nm from coastline\n(any direction)"
-msgstr "sømil fra kystlinje\n (hvilken som helst retning)"
+msgid "nm from coastline\n"
+"(any direction)"
+msgstr "sømil fra kystlinje\n"
+" (hvilken som helst retning)"
 
 #: src/WatchdogUI.cpp:231
 msgid "Graphical overlay for time displays line from boat to location of land crossing"
 msgstr ""
 
 #: src/WatchdogUI.cpp:235
-msgid "Landfall detection uses gshhs (global heirarchical high-resolution shoreline data.)\nConsider installing the highest resolution database for best accuracy."
+msgid "Landfall detection uses gshhs (global heirarchical high-resolution shoreline data.)\n"
+"Consider installing the highest resolution database for best accuracy."
 msgstr ""
 
 #: src/WatchdogUI.cpp:243
@@ -296,7 +302,8 @@ msgid "meters"
 msgstr "meter"
 
 #: src/WatchdogUI.cpp:390
-msgid "Automatically sync position when the boat\nstops for more than 1 minute"
+msgid "Automatically sync position when the boat\n"
+"stops for more than 1 minute"
 msgstr ""
 
 #: src/WatchdogUI.cpp:393
@@ -440,6 +447,7 @@ msgid "Watchdog PlugIn for OpenCPN"
 msgstr ""
 
 #: src/watchdog_pi.cpp:164
-msgid "Watchdog PlugIn for OpenCPN\nAlarm user of changing conditions."
+msgid "Watchdog PlugIn for OpenCPN\n"
+"Alarm user of changing conditions."
 msgstr ""
 
