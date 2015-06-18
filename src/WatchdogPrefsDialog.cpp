@@ -141,8 +141,8 @@ void WatchdogPrefsDialog::AlarmActions(bool read)
         m_cbSound->SetValue(alarm->m_bSound);
         m_fpSound->SetPath(alarm->m_sSound);
         
-        m_cbCommand->SetValue(alarm->m_bCommand);
         m_tCommand->SetValue(alarm->m_sCommand);
+        m_cbCommand->SetValue(alarm->m_bCommand);
         m_cbMessageBox->SetValue(alarm->m_bMessageBox);
         m_cbAutoReset->SetValue(alarm->m_bAutoReset);
         m_cbRepeat->SetValue(alarm->m_bRepeat);
