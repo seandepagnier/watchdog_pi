@@ -131,10 +131,11 @@ void WatchdogPrefsDialog::OnGetBoundaryGUID( wxCommandEvent& event )
     jMsg[wxT("lat")] = m_watchdog_pi.LastFix().Lat;
     jMsg[wxT("lon")] = m_watchdog_pi.LastFix().Lon;
     writer.Write( jMsg, MsgString );
+    g_ReceivedBoundaryAnchorMessage = wxEmptyString;
     SendPluginMessage( wxS("OCPN_DRAW_PI"), MsgString );
     if(g_ReceivedBoundaryAnchorMessage != wxEmptyString && g_ReceivedBoundaryAnchorJSONMsg[wxT("MsgId")].AsString() == wxS("anchor") && g_ReceivedBoundaryAnchorJSONMsg[wxT("Found")].AsBool() == true ) {
         m_tBoundaryGUID->SetValue( g_ReceivedBoundaryAnchorJSONMsg[wxT("GUID")].AsString() );
-    }
+    } else m_tBoundaryGUID->Clear();
     
     
     OnAlarmUpdate();
