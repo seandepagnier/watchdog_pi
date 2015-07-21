@@ -108,6 +108,7 @@ public:
       wxString GetLongDescription();
 
       int GetToolbarToolCount(void);
+      void SetPluginMessage(wxString &message_id, wxString &message_body);
 
       void OnToolbarToolCallback(int id);
       void OnContextMenuItemCallback(int id);

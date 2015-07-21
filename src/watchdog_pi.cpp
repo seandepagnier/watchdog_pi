@@ -32,6 +32,12 @@
 #include "WatchdogDialog.h"
 #include "WatchdogPrefsDialog.h"
 #include "icons.h"
+#include "wx/jsonreader.h"
+
+wxJSONValue g_ReceivedBoundaryTimeJSONMsg;
+wxString    g_ReceivedBoundaryTimeMessage;
+wxJSONValue g_ReceivedBoundaryAnchorJSONMsg;
+wxString    g_ReceivedBoundaryAnchorMessage;
 
 
 double heading_resolve(double degrees)
@@ -103,6 +109,7 @@ int watchdog_pi::Init(void)
             WANTS_NMEA_SENTENCES      |
             WANTS_NMEA_EVENTS         |
             WANTS_AIS_SENTENCES       |
+            WANTS_PLUGIN_MESSAGING    |
             WANTS_CONFIG);
 }
 
@@ -326,3 +333,75 @@ void watchdog_pi::UpdatePreferences()
     if(m_pWatchdogPrefsDialog)
         m_pWatchdogPrefsDialog->ReadAlarmActions();
 }
+
+void watchdog_pi::SetPluginMessage(wxString &message_id, wxString &message_body)
+{
+    // construct the JSON root object
+    wxJSONValue  root;
+    // construct a JSON parser
+    wxJSONReader reader;
+    wxString    sLogMessage;
+    bool        bFail = false;
+    
+    if(message_id == wxS("WATCHDOG_PI")) {
+        // now read the JSON text and store it in the 'root' structure
+        // check for errors before retreiving values...
+        int numErrors = reader.Parse( message_body, &root );
+        if ( numErrors > 0 )  {
+            const wxArrayString& errors = reader.GetErrors();
+            for(int i = 0; i < (int)errors.GetCount(); i++)
+            {
+                if(i == 0) {
+                    sLogMessage.clear();
+                    sLogMessage.Append(wxT("watchdog_pi: Error parsing JSON message - "));
+                    sLogMessage.Append( message_id );
+                    sLogMessage.Append(wxT(", error text: "));
+                } else sLogMessage.Append(wxT("\n"));
+                sLogMessage.append( errors.Item( i ) );
+                wxLogMessage( sLogMessage );
+            }
+            return;
+        }
+        
+        if(!root.HasMember( wxS("Source"))) {
+            // Originator
+            wxLogMessage( wxS("No Source found in message") );
+            bFail = true;
+        }
+        
+        if(!root.HasMember( wxS("Msg"))) {
+            // Message identifier
+            wxLogMessage( wxS("No Msg found in message") );
+            bFail = true;
+        }
+        
+        if(!root.HasMember( wxS("Type"))) {
+            // Message type, orig or resp
+            wxLogMessage( wxS("No Type found in message") );
+            bFail = true;
+        }
+        
+        if(!root.HasMember( wxS("MsgId"))) {
+            // Unique (?) Msg number/identifier
+            wxLogMessage( wxS("No MsgNo found in message") );
+            bFail = true;
+        }
+        
+        if(!bFail) {
+            if(root[wxS("Type")].AsString() == wxS("Response") && root[wxS("Source")].AsString() == wxS("OCPN_DRAW_PI")) {
+                if(root[wxS("Msg")].AsString() == wxS("FindPointInAnyBoundary") && root[wxS("MsgId")].AsString() == wxS("time")) {
+                    g_ReceivedBoundaryTimeJSONMsg = root;
+                    g_ReceivedBoundaryTimeMessage = message_body;
+                } else
+                if(root[wxS("Type")].AsString() == wxS("Response") && root[wxS("Source")].AsString() == wxS("OCPN_DRAW_PI")) {
+                    if(root[wxS("Msg")].AsString() == wxS("FindPointInAnyBoundary") && root[wxS("MsgId")].AsString() == wxS("anchor")) {
+                        g_ReceivedBoundaryAnchorJSONMsg = root;
+                        g_ReceivedBoundaryAnchorMessage = message_body;
+                    }
+                }
+            }
+        }
+        return;
+    }
+}
+

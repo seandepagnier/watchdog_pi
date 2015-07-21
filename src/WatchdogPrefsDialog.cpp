@@ -27,6 +27,12 @@
 #include "watchdog_pi.h"
 #include "WatchdogDialog.h"
 #include "WatchdogPrefsDialog.h"
+#include "wx/jsonreader.h"
+#include "wx/jsonwriter.h"
+
+extern wxJSONValue g_ReceivedBoundaryAnchorJSONMsg;
+extern wxString    g_ReceivedBoundaryAnchorMessage;
+
 
 WatchdogPrefsDialog::WatchdogPrefsDialog( watchdog_pi &_watchdog_pi, wxWindow* parent)
     : WatchdogPrefsDialogBase( parent ), m_watchdog_pi(_watchdog_pi), m_breading(false)
@@ -107,7 +113,30 @@ void WatchdogPrefsDialog::OnSyncToBoat( wxCommandEvent& event )
 {
     m_tAnchorLatitude->SetValue(wxString::Format(_T("%f"), m_watchdog_pi.LastFix().Lat));
     m_tAnchorLongitude->SetValue(wxString::Format(_T("%f"), m_watchdog_pi.LastFix().Lon));
+    
+    OnAlarmUpdate();
+}
 
+void WatchdogPrefsDialog::OnGetBoundaryGUID( wxCommandEvent& event )
+{
+    wxJSONValue jMsg;
+    wxJSONWriter writer;
+    wxString    MsgString;
+    wxJSONValue v;
+    v[_T("GUID")] = wxT("GUID");
+    jMsg[wxT("Source")] = wxT("WATCHDOG_PI");
+    jMsg[wxT("Type")] = wxT("Request");
+    jMsg[wxT("Msg")] = wxS("FindPointInAnyBoundary");
+    jMsg[wxT("MsgId")] = wxS("anchor");
+    jMsg[wxT("lat")] = m_watchdog_pi.LastFix().Lat;
+    jMsg[wxT("lon")] = m_watchdog_pi.LastFix().Lon;
+    writer.Write( jMsg, MsgString );
+    SendPluginMessage( wxS("OCPN_DRAW_PI"), MsgString );
+    if(g_ReceivedBoundaryAnchorMessage != wxEmptyString && g_ReceivedBoundaryAnchorJSONMsg[wxT("MsgId")].AsString() == wxS("anchor") && g_ReceivedBoundaryAnchorJSONMsg[wxT("Found")].AsBool() == true ) {
+        m_tBoundaryGUID->SetValue( g_ReceivedBoundaryAnchorJSONMsg[wxT("GUID")].AsString() );
+    }
+    
+    
     OnAlarmUpdate();
 }
 
@@ -191,6 +220,8 @@ void WatchdogPrefsDialog::AlarmActions(bool read)
         alarm->ConfigItem(read, _T ( "Longitude" ), m_tAnchorLongitude);
         alarm->ConfigItem(read, _T ( "Radius" ), m_sAnchorRadius);
         alarm->ConfigItem(read, _T ( "AutoSync" ), m_cbAutoSync);
+        alarm->ConfigItem(read, _T ( "BoundaryGUID" ), m_tBoundaryGUID);
+        alarm->ConfigItem(read, _T ( "LatLonorBoundary" ), m_rbUse );
         break;
 
     case COURSE:

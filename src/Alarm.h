@@ -75,6 +75,6 @@ private:
     wxDateTime m_LastAlarmTime;
 };
 
-enum AlarmNames {LANDFALL, NMEADATA, DEADMAN, SECOND_DEADMAN, ANCHOR,
+enum AlarmNames {LANDFALL, NMEADATA, DEADMAN, SECOND_DEADMAN, ANCHOR, BOUNDARY,
                  COURSE, COURSE_STARBOARD, UNDERSPEED, OVERSPEED, DEPTH, WIND};
 extern Alarm *Alarms[];

@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Oct  8 2012)
+// C++ code generated with wxFormBuilder (version Jun 17 2015)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
@@ -42,6 +42,22 @@ WatchdogDialogBase::WatchdogDialogBase( wxWindow* parent, wxWindowID id, const w
 	m_stLandFallDistance->Wrap( -1 );
 	m_fgAlarms->Add( m_stLandFallDistance, 0, wxALL, 5 );
 	
+	m_stTextBoundaryTime = new wxStaticText( this, wxID_ANY, _("Boundary in"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_stTextBoundaryTime->Wrap( -1 );
+	m_fgAlarms->Add( m_stTextBoundaryTime, 0, wxALL, 5 );
+	
+	m_stBoundaryTime = new wxStaticText( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_stBoundaryTime->Wrap( -1 );
+	m_fgAlarms->Add( m_stBoundaryTime, 0, wxALL, 5 );
+	
+	m_stTextBoundaryDistance = new wxStaticText( this, wxID_ANY, _("Boundary Distance >"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_stTextBoundaryDistance->Wrap( -1 );
+	m_fgAlarms->Add( m_stTextBoundaryDistance, 0, wxALL, 5 );
+	
+	m_stBoundaryDistance = new wxStaticText( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_stBoundaryDistance->Wrap( -1 );
+	m_fgAlarms->Add( m_stBoundaryDistance, 0, wxALL, 5 );
+	
 	m_stTextNMEAData = new wxStaticText( this, wxID_ANY, _("Last NMEA Updates"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_stTextNMEAData->Wrap( -1 );
 	m_fgAlarms->Add( m_stTextNMEAData, 0, wxALL, 5 );
@@ -73,6 +89,14 @@ WatchdogDialogBase::WatchdogDialogBase( wxWindow* parent, wxWindowID id, const w
 	m_stAnchorDistance = new wxStaticText( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 200,-1 ), 0 );
 	m_stAnchorDistance->Wrap( -1 );
 	m_fgAlarms->Add( m_stAnchorDistance, 0, wxALL, 5 );
+	
+	m_stTextWithinBoundary = new wxStaticText( this, wxID_ANY, _("Within Boundary"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_stTextWithinBoundary->Wrap( -1 );
+	m_fgAlarms->Add( m_stTextWithinBoundary, 0, wxALL, 5 );
+	
+	m_stWithinBoundaryGUID = new wxStaticText( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_stWithinBoundaryGUID->Wrap( -1 );
+	m_fgAlarms->Add( m_stWithinBoundaryGUID, 0, wxALL, 5 );
 	
 	m_stTextCourseError = new wxStaticText( this, wxID_ANY, _("Course Error"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_stTextCourseError->Wrap( -1 );
@@ -165,16 +189,16 @@ WatchdogPrefsDialogBase::WatchdogPrefsDialogBase( wxWindow* parent, wxWindowID i
 	fgSizer241->SetFlexibleDirection( wxBOTH );
 	fgSizer241->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_rbAlways = new wxRadioButton( this, wxID_ANY, _("Enable Alarms"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_rbAlways = new wxRadioButton( sbSizer41->GetStaticBox(), wxID_ANY, _("Enable Alarms"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer241->Add( m_rbAlways, 0, wxALL, 5 );
 	
-	m_rbOnce = new wxRadioButton( this, wxID_ANY, _("Enabled first time Dialog is opened"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_rbOnce = new wxRadioButton( sbSizer41->GetStaticBox(), wxID_ANY, _("Enabled first time Dialog is opened"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer241->Add( m_rbOnce, 0, wxALL, 5 );
 	
-	m_rbVisible = new wxRadioButton( this, wxID_ANY, _("Enabled only if Dialog is visible"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_rbVisible = new wxRadioButton( sbSizer41->GetStaticBox(), wxID_ANY, _("Enabled only if Dialog is visible"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer241->Add( m_rbVisible, 0, wxALL, 5 );
 	
-	m_rbNever = new wxRadioButton( this, wxID_ANY, _("Disable Alarms"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_rbNever = new wxRadioButton( sbSizer41->GetStaticBox(), wxID_ANY, _("Disable Alarms"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer241->Add( m_rbNever, 0, wxALL, 5 );
 	
 	
@@ -184,7 +208,7 @@ WatchdogPrefsDialogBase::WatchdogPrefsDialogBase( wxWindow* parent, wxWindowID i
 	fgSizer4->Add( sbSizer41, 1, wxEXPAND, 5 );
 	
 	m_lbAlarm = new wxListbook( this, wxID_ANY, wxDefaultPosition, wxSize( -1,-1 ), wxLB_DEFAULT );
-	m_lbAlarm->SetMinSize( wxSize( -1,200 ) );
+	m_lbAlarm->SetMinSize( wxSize( -1,250 ) );
 	
 	m_panel1 = new wxPanel( m_lbAlarm, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxFlexGridSizer* fgSizer17;
@@ -241,6 +265,61 @@ WatchdogPrefsDialogBase::WatchdogPrefsDialogBase( wxWindow* parent, wxWindowID i
 	m_panel1->Layout();
 	fgSizer17->Fit( m_panel1 );
 	m_lbAlarm->AddPage( m_panel1, _("Landfall"), false );
+	m_panel12 = new wxPanel( m_lbAlarm, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxFlexGridSizer* fgSizer172;
+	fgSizer172 = new wxFlexGridSizer( 0, 1, 0, 0 );
+	fgSizer172->SetFlexibleDirection( wxBOTH );
+	fgSizer172->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	wxFlexGridSizer* fgSizer161;
+	fgSizer161 = new wxFlexGridSizer( 0, 3, 0, 0 );
+	fgSizer161->SetFlexibleDirection( wxBOTH );
+	fgSizer161->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_cbBoundaryTime = new wxCheckBox( m_panel12, wxID_ANY, _("GPS course in Boundary in <"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer161->Add( m_cbBoundaryTime, 0, wxALL, 5 );
+	
+	m_sBoundaryTimeMinutes = new wxSpinCtrl( m_panel12, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 1000, 20 );
+	fgSizer161->Add( m_sBoundaryTimeMinutes, 0, wxALL, 5 );
+	
+	m_staticText301 = new wxStaticText( m_panel12, wxID_ANY, _("minutes"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText301->Wrap( -1 );
+	fgSizer161->Add( m_staticText301, 0, wxALL, 5 );
+	
+	
+	fgSizer172->Add( fgSizer161, 1, wxEXPAND, 5 );
+	
+	wxFlexGridSizer* fgSizer102;
+	fgSizer102 = new wxFlexGridSizer( 0, 3, 0, 0 );
+	fgSizer102->SetFlexibleDirection( wxBOTH );
+	fgSizer102->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_cbBoundaryDistance = new wxCheckBox( m_panel12, wxID_ANY, _("GPS fix is <"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer102->Add( m_cbBoundaryDistance, 0, wxALL, 5 );
+	
+	m_tcBoundaryDistance = new wxTextCtrl( m_panel12, wxID_ANY, _("3"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer102->Add( m_tcBoundaryDistance, 0, wxALL, 5 );
+	
+	m_staticText72 = new wxStaticText( m_panel12, wxID_ANY, _("nm from Boundary\n(any direction)"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText72->Wrap( -1 );
+	fgSizer102->Add( m_staticText72, 0, wxALL, 5 );
+	
+	
+	fgSizer172->Add( fgSizer102, 1, wxEXPAND, 5 );
+	
+	m_staticText391221 = new wxStaticText( m_panel12, wxID_ANY, _("Graphical overlay for time displays line from boat to location of Boundary crossing"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText391221->Wrap( 400 );
+	fgSizer172->Add( m_staticText391221, 0, wxALL, 5 );
+	
+	m_staticText451 = new wxStaticText( m_panel12, wxID_ANY, _("Boundary detection finds first Boundary that meets criteria"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText451->Wrap( 350 );
+	fgSizer172->Add( m_staticText451, 0, wxALL, 5 );
+	
+	
+	m_panel12->SetSizer( fgSizer172 );
+	m_panel12->Layout();
+	fgSizer172->Fit( m_panel12 );
+	m_lbAlarm->AddPage( m_panel12, _("Boundary"), false );
 	m_panel2 = new wxPanel( m_lbAlarm, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxFlexGridSizer* fgSizer91;
 	fgSizer91 = new wxFlexGridSizer( 0, 1, 0, 0 );
@@ -311,7 +390,7 @@ WatchdogPrefsDialogBase::WatchdogPrefsDialogBase( wxWindow* parent, wxWindowID i
 	m_panel3->SetSizer( fgSizer25 );
 	m_panel3->Layout();
 	fgSizer25->Fit( m_panel3 );
-	m_lbAlarm->AddPage( m_panel3, _("Deadman"), true );
+	m_lbAlarm->AddPage( m_panel3, _("Deadman"), false );
 	m_pSecondDeadman = new wxPanel( m_lbAlarm, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxFlexGridSizer* fgSizer251;
 	fgSizer251 = new wxFlexGridSizer( 0, 1, 0, 0 );
@@ -353,32 +432,53 @@ WatchdogPrefsDialogBase::WatchdogPrefsDialogBase( wxWindow* parent, wxWindowID i
 	fgSizer9->SetFlexibleDirection( wxBOTH );
 	fgSizer9->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
+	wxFlexGridSizer* fgSizer30;
+	fgSizer30 = new wxFlexGridSizer( 0, 2, 0, 0 );
+	fgSizer30->SetFlexibleDirection( wxBOTH );
+	fgSizer30->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
 	m_staticText71 = new wxStaticText( m_panel4, wxID_ANY, _("Latitude"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText71->Wrap( -1 );
-	fgSizer9->Add( m_staticText71, 0, wxALL, 5 );
+	fgSizer30->Add( m_staticText71, 0, wxALL, 5 );
 	
 	m_tAnchorLatitude = new wxTextCtrl( m_panel4, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer9->Add( m_tAnchorLatitude, 0, wxALL, 5 );
+	fgSizer30->Add( m_tAnchorLatitude, 0, wxALL, 5 );
 	
 	
-	fgSizer9->Add( 0, 0, 1, wxEXPAND, 5 );
+	fgSizer9->Add( fgSizer30, 1, wxEXPAND, 5 );
+	
+	wxFlexGridSizer* fgSizer31;
+	fgSizer31 = new wxFlexGridSizer( 0, 2, 0, 0 );
+	fgSizer31->SetFlexibleDirection( wxBOTH );
+	fgSizer31->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
 	m_staticText8 = new wxStaticText( m_panel4, wxID_ANY, _("Longitude"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText8->Wrap( -1 );
-	fgSizer9->Add( m_staticText8, 0, wxALL, 5 );
+	fgSizer31->Add( m_staticText8, 0, wxALL, 5 );
 	
 	m_tAnchorLongitude = new wxTextCtrl( m_panel4, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer9->Add( m_tAnchorLongitude, 0, wxALL, 5 );
+	fgSizer31->Add( m_tAnchorLongitude, 0, wxALL, 5 );
+	
+	
+	fgSizer9->Add( fgSizer31, 1, wxEXPAND, 5 );
 	
 	m_bSyncToBoat = new wxButton( m_panel4, wxID_ANY, _("Sync to Boat"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer9->Add( m_bSyncToBoat, 0, wxALL, 5 );
 	
+	wxFlexGridSizer* fgSizer32;
+	fgSizer32 = new wxFlexGridSizer( 0, 2, 0, 0 );
+	fgSizer32->SetFlexibleDirection( wxBOTH );
+	fgSizer32->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
 	m_staticText9 = new wxStaticText( m_panel4, wxID_ANY, _("Radius"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText9->Wrap( -1 );
-	fgSizer9->Add( m_staticText9, 0, wxALL, 5 );
+	fgSizer32->Add( m_staticText9, 0, wxALL, 5 );
 	
 	m_sAnchorRadius = new wxSpinCtrl( m_panel4, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 100000, 50 );
-	fgSizer9->Add( m_sAnchorRadius, 0, wxALL, 5 );
+	fgSizer32->Add( m_sAnchorRadius, 0, wxALL, 5 );
+	
+	
+	fgSizer9->Add( fgSizer32, 1, wxEXPAND, 5 );
 	
 	m_staticText39 = new wxStaticText( m_panel4, wxID_ANY, _("meters"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText39->Wrap( -1 );
@@ -387,18 +487,52 @@ WatchdogPrefsDialogBase::WatchdogPrefsDialogBase( wxWindow* parent, wxWindowID i
 	
 	fgSizer24->Add( fgSizer9, 1, wxEXPAND, 5 );
 	
-	m_cbAutoSync = new wxCheckBox( m_panel4, wxID_ANY, _("Automatically sync position when the boat\nstops for more than 1 minute"), wxDefaultPosition, wxDefaultSize, 0 );
-	fgSizer24->Add( m_cbAutoSync, 0, wxALL, 5 );
+	wxFlexGridSizer* fgSizer29;
+	fgSizer29 = new wxFlexGridSizer( 2, 1, 0, 0 );
+	fgSizer29->SetFlexibleDirection( wxBOTH );
+	fgSizer29->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
 	m_staticText39121 = new wxStaticText( m_panel4, wxID_ANY, _("Graphical overlay displays bounding anchor area"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText39121->Wrap( -1 );
-	fgSizer24->Add( m_staticText39121, 0, wxALL, 5 );
+	fgSizer29->Add( m_staticText39121, 0, wxALL, 5 );
+	
+	m_cbAutoSync = new wxCheckBox( m_panel4, wxID_ANY, _("Automatically sync position when the boat\nstops for more than 1 minute"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer29->Add( m_cbAutoSync, 0, wxALL, 5 );
+	
+	
+	fgSizer24->Add( fgSizer29, 1, wxEXPAND, 5 );
+	
+	wxFlexGridSizer* fgSizer28;
+	fgSizer28 = new wxFlexGridSizer( 0, 3, 0, 0 );
+	fgSizer28->SetFlexibleDirection( wxHORIZONTAL );
+	fgSizer28->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_stTextBoundaryGUID = new wxStaticText( m_panel4, wxID_ANY, _("Boundary\nGUID"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_stTextBoundaryGUID->Wrap( -1 );
+	fgSizer28->Add( m_stTextBoundaryGUID, 0, wxALL, 5 );
+	
+	m_tBoundaryGUID = new wxTextCtrl( m_panel4, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_tBoundaryGUID->SetMinSize( wxSize( 300,-1 ) );
+	
+	fgSizer28->Add( m_tBoundaryGUID, 100, wxALIGN_CENTER|wxALL, 5 );
+	
+	m_bGetBoundary = new wxButton( m_panel4, wxID_ANY, _("Get Boundary GUID"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer28->Add( m_bGetBoundary, 0, wxALIGN_RIGHT|wxALL, 5 );
+	
+	
+	fgSizer24->Add( fgSizer28, 1, wxEXPAND, 5 );
+	
+	wxString m_rbUseChoices[] = { _("Lat/Lon"), _("Boundary") };
+	int m_rbUseNChoices = sizeof( m_rbUseChoices ) / sizeof( wxString );
+	m_rbUse = new wxRadioBox( m_panel4, wxID_ANY, _("Use for watch"), wxDefaultPosition, wxDefaultSize, m_rbUseNChoices, m_rbUseChoices, 2, wxRA_SPECIFY_COLS );
+	m_rbUse->SetSelection( 0 );
+	fgSizer24->Add( m_rbUse, 0, wxALL, 5 );
 	
 	
 	m_panel4->SetSizer( fgSizer24 );
 	m_panel4->Layout();
 	fgSizer24->Fit( m_panel4 );
-	m_lbAlarm->AddPage( m_panel4, _("Anchor Watch"), false );
+	m_lbAlarm->AddPage( m_panel4, _("Anchor Watch"), true );
 	m_pCourse = new wxPanel( m_lbAlarm, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxFlexGridSizer* fgSizer22;
 	fgSizer22 = new wxFlexGridSizer( 0, 1, 0, 0 );
@@ -470,21 +604,21 @@ WatchdogPrefsDialogBase::WatchdogPrefsDialogBase( wxWindow* parent, wxWindowID i
 	fgSizer14->SetFlexibleDirection( wxBOTH );
 	fgSizer14->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_staticText44 = new wxStaticText( m_panel5, wxID_ANY, _("Speed over ground <"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText44 = new wxStaticText( sbSizer7->GetStaticBox(), wxID_ANY, _("Speed over ground <"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText44->Wrap( -1 );
 	fgSizer14->Add( m_staticText44, 0, wxALL, 5 );
 	
-	m_tUnderSpeed = new wxTextCtrl( m_panel5, wxID_ANY, _("1"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_tUnderSpeed = new wxTextCtrl( sbSizer7->GetStaticBox(), wxID_ANY, _("1"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer14->Add( m_tUnderSpeed, 0, wxALL, 5 );
 	
-	m_staticText24 = new wxStaticText( m_panel5, wxID_ANY, _("knots"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText24 = new wxStaticText( sbSizer7->GetStaticBox(), wxID_ANY, _("knots"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText24->Wrap( -1 );
 	fgSizer14->Add( m_staticText24, 0, wxALL, 5 );
 	
 	
 	sbSizer7->Add( fgSizer14, 1, wxEXPAND, 5 );
 	
-	m_staticText391 = new wxStaticText( m_panel5, wxID_ANY, _("Graphical overlay displays circle with radius of this speed"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText391 = new wxStaticText( sbSizer7->GetStaticBox(), wxID_ANY, _("Graphical overlay displays circle with radius of this speed"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText391->Wrap( -1 );
 	sbSizer7->Add( m_staticText391, 0, wxALL, 5 );
 	
@@ -502,21 +636,21 @@ WatchdogPrefsDialogBase::WatchdogPrefsDialogBase( wxWindow* parent, wxWindowID i
 	fgSizer141->SetFlexibleDirection( wxBOTH );
 	fgSizer141->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_staticText37 = new wxStaticText( m_panel51, wxID_ANY, _("Speed over ground >"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText37 = new wxStaticText( sbSizer71->GetStaticBox(), wxID_ANY, _("Speed over ground >"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText37->Wrap( -1 );
 	fgSizer141->Add( m_staticText37, 0, wxALL, 5 );
 	
-	m_tOverSpeed = new wxTextCtrl( m_panel51, wxID_ANY, _("12"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_tOverSpeed = new wxTextCtrl( sbSizer71->GetStaticBox(), wxID_ANY, _("12"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer141->Add( m_tOverSpeed, 0, wxALL, 5 );
 	
-	m_staticText251 = new wxStaticText( m_panel51, wxID_ANY, _("knots"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText251 = new wxStaticText( sbSizer71->GetStaticBox(), wxID_ANY, _("knots"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText251->Wrap( -1 );
 	fgSizer141->Add( m_staticText251, 0, wxALL, 5 );
 	
 	
 	sbSizer71->Add( fgSizer141, 1, wxEXPAND, 5 );
 	
-	m_staticText3911 = new wxStaticText( m_panel51, wxID_ANY, _("Graphical overlay displays circle with radius of this speed"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText3911 = new wxStaticText( sbSizer71->GetStaticBox(), wxID_ANY, _("Graphical overlay displays circle with radius of this speed"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText3911->Wrap( -1 );
 	sbSizer71->Add( m_staticText3911, 0, wxALL, 5 );
 	
@@ -555,10 +689,13 @@ WatchdogPrefsDialogBase::WatchdogPrefsDialogBase( wxWindow* parent, wxWindowID i
 	m_panel11->Layout();
 	fgSizer21->Fit( m_panel11 );
 	m_lbAlarm->AddPage( m_panel11, _("Wind"), false );
-	#ifndef __WXGTK__ // Small icon style not supported in GTK
+	#ifdef __WXGTK__ // Small icon style not supported in GTK
 	wxListView* m_lbAlarmListView = m_lbAlarm->GetListView();
 	long m_lbAlarmFlags = m_lbAlarmListView->GetWindowStyleFlag();
-	m_lbAlarmFlags = ( m_lbAlarmFlags & ~wxLC_ICON ) | wxLC_SMALL_ICON;
+	if( m_lbAlarmFlags & wxLC_SMALL_ICON )
+	{
+		m_lbAlarmFlags = ( m_lbAlarmFlags & ~wxLC_SMALL_ICON ) | wxLC_ICON;
+	}
 	m_lbAlarmListView->SetWindowStyleFlag( m_lbAlarmFlags );
 	#endif
 	
@@ -591,34 +728,34 @@ WatchdogPrefsDialogBase::WatchdogPrefsDialogBase( wxWindow* parent, wxWindowID i
 	fgSizer6->SetFlexibleDirection( wxBOTH );
 	fgSizer6->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_cbSound = new wxCheckBox( this, wxID_ANY, _("Sound"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_cbSound = new wxCheckBox( sbSizer4->GetStaticBox(), wxID_ANY, _("Sound"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer6->Add( m_cbSound, 0, wxALL, 5 );
 	
-	m_fpSound = new wxFilePickerCtrl( this, wxID_ANY, wxT("/initrd.img"), _("Select a file"), wxT("Wav Files (*.wav)|*.WAV;*.wav|All Files (*.*)|*.*"), wxDefaultPosition, wxDefaultSize, wxFLP_DEFAULT_STYLE );
+	m_fpSound = new wxFilePickerCtrl( sbSizer4->GetStaticBox(), wxID_ANY, wxT("/initrd.img"), _("Select a file"), wxT("Wav Files (*.wav)|*.WAV;*.wav|All Files (*.*)|*.*"), wxDefaultPosition, wxDefaultSize, wxFLP_DEFAULT_STYLE );
 	fgSizer6->Add( m_fpSound, 0, wxALL|wxEXPAND, 5 );
 	
-	m_cbCommand = new wxCheckBox( this, wxID_ANY, _("Command"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_cbCommand = new wxCheckBox( sbSizer4->GetStaticBox(), wxID_ANY, _("Command"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer6->Add( m_cbCommand, 0, wxALL, 5 );
 	
-	m_tCommand = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_tCommand = new wxTextCtrl( sbSizer4->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer6->Add( m_tCommand, 0, wxALL|wxEXPAND, 5 );
 	
-	m_cbMessageBox = new wxCheckBox( this, wxID_ANY, _("Message Box"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_cbMessageBox = new wxCheckBox( sbSizer4->GetStaticBox(), wxID_ANY, _("Message Box"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer6->Add( m_cbMessageBox, 0, wxALL, 5 );
 	
 	
 	fgSizer6->Add( 0, 0, 1, wxEXPAND, 5 );
 	
-	m_cbRepeat = new wxCheckBox( this, wxID_ANY, _("Repeat Alarm after seconds"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_cbRepeat = new wxCheckBox( sbSizer4->GetStaticBox(), wxID_ANY, _("Repeat Alarm after seconds"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer6->Add( m_cbRepeat, 0, wxALL, 5 );
 	
-	m_sRepeatSeconds = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 10000, 60 );
+	m_sRepeatSeconds = new wxSpinCtrl( sbSizer4->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 10000, 60 );
 	fgSizer6->Add( m_sRepeatSeconds, 0, wxALL, 5 );
 	
-	m_cbAutoReset = new wxCheckBox( this, wxID_ANY, _("Automatically  Reset"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_cbAutoReset = new wxCheckBox( sbSizer4->GetStaticBox(), wxID_ANY, _("Automatically  Reset"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer6->Add( m_cbAutoReset, 0, wxALL, 5 );
 	
-	m_bTestAlarm = new wxButton( this, wxID_ANY, _("Test Alarm"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_bTestAlarm = new wxButton( sbSizer4->GetStaticBox(), wxID_ANY, _("Test Alarm"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer6->Add( m_bTestAlarm, 0, wxALL, 5 );
 	
 	
@@ -674,6 +811,10 @@ WatchdogPrefsDialogBase::WatchdogPrefsDialogBase( wxWindow* parent, wxWindowID i
 	m_sLandFallTimeMinutes->Connect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( WatchdogPrefsDialogBase::OnAlarmUpdateSpin ), NULL, this );
 	m_cbLandFallDistance->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( WatchdogPrefsDialogBase::OnAlarmUpdate ), NULL, this );
 	m_tcLandFallDistance->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( WatchdogPrefsDialogBase::OnAlarmUpdate ), NULL, this );
+	m_cbBoundaryTime->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( WatchdogPrefsDialogBase::OnAlarmUpdate ), NULL, this );
+	m_sBoundaryTimeMinutes->Connect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( WatchdogPrefsDialogBase::OnAlarmUpdateSpin ), NULL, this );
+	m_cbBoundaryDistance->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( WatchdogPrefsDialogBase::OnAlarmUpdate ), NULL, this );
+	m_tcBoundaryDistance->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( WatchdogPrefsDialogBase::OnAlarmUpdate ), NULL, this );
 	m_tNMEASentences->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( WatchdogPrefsDialogBase::OnAlarmUpdate ), NULL, this );
 	m_sNMEASeconds->Connect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( WatchdogPrefsDialogBase::OnAlarmUpdateSpin ), NULL, this );
 	m_sDeadmanMinutes->Connect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( WatchdogPrefsDialogBase::OnAlarmUpdateSpin ), NULL, this );
@@ -684,6 +825,7 @@ WatchdogPrefsDialogBase::WatchdogPrefsDialogBase( wxWindow* parent, wxWindowID i
 	m_bSyncToBoat->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchdogPrefsDialogBase::OnSyncToBoat ), NULL, this );
 	m_sAnchorRadius->Connect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( WatchdogPrefsDialogBase::OnAlarmUpdateSpin ), NULL, this );
 	m_cbAutoSync->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( WatchdogPrefsDialogBase::f ), NULL, this );
+	m_bGetBoundary->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchdogPrefsDialogBase::OnGetBoundaryGUID ), NULL, this );
 	m_sCourseTolerance->Connect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( WatchdogPrefsDialogBase::OnAlarmUpdateSpin ), NULL, this );
 	m_sCourse->Connect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( WatchdogPrefsDialogBase::OnAlarmUpdateSpin ), NULL, this );
 	m_bCurrentCourse->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchdogPrefsDialogBase::OnCurrentCourse ), NULL, this );
@@ -718,6 +860,10 @@ WatchdogPrefsDialogBase::~WatchdogPrefsDialogBase()
 	m_sLandFallTimeMinutes->Disconnect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( WatchdogPrefsDialogBase::OnAlarmUpdateSpin ), NULL, this );
 	m_cbLandFallDistance->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( WatchdogPrefsDialogBase::OnAlarmUpdate ), NULL, this );
 	m_tcLandFallDistance->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( WatchdogPrefsDialogBase::OnAlarmUpdate ), NULL, this );
+	m_cbBoundaryTime->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( WatchdogPrefsDialogBase::OnAlarmUpdate ), NULL, this );
+	m_sBoundaryTimeMinutes->Disconnect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( WatchdogPrefsDialogBase::OnAlarmUpdateSpin ), NULL, this );
+	m_cbBoundaryDistance->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( WatchdogPrefsDialogBase::OnAlarmUpdate ), NULL, this );
+	m_tcBoundaryDistance->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( WatchdogPrefsDialogBase::OnAlarmUpdate ), NULL, this );
 	m_tNMEASentences->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( WatchdogPrefsDialogBase::OnAlarmUpdate ), NULL, this );
 	m_sNMEASeconds->Disconnect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( WatchdogPrefsDialogBase::OnAlarmUpdateSpin ), NULL, this );
 	m_sDeadmanMinutes->Disconnect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( WatchdogPrefsDialogBase::OnAlarmUpdateSpin ), NULL, this );
@@ -728,6 +874,7 @@ WatchdogPrefsDialogBase::~WatchdogPrefsDialogBase()
 	m_bSyncToBoat->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchdogPrefsDialogBase::OnSyncToBoat ), NULL, this );
 	m_sAnchorRadius->Disconnect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( WatchdogPrefsDialogBase::OnAlarmUpdateSpin ), NULL, this );
 	m_cbAutoSync->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( WatchdogPrefsDialogBase::f ), NULL, this );
+	m_bGetBoundary->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchdogPrefsDialogBase::OnGetBoundaryGUID ), NULL, this );
 	m_sCourseTolerance->Disconnect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( WatchdogPrefsDialogBase::OnAlarmUpdateSpin ), NULL, this );
 	m_sCourse->Disconnect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( WatchdogPrefsDialogBase::OnAlarmUpdateSpin ), NULL, this );
 	m_bCurrentCourse->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchdogPrefsDialogBase::OnCurrentCourse ), NULL, this );

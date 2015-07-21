@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Oct  8 2012)
+// C++ code generated with wxFormBuilder (version Jun 17 2015)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
@@ -29,6 +29,7 @@
 #include <wx/bitmap.h>
 #include <wx/image.h>
 #include <wx/icon.h>
+#include <wx/radiobox.h>
 #include <wx/listbook.h>
 #include <wx/listctrl.h>
 #include <wx/filepicker.h>
@@ -60,6 +61,10 @@ class WatchdogDialogBase : public wxDialog
 		wxStaticText* m_stLandFallTime;
 		wxStaticText* m_stTextLandFallDistance;
 		wxStaticText* m_stLandFallDistance;
+		wxStaticText* m_stTextBoundaryTime;
+		wxStaticText* m_stBoundaryTime;
+		wxStaticText* m_stTextBoundaryDistance;
+		wxStaticText* m_stBoundaryDistance;
 		wxStaticText* m_stTextNMEAData;
 		wxStaticText* m_stNMEAData;
 		wxStaticText* m_stTextDeadman;
@@ -68,6 +73,8 @@ class WatchdogDialogBase : public wxDialog
 		wxStaticText* m_stSecondDeadman;
 		wxStaticText* m_stTextAnchor;
 		wxStaticText* m_stAnchorDistance;
+		wxStaticText* m_stTextWithinBoundary;
+		wxStaticText* m_stWithinBoundaryGUID;
 		wxStaticText* m_stTextCourseError;
 		wxStaticText* m_stCourseError;
 		wxStaticText* m_stTextStarboardCourseError;
@@ -100,6 +107,11 @@ class WatchdogPrefsDialogBase : public wxDialog
 		wxStaticText* m_staticText7;
 		wxStaticText* m_staticText39122;
 		wxStaticText* m_staticText45;
+		wxPanel* m_panel12;
+		wxStaticText* m_staticText301;
+		wxStaticText* m_staticText72;
+		wxStaticText* m_staticText391221;
+		wxStaticText* m_staticText451;
 		wxPanel* m_panel2;
 		wxStaticText* m_staticText34;
 		wxTextCtrl* m_tNMEASentences;
@@ -118,8 +130,11 @@ class WatchdogPrefsDialogBase : public wxDialog
 		wxButton* m_bSyncToBoat;
 		wxStaticText* m_staticText9;
 		wxStaticText* m_staticText39;
-		wxCheckBox* m_cbAutoSync;
 		wxStaticText* m_staticText39121;
+		wxCheckBox* m_cbAutoSync;
+		wxStaticText* m_stTextBoundaryGUID;
+		wxButton* m_bGetBoundary;
+		wxRadioBox* m_rbUse;
 		wxPanel* m_pCourse;
 		wxStaticText* m_staticText32;
 		wxStaticText* m_staticText18;
@@ -159,6 +174,7 @@ class WatchdogPrefsDialogBase : public wxDialog
 		virtual void OnCheckSecondDeadman( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSyncToBoat( wxCommandEvent& event ) { event.Skip(); }
 		virtual void f( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnGetBoundaryGUID( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnCurrentCourse( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnCheckSeparatePortAndStarboard( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAlarmUpdateRB( wxCommandEvent& event ) { event.Skip(); }
@@ -175,12 +191,17 @@ class WatchdogPrefsDialogBase : public wxDialog
 		wxSpinCtrl* m_sLandFallTimeMinutes;
 		wxCheckBox* m_cbLandFallDistance;
 		wxTextCtrl* m_tcLandFallDistance;
+		wxCheckBox* m_cbBoundaryTime;
+		wxSpinCtrl* m_sBoundaryTimeMinutes;
+		wxCheckBox* m_cbBoundaryDistance;
+		wxTextCtrl* m_tcBoundaryDistance;
 		wxSpinCtrl* m_sNMEASeconds;
 		wxSpinCtrl* m_sDeadmanMinutes;
 		wxSpinCtrl* m_sSecondDeadmanMinutes;
 		wxTextCtrl* m_tAnchorLatitude;
 		wxTextCtrl* m_tAnchorLongitude;
 		wxSpinCtrl* m_sAnchorRadius;
+		wxTextCtrl* m_tBoundaryGUID;
 		wxSpinCtrl* m_sCourseTolerance;
 		wxSpinCtrl* m_sCourse;
 		wxTextCtrl* m_tUnderSpeed;

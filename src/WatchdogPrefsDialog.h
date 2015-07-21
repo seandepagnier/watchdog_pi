@@ -51,6 +51,7 @@ public:
     void OnCheckSeparatePortAndStarboard( wxCommandEvent& event );
 
     void OnSyncToBoat( wxCommandEvent& event );
+    void OnGetBoundaryGUID( wxCommandEvent& event );
     void OnCurrentCourse( wxCommandEvent& event );
     void OnTestAlarm( wxCommandEvent& event );
 

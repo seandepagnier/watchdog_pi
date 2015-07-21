@@ -33,6 +33,10 @@ SET(SRC_WATCHDOG
             src/WatchdogUI.cpp
             src/icons.cpp
 
+            src/wxJSON/jsonreader.cpp
+            src/wxJSON/jsonval.cpp
+            src/wxJSON/jsonwriter.cpp
+
             src/wddc.cpp
             src/TexFont.cpp
 	)

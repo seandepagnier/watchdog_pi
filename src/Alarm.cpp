@@ -33,6 +33,14 @@
 
 #include "watchdog_pi.h"
 #include "WatchdogDialog.h"
+#include "wx/jsonreader.h"
+#include "wx/jsonwriter.h"
+
+extern wxJSONValue g_ReceivedBoundaryTimeJSONMsg;
+extern wxString    g_ReceivedBoundaryTimeMessage;
+extern wxJSONValue g_ReceivedBoundaryAnchorJSONMsg;
+extern wxString    g_ReceivedBoundaryAnchorMessage;
+
 
 ///////// The Alarm classes /////////
 class LandFallAlarm : public Alarm
@@ -445,6 +453,219 @@ private:
 
 } g_AnchorAlarm;
 
+class BoundaryAlarm : public Alarm
+{
+public:
+    BoundaryAlarm() : Alarm(5 /* seconds */), m_bFiredTime(false) {}
+    
+    wxString Name() { return _("Boundary"); }
+    bool Test() {
+        PlugIn_Position_Fix_Ex lastfix = g_watchdog_pi->LastFix();
+        
+        if(isnan(lastfix.Lat))
+            return false;
+        
+        double lat1 = lastfix.Lat, lon1 = lastfix.Lon, lat2, lon2;
+        double dist = 0, dist1 = 1000;
+        int count = 0;
+        
+        wxFileConfig *pConf = GetConfigObject();
+        m_crossinglat1 = m_crossinglon1 = NAN;
+        m_BoundaryTime = wxTimeSpan();
+        
+        if(pConf->Read ( _T ( "TimeAlarm" ), 1L)) {
+            double BoundaryTimeMinutes;
+            pConf->Read ( _T ( "Minutes" ), &BoundaryTimeMinutes, 20 );
+            
+            m_bFiredTime = false;
+            while(count < 10) {
+                PositionBearingDistanceMercator_Plugin
+                (lastfix.Lat, lastfix.Lon, lastfix.Cog, dist + dist1, &lat2, &lon2);
+                // Do JSON message to OD Plugin to check if boundary m_crossinglat
+                wxJSONValue jMsg;
+                wxJSONWriter writer;
+                wxString    MsgString;
+                jMsg[wxS("Source")] = wxS("WATCHDOG_PI");
+                jMsg[wxS("Type")] = wxS("FindPointInAnyBoundary");
+                jMsg[wxS("MsgId")] = wxS("time");
+                jMsg[wxS("lat")] = lat2;
+                jMsg[wxS("lon")] = lon2;
+                writer.Write( jMsg, MsgString );
+                SendPluginMessage( wxS("BOUNDARY_CHECK"), MsgString );
+                if(g_ReceivedBoundaryTimeMessage != wxEmptyString && g_ReceivedBoundaryTimeJSONMsg[wxS("MsgId")].AsString() == wxS("time") && g_ReceivedBoundaryTimeJSONMsg[wxS("Found")].AsBool() == true ) {
+                    // This is our message
+                    if(dist1 < 1) {
+                        m_BoundaryTime = wxTimeSpan::Seconds(3600.0 * dist / lastfix.Sog);
+                        m_crossinglat1 = lat1, m_crossinglon1 = lon1;
+                        m_crossinglat2 = lat2, m_crossinglon2 = lon2;
+                        if(m_BoundaryTime.GetMinutes() <= BoundaryTimeMinutes)
+                            m_bFiredTime = true;
+                        break;
+                    }
+                    count = 0;
+                    dist1 /= 2;
+                } else {
+                    dist += dist1;
+                    lat1 = lat2;
+                    lon1 = lon2;
+                    count++;
+                }
+                g_ReceivedBoundaryTimeMessage = wxEmptyString;
+                g_ReceivedBoundaryTimeJSONMsg.Clear();
+            }
+        }
+        
+        if(pConf->Read ( _T ( "DistanceAlarm" ), 0L)) {
+            for(double t = 0; t<360; t+=9) {
+                double dlat, dlon;
+                double BoundaryDistance;
+                pConf->Read ( _T ( "Distance" ), &BoundaryDistance, 3 );
+                PositionBearingDistanceMercator_Plugin(lastfix.Lat, lastfix.Lon, t,
+                                                       BoundaryDistance, &dlat, &dlon);
+                
+                wxJSONValue jMsg;
+                jMsg[wxS("Type")] = wxS("FindPointInAnyBoundary");
+                jMsg[wxS("id")] = wxS("time");
+                jMsg[wxS("lat")] = lat2;
+                jMsg[wxS("lon")] = lon2;
+                SendPluginMessage( wxS("OD_BOUNDARY_CHECK"), jMsg.AsString() );
+                if(PlugIn_GSHHS_CrossesLand(lastfix.Lat, lastfix.Lon, dlat, dlon)) {
+                    m_crossinglat1 = dlat, m_crossinglon1 = dlon;
+                    m_crossinglat2 = dlat, m_crossinglon2 = dlon;
+                    return true;
+                }
+            }
+        }
+        
+        return m_bFiredTime;
+    }
+    
+    wxString GetStatus() {
+        WatchdogDialog &dlg = *g_watchdog_pi->m_pWatchdogDialog;
+        
+        wxString s, fmt(_T(" %d "));
+        wxFileConfig *pConf = GetConfigObject();
+        
+        if(pConf->Read ( _T ( "TimeAlarm" ), 1L)) {
+            if(m_BoundaryTime.IsNull())
+                s = _("Boundary not Detected");
+            else {
+                int days = m_BoundaryTime.GetDays();
+                if(days > 1)
+                    s = wxString::Format(fmt + _("Days"), days);
+                else {
+                    if(days)
+                        s = wxString::Format(fmt + _("Day"), days);
+                    
+                    int hours = m_BoundaryTime.GetHours();
+                    if(hours > 1)
+                        s += wxString::Format(fmt + _("Hours"), hours);
+                    else {
+                        if(hours)
+                            s += wxString::Format(fmt + _("Hour"), hours);
+                        
+                        int minutes = m_BoundaryTime.GetMinutes() - 60*hours;
+                        if(minutes > 1)
+                            s += wxString::Format(fmt + _("Minutes"), minutes);
+                        else {
+                            if(minutes)
+                                s += wxString::Format(fmt + _("Minute"), minutes);
+                            
+                            int seconds = m_BoundaryTime.GetSeconds().ToLong() - 60*minutes;
+                            if(seconds > 1)
+                                s += wxString::Format(fmt + _("Seconds"), seconds);
+                            else
+                                s += wxString::Format(fmt + _("Second"), seconds);
+                        }
+                    }
+                }
+            } 
+            if(m_bFired && m_bFiredTime)
+                dlg.m_stBoundaryTime->SetForegroundColour(*wxRED);
+            else
+                dlg.m_stBoundaryTime->SetForegroundColour(*wxBLACK);
+            
+            dlg.m_stLandFallTime->SetLabel(s);
+        }
+        
+        if(pConf->Read ( _T ( "DistanceAlarm" ), 0L)) {
+            double BoundaryDistance;
+            pConf->Read ( _T ( "Distance" ), &BoundaryDistance, 3 );
+            s = wxString::Format(_T(" ") + wxString(_("Distance")) +
+            (m_bFired ? _T(" <") : _T(" >")) +
+            _T(" %.2f nm"), BoundaryDistance);
+            
+            if(m_bFired && !m_bFiredTime)
+                dlg.m_stBoundaryDistance->SetForegroundColour(*wxRED);
+            else
+                dlg.m_stBoundaryDistance->SetForegroundColour(*wxBLACK);
+            
+            dlg.m_stBoundaryDistance->SetLabel(s);
+        }
+        
+        return _T("");
+    }
+    
+    void Repopulate() {
+        wxFileConfig *pConf = GetConfigObject();
+        
+        WatchdogDialog &dlg = *g_watchdog_pi->m_pWatchdogDialog;
+        wxFlexGridSizer &sizer = *dlg.m_fgAlarms;
+        
+        if(pConf->Read ( _T ( "TimeAlarm" ), 1L) && m_bEnabled) {
+            sizer.Add(dlg.m_stTextBoundaryTime, 0, wxALL, 5);
+            sizer.Add(dlg.m_stBoundaryTime, 0, wxALL, 5);
+            
+            dlg.m_stTextBoundaryTime->Show();
+            dlg.m_stBoundaryTime->Show();
+        } else {
+            dlg.m_stTextBoundaryTime->Hide();
+            dlg.m_stBoundaryTime->Hide();
+        }
+        
+        if(pConf->Read ( _T ( "DistanceAlarm" ), 0L) && m_bEnabled) {
+            sizer.Add(dlg.m_stTextBoundaryDistance, 0, wxALL, 5);
+            sizer.Add(dlg.m_stBoundaryDistance, 0, wxALL, 5);
+            
+            dlg.m_stTextBoundaryDistance->Show();
+            dlg.m_stBoundaryDistance->Show();
+        } else {
+            dlg.m_stTextBoundaryDistance->Hide();
+            dlg.m_stBoundaryDistance->Hide();
+        }
+    }
+    
+    void Render(wdDC &dc, PlugIn_ViewPort &vp) {
+        PlugIn_Position_Fix_Ex lastfix = g_watchdog_pi->LastFix();
+        if(isnan(m_crossinglat1))
+            return;
+        
+        wxPoint r1, r2, r3, r4;
+        GetCanvasPixLL(&vp, &r1, lastfix.Lat, lastfix.Lon);
+        GetCanvasPixLL(&vp, &r2, m_crossinglat1, m_crossinglon1);
+        GetCanvasPixLL(&vp, &r3, m_crossinglat2, m_crossinglon2);
+        r4.x = (r2.x+r3.x)/2, r4.y = (r2.y+r3.y)/2;
+        
+        dc.SetPen(wxPen(wxColour(255, 255, 0), 2));
+        dc.DrawLine( r1.x, r1.y, r4.x, r4.y );
+        
+        if(m_bFired)
+            dc.SetPen(wxPen(*wxRED, 3));
+        else
+            dc.SetPen(wxPen(*wxGREEN, 3));
+        
+        dc.DrawCircle( r4.x, r4.y, hypot(r2.x-r3.x, r2.y-r3.y) / 2 );
+    }
+    
+private:
+    double m_crossinglat1, m_crossinglon1;
+    double m_crossinglat2, m_crossinglon2;
+    
+    wxTimeSpan m_BoundaryTime;
+    
+    bool m_bFiredTime;
+} g_BoundaryAlarm;
+
 class CourseAlarm : public Alarm
 {
 public:
@@ -672,7 +893,7 @@ public:
 ////////// Alarm Base Class /////////////////
 
 Alarm *Alarms[] = {&g_LandfallAlarm, &g_NMEADataAlarm, &g_DeadmanAlarm, &g_SecondDeadmanAlarm,
-                   &g_AnchorAlarm, &g_CourseAlarm, &g_CourseStarboardAlarm,
+                   &g_AnchorAlarm, &g_BoundaryAlarm, &g_CourseAlarm, &g_CourseStarboardAlarm,
                    &g_UnderSpeedAlarm, &g_OverSpeedAlarm, 0, 0, 0};
 
 void Alarm::RenderAll(wdDC &dc, PlugIn_ViewPort &vp)
