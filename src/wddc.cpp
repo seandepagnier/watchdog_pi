@@ -1047,7 +1047,7 @@ bool wdDC::ConfigurePen()
 
 bool wdDC::ConfigureBrush()
 {
-    if( m_brush == wxNullBrush || m_brush.GetStyle() == wxTRANSPARENT )
+    if( m_brush == wxNullBrush || m_brush.GetStyle() == wxBRUSHSTYLE_TRANSPARENT )
         return false;
 #ifdef ocpnUSE_GL
     wxColour c = m_brush.GetColour();

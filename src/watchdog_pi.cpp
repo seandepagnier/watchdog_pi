@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Project:  OpenCPN
- * Purpose:  watch dog Plugin
+ * Purpose:  watchdog Plugin
  * Author:   Sean D'Epagnier
  *
  ***************************************************************************
@@ -25,12 +25,13 @@
  */
 
 #include <wx/wx.h>
+#include <wx/stdpaths.h>
 
 #include "wddc.h"
 
 #include "watchdog_pi.h"
 #include "WatchdogDialog.h"
-#include "WatchdogPrefsDialog.h"
+#include "ConfigurationDialog.h"
 #include "icons.h"
 
 
@@ -84,14 +85,14 @@ int watchdog_pi::Init(void)
 {
     AddLocaleCatalog( _T("opencpn-watchdog_pi") );
 
-    LoadConfig(); //    And load the configuration items
+    Alarm::LoadConfigAll();
     
     m_leftclick_tool_id  = InsertPlugInTool
         (_T(""), _img_watchdog, _img_watchdog, wxITEM_NORMAL,
          _("Watchdog"), _T(""), NULL, WATCHDOG_TOOL_POSITION, 0, this);
     
-    m_pWatchdogDialog = NULL;
-    m_pWatchdogPrefsDialog = NULL;
+    m_WatchdogDialog = NULL;
+    m_ConfigurationDialog = NULL;
     m_Timer.Connect(wxEVT_TIMER, wxTimerEventHandler
                     ( watchdog_pi::OnTimer ), NULL, this);
     m_Timer.Start(3000);
@@ -108,15 +109,16 @@ int watchdog_pi::Init(void)
 
 bool watchdog_pi::DeInit(void)
 {
-    SaveConfig();
+    Alarm::SaveConfigAll();
+    Alarm::DeleteAll();
 
     //    Record the dialog position
-    if (m_pWatchdogDialog)
+    if (m_WatchdogDialog)
     {
-        m_pWatchdogDialog->Close();
-        delete m_pWatchdogDialog;
-        m_pWatchdogDialog = NULL;
-        m_pWatchdogPrefsDialog = NULL;
+        m_WatchdogDialog->Close();
+        delete m_WatchdogDialog;
+        m_WatchdogDialog = NULL;
+        m_ConfigurationDialog = NULL;
     }
 
     RemovePlugInTool(m_leftclick_tool_id);
@@ -172,59 +174,46 @@ int watchdog_pi::GetToolbarToolCount(void)
 
 void watchdog_pi::SetColorScheme(PI_ColorScheme cs)
 {
-    if (NULL == m_pWatchdogDialog)
+    if (NULL == m_WatchdogDialog)
         return;
 
-    DimeWindow(m_pWatchdogDialog);
+    DimeWindow(m_WatchdogDialog);
 }
 
 void watchdog_pi::RearrangeWindow()
 {
-    if (NULL == m_pWatchdogDialog)
+    if (NULL == m_WatchdogDialog)
         return;
 
     SetColorScheme(PI_ColorScheme());
     
-    m_pWatchdogDialog->Fit();
+    m_WatchdogDialog->Fit();
 }
 
 void watchdog_pi::OnToolbarToolCallback(int id)
 {
-    if(!m_pWatchdogDialog)
+    if(!m_WatchdogDialog)
     {
-        m_pWatchdogDialog = new WatchdogDialog(*this, GetOCPNCanvasWindow());
-
-        m_pWatchdogPrefsDialog = new WatchdogPrefsDialog(*this, m_pWatchdogDialog);
+        m_WatchdogDialog = new WatchdogDialog(*this, GetOCPNCanvasWindow());
+        m_ConfigurationDialog = new ConfigurationDialog(*this, m_WatchdogDialog);
 
         wxIcon icon;
         icon.CopyFromBitmap(*_img_watchdog);
-        m_pWatchdogDialog->SetIcon(icon);
-        m_pWatchdogPrefsDialog->SetIcon(icon);
+        m_WatchdogDialog->SetIcon(icon);
+        m_ConfigurationDialog->SetIcon(icon);
     }
 
-    m_pWatchdogDialog->Show(!m_pWatchdogDialog->IsShown());
-    m_pWatchdogDialog->UpdateAlarms();
+    m_WatchdogDialog->Show(!m_WatchdogDialog->IsShown());
+    m_WatchdogDialog->UpdateAlarms();
 
-    wxPoint p = m_pWatchdogDialog->GetPosition();
-    m_pWatchdogDialog->Move(0, 0);        // workaround for gtk autocentre dialog behavior
-    m_pWatchdogDialog->Move(p);
+    wxPoint p = m_WatchdogDialog->GetPosition();
+    m_WatchdogDialog->Move(0, 0);        // workaround for gtk autocentre dialog behavior
+    m_WatchdogDialog->Move(p);
 }
 
 void watchdog_pi::OnContextMenuItemCallback(int id)
 {
 }
-
-#if 0
-wxColour watchdog_pi::Color(enum Alarm alarm_mask)
-{
-    if(m_iAlarm & alarm_mask)
-        return *wxRED;
-    else if(m_iLastAlarm & alarm_mask)
-        return wxColor(200, 200, 0); // darker yellow
-
-    return *wxGREEN;
-}
-#endif
 
 bool watchdog_pi::RenderOverlay(wxDC &dc, PlugIn_ViewPort *vp)
 {
@@ -250,7 +239,7 @@ bool watchdog_pi::RenderGLOverlay(wxGLContext *pcontext, PlugIn_ViewPort *vp)
 
 void watchdog_pi::Render(wdDC &dc, PlugIn_ViewPort &vp)
 {
-    if(!m_pWatchdogDialog || !m_pWatchdogDialog->IsShown())
+    if(!m_WatchdogDialog || !m_WatchdogDialog->IsShown())
         return;
 
     Alarm::RenderAll(dc, vp);
@@ -278,22 +267,8 @@ void watchdog_pi::OnTimer( wxTimerEvent & )
     
     m_lasttimerfix = m_lastfix;
 
-    if(m_pWatchdogDialog)
-        m_pWatchdogDialog->Fit();
-}
-
-bool watchdog_pi::LoadConfig(void)
-{
-    Alarm::ConfigAll(true);
-    
-    return true;
-}
-
-bool watchdog_pi::SaveConfig(void)
-{
-    Alarm::ConfigAll(false);
-    
-    return true;
+    if(m_WatchdogDialog)
+        m_WatchdogDialog->Fit();
 }
 
 void watchdog_pi::SetCursorLatLon(double lat, double lon)
@@ -305,7 +280,7 @@ void watchdog_pi::SetCursorLatLon(double lat, double lon)
 
 void watchdog_pi::SetNMEASentence(wxString &sentence)
 {
-    Alarm::NMEAString(sentence);
+    Alarm::NMEAStringAll(sentence);
 }
 
 void watchdog_pi::SetPositionFixEx(PlugIn_Position_Fix_Ex &pfix)
@@ -316,13 +291,45 @@ void watchdog_pi::SetPositionFixEx(PlugIn_Position_Fix_Ex &pfix)
     m_lastfix = pfix;
 }
 
-void watchdog_pi::ShowPreferencesDialog( wxWindow* )
+void watchdog_pi::ShowConfigurationDialog( wxWindow* )
 {
-    m_pWatchdogPrefsDialog->Show();
+    m_ConfigurationDialog->Show();
 }
 
-void watchdog_pi::UpdatePreferences()
+wxString watchdog_pi::StandardPath()
 {
-    if(m_pWatchdogPrefsDialog)
-        m_pWatchdogPrefsDialog->ReadAlarmActions();
+    wxStandardPathsBase& std_path = wxStandardPathsBase::Get();
+    wxString s = wxFileName::GetPathSeparator();
+
+#ifdef __WXMSW__
+    wxString stdPath  = std_path.GetConfigDir();
+#endif
+#ifdef __WXGTK__
+    wxString stdPath  = std_path.GetUserDataDir();
+#endif
+#ifdef __WXOSX__
+    wxString stdPath  = (std_path.GetUserConfigDir() + s + _T("opencpn"));
+#endif
+
+    stdPath += s + _T("plugins");
+    if (!wxDirExists(stdPath))
+      wxMkdir(stdPath);
+
+    stdPath += s + _T("watchdog");
+
+#ifdef __WXOSX__
+    // Compatibility with pre-OCPN-4.2; move config dir to
+    // ~/Library/Preferences/opencpn if it exists
+    wxString oldPath = (std_path.GetUserConfigDir() + s + _T("plugins") + s + _T("weatherfax"));
+    if (wxDirExists(oldPath) && !wxDirExists(stdPath)) {
+	wxLogMessage("weatherfax_pi: moving config dir %s to %s", oldPath, stdPath);
+	wxRenameFile(oldPath, stdPath);
+    }
+#endif
+
+    if (!wxDirExists(stdPath))
+      wxMkdir(stdPath);
+
+    stdPath += s; // is this necessary?
+    return stdPath;
 }

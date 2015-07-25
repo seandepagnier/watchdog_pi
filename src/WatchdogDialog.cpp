@@ -35,6 +35,8 @@ WatchdogDialog::WatchdogDialog( watchdog_pi &_watchdog_pi, wxWindow* parent)
     pConf->SetPath ( _T( "/Settings/Watchdog" ) );
 
     Move(pConf->Read ( _T ( "DialogPosX" ), 20L ), pConf->Read ( _T ( "DialogPosY" ), 20L ));
+
+//    m_lStatus->InsertColumn(0);
 }
 
 WatchdogDialog::~WatchdogDialog()
@@ -52,7 +54,7 @@ void WatchdogDialog::UpdateAlarms()
 {
     Alarm::UpdateStatusAll();
 
-    m_fgAlarms->Clear();
+    m_lStatus->ClearAll();
     Alarm::RepopulateAll();
 
     Fit();
@@ -66,9 +68,9 @@ void WatchdogDialog::UpdateAlarms()
     Show();
 }
 
-void WatchdogDialog::OnPreferences( wxCommandEvent& event )
+void WatchdogDialog::OnConfiguration( wxCommandEvent& event )
 {
-    m_watchdog_pi.ShowPreferencesDialog( this );
+    m_watchdog_pi.ShowConfigurationDialog( this );
 }
 
 void WatchdogDialog::OnReset( wxCommandEvent& event )

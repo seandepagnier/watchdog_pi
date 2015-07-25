@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Project:  OpenCPN
- * Purpose:  watch dog Plugin
+ * Purpose:  watchdog Plugin
  * Author:   Sean D'Epagnier
  *
  ***************************************************************************
@@ -41,37 +41,7 @@
 #include "ocpn_plugin.h"
 
 #ifdef __MSVC__
-#include <float.h>
-#include <iostream>
-#include <limits>
-
-# if !defined(M_PI)
-# define M_PI		3.14159265358979323846	/* pi */
-# endif
-
-# if !defined(NAN)
-# define NAN std::numeric_limits<double>::quiet_NaN ()
-# endif
-
-# if !defined(INFINITY)
-# define INFINITY std::numeric_limits<double>::infinity ()
-# endif
-
-#define isnan _isnan
-#define isinf(x) (!_finite(x) && !_isnan(x))
-
-inline double trunc(double d){ return (d>0) ? floor(d) : ceil(d) ; }
-inline double round(double n) { return n < 0.0 ? ceil(n - 0.5) : floor(n + 0.5); }
-
-# if !defined(snprintf)
-# define snprintf _snprintf
-# endif
-#define vsnprintf _vsnprintf
-#define strcasecmp _stricmp
-#define strncasecmp _strnicmp
-
-#define strtok_r strtok_s
-
+#include "msvcdefs.h"
 #endif
 
 double heading_resolve(double degrees);
@@ -86,7 +56,7 @@ double heading_resolve(double degrees);
 
 class wdDC;
 class WatchdogDialog;
-class WatchdogPrefsDialog;
+class ConfigurationDialog;
 
 class watchdog_pi : public wxEvtHandler, public opencpn_plugin_110
 {
@@ -94,7 +64,6 @@ public:
 
     watchdog_pi(void *ppimgr);
 
-//    The required PlugIn Methods
       int Init(void);
       bool DeInit(void);
 
@@ -123,9 +92,10 @@ public:
 
 //    Other public methods
       void OnWatchdogDialogClose();
-      void    ShowPreferencesDialog( wxWindow* );
+      void ShowConfigurationDialog( wxWindow* );
+      static wxString StandardPath();
 
-      void UpdatePreferences();
+      void UpdateConfiguration();
 
       PlugIn_Position_Fix_Ex &LastFix() { return m_lastfix; }
 
@@ -133,24 +103,19 @@ public:
 
       wxDateTime m_LastFixTime;
       wxDateTime m_cursor_time;
-      WatchdogDialog   *m_pWatchdogDialog;
+      WatchdogDialog   *m_WatchdogDialog;
 
 protected:
       double m_cursor_lat, m_cursor_lon;
 
       PlugIn_Position_Fix_Ex m_lastfix, m_lasttimerfix;
 
-      int m_iAlarm, m_iLastAlarm;
-
 private:
-      bool    LoadConfig(void);
-      bool    SaveConfig(void);
-
       void    SetCursorLatLon(double lat, double lon);
       void    SetNMEASentence(wxString &sentence);
       void    SetPositionFixEx(PlugIn_Position_Fix_Ex &pfix);
 
-      WatchdogPrefsDialog *m_pWatchdogPrefsDialog;
+      ConfigurationDialog *m_ConfigurationDialog;
       int               m_leftclick_tool_id;
 
       void              RearrangeWindow();

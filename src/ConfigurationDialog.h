@@ -28,50 +28,28 @@
 
 class watchdog_pi;
 
-class WatchdogPrefsDialog : public WatchdogPrefsDialogBase
+class ConfigurationDialog : public ConfigurationDialogBase
 {
 public:
-    WatchdogPrefsDialog( watchdog_pi &_watchdog_pi, wxWindow* parent);
+    ConfigurationDialog( watchdog_pi &_watchdog_pi, wxWindow* parent);
 
     void OnEnabled( wxCommandEvent& event );
 
-    void OnAlarmUpdateSound( wxFileDirPickerEvent& event ) { m_cbSound->SetValue(true); OnAlarmUpdate(); }
-    void OnAlarmUpdateCommand( wxCommandEvent& event ) { m_cbCommand->SetValue(true); OnAlarmUpdate(); }
-    void OnAlarmUpdateRepeat( wxSpinEvent& event ) { m_cbRepeat->SetValue(true); OnAlarmUpdate(); }
-
-    void OnAlarmUpdate( wxCommandEvent& event ) { OnAlarmUpdate(event.IsChecked()); }
-    void OnAlarmUpdateSpin( wxSpinEvent& event ) { OnAlarmUpdate(); }
-    void OnAlarmUpdateRB( wxCommandEvent& event ) { OnAlarmUpdate(false); }
-
-    void OnAlarmUpdate(bool enable=true);
-
-    void OnAlarmChanged( wxListbookEvent& event );
-
-    void OnCheckSecondDeadman( wxCommandEvent& );
-    void OnCheckSeparatePortAndStarboard( wxCommandEvent& event );
-
-    void OnSyncToBoat( wxCommandEvent& event );
-    void OnCurrentCourse( wxCommandEvent& event );
-    void OnTestAlarm( wxCommandEvent& event );
-
-    void ReadAlarmActions() { AlarmActions(true); }
-    void WriteAlarmActions() { AlarmActions(false); }
+    void OnNewAlarm( wxCommandEvent& event );
+    void OnEditAlarm( wxCommandEvent& event );
+    void OnDeleteAlarm( wxCommandEvent& event );
+    void OnDeleteAllAlarms( wxCommandEvent& event );
+    void AlarmSelected( wxListEvent& event ) { UpdateStates(); }
 
 private:
-    void AlarmActions(bool read);
-
+    void UpdateStates();
     int CurrentSelection();
-    int PanelIndex(int alarm);
-
     Alarm *CurrentAlarm();
-    
-    void ConfigureDeadmanAlarms();
-    void ConfigurePortAlarms();
+
+    void UpdateItem(int index);
 
     void OnInformation( wxCommandEvent& event );
     void OnAboutAuthor( wxCommandEvent& event );
 
     watchdog_pi &m_watchdog_pi;
-
-    bool m_breading;
 };

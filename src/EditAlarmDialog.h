@@ -26,20 +26,15 @@
 
 #include "WatchdogUI.h"
 
-class watchdog_pi;
-
-class WatchdogDialog: public WatchdogDialogBase
+class EditAlarmDialog : public EditAlarmDialogBase
 {
 public:
-    WatchdogDialog( watchdog_pi &_watchdog_pi, wxWindow* parent);
-    ~WatchdogDialog();
+    EditAlarmDialog(wxWindow* parent, Alarm *alarm);
 
-    void UpdateAlarms();
-
-    void OnConfiguration( wxCommandEvent& event );
-    void OnReset( wxCommandEvent& event );
-    void OnClose( wxCommandEvent& event ) { Hide(); }
+    void Save();
+    void OnTestAlarm( wxCommandEvent& event );
+    void OnInformation( wxCommandEvent& event );
 
 private:
-    watchdog_pi &m_watchdog_pi;
+    Alarm *m_alarm;
 };

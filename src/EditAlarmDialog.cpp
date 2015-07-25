@@ -1,0 +1,97 @@
+/******************************************************************************
+ *
+ * Project:  OpenCPN
+ * Purpose:  watchdog Plugin
+ * Author:   Sean D'Epagnier
+ *
+ ***************************************************************************
+ *   Copyright (C) 2015 by Sean D'Epagnier                                 *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 3 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,  USA.         *
+ ***************************************************************************
+ */
+
+#include "watchdog_pi.h"
+
+#include "EditAlarmDialog.h"
+
+EditAlarmDialog::EditAlarmDialog(wxWindow* parent, Alarm *alarm)
+    : EditAlarmDialogBase(parent), m_alarm(alarm)
+{
+    m_cbSound->SetValue(m_alarm->m_bSound);
+    m_fpSound->SetPath(m_alarm->m_sSound);
+
+    m_tCommand->SetValue(m_alarm->m_sCommand);
+    m_cbCommand->SetValue(m_alarm->m_bCommand);
+    m_cbMessageBox->SetValue(m_alarm->m_bMessageBox);
+    m_cbAutoReset->SetValue(m_alarm->m_bAutoReset);
+    m_cbRepeat->SetValue(m_alarm->m_bRepeat);
+    m_sRepeatSeconds->SetValue(m_alarm->m_iRepeatSeconds);
+    m_cbgfxEnabled->SetValue(m_alarm->m_bgfxEnabled);
+
+    m_fgSizer->Insert( 0, m_alarm->OpenPanel(this), 1, wxEXPAND, 5 );
+
+    m_fgSizer->Fit( this );
+}
+
+void EditAlarmDialog::Save()
+{
+    m_alarm->m_bSound = m_cbSound->GetValue();
+    m_alarm->m_sSound = m_fpSound->GetPath();
+    m_alarm->m_bCommand = m_cbCommand->GetValue();
+    m_alarm->m_sCommand = m_tCommand->GetValue();
+    m_alarm->m_bMessageBox = m_cbMessageBox->GetValue();
+    m_alarm->m_bAutoReset = m_cbAutoReset->GetValue();
+    m_alarm->m_bRepeat = m_cbRepeat->GetValue();
+    m_alarm->m_iRepeatSeconds = m_sRepeatSeconds->GetValue();
+    m_alarm->m_bgfxEnabled = m_cbgfxEnabled->GetValue();
+
+    m_alarm->SavePanel(m_fgSizer->GetItem((size_t)0)->GetWindow());
+}
+
+#if 0
+void EditAlarmDialog::OnTestAlarm( wxCommandEvent& event )
+{
+    if(!m_alarm)
+        wxMessageBox(_("Invalid Alarm"), _("Watchdog"), wxOK | wxICON_ERROR, this);
+    else
+        m_alarm->Run();
+}
+#endif
+
+void EditAlarmDialog::OnInformation( wxCommandEvent& event )
+{
+    wxMessageDialog mdlg(this, _("\
+Most alarms should be self-explanatory\n\
+Normally a sound is played, however you can execute any command you like, eg:  \
+\"aplay /usr/local/share/opencpn/sounds/2bells.wav\"\n\
+Messagebox may be useful to interrupt other applications (like a movie player)\n\
+Automatically Reset will reset the alarm once it is no longer triggered, and it may \
+be triggered again later."),
+                         _("Watchdog Information"), wxOK | wxICON_INFORMATION);
+    mdlg.ShowModal();
+}
+
+void AnchorPanel::OnSyncToBoat( wxCommandEvent& event )
+{
+    m_tLatitude->SetValue(wxString::Format(_T("%f"), g_watchdog_pi->LastFix().Lat));
+    m_tLongitude->SetValue(wxString::Format(_T("%f"), g_watchdog_pi->LastFix().Lon));
+}
+
+void CoursePanel::OnCurrentCourse( wxCommandEvent& event )
+{
+    m_sCourse->SetValue(g_watchdog_pi->m_cog);
+}

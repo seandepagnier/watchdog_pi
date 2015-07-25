@@ -26,20 +26,10 @@
 
 #include "WatchdogUI.h"
 
-class watchdog_pi;
-
-class WatchdogDialog: public WatchdogDialogBase
+class NewAlarmDialog : public NewAlarmDialogBase
 {
 public:
-    WatchdogDialog( watchdog_pi &_watchdog_pi, wxWindow* parent);
-    ~WatchdogDialog();
+    NewAlarmDialog(wxWindow* parent);
 
-    void UpdateAlarms();
-
-    void OnConfiguration( wxCommandEvent& event );
-    void OnReset( wxCommandEvent& event );
-    void OnClose( wxCommandEvent& event ) { Hide(); }
-
-private:
-    watchdog_pi &m_watchdog_pi;
+    void DoubleClick( wxMouseEvent& event ) { EndModal(wxID_OK); }
 };

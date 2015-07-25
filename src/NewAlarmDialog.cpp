@@ -24,22 +24,16 @@
  ***************************************************************************
  */
 
-#include "WatchdogUI.h"
+#include "watchdog_pi.h"
+#include "NewAlarmDialog.h"
 
-class watchdog_pi;
-
-class WatchdogDialog: public WatchdogDialogBase
+NewAlarmDialog::NewAlarmDialog(wxWindow* parent)
+    : NewAlarmDialogBase(parent)
 {
-public:
-    WatchdogDialog( watchdog_pi &_watchdog_pi, wxWindow* parent);
-    ~WatchdogDialog();
-
-    void UpdateAlarms();
-
-    void OnConfiguration( wxCommandEvent& event );
-    void OnReset( wxCommandEvent& event );
-    void OnClose( wxCommandEvent& event ) { Hide(); }
-
-private:
-    watchdog_pi &m_watchdog_pi;
-};
+    m_lAlarmType->InsertItem(LANDFALL, _("Landfall"));
+    m_lAlarmType->InsertItem(NMEADATA, _("NMEA Data"));
+    m_lAlarmType->InsertItem(DEADMAN,  _("Deadman"));
+    m_lAlarmType->InsertItem(ANCHOR,   _("Anchor"));
+    m_lAlarmType->InsertItem(COURSE,   _("Course"));
+    m_lAlarmType->InsertItem(SPEED,    _("Speed"));
+}

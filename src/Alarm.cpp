@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Project:  OpenCPN
- * Purpose:  watch dog Plugin
+ * Purpose:  watchdog Plugin
  * Author:   Sean D'Epagnier
  *
  ***************************************************************************
@@ -31,6 +31,8 @@
 
 #include <wx/process.h>
 
+#include "tinyxml/tinyxml.h"
+
 #include "watchdog_pi.h"
 #include "WatchdogDialog.h"
 
@@ -38,9 +40,21 @@
 class LandFallAlarm : public Alarm
 {
 public:
-    LandFallAlarm() : Alarm(5 /* seconds */), m_bFiredTime(false) {}
+    LandFallAlarm() : Alarm(5 /* seconds */),
+                      m_Mode(TIME),
+                      m_TimeMinutes(20),
+                      m_Distance(3)
+        {}
 
-    wxString Name() { return _("LandFall"); }
+    wxString Type() { return _("LandFall"); }
+    wxString Options() {
+        switch(m_Mode) {
+        case TIME: return _("Time") + wxString::Format(_T(" < %f"), m_TimeMinutes);
+        case DISTANCE: return _("Distance") + wxString::Format(_T(" < %f nm"), m_Distance);
+        default: return _T("");
+        }
+    }
+
     bool Test() {
         PlugIn_Position_Fix_Ex lastfix = g_watchdog_pi->LastFix();
 
@@ -51,15 +65,11 @@ public:
         double dist = 0, dist1 = 1000;
         int count = 0;
                 
-        wxFileConfig *pConf = GetConfigObject();
         m_crossinglat1 = m_crossinglon1 = NAN;
         m_LandFallTime = wxTimeSpan();
 
-        if(pConf->Read ( _T ( "TimeAlarm" ), 1L)) {
-            double LandFallTimeMinutes;
-            pConf->Read ( _T ( "Minutes" ), &LandFallTimeMinutes, 20 );
-
-            m_bFiredTime = false;
+        switch(m_Mode) {
+        case TIME:
             while(count < 10) {
                 PositionBearingDistanceMercator_Plugin
                     (lastfix.Lat, lastfix.Lon, lastfix.Cog, dist + dist1, &lat2, &lon2);
@@ -68,9 +78,8 @@ public:
                         m_LandFallTime = wxTimeSpan::Seconds(3600.0 * dist / lastfix.Sog);
                         m_crossinglat1 = lat1, m_crossinglon1 = lon1;
                         m_crossinglat2 = lat2, m_crossinglon2 = lon2;
-                        if(m_LandFallTime.GetMinutes() <= LandFallTimeMinutes)
-                            m_bFiredTime = true;
-                        break;
+                        if(m_LandFallTime.GetMinutes() <= m_TimeMinutes)
+                            return true;
                     }
                     count = 0;
                     dist1 /= 2;
@@ -81,15 +90,12 @@ public:
                     count++;
                 }
             }
-        }
-  
-        if(pConf->Read ( _T ( "DistanceAlarm" ), 0L)) {
+            break;
+        case DISTANCE:
             for(double t = 0; t<360; t+=9) {
                 double dlat, dlon;
-                double LandFallDistance;
-                pConf->Read ( _T ( "Distance" ), &LandFallDistance, 3 );
                 PositionBearingDistanceMercator_Plugin(lastfix.Lat, lastfix.Lon, t,
-                                                       LandFallDistance, &dlat, &dlon);
+                                                       m_Distance, &dlat, &dlon);
             
                 if(PlugIn_GSHHS_CrossesLand(lastfix.Lat, lastfix.Lon, dlat, dlon)) {
                     m_crossinglat1 = dlat, m_crossinglon1 = dlon;
@@ -97,104 +103,59 @@ public:
                     return true;
                 }
             }
+            break;
         }
 
-        return m_bFiredTime;
+        return false;
     }
 
     wxString GetStatus() {
-        WatchdogDialog &dlg = *g_watchdog_pi->m_pWatchdogDialog;
-
-        wxString s, fmt(_T(" %d "));
-        wxFileConfig *pConf = GetConfigObject();
-
-        if(pConf->Read ( _T ( "TimeAlarm" ), 1L)) {
+        switch(m_Mode) {
+        case TIME:
+        {
             if(m_LandFallTime.IsNull())
-                s = _("LandFall not Detected");
-            else {
-                int days = m_LandFallTime.GetDays();
-                if(days > 1)
-                    s = wxString::Format(fmt + _("Days"), days);
-                else {
-                    if(days)
-                        s = wxString::Format(fmt + _("Day"), days);
-                    
-                    int hours = m_LandFallTime.GetHours();
-                    if(hours > 1)
-                        s += wxString::Format(fmt + _("Hours"), hours);
-                    else {
-                        if(hours)
-                            s += wxString::Format(fmt + _("Hour"), hours);
+                return _("LandFall Time Invalid");
 
-                        int minutes = m_LandFallTime.GetMinutes() - 60*hours;
-                        if(minutes > 1)
-                            s += wxString::Format(fmt + _("Minutes"), minutes);
-                        else {
-                            if(minutes)
-                                s += wxString::Format(fmt + _("Minute"), minutes);
+            wxString s, fmt(_T(" %d "));
+            int days = m_LandFallTime.GetDays();
+            if(days > 1)
+                s = wxString::Format(fmt + _("Days"), days);
+            else {
+                if(days)
+                    s = wxString::Format(fmt + _("Day"), days);
+                    
+                int hours = m_LandFallTime.GetHours();
+                if(hours > 1)
+                    s += wxString::Format(fmt + _("Hours"), hours);
+                else {
+                    if(hours)
+                        s += wxString::Format(fmt + _("Hour"), hours);
+
+                    int minutes = m_LandFallTime.GetMinutes() - 60*hours;
+                    if(minutes > 1)
+                        s += wxString::Format(fmt + _("Minutes"), minutes);
+                    else {
+                        if(minutes)
+                            s += wxString::Format(fmt + _("Minute"), minutes);
                             
-                            int seconds = m_LandFallTime.GetSeconds().ToLong() - 60*minutes;
-                            if(seconds > 1)
-                                s += wxString::Format(fmt + _("Seconds"), seconds);
-                            else
-                                s += wxString::Format(fmt + _("Second"), seconds);
-                        }
+                        int seconds = m_LandFallTime.GetSeconds().ToLong() - 60*minutes;
+                        if(seconds > 1)
+                            s += wxString::Format(fmt + _("Seconds"), seconds);
+                        else
+                            s += wxString::Format(fmt + _("Second"), seconds);
                     }
                 }
-            } 
-            if(m_bFired && m_bFiredTime)
-                dlg.m_stLandFallTime->SetForegroundColour(*wxRED);
-            else
-                dlg.m_stLandFallTime->SetForegroundColour(*wxBLACK);
-
-            dlg.m_stLandFallTime->SetLabel(s);
+            }
+            return s;
         }
-        
-        if(pConf->Read ( _T ( "DistanceAlarm" ), 0L)) {
-            double LandFallDistance;
-            pConf->Read ( _T ( "Distance" ), &LandFallDistance, 3 );
-            s = wxString::Format(_T(" ") + wxString(_("Distance")) +
-                                 (m_bFired ? _T(" <") : _T(" >")) +
-                                 _T(" %.2f nm"), LandFallDistance);
-            
-            if(m_bFired && !m_bFiredTime)
-                dlg.m_stLandFallDistance->SetForegroundColour(*wxRED);
-            else
-                dlg.m_stLandFallDistance->SetForegroundColour(*wxBLACK);
-
-            dlg.m_stLandFallDistance->SetLabel(s);
+        case DISTANCE:
+        {
+            return wxString::Format(_T(" ") + wxString(_("Distance")) +
+                                    (m_bFired ? _T(" <") : _T(" >")) +
+                                    _T(" %.2f nm"), m_Distance);
+        } break;
         }
-
         return _T("");
-    }
-
-    void Repopulate() {
-        wxFileConfig *pConf = GetConfigObject();
-
-        WatchdogDialog &dlg = *g_watchdog_pi->m_pWatchdogDialog;
-        wxFlexGridSizer &sizer = *dlg.m_fgAlarms;
-
-        if(pConf->Read ( _T ( "TimeAlarm" ), 1L) && m_bEnabled) {
-            sizer.Add(dlg.m_stTextLandFallTime, 0, wxALL, 5);
-            sizer.Add(dlg.m_stLandFallTime, 0, wxALL, 5);
-
-            dlg.m_stTextLandFallTime->Show();
-            dlg.m_stLandFallTime->Show();
-        } else {
-            dlg.m_stTextLandFallTime->Hide();
-            dlg.m_stLandFallTime->Hide();
-        }
-
-        if(pConf->Read ( _T ( "DistanceAlarm" ), 0L) && m_bEnabled) {
-            sizer.Add(dlg.m_stTextLandFallDistance, 0, wxALL, 5);
-            sizer.Add(dlg.m_stLandFallDistance, 0, wxALL, 5);
-
-            dlg.m_stTextLandFallDistance->Show();
-            dlg.m_stLandFallDistance->Show();
-        } else {
-            dlg.m_stTextLandFallDistance->Hide();
-            dlg.m_stLandFallDistance->Hide();
-        }
     }
 
     void Render(wdDC &dc, PlugIn_ViewPort &vp) {
@@ -219,30 +180,69 @@ public:
         dc.DrawCircle( r4.x, r4.y, hypot(r2.x-r3.x, r2.y-r3.y) / 2 );
     }
 
+    wxWindow *OpenPanel(wxWindow *parent) {
+        LandFallPanel *panel = new LandFallPanel(parent);
+        panel->m_rbTime->SetValue(m_Mode == TIME);
+        panel->m_rbDistance->SetValue(m_Mode == DISTANCE);
+        panel->m_sTimeMinutes->SetValue(m_TimeMinutes);
+        panel->m_tDistance->SetValue(wxString::Format(_T("%f"), m_Distance));
+        return panel;
+    }
+
+    void SavePanel(wxWindow *p) {
+        LandFallPanel *panel = (LandFallPanel*)p;
+        m_Mode = panel->m_rbDistance->GetValue() ? TIME : DISTANCE;
+        m_TimeMinutes = panel->m_sTimeMinutes->GetValue();
+        panel->m_tDistance->GetValue().ToDouble(&m_Distance);
+    }
+
+    void LoadConfig(TiXmlElement *e) {
+        const char *mode = e->Attribute("Mode");
+        if(!strcasecmp(mode, "Time")) m_Mode = TIME;
+        else if(!strcasecmp(mode, "Distance")) m_Mode = DISTANCE;
+        else wxLogMessage(_T("Watchdog: ") + _("invalid LandFall mode") + _T(": ")
+                         + wxString::FromUTF8(mode));
+
+        e->Attribute("TimeMinutes", &m_TimeMinutes);
+        e->Attribute("Distance", &m_Distance);
+    }
+
+    void SaveConfig(TiXmlElement *c) {
+        c->SetAttribute("Type", "LandFall");
+        switch(m_Mode) {
+        case TIME: c->SetAttribute("Mode", "Time");
+        case DISTANCE: c->SetAttribute("Mode", "Distance");
+        }
+
+        c->SetAttribute("TimeMinutes", m_TimeMinutes);
+        c->SetAttribute("Distance", m_Distance);
+    }
+
 private:
     double m_crossinglat1, m_crossinglon1;
     double m_crossinglat2, m_crossinglon2;
-
     wxTimeSpan m_LandFallTime;
 
-    bool m_bFiredTime;
-} g_LandfallAlarm;
+    enum Mode { TIME, DISTANCE } m_Mode;
+    double m_TimeMinutes, m_Distance;
+};
 
 class NMEADataAlarm : public Alarm
 {
 public:
-    NMEADataAlarm() { start = wxDateTime::Now(); }
+    NMEADataAlarm() :
+        start(wxDateTime::Now()),
+        m_sentences(_T("$GPGGA")),
+        m_seconds(10)
+        {}
 
-    wxString Name() { return _("NMEA Data"); }
-    void GetStatusControls(wxControl *&Text, wxControl *&status) {
-        WatchdogDialog &dlg = *g_watchdog_pi->m_pWatchdogDialog;
-        Text = dlg.m_stTextNMEAData;
-        status = dlg.m_stNMEAData;
+    wxString Type() { return _("NMEA Data"); }
+    wxString Options() {
+        return m_sentences;
     }
 
     bool Test() {
-        wxFileConfig *pConf = GetConfigObject();
-        return ElapsedSeconds() > pConf->Read ( _T ( "Seconds" ), 0L );
+        return ElapsedSeconds() > m_seconds;
     }
 
     wxString GetStatus() {
@@ -258,21 +258,39 @@ public:
         return s;
     }
 
+    wxWindow *OpenPanel(wxWindow *parent) {
+        NMEADataPanel *panel = new NMEADataPanel(parent);
+        panel->m_tSentences->SetValue(m_sentences);
+        panel->m_sSeconds->SetValue(m_seconds);
+        return panel;
+    }
+
+    void SavePanel(wxWindow *p) {
+        NMEADataPanel *panel = (NMEADataPanel*)p;
+        m_sentences = panel->m_tSentences->GetValue();
+        m_seconds = panel->m_sSeconds->GetValue();
+    }
+
+    void LoadConfig(TiXmlElement *e) {
+        m_sentences = wxString::FromUTF8(e->Attribute("Sentences"));
+        e->Attribute("Seconds", &m_seconds);
+    }
+
+    void SaveConfig(TiXmlElement *c) {
+        c->SetAttribute("Type", "NMEAData");
+        c->SetAttribute("Sentences", m_sentences);
+        c->SetAttribute("Seconds", m_seconds);
+    }
+
+private:
     void NMEAString(const wxString &string) {
         wxString name = string.BeforeFirst(',');
         NMEAStringTimes[name] = wxDateTime::Now();
     }
 
-private:
-    wxDateTime start;
-    std::map<wxString, wxDateTime> NMEAStringTimes;
-
     int ElapsedSeconds() {
-        wxString sentences;
-        wxFileConfig *pConf = GetConfigObject();
-        pConf->Read(_T ( "Sentences" ), &sentences, _T(""));
-
         wxDateTime now = wxDateTime::Now(), time = now;
+        wxString sentences = m_sentences;
         /* take oldest message time */
         for(;;) {
             wxString cur = sentences.BeforeFirst('\n');
@@ -294,24 +312,27 @@ private:
 
         return (now - time).GetSeconds().ToLong();
     }
-} g_NMEADataAlarm;
+
+    wxDateTime start;
+    std::map<wxString, wxDateTime> NMEAStringTimes;
+
+    wxString m_sentences;
+    double m_seconds;
+
+};
 
 class DeadmanAlarm : public Alarm
 {
 public:
-    DeadmanAlarm() {}
+    DeadmanAlarm() : m_Minutes(20) {}
 
-    wxString Name() { return _("Deadman"); }
-    void GetStatusControls(wxControl *&Text, wxControl *&status) {
-        WatchdogDialog &dlg = *g_watchdog_pi->m_pWatchdogDialog;
-        Text = dlg.m_stTextDeadman;
-        status = dlg.m_stDeadman;
+    wxString Type() { return _("Deadman"); }
+    wxString Options() {
+        return wxString::Format(_T("%f minutes"), m_Minutes);
     }
 
     bool Test() {
-        wxFileConfig *pConf = GetConfigObject();
-
-        wxTimeSpan DeadmanSpan = wxTimeSpan::Minutes(pConf->Read ( _T ( "Minutes" ), 20L ));
+        wxTimeSpan DeadmanSpan = wxTimeSpan::Minutes(m_Minutes);
         return wxDateTime::Now() - g_watchdog_pi->m_cursor_time > DeadmanSpan;
     }
 
@@ -330,38 +351,47 @@ public:
         return d + wxString::Format(_T("%02d:%02d:%02d"),
                                     hours, minutes, seconds);
     }
-} g_DeadmanAlarm;
 
-class SecondDeadmanAlarm : public DeadmanAlarm
-{
-public:
-    SecondDeadmanAlarm() {}
-
-    wxString Name() { return _("Second Deadman"); }
-    void GetStatusControls(wxControl *&Text, wxControl *&status) {
-        WatchdogDialog &dlg = *g_watchdog_pi->m_pWatchdogDialog;
-        Text = dlg.m_stTextSecondDeadman;
-        status = dlg.m_stSecondDeadman;
+    wxWindow *OpenPanel(wxWindow *parent) {
+        DeadmanPanel *panel = new DeadmanPanel(parent);
+        panel->m_sMinutes->SetValue(m_Minutes);
+        return panel;
     }
-} g_SecondDeadmanAlarm;
+
+    void SavePanel(wxWindow *p) {
+        DeadmanPanel *panel = (DeadmanPanel*)p;
+        m_Minutes = panel->m_sMinutes->GetValue();
+    }
+
+    void LoadConfig(TiXmlElement *e) {
+        e->Attribute("Minutes", &m_Minutes);
+    }
+
+    void SaveConfig(TiXmlElement *c) {
+        c->SetAttribute("Type", "Deadman");
+        c->SetAttribute("Minutes", m_Minutes);
+    }
+
+private:
+    double m_Minutes;
+};
 
 class AnchorAlarm : public Alarm
 {
 public:
-    AnchorAlarm() { minoldfix.FixTime = 0; }
+    AnchorAlarm() : m_Radius(50) {
+        minoldfix.FixTime = 0;
+        m_Latitude = g_watchdog_pi->LastFix().Lat;
+        m_Longitude = g_watchdog_pi->LastFix().Lon;
+    }
 
-    wxString Name() { return _("Anchor"); }
-    void GetStatusControls(wxControl *&Text, wxControl *&status) {
-        WatchdogDialog &dlg = *g_watchdog_pi->m_pWatchdogDialog;
-        Text = dlg.m_stTextAnchor;
-        status = dlg.m_stAnchorDistance;
+    wxString Type() { return _("Anchor"); }
+    wxString Options() {
+        return _("radius") + wxString::Format(_T(" %f "), m_Radius) + _("meters");
     }
 
     bool Test() {
-        wxFileConfig *pConf = GetConfigObject();
-
-        long AnchorRadius = pConf->Read ( _T ( "Radius" ), 50L );
-
+#if 0
         if( pConf->Read ( _T ( "AutoSync" ), 0L ) ) {
             PlugIn_Position_Fix_Ex lastfix = g_watchdog_pi->LastFix();
             if(lastfix.FixTime - minoldfix.FixTime >= 60) {
@@ -375,16 +405,14 @@ public:
                     if(dist < AnchorRadius) {
                         pConf->Write(_T("Latitude"), lastfix.Lat);
                         pConf->Write(_T("Longitude"), lastfix.Lon);
-                        g_watchdog_pi->UpdatePreferences();
+                        g_watchdog_pi->UpdateConfiguration();
                     }
                 }
                 minoldfix = lastfix;
             }
         }
-
-        double anchordist = Distance();
-
-        return anchordist > AnchorRadius;
+#endif
+        return Distance() > m_Radius;
     }
 
     wxString GetStatus() {
@@ -401,17 +429,12 @@ public:
     }
 
     void Render(wdDC &dc, PlugIn_ViewPort &vp) {
-        wxFileConfig *pConf = GetConfigObject();
-        
         wxPoint r1, r2;
-        double AnchorLatitude, AnchorLongitude;
-        pConf->Read ( _T ( "Latitude" ), &AnchorLatitude, NAN );
-        pConf->Read ( _T ( "Longitude" ), &AnchorLongitude, NAN );
         
-        GetCanvasPixLL(&vp, &r1, AnchorLatitude, AnchorLongitude);
-        GetCanvasPixLL(&vp, &r2, AnchorLatitude +
-                       pConf->Read ( _T ( "Radius" ), 50 )/1853.0/60.0,
-                       AnchorLongitude);
+        GetCanvasPixLL(&vp, &r1, m_Latitude, m_Longitude);
+        GetCanvasPixLL(&vp, &r2, m_Latitude +
+                       m_Radius/1853.0/60.0,
+                       m_Longitude);
         
         if(m_bEnabled) {
             if(m_bFired)
@@ -419,23 +442,46 @@ public:
             else
                 dc.SetPen(wxPen(*wxGREEN, 2));
         } else
-            dc.SetPen(wxPen(wxColour(128, 192, 0, 128), 2, wxLONG_DASH));
+            dc.SetPen(wxPen(wxColour(128, 192, 0, 128), 2, wxPENSTYLE_LONG_DASH));
          
         dc.DrawCircle( r1.x, r1.y, hypot(r1.x-r2.x, r1.y-r2.y) );
+    }
+
+    wxWindow *OpenPanel(wxWindow *parent) {
+        AnchorPanel *panel = new AnchorPanel(parent);
+        panel->m_tLatitude->SetValue(wxString::Format(_T("%f"), m_Latitude));
+        panel->m_tLongitude->SetValue(wxString::Format(_T("%f"), m_Longitude));
+        panel->m_sRadius->SetValue(m_Radius);
+        return panel;
+    }
+
+    void SavePanel(wxWindow *p) {
+        AnchorPanel *panel = (AnchorPanel*)p;
+        panel->m_tLatitude->GetValue().ToDouble(&m_Latitude);
+        panel->m_tLongitude->GetValue().ToDouble(&m_Longitude);
+        m_Radius = panel->m_sRadius->GetValue();
+    }
+
+    void LoadConfig(TiXmlElement *e) {
+        e->Attribute("Latitude", &m_Latitude);
+        e->Attribute("Longitude", &m_Longitude);
+        e->Attribute("Radius", &m_Radius);
+    }
+
+    void SaveConfig(TiXmlElement *c) {
+        c->SetAttribute("Type", "Anchor");
+        c->SetAttribute("Latitude", m_Latitude);
+        c->SetAttribute("Longitude", m_Longitude);
+        c->SetAttribute("Radius", m_Radius);
     }
 
 private:
     double Distance() {
         PlugIn_Position_Fix_Ex lastfix = g_watchdog_pi->LastFix();
 
-        wxFileConfig *pConf = GetConfigObject();
-        double AnchorLatitude, AnchorLongitude;
-        pConf->Read ( _T ( "Latitude" ), &AnchorLatitude, NAN );
-        pConf->Read ( _T ( "Longitude" ), &AnchorLongitude, NAN );
-
         double anchordist;
         DistanceBearingMercator_Plugin(lastfix.Lat, lastfix.Lon,
-                                       AnchorLatitude, AnchorLongitude,
+                                       m_Latitude, m_Longitude,
                                        0, &anchordist);
         anchordist *= 1853.248; /* in meters */
         return anchordist;
@@ -443,34 +489,30 @@ private:
 
     PlugIn_Position_Fix_Ex minoldfix;
 
-} g_AnchorAlarm;
+    double m_Latitude, m_Longitude, m_Radius;
+};
 
 class CourseAlarm : public Alarm
 {
 public:
-    CourseAlarm() : m_Mode(BOTH) {}
-
-    wxString Name() { return _("Off Course") +
-            (m_Mode == PORT ? wxString(_T(" ")) + _("Port") : _T("")); }
-
-    wxString ConfigName() { return _("Off Course"); }
-
-    void SetPort(bool port) {
-        m_Mode = port ? PORT : BOTH;
+    CourseAlarm() : m_Mode(BOTH), m_Tolerance(20) {
+        m_Course = g_watchdog_pi->m_cog;
     }
 
-    void GetStatusControls(wxControl *&Text, wxControl *&status) {
-        WatchdogDialog &dlg = *g_watchdog_pi->m_pWatchdogDialog;
-        Text = dlg.m_stTextCourseError;
-        status = dlg.m_stCourseError;
+    wxString Type() { return _("Course"); }
+    wxString Options() {
+        wxString s;
+        switch(m_Mode) {
+        case PORT: s += _("Port") + wxString(_T(" ")); break;
+        case STARBOARD: s += _("Starboard") + wxString(_T(" ")); break;
+        default: break;
+        }
+        return s + _("course") + wxString::Format(_T(" %f "), m_Course)
+            + wxString::Format(_T(" %f"), m_Tolerance);
     }
 
     bool Test() {
-        wxFileConfig *pConf = GetConfigObject();
-        double Tolerance;
-        pConf->Read ( _T ( "Tolerance" ), &Tolerance, 20L );
-
-        return CourseError() > Tolerance;
+        return CourseError() > m_Tolerance;
     }
 
     wxString GetStatus() {
@@ -483,20 +525,15 @@ public:
             s = wxString::Format(fmt + _("degrees(s)"), courseerror);
         }
 
-        if(m_Mode == PORT)
-            s += _T(" Port");
+        if(m_Mode == STARBOARD)
+            s += wxString(_T(" ")) + _("Starboard");
+        else if(m_Mode == PORT)
+            s += wxString(_T(" ")) + _("Port");
 
         return s;
     }
 
     void Render(wdDC &dc, PlugIn_ViewPort &vp) {
-        wxFileConfig *pConf = GetConfigObject();
-
-        double Tolerance;
-        pConf->Read ( _T ( "Tolerance" ), &Tolerance, 20L );
-        double Course;
-        pConf->Read ( _T ( "Course" ), &Course, 20L );
-
         PlugIn_Position_Fix_Ex lastfix = g_watchdog_pi->LastFix();
 
         double lat1 = lastfix.Lat, lon1 = lastfix.Lon, lat2, lon2, lat3, lon3;
@@ -505,9 +542,9 @@ public:
         if(isnan(dist))
             return;
 
-        PositionBearingDistanceMercator_Plugin(lat1, lon1, Course+Tolerance,
+        PositionBearingDistanceMercator_Plugin(lat1, lon1, m_Course+m_Tolerance,
                                                dist, &lat2, &lon2);
-        PositionBearingDistanceMercator_Plugin(lat1, lon1, Course-Tolerance,
+        PositionBearingDistanceMercator_Plugin(lat1, lon1, m_Course-m_Tolerance,
                                                dist, &lat3, &lon3);
         wxPoint r1, r2, r3;
         GetCanvasPixLL(&vp, &r1, lat1, lon1);
@@ -523,80 +560,74 @@ public:
         dc.DrawLine( r1.x, r1.y, r3.x, r3.y );
     }
 
-private:
-    double CourseError() {
-        wxFileConfig *pConf = GetConfigObject();
-
-        double Course;
-        pConf->Read ( _T ( "Course" ), &Course, 0L );
-
-        double error = heading_resolve(g_watchdog_pi->m_cog - Course);
-
-        if(m_Mode == PORT)
-            return -error;
-
-        return fabs(error);
-    }
-    
-    enum Mode { PORT, BOTH } m_Mode;
-} g_CourseAlarm;
-
-class CourseStarboardAlarm : public Alarm
-{
-public:
-    CourseStarboardAlarm() : Alarm() {}
-
-    wxString Name() { return _("Off Course") + wxString(_T(" ")) + _("Starboard"); }
-    void GetStatusControls(wxControl *&Text, wxControl *&status) {
-        WatchdogDialog &dlg = *g_watchdog_pi->m_pWatchdogDialog;
-        Text = dlg.m_stTextStarboardCourseError;
-        status = dlg.m_stStarboardCourseError;
+    wxWindow *OpenPanel(wxWindow *parent) {
+        CoursePanel *panel = new CoursePanel(parent);
+        panel->m_cMode->SetSelection((int)m_Mode);
+        panel->m_sCourse->SetValue(m_Course);
+        panel->m_sTolerance->SetValue(m_Tolerance);
+        return panel;
     }
 
-    bool Test() {
-        wxFileConfig *pConf = g_CourseAlarm.GetConfigObject();
-        double Tolerance;
-        pConf->Read ( _T ( "Tolerance" ), &Tolerance, 20L );
-
-        return CourseError() > Tolerance;
+    void SavePanel(wxWindow *p) {
+        CoursePanel *panel = (CoursePanel*)p;
+        m_Mode = (Mode)panel->m_cMode->GetSelection();
+        m_Course = panel->m_sCourse->GetValue();
+        m_Tolerance = panel->m_sTolerance->GetValue();
     }
 
-    wxString GetStatus() {
-        double courseerror = CourseError();
-        wxString s;
-        if(isnan(courseerror))
-            s = _T("N/A");
-        else {
-            wxString fmt(_T("%.0f "));
-            s = wxString::Format(fmt + _("degrees(s) Starboard"), courseerror);
+    void LoadConfig(TiXmlElement *e) {
+        const char *mode = e->Attribute("Mode");
+        if(!strcasecmp(mode, "Port")) m_Mode = PORT;
+        else if(!strcasecmp(mode, "Starboard")) m_Mode = STARBOARD;
+        else if(!strcasecmp(mode, "Starboard")) m_Mode = BOTH;
+        else wxLogMessage(_T("Watchdog: ") + _("invalid Course mode") + _T(": ")
+                         + wxString::FromUTF8(mode));
+
+        e->Attribute("Tolerance", &m_Tolerance);
+        e->Attribute("Course", &m_Course);
+    }
+
+    void SaveConfig(TiXmlElement *c) {
+        c->SetAttribute("Type", "Course");
+        switch(m_Mode) {
+        case PORT: c->SetAttribute("Mode", "Port");
+        case STARBOARD: c->SetAttribute("Mode", "Starboard");
+        case BOTH: c->SetAttribute("Mode", "Both");
         }
 
-        return s;
+        c->SetAttribute("Tolerance", m_Tolerance);
+        c->SetAttribute("Course", m_Course);
     }
 
 private:
     double CourseError() {
-        wxFileConfig *pConf = g_CourseAlarm.GetConfigObject();
+        double error = heading_resolve(g_watchdog_pi->m_cog - m_Course);
 
-        double Course;
-        pConf->Read ( _T ( "Course" ), &Course, 0L );
-
-        return heading_resolve(g_watchdog_pi->m_cog - Course);
+        switch(m_Mode) {
+        case PORT:      return -error;
+        case STARBOARD: return  error;
+        default:        return fabs(error);
+        }
     }
     
-} g_CourseStarboardAlarm;
+    enum Mode { PORT, STARBOARD, BOTH } m_Mode;
+    double m_Tolerance, m_Course;
+
+};
 
 class SpeedAlarm : public Alarm
 {
 public:
-    SpeedAlarm() {}
+    SpeedAlarm() : m_Mode(UNDERSPEED), m_Speed(1) {}
 
-    double Knots() {
-        wxFileConfig *pConf = GetConfigObject();
-
-        double knots;
-        pConf->Read ( _T ( "Knots" ), &knots, 0L );
-        return knots;
+    wxString Type() { return _("Speed"); }
+    wxString Options() {
+        wxString s;
+        switch(m_Mode) {
+        case UNDERSPEED: s += _("UnderSpeed") + wxString(_T(" ")); break;
+        case OVERSPEED: s += _("OverSpeed") + wxString(_T(" ")); break;
+        }
+        return s + wxString::Format(_T(" %f"), m_Speed);
     }
 
     wxString GetStatus() {
@@ -633,111 +664,195 @@ public:
         dc.SetBrush(*wxTRANSPARENT_BRUSH);
         dc.DrawCircle( r1.x, r1.y, hypot(r1.x-r2.x, r1.y-r2.y) );
     }
+
+    bool Test() {
+        if(m_Mode == UNDERSPEED)
+            return g_watchdog_pi->m_sog < Knots();
+        else
+            return g_watchdog_pi->m_sog > Knots();
+    }
+
+    wxWindow *OpenPanel(wxWindow *parent) {
+        SpeedPanel *panel = new SpeedPanel(parent);
+        panel->m_cMode->SetSelection((int)m_Mode);
+        panel->m_tSpeed->SetValue(wxString::Format(_T("%f"), m_Speed));
+        return panel;
+    }
+
+    void SavePanel(wxWindow *p) {
+        SpeedPanel *panel = (SpeedPanel*)p;
+        m_Mode = (Mode)panel->m_cMode->GetSelection();
+        panel->m_tSpeed->GetValue().ToDouble(&m_Speed);
+    }
+
+    void LoadConfig(TiXmlElement *e) {
+        const char *mode = e->Attribute("Mode");
+        if(!strcasecmp(mode, "Underspeed")) m_Mode = UNDERSPEED;
+        else if(!strcasecmp(mode, "Overspeed")) m_Mode = OVERSPEED;
+        else wxLogMessage(_T("Watchdog: ") + _("invalid Speed mode") + _T(": ")
+                         + wxString::FromUTF8(mode));
+
+        e->Attribute("Speed", &m_Speed);
+    }
+
+    void SaveConfig(TiXmlElement *c) {
+        c->SetAttribute("Type", "Speed");
+        switch(m_Mode) {
+        case UNDERSPEED: c->SetAttribute("Mode", "Underspeed");
+        case OVERSPEED: c->SetAttribute("Mode", "Overspeed");
+        }
+
+        c->SetAttribute("Speed", m_Speed);
+    }
+
+private:
+    double Knots() {
+        return g_watchdog_pi->m_sog;
+    }
+
+    enum Mode { UNDERSPEED, OVERSPEED } m_Mode;
+    double m_Speed;
 };
 
-class UnderSpeedAlarm : public SpeedAlarm
-{
-public:
-    UnderSpeedAlarm() {}
-
-    wxString Name() { return _("Under Speed"); }
-    void GetStatusControls(wxControl *&Text, wxControl *&status) {
-        WatchdogDialog &dlg = *g_watchdog_pi->m_pWatchdogDialog;
-        Text = dlg.m_stTextUnderSpeed;
-        status = dlg.m_stUnderSpeed;
-    }
-
-    bool Test() {
-        return g_watchdog_pi->m_sog < Knots();
-    }
-} g_UnderSpeedAlarm;
-
-class OverSpeedAlarm : public SpeedAlarm
-{
-public:
-    OverSpeedAlarm() {}
-
-    wxString Name() { return _("Over Speed"); }
-    void GetStatusControls(wxControl *&Text, wxControl *&status) {
-        WatchdogDialog &dlg = *g_watchdog_pi->m_pWatchdogDialog;
-        Text = dlg.m_stTextOverSpeed;
-        status = dlg.m_stOverSpeed;
-    }
-
-    bool Test() {
-        return g_watchdog_pi->m_sog > Knots();
-    }
-} g_OverSpeedAlarm;
-
 ////////// Alarm Base Class /////////////////
-
-Alarm *Alarms[] = {&g_LandfallAlarm, &g_NMEADataAlarm, &g_DeadmanAlarm, &g_SecondDeadmanAlarm,
-                   &g_AnchorAlarm, &g_CourseAlarm, &g_CourseStarboardAlarm,
-                   &g_UnderSpeedAlarm, &g_OverSpeedAlarm, 0, 0, 0};
+std::vector<Alarm*> Alarm::s_Alarms;
 
 void Alarm::RenderAll(wdDC &dc, PlugIn_ViewPort &vp)
 {
-    for(Alarm **alarm = Alarms; *alarm; alarm++)
-        if((*alarm)->m_bgfxEnabled)
-            (*alarm)->Render(dc, vp);
+    for(unsigned int i=0; i<s_Alarms.size(); i++)
+        if(s_Alarms[i]->m_bgfxEnabled)
+            s_Alarms[i]->Render(dc, vp);
 }
 
-void Alarm::ConfigAll(bool load)
+void Alarm::LoadConfigAll()
 {
-    for(Alarm **alarm = Alarms; *alarm; alarm++)
-        if(load)
-            (*alarm)->LoadConfig();
-        else
-            (*alarm)->SaveConfig();
+    wxString configuration = watchdog_pi::StandardPath() + _T("WatchdogConfiguration.xml");
+    TiXmlDocument doc;
+
+    if(!doc.LoadFile(configuration.mb_str())) {
+        wxLogMessage(_T("Watchdog: ") + _("Failed to read") + _T(": ") + configuration);
+        return;
+    }
+
+    TiXmlHandle root(doc.RootElement());
+    for(TiXmlElement* e = root.FirstChild().Element(); e; e = e->NextSiblingElement()) {
+        if(!strcasecmp(e->Value(), "Alarm")) {
+            const char *type = e->Attribute("Type");
+            Alarm *alarm;
+            if(!strcasecmp(type, "LandFall")) alarm = Alarm::NewAlarm(LANDFALL);
+            else if(!strcasecmp(type, "NMEAData")) alarm = Alarm::NewAlarm(NMEADATA);
+            else if(!strcasecmp(type, "Deadman")) alarm = Alarm::NewAlarm(DEADMAN);
+            else if(!strcasecmp(type, "Anchor")) alarm = Alarm::NewAlarm(ANCHOR);
+            else if(!strcasecmp(type, "Course")) alarm = Alarm::NewAlarm(COURSE);
+            else if(!strcasecmp(type, "Speed")) alarm = Alarm::NewAlarm(SPEED);
+            else {
+                wxLogMessage(_T("Watchdog: ") + _("invalid alarm type") + _T(": ") + wxString::FromUTF8(type));
+                continue;
+            }
+
+            alarm->LoadConfigBase(e);
+            alarm->LoadConfig(e);
+        }
+    }
+}
+
+void Alarm::SaveConfigAll()
+{
+    TiXmlDocument doc;
+
+    TiXmlDeclaration* decl = new TiXmlDeclaration( "1.0", "utf-8", "" );
+    doc.LinkEndChild( decl );
+
+    TiXmlElement * root = new TiXmlElement( "OpenCPNWatchdogConfiguration" );
+    doc.LinkEndChild( root );
+
+    char version[24];
+    sprintf(version, "%d.%d", PLUGIN_VERSION_MAJOR, PLUGIN_VERSION_MINOR);
+    root->SetAttribute("version", version);
+    root->SetAttribute("creator", "Opencpn Watchdog plugin");
+    root->SetAttribute("author", "Sean D'Epagnier");
+
+    for(unsigned int i=0; i<s_Alarms.size(); i++) {
+        TiXmlElement *c = new TiXmlElement( "Alarm" );
+        Alarm *alarm = s_Alarms[i];
+        alarm->SaveConfig(c);
+        alarm->SaveConfigBase(c);
+        root->LinkEndChild(c);
+    }
+
+    wxString configuration = watchdog_pi::StandardPath() + _T("WatchdogConfiguration.xml");
+    if(!doc.SaveFile(configuration))
+        wxLogMessage(_T("Watchdog: ") + _("failed to save") + _T(": ") + configuration);
+}
+
+void Alarm::DeleteAll()
+{
+    for(unsigned int i=0; i<s_Alarms.size(); i++)
+        delete s_Alarms[i];
 }
 
 void Alarm::ResetAll()
 {
-    for(Alarm **alarm = Alarms; *alarm; alarm++)
-        (*alarm)->m_bFired = false;
+    for(unsigned int i=0; i<s_Alarms.size(); i++)
+        s_Alarms[i]->m_bFired = false;
 }
 
 void Alarm::UpdateStatusAll()
 {
-    for(Alarm **alarm = Alarms; *alarm; alarm++)
-        (*alarm)->UpdateStatus();
+    for(unsigned int i=0; i<s_Alarms.size(); i++)
+        s_Alarms[i]->UpdateStatus();
 }
 
 void Alarm::RepopulateAll()
 {
-    for(Alarm **alarm = Alarms; *alarm; alarm++)
-        (*alarm)->Repopulate();
+    for(unsigned int i=0; i<s_Alarms.size(); i++)
+        s_Alarms[i]->Repopulate();
 }
 
-void Alarm::NMEAString(const wxString &string)
+void Alarm::NMEAStringAll(const wxString &sentence)
 {
-    g_NMEADataAlarm.NMEAString(string);
+    for(unsigned int i=0; i<s_Alarms.size(); i++)
+        s_Alarms[i]->NMEAString(sentence);
 }
 
-void Alarm::ConfigSecondDeadman(bool read, wxCheckBox *control)
+Alarm *Alarm::NewAlarm(enum AlarmType type)
 {
-    g_DeadmanAlarm.ConfigItem(read, _T ( "SecondDeadman" ), control);
+    Alarm *alarm;
+    switch(type) {
+    case LANDFALL: alarm = new LandFallAlarm; break;
+    case NMEADATA: alarm = new NMEADataAlarm; break;
+    case DEADMAN:  alarm = new DeadmanAlarm;  break;
+    case ANCHOR:   alarm = new AnchorAlarm;   break;
+    case COURSE:   alarm = new CourseAlarm;   break;
+    case SPEED:    alarm = new SpeedAlarm;    break;
+    default:  wxLogMessage(_T("Invalid Alarm Type")); return NULL;
+    }
 
-    if(control->GetValue())
-       g_SecondDeadmanAlarm.m_bEnabled = g_DeadmanAlarm.m_bEnabled;
-    else
-        g_SecondDeadmanAlarm.m_bEnabled = false;
-}
-
-void Alarm::ConfigCoursePort(bool read, wxCheckBox *control)
-{
-    g_CourseAlarm.ConfigItem(read, _T ( "SeparatePortAndStarboard" ), control);
-    g_CourseAlarm.SetPort(control->GetValue());
-
-    if(control->GetValue())
-       g_CourseStarboardAlarm.m_bEnabled = g_CourseAlarm.m_bEnabled;
-    else
-        g_CourseStarboardAlarm.m_bEnabled = false;
+    s_Alarms.push_back(alarm);
+    return alarm;
 }
 
 Alarm::Alarm(int interval)
-    : m_interval(interval)
+    : m_bEnabled(true), m_bgfxEnabled(false), m_bFired(false),
+      m_bSound(true), m_bCommand(false), m_bMessageBox(false), m_bRepeat(false),
+      m_bAutoReset(false),
+      m_sSound(*GetpSharedDataLocation() + _T("sounds/2bells.wav")),
+      m_iRepeatSeconds(60),
+      m_interval(interval)
 {
+    m_Timer.Connect(wxEVT_TIMER, wxTimerEventHandler( Alarm::OnTimer ), NULL, this);
+    m_Timer.Start(m_interval * 1000, wxTIMER_CONTINUOUS);
+}
+
+wxString Alarm::Action()
+{
+    wxString s;
+    if(m_bSound)      s += _("Sound")      + wxString(_T(" "));
+    if(m_bCommand)    s += _("Command")    + wxString(_T(" "));
+    if(m_bMessageBox) s += _("MessageBox") + wxString(_T(" "));
+    if(m_bRepeat)     s += _("Repeat")     + wxString(_T(" "));
+    if(m_bAutoReset)  s += _("Auto Reset") + wxString(_T(" "));
+    return s;
 }
 
 void Alarm::Run()
@@ -748,7 +863,7 @@ void Alarm::Run()
     if(m_bCommand)
         if(!wxProcess::Open(m_sCommand)) {
             wxMessageDialog mdlg(GetOCPNCanvasWindow(),
-                                 Name() + _T(" ") +
+                                 Type() + _T(" ") +
                                  _("Failed to execute command: ") + m_sCommand,
                                  _("Watchdog"), wxOK | wxICON_ERROR);
             mdlg.ShowModal();
@@ -756,90 +871,38 @@ void Alarm::Run()
         }
 
     if(m_bMessageBox) {
-        wxMessageDialog mdlg(GetOCPNCanvasWindow(), Name() + _T(" ") + _("ALARM!"),
+        wxMessageDialog mdlg(GetOCPNCanvasWindow(), Type() + _T(" ") + _("ALARM!"),
                              _("Watchman"), wxOK | wxICON_WARNING);
         mdlg.ShowModal();
     }
 }
 
-void Alarm::SaveConfig()
+void Alarm::LoadConfigBase(TiXmlElement *e)
 {
-    wxFileConfig *pConf = GetConfigObject();
-
-    pConf->Write ( _T ( "Enabled" ), m_bEnabled);
-    pConf->Write ( _T ( "gfxEnabled" ), m_bgfxEnabled);
-    pConf->Write ( _T ( "SoundEnabled" ), m_bSound);
-    pConf->Write ( _T ( "SoundFilepath" ), m_sSound);
-    pConf->Write ( _T ( "CommandEnabled" ), m_bCommand);
-    pConf->Write ( _T ( "CommandFilepath" ), m_sCommand);
-    pConf->Write ( _T ( "MessageBox" ), m_bMessageBox);
-    pConf->Write ( _T ( "Repeat" ), m_bRepeat);
-    pConf->Write ( _T ( "RepeatSeconds" ), m_iRepeatSeconds);
-    pConf->Write ( _T ( "AutoReset" ), m_bAutoReset);
+    e->QueryBoolAttribute("Enabled", &m_bEnabled);
+    e->QueryBoolAttribute("GraphicsEnabled", &m_bgfxEnabled);
+    e->QueryBoolAttribute("Sound", &m_bSound);
+    m_sSound = wxString::FromUTF8(e->Attribute("SoundFile"));
+    e->QueryBoolAttribute("Command", &m_bCommand);
+    m_sCommand = wxString::FromUTF8(e->Attribute("CommandFile"));
+    e->QueryBoolAttribute("MessageBox", &m_bMessageBox);
+    e->QueryBoolAttribute("Repeat", &m_bRepeat);
+    e->Attribute("RepeatSeconds", &m_iRepeatSeconds);
+    e->QueryBoolAttribute("AutoReset", &m_bAutoReset);
 }
 
-void Alarm::LoadConfig()
-{  
-    wxFileConfig *pConf = GetConfigObject();
-
-    pConf->Read ( _T ( "Enabled" ), &m_bEnabled, 0 );
-    pConf->Read ( _T ( "gfxEnabled" ), &m_bgfxEnabled, 0 );
-    pConf->Read ( _T ( "SoundEnabled" ), &m_bSound, 1 );
-    pConf->Read ( _T ( "SoundFilepath" ), &m_sSound, _T("") );
-    pConf->Read ( _T ( "CommandEnabled" ), &m_bCommand, 0 );
-    pConf->Read ( _T ( "CommandFilepath" ), &m_sCommand, _T("") );
-    pConf->Read ( _T ( "MessageBox" ), &m_bMessageBox, 0);
-    pConf->Read ( _T ( "Repeat" ), &m_bRepeat, 0);
-    pConf->Read ( _T ( "RepeatSeconds" ), &m_iRepeatSeconds, 60);
-    pConf->Read ( _T ( "AutoReset" ), &m_bAutoReset, 1);
-
-    m_Timer.Connect(wxEVT_TIMER, wxTimerEventHandler( Alarm::OnTimer ), NULL, this);
-    m_Timer.Start(m_interval * 1000, wxTIMER_CONTINUOUS);
-}
-
-void Alarm::ConfigItem(bool read, wxString name, wxControl *control)
+void Alarm::SaveConfigBase(TiXmlElement *c)
 {
-    wxFileConfig *pConf = GetConfigObject();
-
-    wxCheckBox *cb = dynamic_cast<wxCheckBox*>(control);
-    if(cb) {
-        if(read)
-            cb->SetValue(pConf->Read(name, (long)cb->GetValue()));
-        else
-            pConf->Write(name, cb->GetValue());
-        return;
-    }
-
-    wxSpinCtrl *s = dynamic_cast<wxSpinCtrl*>(control);
-    if(s) {
-        if(read)
-            s->SetValue(pConf->Read(name, (long)s->GetValue()));
-        else
-            pConf->Write(name, s->GetValue());
-        return;
-    }
-
-    wxSlider *sp = dynamic_cast<wxSlider*>(control);
-    if(sp) {
-        if(read)
-            sp->SetValue(pConf->Read(name, (long)sp->GetValue()));
-        else
-            pConf->Write(name, sp->GetValue());
-        return;
-    }
-
-    wxTextCtrl *tc = dynamic_cast<wxTextCtrl*>(control);
-    if(tc) {
-        if(read) {
-            wxString str;
-            pConf->Read(name, &str, tc->GetValue());
-            tc->SetValue(str);
-        } else
-            pConf->Write(name, tc->GetValue());
-        return;
-    }
-
-    wxLogMessage(_T("Unrecognized control in Alarm::ConfigItem"));
+    c->SetAttribute("Enabled", m_bEnabled);
+    c->SetAttribute("GraphicsEnabled", m_bgfxEnabled);
+    c->SetAttribute("Sound", m_bSound);
+    c->SetAttribute("SoundFile", m_sSound.mb_str());
+    c->SetAttribute("Command", m_bCommand);
+    c->SetAttribute("CommandFile", m_sCommand.mb_str());
+    c->SetAttribute("MessageBox", m_bMessageBox);
+    c->SetAttribute("Repeat", m_bRepeat);
+    c->SetAttribute("RepeatSeconds", m_iRepeatSeconds);
+    c->SetAttribute("AutoReset", m_bAutoReset);
 }
 
 void Alarm::OnTimer( wxTimerEvent & )
@@ -848,10 +911,10 @@ void Alarm::OnTimer( wxTimerEvent & )
     pConf->SetPath ( _T( "/Settings/Watchdog" ) );
     int enabled = pConf->Read ( _T ( "Enabled" ), 0L );
 
-    if(enabled == 2 && !g_watchdog_pi->m_pWatchdogDialog)
+    if(enabled == 2 && !g_watchdog_pi->m_WatchdogDialog)
         enabled = 0;
 
-    if(enabled == 3 && !g_watchdog_pi->m_pWatchdogDialog->IsShown())
+    if(enabled == 3 && !g_watchdog_pi->m_WatchdogDialog->IsShown())
        enabled = 0;
 
     if(enabled && m_bEnabled) {
@@ -871,16 +934,14 @@ void Alarm::OnTimer( wxTimerEvent & )
             m_bFired = false;
     }
 
-    if(g_watchdog_pi->m_pWatchdogDialog && g_watchdog_pi->m_pWatchdogDialog->IsShown())
+    if(g_watchdog_pi->m_WatchdogDialog && g_watchdog_pi->m_WatchdogDialog->IsShown())
         UpdateStatus();
 }
 
 void Alarm::UpdateStatus()
 {
-    wxControl *text, *status;
-    GetStatusControls(text, status);
-
-    if(!status || !m_bEnabled)
+#if 0
+    if(!m_bEnabled)
         return;
 
     wxString s = GetStatus();
@@ -890,10 +951,12 @@ void Alarm::UpdateStatus()
         status->SetForegroundColour(*wxBLACK);
             
     status->SetLabel(s);
+#endif
 }
 
 void Alarm::Repopulate()
 {
+#if 0
     wxControl *text, *status;
     GetStatusControls(text, status);
 
@@ -909,15 +972,5 @@ void Alarm::Repopulate()
         sizer.Add(text, 0, wxALL, 5);
         sizer.Add(status, 0, wxALL, 5);
     }
-}
-
-wxFileConfig *Alarm::GetConfigObject()
-{
-    wxFileConfig *pConf = GetOCPNConfigObject();
-
-    if(!pConf)
-        return NULL;
-        
-    pConf->SetPath ( _T( "/Settings/Watchdog/Alarms/" ) + ConfigName() );
-    return pConf;
+#endif
 }

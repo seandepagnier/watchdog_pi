@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Project:  OpenCPN
- * Purpose:  watch dog Plugin
+ * Purpose:  watchdog Plugin
  * Author:   Sean D'Epagnier
  *
  ***************************************************************************
@@ -24,57 +24,71 @@
  ***************************************************************************
  */
 
+#include <vector>
+
 class wdDC;
+class TiXmlElement;
+
+enum AlarmType {LANDFALL, NMEADATA, DEADMAN, ANCHOR, COURSE, SPEED};
+
 class Alarm : public wxEvtHandler {
 public:
     static void RenderAll(wdDC &dc, PlugIn_ViewPort &vp);
-    static void ConfigAll(bool load);
+    static void LoadConfigAll();
+    static void SaveConfigAll();
+    static void DeleteAll();
     static void ResetAll();
     static void UpdateStatusAll();
     static void RepopulateAll();
-    static void NMEAString(const wxString &string);
-    static void ConfigSecondDeadman(bool read, wxCheckBox *control);
-    static void ConfigCoursePort(bool read, wxCheckBox *control);
+    static void NMEAStringAll(const wxString &sentence);
+    static Alarm *NewAlarm(enum AlarmType type);
+    static void SaveAlarms(wxString filename);
+    static void LoadAlarms(wxString filename);
+
+    static std::vector<Alarm*> s_Alarms;
 
     Alarm(int interval=1);
 
+    wxString Action();
     void Run();
-    virtual void SaveConfig();
-    virtual void LoadConfig();
 
     void UpdateStatus();
 
     virtual void Repopulate();
 
-    virtual wxString Name() = 0;
-    virtual wxString ConfigName() { return Name(); }
+    virtual wxString Type() = 0;
+    virtual wxString Options() = 0;
     virtual bool Test() = 0;
     virtual wxString GetStatus() = 0;
+    virtual void NMEAString(const wxString &sentence) {}
     virtual void Render(wdDC &dc, PlugIn_ViewPort &vp) {}
+    virtual wxWindow *OpenPanel(wxWindow *parent) = 0;
+    virtual void SavePanel(wxWindow *panel) = 0;
+    virtual void LoadConfig(TiXmlElement *e) = 0;
+    virtual void SaveConfig(TiXmlElement *c) = 0;
 
-    void OnTimer( wxTimerEvent & );
-    virtual wxFileConfig *GetConfigObject();
+    void LoadConfigBase(TiXmlElement *e);
+    void SaveConfigBase(TiXmlElement *c);
+
+    void OnTimer(wxTimerEvent &);
+
+    bool m_bEnabled, m_bgfxEnabled;
 
 protected:
-    bool m_bEnabled, m_bgfxEnabled;
     bool m_bFired;
 
 private:
-    friend class WatchdogPrefsDialog;
+    friend class EditAlarmDialog;
 
     void ConfigItem(bool read, wxString name, wxControl *control);
     virtual void GetStatusControls(wxControl *&Text, wxControl *&status) { Text = status = NULL; }
-
-    int m_interval;
 
     bool m_bSound, m_bCommand, m_bMessageBox, m_bRepeat, m_bAutoReset;
     wxString m_sSound, m_sCommand;
     int m_iRepeatSeconds;
 
+    int m_interval;
+
     wxTimer    m_Timer;
     wxDateTime m_LastAlarmTime;
 };
-
-enum AlarmNames {LANDFALL, NMEADATA, DEADMAN, SECOND_DEADMAN, ANCHOR,
-                 COURSE, COURSE_STARBOARD, UNDERSPEED, OVERSPEED, DEPTH, WIND};
-extern Alarm *Alarms[];
