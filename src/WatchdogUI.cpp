@@ -392,6 +392,7 @@ LandFallPanel::LandFallPanel( wxWindow* parent, wxWindowID id, const wxPoint& po
 	
 	this->SetSizer( fgSizer17 );
 	this->Layout();
+	fgSizer17->Fit( this );
 }
 
 LandFallPanel::~LandFallPanel()
@@ -435,6 +436,7 @@ NMEADataPanel::NMEADataPanel( wxWindow* parent, wxWindowID id, const wxPoint& po
 	
 	this->SetSizer( fgSizer91 );
 	this->Layout();
+	fgSizer91->Fit( this );
 }
 
 NMEADataPanel::~NMEADataPanel()
@@ -470,6 +472,7 @@ DeadmanPanel::DeadmanPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos,
 	
 	this->SetSizer( fgSizer25 );
 	this->Layout();
+	fgSizer25->Fit( this );
 }
 
 DeadmanPanel::~DeadmanPanel()
@@ -529,6 +532,7 @@ AnchorPanel::AnchorPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, c
 	
 	this->SetSizer( fgSizer24 );
 	this->Layout();
+	fgSizer24->Fit( this );
 	
 	// Connect Events
 	m_bSyncToBoat->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( AnchorPanel::OnSyncToBoat ), NULL, this );
@@ -597,6 +601,7 @@ CoursePanel::CoursePanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, c
 	
 	this->SetSizer( fgSizer22 );
 	this->Layout();
+	fgSizer22->Fit( this );
 	
 	// Connect Events
 	m_bCurrentCourse->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CoursePanel::OnCurrentCourse ), NULL, this );
@@ -653,6 +658,7 @@ SpeedPanel::SpeedPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, con
 	
 	this->SetSizer( sbSizer7 );
 	this->Layout();
+	sbSizer7->Fit( this );
 }
 
 SpeedPanel::~SpeedPanel()

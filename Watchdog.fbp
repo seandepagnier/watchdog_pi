@@ -2872,7 +2872,7 @@
             <property name="minimum_size"></property>
             <property name="name">LandFallPanel</property>
             <property name="pos"></property>
-            <property name="size">500,300</property>
+            <property name="size">-1,-1</property>
             <property name="subclass"></property>
             <property name="tooltip"></property>
             <property name="window_extra_style"></property>
@@ -3660,7 +3660,7 @@
             <property name="minimum_size"></property>
             <property name="name">NMEADataPanel</property>
             <property name="pos"></property>
-            <property name="size">500,300</property>
+            <property name="size">-1,-1</property>
             <property name="subclass"></property>
             <property name="tooltip"></property>
             <property name="window_extra_style"></property>
@@ -4171,7 +4171,7 @@
             <property name="minimum_size"></property>
             <property name="name">DeadmanPanel</property>
             <property name="pos"></property>
-            <property name="size">500,300</property>
+            <property name="size">-1,-1</property>
             <property name="subclass"></property>
             <property name="tooltip"></property>
             <property name="window_extra_style"></property>
@@ -4508,7 +4508,7 @@
             <property name="minimum_size"></property>
             <property name="name">AnchorPanel</property>
             <property name="pos"></property>
-            <property name="size">500,300</property>
+            <property name="size">-1,-1</property>
             <property name="subclass"></property>
             <property name="tooltip"></property>
             <property name="window_extra_style"></property>
@@ -5374,7 +5374,7 @@
             <property name="minimum_size"></property>
             <property name="name">CoursePanel</property>
             <property name="pos"></property>
-            <property name="size">500,300</property>
+            <property name="size">-1,-1</property>
             <property name="subclass"></property>
             <property name="tooltip"></property>
             <property name="window_extra_style"></property>
@@ -6233,7 +6233,7 @@
             <property name="minimum_size"></property>
             <property name="name">SpeedPanel</property>
             <property name="pos"></property>
-            <property name="size">500,300</property>
+            <property name="size">-1,-1</property>
             <property name="subclass"></property>
             <property name="tooltip"></property>
             <property name="window_extra_style"></property>

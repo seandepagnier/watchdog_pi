@@ -175,7 +175,7 @@ class LandFallPanel : public wxPanel
 		wxRadioButton* m_rbDistance;
 		wxTextCtrl* m_tDistance;
 		
-		LandFallPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,300 ), long style = wxTAB_TRAVERSAL ); 
+		LandFallPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL ); 
 		~LandFallPanel();
 	
 };
@@ -196,7 +196,7 @@ class NMEADataPanel : public wxPanel
 		wxTextCtrl* m_tSentences;
 		wxSpinCtrl* m_sSeconds;
 		
-		NMEADataPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,300 ), long style = wxTAB_TRAVERSAL ); 
+		NMEADataPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL ); 
 		~NMEADataPanel();
 	
 };
@@ -215,7 +215,7 @@ class DeadmanPanel : public wxPanel
 	public:
 		wxSpinCtrl* m_sMinutes;
 		
-		DeadmanPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,300 ), long style = wxTAB_TRAVERSAL ); 
+		DeadmanPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL ); 
 		~DeadmanPanel();
 	
 };
@@ -244,7 +244,7 @@ class AnchorPanel : public wxPanel
 		wxTextCtrl* m_tLongitude;
 		wxSpinCtrl* m_sRadius;
 		
-		AnchorPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,300 ), long style = wxTAB_TRAVERSAL ); 
+		AnchorPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL ); 
 		~AnchorPanel();
 	
 };
@@ -273,7 +273,7 @@ class CoursePanel : public wxPanel
 		wxSpinCtrl* m_sTolerance;
 		wxSpinCtrl* m_sCourse;
 		
-		CoursePanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,300 ), long style = wxTAB_TRAVERSAL ); 
+		CoursePanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL ); 
 		~CoursePanel();
 	
 };
@@ -295,7 +295,7 @@ class SpeedPanel : public wxPanel
 		wxChoice* m_cMode;
 		wxTextCtrl* m_tSpeed;
 		
-		SpeedPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,300 ), long style = wxTAB_TRAVERSAL ); 
+		SpeedPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL ); 
 		~SpeedPanel();
 	
 };
