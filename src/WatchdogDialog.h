@@ -35,7 +35,9 @@ public:
     ~WatchdogDialog();
 
     void UpdateAlarms();
+    void UpdateStatus(int index);
 
+    void OnStatusLeftDown( wxMouseEvent& event );
     void OnConfiguration( wxCommandEvent& event );
     void OnReset( wxCommandEvent& event );
     void OnClose( wxCommandEvent& event ) { Hide(); }

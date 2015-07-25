@@ -48,6 +48,7 @@ WatchdogDialogBase::WatchdogDialogBase( wxWindow* parent, wxWindowID id, const w
 	this->Centre( wxBOTH );
 	
 	// Connect Events
+	m_lStatus->Connect( wxEVT_LEFT_DOWN, wxMouseEventHandler( WatchdogDialogBase::OnStatusLeftDown ), NULL, this );
 	m_bConfiguration->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchdogDialogBase::OnConfiguration ), NULL, this );
 	m_bReset->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchdogDialogBase::OnReset ), NULL, this );
 	m_bClose->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchdogDialogBase::OnClose ), NULL, this );
@@ -56,6 +57,7 @@ WatchdogDialogBase::WatchdogDialogBase( wxWindow* parent, wxWindowID id, const w
 WatchdogDialogBase::~WatchdogDialogBase()
 {
 	// Disconnect Events
+	m_lStatus->Disconnect( wxEVT_LEFT_DOWN, wxMouseEventHandler( WatchdogDialogBase::OnStatusLeftDown ), NULL, this );
 	m_bConfiguration->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchdogDialogBase::OnConfiguration ), NULL, this );
 	m_bReset->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchdogDialogBase::OnReset ), NULL, this );
 	m_bClose->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchdogDialogBase::OnClose ), NULL, this );
@@ -555,7 +557,7 @@ CoursePanel::CoursePanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, c
 	m_staticText50->Wrap( -1 );
 	fgSizer101->Add( m_staticText50, 0, wxALL, 5 );
 	
-	wxString m_cModeChoices[] = { _("Port or Starboard"), _("Port"), _("Starboard") };
+	wxString m_cModeChoices[] = { _("Port"), _("Starboard"), _("Port or Starboard") };
 	int m_cModeNChoices = sizeof( m_cModeChoices ) / sizeof( wxString );
 	m_cMode = new wxChoice( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_cModeNChoices, m_cModeChoices, 0 );
 	m_cMode->SetSelection( 0 );

@@ -507,8 +507,7 @@ public:
         case STARBOARD: s += _("Starboard") + wxString(_T(" ")); break;
         default: break;
         }
-        return s + _("course") + wxString::Format(_T(" %f "), m_Course)
-            + wxString::Format(_T(" %f"), m_Tolerance);
+        return s + _("course") + wxString::Format(_T(" %f"), m_Course);
     }
 
     bool Test() {
@@ -797,18 +796,6 @@ void Alarm::ResetAll()
         s_Alarms[i]->m_bFired = false;
 }
 
-void Alarm::UpdateStatusAll()
-{
-    for(unsigned int i=0; i<s_Alarms.size(); i++)
-        s_Alarms[i]->UpdateStatus();
-}
-
-void Alarm::RepopulateAll()
-{
-    for(unsigned int i=0; i<s_Alarms.size(); i++)
-        s_Alarms[i]->Repopulate();
-}
-
 void Alarm::NMEAStringAll(const wxString &sentence)
 {
     for(unsigned int i=0; i<s_Alarms.size(); i++)
@@ -935,42 +922,7 @@ void Alarm::OnTimer( wxTimerEvent & )
     }
 
     if(g_watchdog_pi->m_WatchdogDialog && g_watchdog_pi->m_WatchdogDialog->IsShown())
-        UpdateStatus();
-}
-
-void Alarm::UpdateStatus()
-{
-#if 0
-    if(!m_bEnabled)
-        return;
-
-    wxString s = GetStatus();
-    if(m_bFired)
-        status->SetForegroundColour(*wxRED);
-    else
-        status->SetForegroundColour(*wxBLACK);
-            
-    status->SetLabel(s);
-#endif
-}
-
-void Alarm::Repopulate()
-{
-#if 0
-    wxControl *text, *status;
-    GetStatusControls(text, status);
-
-    if(!status || !text)
-        return;
-
-    wxFlexGridSizer &sizer = *g_watchdog_pi->m_pWatchdogDialog->m_fgAlarms;
-
-    text->Show(m_bEnabled);
-    status->Show(m_bEnabled);
-
-    if(m_bEnabled) {
-        sizer.Add(text, 0, wxALL, 5);
-        sizer.Add(status, 0, wxALL, 5);
-    }
-#endif
+        for(unsigned int i=0; i<Alarm::s_Alarms.size(); i++)
+            if(Alarm::s_Alarms[i] == this)
+                g_watchdog_pi->m_WatchdogDialog->UpdateStatus(i);
 }

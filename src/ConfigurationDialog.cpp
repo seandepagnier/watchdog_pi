@@ -30,7 +30,7 @@
 #include "NewAlarmDialog.h"
 #include "EditAlarmDialog.h"
 
-enum AlarmConfig { ALARM_ENABLED, ALARM_TYPE, ALARM_OPTIONS, ALARM_ACTION };
+enum AlarmConfig { ALARM_TYPE, ALARM_OPTIONS, ALARM_ACTION };
 
 ConfigurationDialog::ConfigurationDialog( watchdog_pi &_watchdog_pi, wxWindow* parent)
     : ConfigurationDialogBase( parent ), m_watchdog_pi(_watchdog_pi)
@@ -44,7 +44,6 @@ ConfigurationDialog::ConfigurationDialog( watchdog_pi &_watchdog_pi, wxWindow* p
     m_rbVisible->SetValue(enabled == 3);
     m_rbNever->SetValue(enabled == 0);
 
-    m_lAlarms->InsertColumn(ALARM_ENABLED, _("Enabled"));
     m_lAlarms->InsertColumn(ALARM_TYPE, _("Type"));
     m_lAlarms->InsertColumn(ALARM_OPTIONS, _("Options"));
     m_lAlarms->InsertColumn(ALARM_ACTION, _("Action"));
@@ -92,6 +91,8 @@ void ConfigurationDialog::OnNewAlarm( wxCommandEvent& event )
     UpdateStates();
 
     OnEditAlarm(event);
+
+    g_watchdog_pi->m_WatchdogDialog->UpdateAlarms();
 }
 
 void ConfigurationDialog::OnEditAlarm( wxCommandEvent& event )
@@ -113,6 +114,8 @@ void ConfigurationDialog::OnDeleteAlarm( wxCommandEvent& event )
     m_lAlarms->DeleteItem(CurrentSelection());
 
     UpdateStates();
+
+    g_watchdog_pi->m_WatchdogDialog->UpdateAlarms();
 }
 
 void ConfigurationDialog::OnDeleteAllAlarms( wxCommandEvent& event )
@@ -123,6 +126,7 @@ void ConfigurationDialog::OnDeleteAllAlarms( wxCommandEvent& event )
     Alarm::s_Alarms.clear();
 
     UpdateStates();
+    g_watchdog_pi->m_WatchdogDialog->UpdateAlarms();
 }
 
 void ConfigurationDialog::UpdateStates()
@@ -147,7 +151,6 @@ void ConfigurationDialog::UpdateItem(int index)
 {
     Alarm *alarm = Alarm::s_Alarms[index];
 
-    m_lAlarms->SetItem(index, ALARM_ENABLED, alarm->m_bEnabled ? _T("X") : _T(""));
     m_lAlarms->SetItem(index, ALARM_TYPE, alarm->Type());
     m_lAlarms->SetColumnWidth(ALARM_TYPE, wxLIST_AUTOSIZE);
     m_lAlarms->SetItem(index, ALARM_OPTIONS, alarm->Options());

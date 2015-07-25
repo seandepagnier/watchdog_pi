@@ -204,7 +204,8 @@ void watchdog_pi::OnToolbarToolCallback(int id)
     }
 
     m_WatchdogDialog->Show(!m_WatchdogDialog->IsShown());
-    m_WatchdogDialog->UpdateAlarms();
+    if(m_WatchdogDialog->IsShown())
+        m_WatchdogDialog->UpdateAlarms();
 
     wxPoint p = m_WatchdogDialog->GetPosition();
     m_WatchdogDialog->Move(0, 0);        // workaround for gtk autocentre dialog behavior
@@ -224,16 +225,10 @@ bool watchdog_pi::RenderOverlay(wxDC &dc, PlugIn_ViewPort *vp)
 
 bool watchdog_pi::RenderGLOverlay(wxGLContext *pcontext, PlugIn_ViewPort *vp)
 {
-    glPushAttrib(GL_LINE_BIT | GL_ENABLE_BIT | GL_HINT_BIT ); //Save state
-    glEnable( GL_LINE_SMOOTH );
-    glEnable( GL_BLEND );
-    glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
-    glHint( GL_LINE_SMOOTH_HINT, GL_NICEST );
-
     wdDC odc;
+    glEnable( GL_BLEND );
     Render(odc, *vp);
-
-    glPopAttrib();
+    glDisable( GL_BLEND );
     return true;
 }
 
@@ -266,9 +261,6 @@ void watchdog_pi::OnTimer( wxTimerEvent & )
         m_sog = m_cog = NAN;
     
     m_lasttimerfix = m_lastfix;
-
-    if(m_WatchdogDialog)
-        m_WatchdogDialog->Fit();
 }
 
 void watchdog_pi::SetCursorLatLon(double lat, double lon)

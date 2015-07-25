@@ -27,6 +27,31 @@
 #include "watchdog_pi.h"
 #include "WatchdogDialog.h"
 
+/* XPM */
+static const char * check_xpm[] = {
+"16 16 3 1",
+" 	c None",
+".	c #FFFFFF",
+"+	c #000000",
+"................",
+".++..........++.",
+".+++........+++.",
+"..+++......+++..",
+"...+++....+++...",
+"....+++..+++....",
+".....++++++.....",
+"......++++......",
+"......++++......",
+".....++++++.....",
+"....+++..+++....",
+"...+++....+++...",
+"..+++......+++..",
+".+++........+++.",
+".++..........++.",
+"................"};
+
+enum AlarmStatus { ALARM_ENABLED, ALARM_TYPE, ALARM_STATUS };
+
 WatchdogDialog::WatchdogDialog( watchdog_pi &_watchdog_pi, wxWindow* parent)
     : WatchdogDialogBase( parent ), m_watchdog_pi(_watchdog_pi)
 {
@@ -34,9 +59,18 @@ WatchdogDialog::WatchdogDialog( watchdog_pi &_watchdog_pi, wxWindow* parent)
 
     pConf->SetPath ( _T( "/Settings/Watchdog" ) );
 
+#ifdef __WXGTK__
+    Move(0, 0);        // workaround for gtk autocentre dialog behavior
+#endif
     Move(pConf->Read ( _T ( "DialogPosX" ), 20L ), pConf->Read ( _T ( "DialogPosY" ), 20L ));
 
-//    m_lStatus->InsertColumn(0);
+    wxImageList *imglist = new wxImageList(16, 16, true, 1);
+    imglist->Add(wxBitmap(check_xpm));
+    m_lStatus->AssignImageList(imglist, wxIMAGE_LIST_SMALL);
+
+    m_lStatus->InsertColumn(ALARM_ENABLED, _T("X"));
+    m_lStatus->InsertColumn(ALARM_TYPE, _("Type"));
+    m_lStatus->InsertColumn(ALARM_STATUS, _("Status"));
 }
 
 WatchdogDialog::~WatchdogDialog()
@@ -52,20 +86,43 @@ WatchdogDialog::~WatchdogDialog()
 
 void WatchdogDialog::UpdateAlarms()
 {
-    Alarm::UpdateStatusAll();
+    while((int)Alarm::s_Alarms.size() > m_lStatus->GetItemCount()) {
+        wxListItem item;
+        m_lStatus->InsertItem(0, item);
+    }
 
-    m_lStatus->ClearAll();
-    Alarm::RepopulateAll();
+    while(m_lStatus->GetItemCount() > (int)Alarm::s_Alarms.size())
+        m_lStatus->DeleteItem(0);
+
+    for(unsigned int i=0; i<Alarm::s_Alarms.size(); i++)
+        UpdateStatus(i);
 
     Fit();
+}
 
-    Hide();
-#ifdef __WXGTK__
-    wxPoint p = GetPosition();
-    Move(0, 0);        // workaround for gtk autocentre dialog behavior
-    Move(p);
-#endif
-    Show();
+void WatchdogDialog::UpdateStatus(int index)
+{
+    Alarm *alarm = Alarm::s_Alarms[index];
+    m_lStatus->SetItemImage(index, alarm->m_bEnabled ? 0 : -1);
+
+//    m_lAlarms->SetItem(index, ALARM_ENABLED, alarm->m_bEnabled ? _T("X") : _T(""));
+    m_lStatus->SetItem(index, ALARM_TYPE, alarm->Type());
+    m_lStatus->SetItem(index, ALARM_STATUS, alarm->GetStatus());
+    m_lStatus->SetItemTextColour(index, alarm->m_bFired ? *wxRED: *wxBLACK);
+    m_lStatus->SetColumnWidth(ALARM_STATUS, wxLIST_AUTOSIZE);
+}
+
+void WatchdogDialog::OnStatusLeftDown( wxMouseEvent& event )
+{
+    wxPoint pos = event.GetPosition();
+    int flags = 0;
+    long index = m_lStatus->HitTest(pos, flags);
+    if(index < 0)
+        return;
+
+    Alarm *alarm = Alarm::s_Alarms[index];
+    alarm->m_bEnabled =  !alarm->m_bEnabled;
+    UpdateStatus(index);
 }
 
 void WatchdogDialog::OnConfiguration( wxCommandEvent& event )

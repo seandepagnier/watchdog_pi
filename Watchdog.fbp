@@ -166,7 +166,7 @@
                         <event name="OnKillFocus"></event>
                         <event name="OnLeaveWindow"></event>
                         <event name="OnLeftDClick"></event>
-                        <event name="OnLeftDown"></event>
+                        <event name="OnLeftDown">OnStatusLeftDown</event>
                         <event name="OnLeftUp"></event>
                         <event name="OnListBeginDrag"></event>
                         <event name="OnListBeginLabelEdit"></event>
@@ -5539,7 +5539,7 @@
                                 <property name="caption"></property>
                                 <property name="caption_visible">1</property>
                                 <property name="center_pane">0</property>
-                                <property name="choices">&quot;Port or Starboard&quot; &quot;Port&quot; &quot;Starboard&quot;</property>
+                                <property name="choices">&quot;Port&quot; &quot;Starboard&quot; &quot;Port or Starboard&quot;</property>
                                 <property name="close_button">1</property>
                                 <property name="context_help"></property>
                                 <property name="context_menu">1</property>

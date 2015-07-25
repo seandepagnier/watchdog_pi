@@ -47,6 +47,7 @@ class WatchdogDialogBase : public wxDialog
 		wxButton* m_bClose;
 		
 		// Virtual event handlers, overide them in your derived class
+		virtual void OnStatusLeftDown( wxMouseEvent& event ) { event.Skip(); }
 		virtual void OnConfiguration( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnReset( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnClose( wxCommandEvent& event ) { event.Skip(); }

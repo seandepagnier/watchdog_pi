@@ -38,8 +38,6 @@ public:
     static void SaveConfigAll();
     static void DeleteAll();
     static void ResetAll();
-    static void UpdateStatusAll();
-    static void RepopulateAll();
     static void NMEAStringAll(const wxString &sentence);
     static Alarm *NewAlarm(enum AlarmType type);
     static void SaveAlarms(wxString filename);
@@ -51,10 +49,6 @@ public:
 
     wxString Action();
     void Run();
-
-    void UpdateStatus();
-
-    virtual void Repopulate();
 
     virtual wxString Type() = 0;
     virtual wxString Options() = 0;
@@ -73,8 +67,6 @@ public:
     void OnTimer(wxTimerEvent &);
 
     bool m_bEnabled, m_bgfxEnabled;
-
-protected:
     bool m_bFired;
 
 private:

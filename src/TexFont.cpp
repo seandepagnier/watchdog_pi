@@ -33,6 +33,7 @@
 
 TexFont::TexFont( )
 {
+    texobj = 0;
 }
 
 TexFont::~TexFont( )
