@@ -399,6 +399,79 @@ LandFallPanel::~LandFallPanel()
 {
 }
 
+BoundaryPanel::BoundaryPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style ) : wxPanel( parent, id, pos, size, style )
+{
+	wxFlexGridSizer* fgSizer17;
+	fgSizer17 = new wxFlexGridSizer( 0, 1, 0, 0 );
+	fgSizer17->SetFlexibleDirection( wxBOTH );
+	fgSizer17->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	wxFlexGridSizer* fgSizer16;
+	fgSizer16 = new wxFlexGridSizer( 0, 3, 0, 0 );
+	fgSizer16->SetFlexibleDirection( wxBOTH );
+	fgSizer16->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_rbTime = new wxRadioButton( this, wxID_ANY, _("GPS course crosses boundary in <"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer16->Add( m_rbTime, 0, wxALL, 5 );
+	
+	m_sTimeMinutes = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 1000, 20 );
+	fgSizer16->Add( m_sTimeMinutes, 0, wxALL, 5 );
+	
+	m_staticText30 = new wxStaticText( this, wxID_ANY, _("minutes"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText30->Wrap( -1 );
+	fgSizer16->Add( m_staticText30, 0, wxALL, 5 );
+	
+	
+	fgSizer17->Add( fgSizer16, 1, wxEXPAND, 5 );
+	
+	wxFlexGridSizer* fgSizer10;
+	fgSizer10 = new wxFlexGridSizer( 0, 3, 0, 0 );
+	fgSizer10->SetFlexibleDirection( wxBOTH );
+	fgSizer10->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_rbDistance = new wxRadioButton( this, wxID_ANY, _("GPS fix is <"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer10->Add( m_rbDistance, 0, wxALL, 5 );
+	
+	m_tDistance = new wxTextCtrl( this, wxID_ANY, _("3"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer10->Add( m_tDistance, 0, wxALL, 5 );
+	
+	m_staticText7 = new wxStaticText( this, wxID_ANY, _("nm from boundary\n(any direction)"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText7->Wrap( -1 );
+	fgSizer10->Add( m_staticText7, 0, wxALL, 5 );
+	
+	m_staticText32 = new wxStaticText( this, wxID_ANY, _("Boundary GUID"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText32->Wrap( -1 );
+	fgSizer10->Add( m_staticText32, 0, wxALL, 5 );
+	
+	m_tBoundaryGUID = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer10->Add( m_tBoundaryGUID, 0, wxALL, 5 );
+	
+	m_button12 = new wxButton( this, wxID_ANY, _("Get Boundary GUID"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer10->Add( m_button12, 0, wxALL, 5 );
+	
+	
+	fgSizer17->Add( fgSizer10, 1, wxEXPAND, 5 );
+	
+	m_staticText39122 = new wxStaticText( this, wxID_ANY, _("Graphical overlay for time displays line from boat to location of boundary crossing"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText39122->Wrap( 400 );
+	fgSizer17->Add( m_staticText39122, 0, wxALL, 5 );
+	
+	
+	this->SetSizer( fgSizer17 );
+	this->Layout();
+	fgSizer17->Fit( this );
+	
+	// Connect Events
+	m_button12->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BoundaryPanel::OnGetBoundaryGUID ), NULL, this );
+}
+
+BoundaryPanel::~BoundaryPanel()
+{
+	// Disconnect Events
+	m_button12->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BoundaryPanel::OnGetBoundaryGUID ), NULL, this );
+	
+}
+
 NMEADataPanel::NMEADataPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style ) : wxPanel( parent, id, pos, size, style )
 {
 	wxFlexGridSizer* fgSizer91;

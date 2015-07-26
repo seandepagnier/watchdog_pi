@@ -29,7 +29,7 @@
 class wdDC;
 class TiXmlElement;
 
-enum AlarmType {LANDFALL, NMEADATA, DEADMAN, ANCHOR, COURSE, SPEED};
+enum AlarmType {LANDFALL, BOUNDARY, NMEADATA, DEADMAN, ANCHOR, COURSE, SPEED};
 
 class Alarm : public wxEvtHandler {
 public:

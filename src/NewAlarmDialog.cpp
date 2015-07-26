@@ -31,6 +31,7 @@ NewAlarmDialog::NewAlarmDialog(wxWindow* parent)
     : NewAlarmDialogBase(parent)
 {
     m_lAlarmType->InsertItem(LANDFALL, _("Landfall"));
+    m_lAlarmType->InsertItem(BOUNDARY, _("Boundary"));
     m_lAlarmType->InsertItem(NMEADATA, _("NMEA Data"));
     m_lAlarmType->InsertItem(DEADMAN,  _("Deadman"));
     m_lAlarmType->InsertItem(ANCHOR,   _("Anchor"));

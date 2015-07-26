@@ -111,9 +111,10 @@ protected:
       PlugIn_Position_Fix_Ex m_lastfix, m_lasttimerfix;
 
 private:
-      void    SetCursorLatLon(double lat, double lon);
-      void    SetNMEASentence(wxString &sentence);
-      void    SetPositionFixEx(PlugIn_Position_Fix_Ex &pfix);
+      void SetCursorLatLon(double lat, double lon);
+      void SetNMEASentence(wxString &sentence);
+      void SetPositionFixEx(PlugIn_Position_Fix_Ex &pfix);
+      void SetPluginMessage(wxString &message_id, wxString &message_body);
 
       ConfigurationDialog *m_ConfigurationDialog;
       int               m_leftclick_tool_id;

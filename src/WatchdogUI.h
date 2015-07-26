@@ -181,6 +181,36 @@ class LandFallPanel : public wxPanel
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/// Class BoundaryPanel
+///////////////////////////////////////////////////////////////////////////////
+class BoundaryPanel : public wxPanel 
+{
+	private:
+	
+	protected:
+		wxStaticText* m_staticText30;
+		wxStaticText* m_staticText7;
+		wxStaticText* m_staticText32;
+		wxButton* m_button12;
+		wxStaticText* m_staticText39122;
+		
+		// Virtual event handlers, overide them in your derived class
+		void OnGetBoundaryGUID( wxCommandEvent& event );
+		
+	
+	public:
+		wxRadioButton* m_rbTime;
+		wxSpinCtrl* m_sTimeMinutes;
+		wxRadioButton* m_rbDistance;
+		wxTextCtrl* m_tDistance;
+		wxTextCtrl* m_tBoundaryGUID;
+		
+		BoundaryPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL ); 
+		~BoundaryPanel();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
 /// Class NMEADataPanel
 ///////////////////////////////////////////////////////////////////////////////
 class NMEADataPanel : public wxPanel 
