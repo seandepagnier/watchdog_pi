@@ -216,7 +216,7 @@ public:
         }
 
         c->SetAttribute("TimeMinutes", m_TimeMinutes);
-        c->SetAttribute("Distance", m_Distance);
+        c->SetDoubleAttribute("Distance", m_Distance);
     }
 
 protected:
@@ -415,7 +415,7 @@ public:
         }
 
         c->SetAttribute("TimeMinutes", m_TimeMinutes);
-        c->SetAttribute("Distance", m_Distance);
+        c->SetDoubleAttribute("Distance", m_Distance);
         c->SetAttribute("BoundaryGUID", m_BoundaryGUID);
 //        alarm->ConfigItem(read, _T ( "LatLonorBoundary" ), m_rbUse );
     }
@@ -673,8 +673,8 @@ public:
 
     void SaveConfig(TiXmlElement *c) {
         c->SetAttribute("Type", "Anchor");
-        c->SetAttribute("Latitude", m_Latitude);
-        c->SetAttribute("Longitude", m_Longitude);
+        c->SetDoubleAttribute("Latitude", m_Latitude);
+        c->SetDoubleAttribute("Longitude", m_Longitude);
         c->SetAttribute("Radius", m_Radius);
     }
 
@@ -797,8 +797,8 @@ public:
         case BOTH: c->SetAttribute("Mode", "Both");
         }
 
-        c->SetAttribute("Tolerance", m_Tolerance);
-        c->SetAttribute("Course", m_Course);
+        c->SetDoubleAttribute("Tolerance", m_Tolerance);
+        c->SetDoubleAttribute("Course", m_Course);
     }
 
 private:
@@ -904,7 +904,7 @@ public:
         case OVERSPEED: c->SetAttribute("Mode", "Overspeed");
         }
 
-        c->SetAttribute("Speed", m_Speed);
+        c->SetDoubleAttribute("Speed", m_Speed);
     }
 
 private:
