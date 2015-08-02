@@ -40,6 +40,7 @@ public:
     void OnDeleteAlarm( wxCommandEvent& event );
     void OnDeleteAllAlarms( wxCommandEvent& event );
     void AlarmSelected( wxListEvent& event ) { UpdateStates(); }
+    void OnDoubleClick( wxMouseEvent& event );
 
 private:
     void UpdateStates();

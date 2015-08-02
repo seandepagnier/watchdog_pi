@@ -31,5 +31,5 @@ class NewAlarmDialog : public NewAlarmDialogBase
 public:
     NewAlarmDialog(wxWindow* parent);
 
-    void DoubleClick( wxMouseEvent& event ) { EndModal(wxID_OK); }
+    void OnDoubleClick( wxMouseEvent& event ) { EndModal(wxID_OK); }
 };

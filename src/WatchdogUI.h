@@ -47,7 +47,8 @@ class WatchdogDialogBase : public wxDialog
 		wxButton* m_bClose;
 		
 		// Virtual event handlers, overide them in your derived class
-		virtual void OnStatusLeftDown( wxMouseEvent& event ) { event.Skip(); }
+		virtual void OnDoubleClick( wxMouseEvent& event ) { event.Skip(); }
+		virtual void OnLeftDown( wxMouseEvent& event ) { event.Skip(); }
 		virtual void OnConfiguration( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnReset( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnClose( wxCommandEvent& event ) { event.Skip(); }
@@ -87,6 +88,7 @@ class ConfigurationDialogBase : public wxDialog
 		virtual void OnEditAlarm( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnDeleteAlarm( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnDeleteAllAlarms( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnDoubleClick( wxMouseEvent& event ) { event.Skip(); }
 		virtual void AlarmSelected( wxListEvent& event ) { event.Skip(); }
 		virtual void OnAboutAuthor( wxCommandEvent& event ) { event.Skip(); }
 		
@@ -111,7 +113,7 @@ class NewAlarmDialogBase : public wxDialog
 		wxButton* m_sdbSizer3Cancel;
 		
 		// Virtual event handlers, overide them in your derived class
-		virtual void DoubleClick( wxMouseEvent& event ) { event.Skip(); }
+		virtual void OnDoubleClick( wxMouseEvent& event ) { event.Skip(); }
 		
 	
 	public:

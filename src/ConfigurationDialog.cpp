@@ -129,6 +129,15 @@ void ConfigurationDialog::OnDeleteAllAlarms( wxCommandEvent& event )
     g_watchdog_pi->m_WatchdogDialog->UpdateAlarms();
 }
 
+void ConfigurationDialog::OnDoubleClick( wxMouseEvent& event )
+{
+    if(CurrentSelection() < 0)
+        return;
+
+    wxCommandEvent e;
+    OnEditAlarm(e);
+}
+
 void ConfigurationDialog::UpdateStates()
 {
     bool enable = CurrentSelection() >= 0;

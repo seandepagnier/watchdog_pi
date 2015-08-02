@@ -165,8 +165,8 @@
                         <event name="OnKeyUp"></event>
                         <event name="OnKillFocus"></event>
                         <event name="OnLeaveWindow"></event>
-                        <event name="OnLeftDClick"></event>
-                        <event name="OnLeftDown">OnStatusLeftDown</event>
+                        <event name="OnLeftDClick">OnDoubleClick</event>
+                        <event name="OnLeftDown">OnLeftDown</event>
                         <event name="OnLeftUp"></event>
                         <event name="OnListBeginDrag"></event>
                         <event name="OnListBeginLabelEdit"></event>
@@ -1426,7 +1426,7 @@
                                                 <event name="OnKeyUp"></event>
                                                 <event name="OnKillFocus"></event>
                                                 <event name="OnLeaveWindow"></event>
-                                                <event name="OnLeftDClick"></event>
+                                                <event name="OnLeftDClick">OnDoubleClick</event>
                                                 <event name="OnLeftDown"></event>
                                                 <event name="OnLeftUp"></event>
                                                 <event name="OnListBeginDrag"></event>
@@ -1745,7 +1745,7 @@
                         <event name="OnKeyUp"></event>
                         <event name="OnKillFocus"></event>
                         <event name="OnLeaveWindow"></event>
-                        <event name="OnLeftDClick">DoubleClick</event>
+                        <event name="OnLeftDClick">OnDoubleClick</event>
                         <event name="OnLeftDown"></event>
                         <event name="OnLeftUp"></event>
                         <event name="OnListBeginDrag"></event>
@@ -2575,7 +2575,7 @@
                                         <property name="gripper">0</property>
                                         <property name="hidden">0</property>
                                         <property name="id">wxID_ANY</property>
-                                        <property name="label">Automatically  Reset</property>
+                                        <property name="label">Automatically Reset</property>
                                         <property name="max_size"></property>
                                         <property name="maximize_button">0</property>
                                         <property name="maximum_size"></property>

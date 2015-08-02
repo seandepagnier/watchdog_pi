@@ -26,6 +26,7 @@
 
 #include "watchdog_pi.h"
 #include "WatchdogDialog.h"
+#include "EditAlarmDialog.h"
 
 /* XPM */
 static const char * check_xpm[] = {
@@ -112,8 +113,11 @@ void WatchdogDialog::UpdateStatus(int index)
     m_lStatus->SetColumnWidth(ALARM_STATUS, wxLIST_AUTOSIZE);
 }
 
-void WatchdogDialog::OnStatusLeftDown( wxMouseEvent& event )
+void WatchdogDialog::OnLeftDown( wxMouseEvent& event )
 {
+    if(event.GetX() >= m_lStatus->GetColumnWidth(0))
+        return;
+
     wxPoint pos = event.GetPosition();
     int flags = 0;
     long index = m_lStatus->HitTest(pos, flags);
@@ -121,8 +125,25 @@ void WatchdogDialog::OnStatusLeftDown( wxMouseEvent& event )
         return;
 
     Alarm *alarm = Alarm::s_Alarms[index];
-    alarm->m_bEnabled =  !alarm->m_bEnabled;
+    alarm->m_bEnabled = !alarm->m_bEnabled;
     UpdateStatus(index);
+}
+
+void WatchdogDialog::OnDoubleClick( wxMouseEvent& event )
+{
+    if(event.GetX() < m_lStatus->GetColumnWidth(0))
+        return;
+
+    wxPoint pos = event.GetPosition();
+    int flags = 0;
+    long index = m_lStatus->HitTest(pos, flags);
+    if(index < 0)
+        return;
+
+    Alarm *alarm = Alarm::s_Alarms[index];
+    EditAlarmDialog dlg(this, alarm);
+    if(dlg.ShowModal() == wxID_OK)
+        dlg.Save();
 }
 
 void WatchdogDialog::OnConfiguration( wxCommandEvent& event )

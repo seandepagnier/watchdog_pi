@@ -48,7 +48,8 @@ WatchdogDialogBase::WatchdogDialogBase( wxWindow* parent, wxWindowID id, const w
 	this->Centre( wxBOTH );
 	
 	// Connect Events
-	m_lStatus->Connect( wxEVT_LEFT_DOWN, wxMouseEventHandler( WatchdogDialogBase::OnStatusLeftDown ), NULL, this );
+	m_lStatus->Connect( wxEVT_LEFT_DCLICK, wxMouseEventHandler( WatchdogDialogBase::OnDoubleClick ), NULL, this );
+	m_lStatus->Connect( wxEVT_LEFT_DOWN, wxMouseEventHandler( WatchdogDialogBase::OnLeftDown ), NULL, this );
 	m_bConfiguration->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchdogDialogBase::OnConfiguration ), NULL, this );
 	m_bReset->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchdogDialogBase::OnReset ), NULL, this );
 	m_bClose->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchdogDialogBase::OnClose ), NULL, this );
@@ -57,7 +58,8 @@ WatchdogDialogBase::WatchdogDialogBase( wxWindow* parent, wxWindowID id, const w
 WatchdogDialogBase::~WatchdogDialogBase()
 {
 	// Disconnect Events
-	m_lStatus->Disconnect( wxEVT_LEFT_DOWN, wxMouseEventHandler( WatchdogDialogBase::OnStatusLeftDown ), NULL, this );
+	m_lStatus->Disconnect( wxEVT_LEFT_DCLICK, wxMouseEventHandler( WatchdogDialogBase::OnDoubleClick ), NULL, this );
+	m_lStatus->Disconnect( wxEVT_LEFT_DOWN, wxMouseEventHandler( WatchdogDialogBase::OnLeftDown ), NULL, this );
 	m_bConfiguration->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchdogDialogBase::OnConfiguration ), NULL, this );
 	m_bReset->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchdogDialogBase::OnReset ), NULL, this );
 	m_bClose->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchdogDialogBase::OnClose ), NULL, this );
@@ -183,6 +185,7 @@ ConfigurationDialogBase::ConfigurationDialogBase( wxWindow* parent, wxWindowID i
 	m_bEdit->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ConfigurationDialogBase::OnEditAlarm ), NULL, this );
 	m_bDelete->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ConfigurationDialogBase::OnDeleteAlarm ), NULL, this );
 	m_bDeleteAll->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ConfigurationDialogBase::OnDeleteAllAlarms ), NULL, this );
+	m_lAlarms->Connect( wxEVT_LEFT_DCLICK, wxMouseEventHandler( ConfigurationDialogBase::OnDoubleClick ), NULL, this );
 	m_lAlarms->Connect( wxEVT_COMMAND_LIST_ITEM_DESELECTED, wxListEventHandler( ConfigurationDialogBase::AlarmSelected ), NULL, this );
 	m_lAlarms->Connect( wxEVT_COMMAND_LIST_ITEM_SELECTED, wxListEventHandler( ConfigurationDialogBase::AlarmSelected ), NULL, this );
 	m_button7->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ConfigurationDialogBase::OnAboutAuthor ), NULL, this );
@@ -199,6 +202,7 @@ ConfigurationDialogBase::~ConfigurationDialogBase()
 	m_bEdit->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ConfigurationDialogBase::OnEditAlarm ), NULL, this );
 	m_bDelete->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ConfigurationDialogBase::OnDeleteAlarm ), NULL, this );
 	m_bDeleteAll->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ConfigurationDialogBase::OnDeleteAllAlarms ), NULL, this );
+	m_lAlarms->Disconnect( wxEVT_LEFT_DCLICK, wxMouseEventHandler( ConfigurationDialogBase::OnDoubleClick ), NULL, this );
 	m_lAlarms->Disconnect( wxEVT_COMMAND_LIST_ITEM_DESELECTED, wxListEventHandler( ConfigurationDialogBase::AlarmSelected ), NULL, this );
 	m_lAlarms->Disconnect( wxEVT_COMMAND_LIST_ITEM_SELECTED, wxListEventHandler( ConfigurationDialogBase::AlarmSelected ), NULL, this );
 	m_button7->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ConfigurationDialogBase::OnAboutAuthor ), NULL, this );
@@ -235,13 +239,13 @@ NewAlarmDialogBase::NewAlarmDialogBase( wxWindow* parent, wxWindowID id, const w
 	this->Centre( wxBOTH );
 	
 	// Connect Events
-	m_lAlarmType->Connect( wxEVT_LEFT_DCLICK, wxMouseEventHandler( NewAlarmDialogBase::DoubleClick ), NULL, this );
+	m_lAlarmType->Connect( wxEVT_LEFT_DCLICK, wxMouseEventHandler( NewAlarmDialogBase::OnDoubleClick ), NULL, this );
 }
 
 NewAlarmDialogBase::~NewAlarmDialogBase()
 {
 	// Disconnect Events
-	m_lAlarmType->Disconnect( wxEVT_LEFT_DCLICK, wxMouseEventHandler( NewAlarmDialogBase::DoubleClick ), NULL, this );
+	m_lAlarmType->Disconnect( wxEVT_LEFT_DCLICK, wxMouseEventHandler( NewAlarmDialogBase::OnDoubleClick ), NULL, this );
 	
 }
 
@@ -287,7 +291,7 @@ EditAlarmDialogBase::EditAlarmDialogBase( wxWindow* parent, wxWindowID id, const
 	m_sRepeatSeconds = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 10000, 60 );
 	fgSizer6->Add( m_sRepeatSeconds, 0, wxALL, 5 );
 	
-	m_cbAutoReset = new wxCheckBox( this, wxID_ANY, _("Automatically  Reset"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_cbAutoReset = new wxCheckBox( this, wxID_ANY, _("Automatically Reset"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer6->Add( m_cbAutoReset, 0, wxALL, 5 );
 	
 	m_cbgfxEnabled = new wxCheckBox( this, wxID_ANY, _("Graphics Enabled"), wxDefaultPosition, wxDefaultSize, 0 );
