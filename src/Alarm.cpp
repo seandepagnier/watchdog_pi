@@ -586,39 +586,29 @@ public:
         minoldfix.FixTime = 0;
         m_Latitude = g_watchdog_pi->LastFix().Lat;
         m_Longitude = g_watchdog_pi->LastFix().Lon;
+        m_bWasEnabled = false;
     }
 
     wxString Type() { return _("Anchor"); }
     wxString Options() {
-        return _("radius") + wxString::Format(_T(" %f "), m_Radius) + _("meters");
+        return _("radius") + wxString::Format(_T(" %f "), m_Radius) + _("meters")
+            + (m_bAutoSync ? _T(" ") + _("bAutoSync") : _T(""));
     }
 
     bool Test() {
-#if 0
-        if( pConf->Read ( _T ( "AutoSync" ), 0L ) ) {
-            PlugIn_Position_Fix_Ex lastfix = g_watchdog_pi->LastFix();
-            if(lastfix.FixTime - minoldfix.FixTime >= 60) {
-                if(minoldfix.FixTime) {
-                    double dist;
-                    DistanceBearingMercator_Plugin(lastfix.Lat, lastfix.Lon,
-                                                   minoldfix.Lat, minoldfix.Lon,
-                                       0, &dist);
-                    dist *= 1853.248; /* in meters */
-
-                    if(dist < AnchorRadius) {
-                        pConf->Write(_T("Latitude"), lastfix.Lat);
-                        pConf->Write(_T("Longitude"), lastfix.Lon);
-                        g_watchdog_pi->UpdateConfiguration();
-                    }
-                }
-                minoldfix = lastfix;
-            }
-        }
-#endif
         return Distance() > m_Radius;
     }
 
     wxString GetStatus() {
+        if(!m_bWasEnabled && m_bEnabled && m_bAutoSync) {
+            PlugIn_Position_Fix_Ex lastfix = g_watchdog_pi->LastFix();
+            m_Latitude = lastfix.Lat;
+            m_Longitude = lastfix.Lon;
+            RequestRefresh(GetOCPNCanvasWindow());
+        }
+
+        m_bWasEnabled = m_bEnabled;
+
         double anchordist = Distance();
         wxString s;
         if(isnan(anchordist))
@@ -655,6 +645,7 @@ public:
         panel->m_tLatitude->SetValue(wxString::Format(_T("%f"), m_Latitude));
         panel->m_tLongitude->SetValue(wxString::Format(_T("%f"), m_Longitude));
         panel->m_sRadius->SetValue(m_Radius);
+        panel->m_cbAutoSync->SetValue(m_bAutoSync);
         return panel;
     }
 
@@ -663,12 +654,15 @@ public:
         panel->m_tLatitude->GetValue().ToDouble(&m_Latitude);
         panel->m_tLongitude->GetValue().ToDouble(&m_Longitude);
         m_Radius = panel->m_sRadius->GetValue();
+        m_bAutoSync = panel->m_cbAutoSync->GetValue();
     }
 
     void LoadConfig(TiXmlElement *e) {
         e->Attribute("Latitude", &m_Latitude);
         e->Attribute("Longitude", &m_Longitude);
         e->Attribute("Radius", &m_Radius);
+        if(e->QueryBoolAttribute("AutoSync", &m_bAutoSync) != TIXML_SUCCESS)
+            m_bAutoSync = false;
     }
 
     void SaveConfig(TiXmlElement *c) {
@@ -676,6 +670,7 @@ public:
         c->SetDoubleAttribute("Latitude", m_Latitude);
         c->SetDoubleAttribute("Longitude", m_Longitude);
         c->SetAttribute("Radius", m_Radius);
+        c->SetAttribute("AutoSync", m_bAutoSync);
     }
 
 private:
@@ -693,6 +688,7 @@ private:
     PlugIn_Position_Fix_Ex minoldfix;
 
     double m_Latitude, m_Longitude, m_Radius;
+    bool m_bWasEnabled, m_bAutoSync;
 };
 
 class CourseAlarm : public Alarm

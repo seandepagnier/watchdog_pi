@@ -275,6 +275,7 @@ class AnchorPanel : public wxPanel
 		wxTextCtrl* m_tLatitude;
 		wxTextCtrl* m_tLongitude;
 		wxSpinCtrl* m_sRadius;
+		wxCheckBox* m_cbAutoSync;
 		
 		AnchorPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL ); 
 		~AnchorPanel();

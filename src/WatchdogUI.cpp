@@ -602,6 +602,9 @@ AnchorPanel::AnchorPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, c
 	
 	fgSizer24->Add( fgSizer9, 1, wxEXPAND, 5 );
 	
+	m_cbAutoSync = new wxCheckBox( this, wxID_ANY, _("Automatically syncronize to the boat whenever enabled"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer24->Add( m_cbAutoSync, 0, wxALL, 5 );
+	
 	m_staticText39121 = new wxStaticText( this, wxID_ANY, _("Graphical overlay displays bounding anchor area"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText39121->Wrap( -1 );
 	fgSizer24->Add( m_staticText39121, 0, wxALL, 5 );
