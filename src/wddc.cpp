@@ -31,6 +31,8 @@
 #include "wx/wx.h"
 #endif
 
+#include "wx28compat.h"
+
 #ifdef __MSVC__
 #include <windows.h>
 #endif

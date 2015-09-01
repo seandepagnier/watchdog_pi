@@ -24,6 +24,8 @@
  ***************************************************************************
  */
 
+#include <wx/imaglist.h>
+
 #include "watchdog_pi.h"
 #include "WatchdogDialog.h"
 #include "EditAlarmDialog.h"

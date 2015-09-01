@@ -27,6 +27,7 @@
 #include <map>
 
 #include <wx/wx.h>
+#include "wx28compat.h"
 #include "wddc.h"
 
 #include <wx/process.h>
@@ -201,7 +202,7 @@ public:
         const char *mode = e->Attribute("Mode");
         if(!strcasecmp(mode, "Time")) m_Mode = TIME;
         else if(!strcasecmp(mode, "Distance")) m_Mode = DISTANCE;
-        else wxLogMessage(_T("Watchdog: ") + _("invalid LandFall mode") + _T(": ")
+        else wxLogMessage(_T("Watchdog: ") + wxString(_("invalid LandFall mode")) + _T(": ")
                          + wxString::FromUTF8(mode));
 
         e->Attribute("TimeMinutes", &m_TimeMinutes);
@@ -399,7 +400,7 @@ public:
         const char *mode = e->Attribute("Mode");
         if(!strcasecmp(mode, "Time")) m_Mode = TIME;
         else if(!strcasecmp(mode, "Distance")) m_Mode = DISTANCE;
-        else wxLogMessage(_T("Watchdog: ") + _("invalid Boundary mode") + _T(": ")
+        else wxLogMessage(_T("Watchdog: ") + wxString(_("invalid Boundary mode")) + _T(": ")
                          + wxString::FromUTF8(mode));
 
         e->Attribute("TimeMinutes", &m_TimeMinutes);
@@ -416,7 +417,7 @@ public:
 
         c->SetAttribute("TimeMinutes", m_TimeMinutes);
         c->SetDoubleAttribute("Distance", m_Distance);
-        c->SetAttribute("BoundaryGUID", m_BoundaryGUID);
+        c->SetAttribute("BoundaryGUID", m_BoundaryGUID.mb_str());
 //        alarm->ConfigItem(read, _T ( "LatLonorBoundary" ), m_rbUse );
     }
 
@@ -481,7 +482,7 @@ public:
 
     void SaveConfig(TiXmlElement *c) {
         c->SetAttribute("Type", "NMEAData");
-        c->SetAttribute("Sentences", m_sentences);
+        c->SetAttribute("Sentences", m_sentences.mb_str());
         c->SetAttribute("Seconds", m_seconds);
     }
 
@@ -592,7 +593,7 @@ public:
     wxString Type() { return _("Anchor"); }
     wxString Options() {
         return _("radius") + wxString::Format(_T(" %f "), m_Radius) + _("meters")
-            + (m_bAutoSync ? _T(" ") + _("bAutoSync") : _T(""));
+            + (m_bAutoSync ? _T(" ") + wxString(_("bAutoSync")) : _T(""));
     }
 
     bool Test() {
@@ -778,7 +779,7 @@ public:
         if(!strcasecmp(mode, "Port")) m_Mode = PORT;
         else if(!strcasecmp(mode, "Starboard")) m_Mode = STARBOARD;
         else if(!strcasecmp(mode, "Starboard")) m_Mode = BOTH;
-        else wxLogMessage(_T("Watchdog: ") + _("invalid Course mode") + _T(": ")
+        else wxLogMessage(_T("Watchdog: ") + wxString(_("invalid Course mode")) + _T(": ")
                          + wxString::FromUTF8(mode));
 
         e->Attribute("Tolerance", &m_Tolerance);
@@ -887,7 +888,7 @@ public:
         const char *mode = e->Attribute("Mode");
         if(!strcasecmp(mode, "Underspeed")) m_Mode = UNDERSPEED;
         else if(!strcasecmp(mode, "Overspeed")) m_Mode = OVERSPEED;
-        else wxLogMessage(_T("Watchdog: ") + _("invalid Speed mode") + _T(": ")
+        else wxLogMessage(_T("Watchdog: ") + wxString(_("invalid Speed mode")) + _T(": ")
                          + wxString::FromUTF8(mode));
 
         e->Attribute("Speed", &m_Speed);
@@ -928,7 +929,7 @@ void Alarm::LoadConfigAll()
     TiXmlDocument doc;
 
     if(!doc.LoadFile(configuration.mb_str())) {
-        wxLogMessage(_T("Watchdog: ") + _("Failed to read") + _T(": ") + configuration);
+        wxLogMessage(_T("Watchdog: ") + wxString(_("Failed to read")) + _T(": ") + configuration);
         return;
     }
 
@@ -945,7 +946,7 @@ void Alarm::LoadConfigAll()
             else if(!strcasecmp(type, "Course")) alarm = Alarm::NewAlarm(COURSE);
             else if(!strcasecmp(type, "Speed")) alarm = Alarm::NewAlarm(SPEED);
             else {
-                wxLogMessage(_T("Watchdog: ") + _("invalid alarm type") + _T(": ") + wxString::FromUTF8(type));
+                wxLogMessage(_T("Watchdog: ") + wxString(_("invalid alarm type")) + _T(": ") + wxString::FromUTF8(type));
                 continue;
             }
 
@@ -980,8 +981,8 @@ void Alarm::SaveConfigAll()
     }
 
     wxString configuration = watchdog_pi::StandardPath() + _T("WatchdogConfiguration.xml");
-    if(!doc.SaveFile(configuration))
-        wxLogMessage(_T("Watchdog: ") + _("failed to save") + _T(": ") + configuration);
+    if(!doc.SaveFile(configuration.mb_str()))
+        wxLogMessage(_T("Watchdog: ") + wxString(_("failed to save")) + _T(": ") + configuration);
 }
 
 void Alarm::DeleteAll()
