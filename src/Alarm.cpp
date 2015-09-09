@@ -75,7 +75,7 @@ public:
             while(count < 10) {
                 PositionBearingDistanceMercator_Plugin
                     (lastfix.Lat, lastfix.Lon, lastfix.Cog, dist + dist1, &lat2, &lon2);
-                if(PlugIn_GSHHS_CrossesLand(lat1, lon1, lat2, lon2)) {
+                if(!wxIsNaN(lat2) && PlugIn_GSHHS_CrossesLand(lat1, lon1, lat2, lon2)) {
                     if(dist1 < 1) {
                         m_LandFallTime = wxTimeSpan::Seconds(3600.0 * dist / lastfix.Sog);
                         m_crossinglat1 = lat1, m_crossinglon1 = lon1;
