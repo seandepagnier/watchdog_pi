@@ -193,7 +193,7 @@ public:
 
     void SavePanel(wxWindow *p) {
         LandFallPanel *panel = (LandFallPanel*)p;
-        m_Mode = panel->m_rbDistance->GetValue() ? TIME : DISTANCE;
+        m_Mode = panel->m_rbDistance->GetValue() ? DISTANCE : TIME;
         m_TimeMinutes = panel->m_sTimeMinutes->GetValue();
         panel->m_tDistance->GetValue().ToDouble(&m_Distance);
     }
