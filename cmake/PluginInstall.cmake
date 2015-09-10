@@ -1,6 +1,6 @@
 ##---------------------------------------------------------------------------
-## Author:      Sean D'Epagnier
-## Copyright:   
+## Author:      Pavel Kalian (Based on the work of Sean D'Epagnier)
+## Copyright:   2014
 ## License:     GPLv3+
 ##---------------------------------------------------------------------------
 
@@ -75,9 +75,9 @@ IF(WIN32)
     SET(INSTALL_DIRECTORY "plugins\\\\${PACKAGE_NAME}")
   ENDIF(CMAKE_CROSSCOMPILING)
 
-  IF(${BUNDLE_DATA} AND EXISTS ${PROJECT_SOURCE_DIR}/data)
+  IF(EXISTS ${PROJECT_SOURCE_DIR}/data)
     INSTALL(DIRECTORY data DESTINATION "${INSTALL_DIRECTORY}")
-  ENDIF(${BUNDLE_DATA} AND EXISTS ${PROJECT_SOURCE_DIR}/data)
+  ENDIF(EXISTS ${PROJECT_SOURCE_DIR}/data)
 ENDIF(WIN32)
 
 IF(UNIX AND NOT APPLE)
@@ -85,7 +85,7 @@ IF(UNIX AND NOT APPLE)
   SET(PREFIX_PARENTLIB ${PREFIX_LIB}/${PARENT})
   INSTALL(TARGETS ${PACKAGE_NAME} RUNTIME LIBRARY DESTINATION ${PREFIX_PARENTLIB})
 
- IF(${BUNDLE_DATA} AND EXISTS ${PROJECT_SOURCE_DIR}/data)
+  IF(EXISTS ${PROJECT_SOURCE_DIR}/data)
     INSTALL(DIRECTORY data DESTINATION ${PREFIX_PARENTDATA}/plugins/${PACKAGE_NAME})
-  ENDIF(${BUNDLE_DATA} AND EXISTS ${PROJECT_SOURCE_DIR}/data)
+  ENDIF()
 ENDIF(UNIX AND NOT APPLE)

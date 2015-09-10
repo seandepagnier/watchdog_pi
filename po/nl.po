@@ -3,74 +3,74 @@ msgstr ""
 "Project-Id-Version: opencpn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-04-22 11:57-0500\n"
-"PO-Revision-Date: 2015-04-22 13:08-0400\n"
+"PO-Revision-Date: 2015-06-02 20:34-0400\n"
 "Last-Translator: nohal <pavel@kalian.cz>\n"
-"Language-Team: Spanish\n"
-"Language: es_ES\n"
+"Language-Team: Dutch\n"
+"Language: nl_NL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
 "X-Crowdin-Project: opencpn\n"
-"X-Crowdin-Language: es-ES\n"
+"X-Crowdin-Language: nl\n"
 "X-Crowdin-File: /plugins/watchdog_pi/po/watchdog_pi.pot\n"
 
 #: src/Alarm.cpp:43
 msgid "LandFall"
-msgstr "Tierra a la vista"
+msgstr "Landaanloop"
 
 #: src/Alarm.cpp:113
 msgid "LandFall not Detected"
-msgstr "Tierra no detectada"
+msgstr "Geen landaanloop gedetecteerd"
 
 #: src/Alarm.cpp:117
 msgid "Days"
-msgstr "Días"
+msgstr "Dagen"
 
 #: src/Alarm.cpp:120
 msgid "Day"
-msgstr "Día"
+msgstr "Dag"
 
 #: src/Alarm.cpp:124
 msgid "Hours"
-msgstr "Horas"
+msgstr "Uren"
 
 #: src/Alarm.cpp:127
 msgid "Hour"
-msgstr "Hora"
+msgstr "Uur"
 
 #: src/Alarm.cpp:131
 msgid "Minutes"
-msgstr "Minutos"
+msgstr "Minuten"
 
 #: src/Alarm.cpp:134
 msgid "Minute"
-msgstr "Minuto"
+msgstr "Minuut"
 
 #: src/Alarm.cpp:138
 msgid "Seconds"
-msgstr "Segundos"
+msgstr "Seconden"
 
 #: src/Alarm.cpp:140
 msgid "Second"
-msgstr "Segundo"
+msgstr "Seconde"
 
 #: src/Alarm.cpp:156
 msgid "Distance"
-msgstr "Distancia"
+msgstr "Afstand"
 
 #: src/Alarm.cpp:236 src/WatchdogUI.cpp:281
 msgid "NMEA Data"
-msgstr "Datos NMEA"
+msgstr "NMEA-gegevens"
 
 #: src/Alarm.cpp:255
 msgid "second(s)"
-msgstr "segundo(s)"
+msgstr "seconde"
 
 #: src/Alarm.cpp:304 src/WatchdogUI.cpp:314
 msgid "Deadman"
-msgstr "Inactividad"
+msgstr "'Deadman'"
 
 #: src/Alarm.cpp:340 src/WatchdogPrefsDialog.cpp:254 src/WatchdogUI.cpp:307
 #: src/WatchdogUI.cpp:344
@@ -79,101 +79,107 @@ msgstr ""
 
 #: src/Alarm.cpp:353
 msgid "Anchor"
-msgstr "Fondeo"
+msgstr "Anker"
 
 #: src/Alarm.cpp:397
 msgid "meter(s)"
-msgstr "metro(s)"
+msgstr "meter"
 
 #: src/Alarm.cpp:453 src/Alarm.cpp:456 src/Alarm.cpp:549
 #: src/WatchdogPrefsDialog.cpp:261 src/WatchdogUI.cpp:448
 msgid "Off Course"
-msgstr "Fuera de rumbo"
+msgstr "Van koers"
 
 #: src/Alarm.cpp:454 src/WatchdogPrefsDialog.cpp:261
 msgid "Port"
-msgstr "babor"
+msgstr "Bakboord"
 
 #: src/Alarm.cpp:483
 msgid "degrees(s)"
-msgstr "grado(s)"
+msgstr "graden"
 
 #: src/Alarm.cpp:549
 msgid "Starboard"
-msgstr ""
+msgstr "Stuurboord"
 
 #: src/Alarm.cpp:571
 msgid "degrees(s) Starboard"
-msgstr "grado(s) estribor"
+msgstr "graden SB"
 
 #: src/Alarm.cpp:643 src/WatchdogUI.cpp:93 src/WatchdogUI.cpp:495
 msgid "Under Speed"
-msgstr "Velocidad baja"
+msgstr "Ondersnelheid"
 
 #: src/Alarm.cpp:660 src/WatchdogUI.cpp:101 src/WatchdogUI.cpp:527
 msgid "Over Speed"
-msgstr "Velocidad alta"
+msgstr "Oversnelheid"
 
 #: src/Alarm.cpp:752
 msgid "Failed to execute command: "
-msgstr "Error ejecutando el comando: "
+msgstr "Kon opdracht niet uitvoeren:"
 
 #: src/Alarm.cpp:753 src/WatchdogPrefsDialog.cpp:125 src/watchdog_pi.cpp:91
 #: src/watchdog_pi.cpp:154
 msgid "Watchdog"
-msgstr "Watchdog"
+msgstr "'Watchdog'"
 
 #: src/Alarm.cpp:759
 msgid "ALARM!"
-msgstr ""
+msgstr "ALARM!"
 
 #: src/Alarm.cpp:760
 msgid "Watchman"
-msgstr "Vigilante"
+msgstr "Wachtsman"
 
 #: src/WatchdogPrefsDialog.cpp:125
 msgid "Invalid Alarm"
-msgstr ""
+msgstr "Ongeldige Alarm"
 
 #: src/WatchdogPrefsDialog.cpp:261 src/WatchdogUI.cpp:77
 msgid "Course Error"
-msgstr "Error de rumbo"
+msgstr "Koersfout"
 
 #: src/WatchdogPrefsDialog.cpp:265 src/WatchdogUI.cpp:463
 msgid "Off Course Starboard"
-msgstr "Fuera de rumbo estribor"
+msgstr "Koersafwijking SB"
 
 #: src/WatchdogPrefsDialog.cpp:277
-msgid "Most alarms should be self-explanatory\nNormally a sound is played, however you can execute any command you like, eg:  \"aplay /usr/local/share/opencpn/sounds/2bells.wav\"\nMessagebox may be useful to interrupt other applications (like a movie player)\nAutomatically Reset will reset the alarm once it is no longer triggered, and it may be triggered again later."
-msgstr "La mayoría de las alarmas deberían explicarse por si solas\nNormalmente se activará un sonido, sin embargo puedes ejecutar cualquier comando, por ejemplo: \"aplay /usr/local/share/opencpn/sounds/2bells.wav\"\nLos mensajes en ventana pueden ser útiles para interrumpir otras aplicaciones (como un reproductor de vídeo)\n\"Reiniciar automáticamente\" reseteará la alarma una vez haya dejado de estar activa para que pueda activarse de nuevo."
+msgid "Most alarms should be self-explanatory\n"
+"Normally a sound is played, however you can execute any command you like, eg:  \"aplay /usr/local/share/opencpn/sounds/2bells.wav\"\n"
+"Messagebox may be useful to interrupt other applications (like a movie player)\n"
+"Automatically Reset will reset the alarm once it is no longer triggered, and it may be triggered again later."
+msgstr "De meeste alarmen spreken vanzelf.\n"
+"Standaard wordt een alarmgeluid gegeven, maar u kunt elke opdracht uitvoeren die u wilt. Een voorbeeld is: \"aplay /usr/local/share/opencpn/sounds/2bells.wav\"\n"
+"Het berichtenvenster  kan handig zijn om andere applicaties te onderbreken (zoals met een videospeler)\n"
+"De Automatische Reset reset het alarm als de aanleiding wegvalt (het alarm kan later weer worden gegeven)."
 
 #: src/WatchdogPrefsDialog.cpp:284
 msgid "Watchdog Information"
-msgstr "Información de Watchdog"
+msgstr "Watchdog informatie"
 
 #: src/WatchdogUI.cpp:29
 msgid "LandFall in"
-msgstr "Tierra en"
+msgstr "Landaanloop in"
 
 #: src/WatchdogUI.cpp:33 src/WatchdogUI.cpp:41
 msgid "No NMEA Messages"
-msgstr "No hay mensajes NMEA"
+msgstr "Geen NMEA-berichten"
 
 #: src/WatchdogUI.cpp:37
 msgid "Land Distance >"
-msgstr "Distancia a tierra >"
+msgstr "Landafstand >"
 
 #: src/WatchdogUI.cpp:45
 msgid "Last NMEA Updates"
-msgstr "Últimas actualizaciones NMEA"
+msgstr "Laatste NMEA-updates"
 
 #: src/WatchdogUI.cpp:53
 msgid "Deadman activity"
-msgstr "Inactividad"
+msgstr "'Deadman' activiteit"
 
 #: src/WatchdogUI.cpp:57 src/WatchdogUI.cpp:65
 msgid "No Updates"
-msgstr "Sin actualización"
+msgstr "Geen updates"
 
 #: src/WatchdogUI.cpp:61
 msgid "Second Deadman activity"
@@ -181,31 +187,31 @@ msgstr ""
 
 #: src/WatchdogUI.cpp:69
 msgid "Distance to Anchor"
-msgstr "Distancia al fondeo"
+msgstr "Afstand tot anker"
 
 #: src/WatchdogUI.cpp:85
 msgid "Course Error Starboard"
-msgstr "Error de rumbo estribor"
+msgstr "Koersfout SB"
 
 #: src/WatchdogUI.cpp:117
 msgid "Preferences"
-msgstr "Preferencias"
+msgstr "Voorkeuren"
 
 #: src/WatchdogUI.cpp:120
 msgid "Reset"
-msgstr "Reiniciar"
+msgstr "Reset"
 
 #: src/WatchdogUI.cpp:123
 msgid "Close"
-msgstr "Cerrar"
+msgstr "Sluiten"
 
 #: src/WatchdogUI.cpp:161
 msgid "General Setup"
-msgstr ""
+msgstr "Algemene Setup"
 
 #: src/WatchdogUI.cpp:168
 msgid "Enable Alarms"
-msgstr ""
+msgstr "Inschakelen alarmen"
 
 #: src/WatchdogUI.cpp:171
 msgid "Enabled first time Dialog is opened"
@@ -213,47 +219,51 @@ msgstr ""
 
 #: src/WatchdogUI.cpp:174
 msgid "Enabled only if Dialog is visible"
-msgstr ""
+msgstr "Alleen ingeschakeld als dialoogvenster zichtbaar is"
 
 #: src/WatchdogUI.cpp:177
 msgid "Disable Alarms"
-msgstr ""
+msgstr "Alarmen uitschakelen"
 
 #: src/WatchdogUI.cpp:200
 msgid "GPS course crosses land in <"
-msgstr "El rumbo de GPS cruza tierra en < de "
+msgstr "GPS-koers bereikt land in <"
 
 #: src/WatchdogUI.cpp:206
 msgid "minutes"
-msgstr "minutos"
+msgstr "minuten"
 
 #: src/WatchdogUI.cpp:218
 msgid "GPS fix is <"
-msgstr "Posición GPS está a < de "
+msgstr "GPS-fix is <"
 
 #: src/WatchdogUI.cpp:221
 msgid "3"
 msgstr "3"
 
 #: src/WatchdogUI.cpp:224
-msgid "nm from coastline\n(any direction)"
-msgstr "mn de la costa\n(cualquier dirección)"
+msgid "nm from coastline\n"
+"(any direction)"
+msgstr "NM van kustlijn\n"
+" (alle richtingen)"
 
 #: src/WatchdogUI.cpp:231
 msgid "Graphical overlay for time displays line from boat to location of land crossing"
-msgstr "La representación gráfica muestra una linea desde el barco hasta el punto de la costa"
+msgstr "Grafische overlay voor tijd toont lijn van schip naar landaanlooppunt"
 
 #: src/WatchdogUI.cpp:235
-msgid "Landfall detection uses gshhs (global heirarchical high-resolution shoreline data.)\nConsider installing the highest resolution database for best accuracy."
-msgstr ""
+msgid "Landfall detection uses gshhs (global heirarchical high-resolution shoreline data.)\n"
+"Consider installing the highest resolution database for best accuracy."
+msgstr "Landaanloop detectie gebruikt gshhs (globale hiërarchische hoge-resolutie kustlijn gegevens.) \n"
+"Overweeg het installeren van de hoogste resolutie database voor beste nauwkeurigheid."
 
 #: src/WatchdogUI.cpp:243
 msgid "Landfall"
-msgstr "Tierra a la vista"
+msgstr "Landaanloop"
 
 #: src/WatchdogUI.cpp:251
 msgid "Require following NMEA sentences:"
-msgstr "Requiere las siguientes frases NMEA"
+msgstr "Vereis de volgende NMEA-berichten:"
 
 #: src/WatchdogUI.cpp:255
 msgid "$GPGGA"
@@ -261,87 +271,89 @@ msgstr "$GPGGA"
 
 #: src/WatchdogUI.cpp:263
 msgid "at least every"
-msgstr "por lo menos cada "
+msgstr "ten minste elke"
 
 #: src/WatchdogUI.cpp:270
 msgid "seconds"
-msgstr "segundos"
+msgstr "seconden"
 
 #: src/WatchdogUI.cpp:293 src/WatchdogUI.cpp:326
 msgid "No User Activity for"
-msgstr "Sin actividad del usuario por "
+msgstr "Geen gebruikeractiviteit gedurende"
 
 #: src/WatchdogUI.cpp:300 src/WatchdogUI.cpp:333
 msgid "minute(s)"
-msgstr "minuto(s)"
+msgstr "minuten"
 
 #: src/WatchdogUI.cpp:356
 msgid "Latitude"
-msgstr "Latitud"
+msgstr "Breedte"
 
 #: src/WatchdogUI.cpp:366
 msgid "Longitude"
-msgstr "Longitud"
+msgstr "Lengte"
 
 #: src/WatchdogUI.cpp:373
 msgid "Sync to Boat"
-msgstr "Posición actual"
+msgstr "Sync naar boot"
 
 #: src/WatchdogUI.cpp:376
 msgid "Radius"
-msgstr "Radio"
+msgstr "Straal"
 
 #: src/WatchdogUI.cpp:383
 msgid "meters"
-msgstr "metros"
+msgstr "meter"
 
 #: src/WatchdogUI.cpp:390
-msgid "Automatically sync position when the boat\nstops for more than 1 minute"
-msgstr ""
+msgid "Automatically sync position when the boat\n"
+"stops for more than 1 minute"
+msgstr "Sync positie automatisch wanneer de boot\n"
+"voor meer dan 1 minuut stopt"
 
 #: src/WatchdogUI.cpp:393
 msgid "Graphical overlay displays bounding anchor area"
-msgstr "La representación gráfica muestra un área delimitando la zona segura"
+msgstr "Grafische overlay toont grenzen ankergebied"
 
 #: src/WatchdogUI.cpp:401
 msgid "Anchor Watch"
-msgstr "Garreo"
+msgstr "Ankerwacht"
 
 #: src/WatchdogUI.cpp:413
 msgid "Off Course By >"
-msgstr "Desvío > de"
+msgstr "Van Koers >"
 
 #: src/WatchdogUI.cpp:420
 msgid "Degrees"
-msgstr "Grados"
+msgstr "Graden"
 
 #: src/WatchdogUI.cpp:424
 msgid "With Course Of"
-msgstr "Con rumbo"
+msgstr "Met koers van"
 
 #: src/WatchdogUI.cpp:431
 msgid "Current Course"
-msgstr "Rumbo actual"
+msgstr "Huidige koers"
 
 #: src/WatchdogUI.cpp:437
 msgid "Separate Port and Starboard Alarms"
-msgstr "Alarmas de babor y estribor separadas"
+msgstr "Afzonderlijke BB- en SB-alarmen"
 
 #: src/WatchdogUI.cpp:440
 msgid "Graphical overlay displays lines bounding valid courses"
-msgstr "La representación gráfica muestra lineas delimitando los rumbos válidos"
+msgstr "Grafische overlay toont grenslijnen van geldige koersen"
 
 #: src/WatchdogUI.cpp:455
 msgid "Settings the same as Off Course Port, with different Alarm Actions possible."
-msgstr "Configuración igual que fuera de rumbo a babor con diferentes acciones de alarma posibles."
+msgstr "Instellingen hetzelfde als Van Koers BB; verschillende alarmacties mogelijk."
 
 #: src/WatchdogUI.cpp:466 src/WatchdogUI.cpp:498
 msgid "Speed Alarm"
-msgstr "Alarma de velocidad"
+msgstr "Vaartalarm"
 
 #: src/WatchdogUI.cpp:473
 msgid "Speed over ground <"
-msgstr "Velocidad verdadera < de"
+msgstr "Vaart over grond >"
 
 #: src/WatchdogUI.cpp:477
 msgid "1"
@@ -349,15 +361,15 @@ msgstr "1"
 
 #: src/WatchdogUI.cpp:480 src/WatchdogUI.cpp:512
 msgid "knots"
-msgstr "nudos"
+msgstr "knopen"
 
 #: src/WatchdogUI.cpp:487 src/WatchdogUI.cpp:519
 msgid "Graphical overlay displays circle with radius of this speed"
-msgstr "La representación gráfica muestra un círculo con esta velocidad como radio"
+msgstr "Grafische overlay toont cirkel met straal van deze vaart"
 
 #: src/WatchdogUI.cpp:505
 msgid "Speed over ground >"
-msgstr "Velocidad verdadera > de"
+msgstr "Vaart over grond >"
 
 #: src/WatchdogUI.cpp:509
 msgid "12"
@@ -365,67 +377,67 @@ msgstr "12"
 
 #: src/WatchdogUI.cpp:534 src/WatchdogUI.cpp:549
 msgid "Not implemented"
-msgstr "Aún no implementado"
+msgstr "Niet geïmplementeerd"
 
 #: src/WatchdogUI.cpp:542
 msgid "Depth"
-msgstr "Profundidad"
+msgstr "Diepte"
 
 #: src/WatchdogUI.cpp:557
 msgid "Wind"
-msgstr "Viento"
+msgstr "Wind"
 
 #: src/WatchdogUI.cpp:572
 msgid "Enabled"
-msgstr "Activada"
+msgstr "Geactiveerd"
 
 #: src/WatchdogUI.cpp:575
 msgid "Disabled"
-msgstr "Desactivada"
+msgstr "Gedeactiveerd"
 
 #: src/WatchdogUI.cpp:578
 msgid "Graphical Overlay Display"
-msgstr "Representación gráfica en pantalla"
+msgstr "Grafisch overlayscherm"
 
 #: src/WatchdogUI.cpp:586
 msgid "Alarm Action"
-msgstr "Acciones de Alarma"
+msgstr "Alarmactie"
 
 #: src/WatchdogUI.cpp:594
 msgid "Sound"
-msgstr "Sonido"
+msgstr "Geluid"
 
 #: src/WatchdogUI.cpp:597
 msgid "Select a file"
-msgstr "Seleccionar archivo"
+msgstr "Selecteer een bestand"
 
 #: src/WatchdogUI.cpp:600
 msgid "Command"
-msgstr "Comando"
+msgstr "Opdracht"
 
 #: src/WatchdogUI.cpp:606
 msgid "Message Box"
-msgstr "Mensaje en ventana"
+msgstr "Berichtvenster"
 
 #: src/WatchdogUI.cpp:612
 msgid "Repeat Alarm after seconds"
-msgstr "Repetir alarma tras segundos"
+msgstr "Herhaal alarm na seconden"
 
 #: src/WatchdogUI.cpp:618
 msgid "Automatically  Reset"
-msgstr "Reiniciar automáticamente"
+msgstr "Automatische reset"
 
 #: src/WatchdogUI.cpp:621
 msgid "Test Alarm"
-msgstr "Probar alarma"
+msgstr "Alarmtest"
 
 #: src/WatchdogUI.cpp:641
 msgid "Information"
-msgstr "Información"
+msgstr "Informatie"
 
 #: src/WatchdogUI.cpp:644
 msgid "About Author"
-msgstr "Sobre el autor"
+msgstr "Over de auteur"
 
 #: src/WatchdogUI.h:80
 msgid "WatchDog"
@@ -433,13 +445,15 @@ msgstr "WatchDog"
 
 #: src/WatchdogUI.h:196
 msgid "Watchdog Preferences"
-msgstr "Preferencias de Watchdog"
+msgstr "Watchdog voorkeuren"
 
 #: src/watchdog_pi.cpp:159
 msgid "Watchdog PlugIn for OpenCPN"
-msgstr "Plugin Watchdog para OpenCPN"
+msgstr "Watchdog PlugIn voor OpenCPN"
 
 #: src/watchdog_pi.cpp:164
-msgid "Watchdog PlugIn for OpenCPN\nAlarm user of changing conditions."
-msgstr "Plugin Watchdog para OpenCPN\nAlarma de usuario para condiciones inestables."
+msgid "Watchdog PlugIn for OpenCPN\n"
+"Alarm user of changing conditions."
+msgstr "Watchdog PlugIn voor OpenCPN\n"
+"Geeft alarm bij veranderende omstandigheden."
 
