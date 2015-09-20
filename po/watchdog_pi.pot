@@ -17,12 +17,16 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/Alarm.cpp:42
+#: src/Alarm.cpp:51
 msgid "LandFall"
 msgstr ""
 
 #: src/Alarm.cpp:121
 msgid "LandFall not Detected"
+msgstr ""
+
+#: src/Alarm.cpp:619
+msgid "meter(s)"
 msgstr ""
 
 #: src/Alarm.cpp:125
@@ -192,11 +196,15 @@ msgstr ""
 msgid "Preferences"
 msgstr ""
 
-#: src/WatchdogUI.cpp:115
+#: src/WatchdogUI.cpp:31
+msgid "Configuration"
+msgstr ""
+
+#: src/WatchdogUI.cpp:34
 msgid "Reset"
 msgstr ""
 
-#: src/WatchdogUI.cpp:118
+#: src/WatchdogUI.cpp:37
 msgid "Close"
 msgstr ""
 
@@ -264,11 +272,11 @@ msgstr ""
 msgid "Longitude"
 msgstr ""
 
-#: src/WatchdogUI.cpp:299
+#: src/WatchdogUI.cpp:588
 msgid "Sync to Boat"
 msgstr ""
 
-#: src/WatchdogUI.cpp:302
+#: src/WatchdogUI.cpp:591
 msgid "Radius"
 msgstr ""
 
@@ -276,8 +284,12 @@ msgstr ""
 msgid "meters"
 msgstr ""
 
-#: src/WatchdogUI.cpp:316
+#: src/WatchdogUI.cpp:608
 msgid "Graphical overlay displays bounding anchor area"
+msgstr ""
+
+#: src/WatchdogUI.cpp:605
+msgid "Automatically syncronize to the boat whenever enabled"
 msgstr ""
 
 #: src/WatchdogUI.cpp:324
@@ -361,35 +373,35 @@ msgstr ""
 msgid "Disabled"
 msgstr ""
 
-#: src/WatchdogUI.cpp:501
-msgid "Graphical Overlay Display"
+#: src/WatchdogUI.cpp:297
+msgid "Graphics Enabled"
 msgstr ""
 
-#: src/WatchdogUI.cpp:508
+#: src/WatchdogUI.cpp:262
 msgid "Alarm Action"
 msgstr ""
 
-#: src/WatchdogUI.cpp:516
+#: src/WatchdogUI.cpp:270
 msgid "Sound"
 msgstr ""
 
-#: src/WatchdogUI.cpp:519
+#: src/WatchdogUI.cpp:273
 msgid "Select a file"
 msgstr ""
 
-#: src/WatchdogUI.cpp:522
+#: src/WatchdogUI.cpp:276
 msgid "Command"
 msgstr ""
 
-#: src/WatchdogUI.cpp:528
+#: src/WatchdogUI.cpp:282
 msgid "Message Box"
 msgstr ""
 
-#: src/WatchdogUI.cpp:534
+#: src/WatchdogUI.cpp:288
 msgid "Repeat Alarm after seconds"
 msgstr ""
 
-#: src/WatchdogUI.cpp:540
+#: src/WatchdogUI.cpp:294
 msgid "Automatically  Reset"
 msgstr ""
 
@@ -397,7 +409,7 @@ msgstr ""
 msgid "Test Alarm"
 msgstr ""
 
-#: src/WatchdogUI.cpp:563
+#: src/WatchdogUI.cpp:312
 msgid "Information"
 msgstr ""
 
@@ -421,4 +433,36 @@ msgstr ""
 msgid ""
 "Watchdog PlugIn for OpenCPN\n"
 "Alarm user of changing conditions."
+msgstr ""
+
+#: src/WatchdogUI.h:79
+msgid "General Setup"
+msgstr ""
+
+#: src/WatchdogUI.h:86
+msgid "Enable All Alarms"
+msgstr ""
+
+#: src/WatchdogUI.h:89
+msgid "Enabled after first time Watchdog Dialog is visible"
+msgstr ""
+
+#: src/WatchdogUI.h:92
+msgid "Enabled only if Watchdog Dialog is visible"
+msgstr ""
+
+#: src/WatchdogUI.h:95
+msgid "Disable All Alarms"
+msgstr ""
+
+#: src/WatchdogUI.h:112
+msgid "Alarms"
+msgstr ""
+
+#: src/WatchdogUI.h:126
+msgid "New"
+msgstr ""
+
+#: src/WatchdogUI.h:129
+msgid "Edit"
 msgstr ""
