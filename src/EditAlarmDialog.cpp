@@ -43,6 +43,7 @@ EditAlarmDialog::EditAlarmDialog(wxWindow* parent, Alarm *alarm)
     m_cbAutoReset->SetValue(m_alarm->m_bAutoReset);
     m_cbRepeat->SetValue(m_alarm->m_bRepeat);
     m_sRepeatSeconds->SetValue(m_alarm->m_iRepeatSeconds);
+    m_cbgfxEnabled->Enable(m_alarm->m_bHasGraphics);
     m_cbgfxEnabled->SetValue(m_alarm->m_bgfxEnabled);
 
     m_fgSizer->Insert( 0, m_alarm->OpenPanel(this), 1, wxEXPAND, 5 );

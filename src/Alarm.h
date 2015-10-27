@@ -45,7 +45,7 @@ public:
 
     static std::vector<Alarm*> s_Alarms;
 
-    Alarm(int interval=1);
+    Alarm(bool gfx=false, int interval=1);
 
     wxString Action();
     void Run();
@@ -66,8 +66,7 @@ public:
 
     void OnTimer(wxTimerEvent &);
 
-    bool m_bEnabled, m_bgfxEnabled;
-    bool m_bFired;
+    bool m_bHasGraphics, m_bEnabled, m_bgfxEnabled, m_bFired;
 
 private:
     friend class EditAlarmDialog;
