@@ -87,12 +87,12 @@ void ConfigurationDialog::OnNewAlarm( wxCommandEvent& event )
 
     m_lAlarms->SetItemState(m_lAlarms->GetItemCount() - 1,
                             wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
+    g_watchdog_pi->m_WatchdogDialog->UpdateAlarms();
+
     UpdateItem(index);
     UpdateStates();
 
     OnEditAlarm(event);
-
-    g_watchdog_pi->m_WatchdogDialog->UpdateAlarms();
 }
 
 void ConfigurationDialog::OnEditAlarm( wxCommandEvent& event )
