@@ -231,6 +231,8 @@ protected:
 
 extern wxJSONValue g_ReceivedBoundaryTimeJSONMsg;
 extern wxString    g_ReceivedBoundaryTimeMessage;
+extern wxJSONValue g_ReceivedBoundaryDistanceJSONMsg;
+extern wxString    g_ReceivedBoundaryDistanceMessage;
 
 class BoundaryAlarm : public Alarm
 {
@@ -269,19 +271,20 @@ public:
         case TIME:
             while(count < 10) {
                 PositionBearingDistanceMercator_Plugin
-                    (lastfix.Lat, lastfix.Lon, lastfix.Cog, dist + dist1, &lat2, &lon2);
+                    (lastfix.Lat, lastfix.Lon, lastfix.Cog, lastfix.Sog * ( m_TimeMinutes / 60 ) + dist1, &lat2, &lon2);
 
                 // Do JSON message to OD Plugin to check if boundary m_crossinglat
                 wxJSONValue jMsg;
                 wxJSONWriter writer;
                 wxString    MsgString;
                 jMsg[wxS("Source")] = wxS("WATCHDOG_PI");
-                jMsg[wxS("Type")] = wxS("FindPointInAnyBoundary");
-                jMsg[wxS("MsgId")] = wxS("time");
+                jMsg[wxT("Type")] = wxT("Request");
+                jMsg[wxT("Msg")] = wxS("FindPointInAnyBoundary");
+                jMsg[wxT("MsgId")] = wxS("time");
                 jMsg[wxS("lat")] = lat2;
                 jMsg[wxS("lon")] = lon2;
                 writer.Write( jMsg, MsgString );
-                SendPluginMessage( wxS("BOUNDARY_CHECK"), MsgString );
+                SendPluginMessage( wxS("OCPN_DRAW_PI"), MsgString );
                 if(g_ReceivedBoundaryTimeMessage != wxEmptyString &&
                    g_ReceivedBoundaryTimeJSONMsg[wxS("MsgId")].AsString() == wxS("time") &&
                    g_ReceivedBoundaryTimeJSONMsg[wxS("Found")].AsBool() == true ) {
@@ -302,7 +305,7 @@ public:
                     count++;
                 }
                 g_ReceivedBoundaryTimeMessage = wxEmptyString;
-                g_ReceivedBoundaryTimeJSONMsg.Clear();
+                //g_ReceivedBoundaryTimeJSONMsg.Clear();
             }
             break;
        case DISTANCE:
@@ -312,16 +315,24 @@ public:
                                                        m_Distance, &dlat, &dlon);
                 
                 wxJSONValue jMsg;
-                jMsg[wxS("Type")] = wxS("FindPointInAnyBoundary");
-                jMsg[wxS("id")] = wxS("time");
-                jMsg[wxS("lat")] = lat2;
-                jMsg[wxS("lon")] = lon2;
-                SendPluginMessage( wxS("OD_BOUNDARY_CHECK"), jMsg.AsString() );
-                if(PlugIn_GSHHS_CrossesLand(lastfix.Lat, lastfix.Lon, dlat, dlon)) {
-                    m_crossinglat1 = dlat, m_crossinglon1 = dlon;
-                    m_crossinglat2 = dlat, m_crossinglon2 = dlon;
+                wxJSONWriter writer;
+                wxString    MsgString;
+                jMsg[wxS("Source")] = wxS("WATCHDOG_PI");
+                jMsg[wxT("Type")] = wxT("Request");
+                jMsg[wxT("Msg")] = wxS("FindPointInAnyBoundary");
+                jMsg[wxT("MsgId")] = wxS("distance");
+                jMsg[wxS("lat")] = dlat;
+                jMsg[wxS("lon")] = dlon;
+                writer.Write( jMsg, MsgString );
+                SendPluginMessage( wxS("OCPN_DRAW_PI"), MsgString );
+                if(g_ReceivedBoundaryDistanceMessage != wxEmptyString &&
+                   g_ReceivedBoundaryDistanceJSONMsg[wxS("MsgId")].AsString() == wxS("distance") &&
+                   g_ReceivedBoundaryDistanceJSONMsg[wxS("Found")].AsBool() == true ) {
+                    // This is our message
                     return true;
                 }
+                g_ReceivedBoundaryDistanceMessage = wxEmptyString;
+                //g_ReceivedBoundaryDistanceJSONMsg.Clear();
             }
             break;
         }
@@ -1097,8 +1108,8 @@ void Alarm::SaveConfigBase(TiXmlElement *c)
 void Alarm::OnTimer( wxTimerEvent & )
 {
     wxFileConfig *pConf = GetOCPNConfigObject();
-    pConf->SetPath ( _T( "/Settings/Watchdog" ) );
-    int enabled = pConf->Read ( _T ( "Enabled" ), 0L );
+    pConf->SetPath ( _T( "/PlugIns/libwatchdog_pi.so" ) );
+    int enabled = pConf->Read ( _T ( "bEnabled" ), 0L );
 
     if(enabled == 2 && !g_watchdog_pi->m_WatchdogDialog)
         enabled = 0;

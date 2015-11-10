@@ -38,6 +38,8 @@
 
 wxJSONValue g_ReceivedBoundaryTimeJSONMsg;
 wxString    g_ReceivedBoundaryTimeMessage;
+wxJSONValue g_ReceivedBoundaryDistanceJSONMsg;
+wxString    g_ReceivedBoundaryDistanceMessage;
 wxJSONValue g_ReceivedBoundaryAnchorJSONMsg;
 wxString    g_ReceivedBoundaryAnchorMessage;
 
@@ -349,6 +351,10 @@ void watchdog_pi::SetPluginMessage(wxString &message_id, wxString &message_body)
                 if(root[wxS("Msg")].AsString() == wxS("FindPointInAnyBoundary") && root[wxS("MsgId")].AsString() == wxS("time")) {
                     g_ReceivedBoundaryTimeJSONMsg = root;
                     g_ReceivedBoundaryTimeMessage = message_body;
+                } else
+                if(root[wxS("Msg")].AsString() == wxS("FindPointInAnyBoundary") && root[wxS("MsgId")].AsString() == wxS("distance")) {
+                    g_ReceivedBoundaryDistanceJSONMsg = root;
+                    g_ReceivedBoundaryDistanceMessage = message_body;
                 } else
                 if(root[wxS("Type")].AsString() == wxS("Response") && root[wxS("Source")].AsString() == wxS("OCPN_DRAW_PI")) {
                     if(root[wxS("Msg")].AsString() == wxS("FindPointInAnyBoundary") && root[wxS("MsgId")].AsString() == wxS("anchor")) {
