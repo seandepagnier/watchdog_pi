@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Oct  8 2012)
+// C++ code generated with wxFormBuilder (version Jun 17 2015)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
@@ -205,6 +205,7 @@ class BoundaryPanel : public wxPanel
 		wxSpinCtrl* m_sTimeMinutes;
 		wxRadioButton* m_rbDistance;
 		wxTextCtrl* m_tDistance;
+		wxRadioButton* m_rbAnchor;
 		wxTextCtrl* m_tBoundaryGUID;
 		
 		BoundaryPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL ); 
