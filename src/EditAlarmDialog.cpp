@@ -66,15 +66,15 @@ void EditAlarmDialog::Save()
     m_alarm->SavePanel(m_fgSizer->GetItem((size_t)0)->GetWindow());
 }
 
-#if 0
 void EditAlarmDialog::OnTestAlarm( wxCommandEvent& event )
 {
-    if(!m_alarm)
-        wxMessageBox(_("Invalid Alarm"), _("Watchdog"), wxOK | wxICON_ERROR, this);
-    else
-        m_alarm->Run();
+    TestAlarm testalarm;
+    Alarm *alarm = m_alarm;
+    m_alarm = &testalarm;
+    Save();
+    m_alarm->Run();
+    m_alarm = alarm;
 }
-#endif
 
 void EditAlarmDialog::OnInformation( wxCommandEvent& event )
 {

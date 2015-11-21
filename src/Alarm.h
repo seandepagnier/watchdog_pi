@@ -83,3 +83,17 @@ private:
     wxTimer    m_Timer;
     wxDateTime m_LastAlarmTime;
 };
+
+class TestAlarm : public Alarm
+{
+public:
+    TestAlarm() {}
+    wxString Type() { return _("Test"); }
+    wxString Options() { return _T(""); }
+    bool Test() { return false; }
+    wxString GetStatus() { return _T(""); }
+    wxWindow *OpenPanel(wxWindow *parent) { return NULL; }
+    void SavePanel(wxWindow *p) {}
+    void LoadConfig(TiXmlElement *e) {}
+    void SaveConfig(TiXmlElement *c) {}
+};

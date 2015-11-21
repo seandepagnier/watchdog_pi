@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Oct  8 2012)
+// C++ code generated with wxFormBuilder (version Oct 12 2015)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
@@ -135,12 +135,14 @@ class EditAlarmDialogBase : public wxDialog
 		wxFlexGridSizer* m_fgSizer;
 		wxCheckBox* m_cbAutoReset;
 		wxCheckBox* m_cbgfxEnabled;
+		wxButton* m_bTest;
 		wxButton* m_button6;
 		wxStdDialogButtonSizer* m_sdbSizer4;
 		wxButton* m_sdbSizer4OK;
 		wxButton* m_sdbSizer4Cancel;
 		
 		// Virtual event handlers, overide them in your derived class
+		virtual void OnTestAlarm( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnInformation( wxCommandEvent& event ) { event.Skip(); }
 		
 	

@@ -32,7 +32,7 @@ public:
     EditAlarmDialog(wxWindow* parent, Alarm *alarm);
 
     void Save();
-//    void OnTestAlarm( wxCommandEvent& event );
+    void OnTestAlarm( wxCommandEvent& event );
     void OnInformation( wxCommandEvent& event );
 
 private:

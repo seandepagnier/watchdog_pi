@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Oct  8 2012)
+// C++ code generated with wxFormBuilder (version Oct 12 2015)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
@@ -297,6 +297,9 @@ EditAlarmDialogBase::EditAlarmDialogBase( wxWindow* parent, wxWindowID id, const
 	m_cbgfxEnabled = new wxCheckBox( this, wxID_ANY, _("Graphics Enabled"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer6->Add( m_cbgfxEnabled, 0, wxALL, 5 );
 	
+	m_bTest = new wxButton( this, wxID_ANY, _("Test"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer6->Add( m_bTest, 0, wxALL, 5 );
+	
 	
 	sbSizer4->Add( fgSizer6, 1, wxEXPAND, 5 );
 	
@@ -332,12 +335,14 @@ EditAlarmDialogBase::EditAlarmDialogBase( wxWindow* parent, wxWindowID id, const
 	this->Centre( wxBOTH );
 	
 	// Connect Events
+	m_bTest->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( EditAlarmDialogBase::OnTestAlarm ), NULL, this );
 	m_button6->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( EditAlarmDialogBase::OnInformation ), NULL, this );
 }
 
 EditAlarmDialogBase::~EditAlarmDialogBase()
 {
 	// Disconnect Events
+	m_bTest->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( EditAlarmDialogBase::OnTestAlarm ), NULL, this );
 	m_button6->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( EditAlarmDialogBase::OnInformation ), NULL, this );
 	
 }
