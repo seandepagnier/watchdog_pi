@@ -419,8 +419,8 @@ public:
             case ANCHOR:
             {
                 return wxString::Format(_T(" ") + wxString(_("Anchor")) +
-                    (m_bFired ? _T(" <") : _T(" >")) +
-                    _T(" Outside boundary %s "), m_BoundaryGUID);
+                    (m_bFired ? _T(" Outside") : _T(" Inside")) +
+                    _T(" boundary %s "), m_BoundaryGUID);
                 break;
             }
         }
