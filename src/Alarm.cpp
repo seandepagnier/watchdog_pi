@@ -242,7 +242,8 @@ public:
     BoundaryAlarm() : Alarm(false, 5 /* seconds */),
                       m_Mode(TIME),
                       m_TimeMinutes(20),
-                      m_Distance(3)
+                      m_Distance(3),
+                      m_bAnchorOutside(false)
         {}
 
     wxString Type() { return _("Boundary"); }
@@ -360,8 +361,10 @@ public:
                 g_ReceivedBoundaryAnchorJSONMsg[wxS("Found")].AsBool() == false ) {
                 // This is our message
                 g_ReceivedBoundaryDistanceMessage = wxEmptyString;
+                m_bAnchorOutside = true;
                 return true;
             }
+            m_bAnchorOutside = false;
             g_ReceivedBoundaryDistanceMessage = wxEmptyString;
                //g_ReceivedBoundaryDistanceJSONMsg.Clear();
            break;
@@ -418,9 +421,9 @@ public:
             } 
             case ANCHOR:
             {
-                return wxString::Format(_T(" ") + wxString(_("Anchor")) +
-                    (m_bFired ? _T(" <") : _T(" >")) +
-                    _T(" Outside boundary %s "), m_BoundaryGUID);
+                return wxString::Format(_T(" ") + wxString(_("Anchor")) + _T(" ") +
+                                        (m_bAnchorOutside ? _("Outside") : _("Inside")) +
+                                        _T(" boundary %s"), m_BoundaryGUID);
                 break;
             }
         }
@@ -483,6 +486,7 @@ private:
 
     enum Mode { TIME, DISTANCE, ANCHOR } m_Mode;
     double m_TimeMinutes, m_Distance;
+    bool m_bAnchorOutside;
     wxString m_BoundaryGUID;
 };
 

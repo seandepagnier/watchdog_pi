@@ -83,16 +83,16 @@ ConfigurationDialogBase::ConfigurationDialogBase( wxWindow* parent, wxWindowID i
 	fgSizer241->SetFlexibleDirection( wxBOTH );
 	fgSizer241->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_rbAlways = new wxRadioButton( sbSizer41->GetStaticBox(), wxID_ANY, _("Enable All Alarms"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_rbAlways = new wxRadioButton( this, wxID_ANY, _("Enable All Alarms"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer241->Add( m_rbAlways, 0, wxALL, 5 );
 	
-	m_rbOnce = new wxRadioButton( sbSizer41->GetStaticBox(), wxID_ANY, _("Enabled after first time Watchdog Dialog is visible"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_rbOnce = new wxRadioButton( this, wxID_ANY, _("Enabled after first time Watchdog Dialog is visible"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer241->Add( m_rbOnce, 0, wxALL, 5 );
 	
-	m_rbVisible = new wxRadioButton( sbSizer41->GetStaticBox(), wxID_ANY, _("Enabled only if Watchdog Dialog is visible"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_rbVisible = new wxRadioButton( this, wxID_ANY, _("Enabled only if Watchdog Dialog is visible"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer241->Add( m_rbVisible, 0, wxALL, 5 );
 	
-	m_rbNever = new wxRadioButton( sbSizer41->GetStaticBox(), wxID_ANY, _("Disable All Alarms"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_rbNever = new wxRadioButton( this, wxID_ANY, _("Disable All Alarms"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer241->Add( m_rbNever, 0, wxALL, 5 );
 	
 	
@@ -123,22 +123,22 @@ ConfigurationDialogBase::ConfigurationDialogBase( wxWindow* parent, wxWindowID i
 	fgSizer31->SetFlexibleDirection( wxBOTH );
 	fgSizer31->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_bNew = new wxButton( sbSizer7->GetStaticBox(), wxID_ANY, _("New"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_bNew = new wxButton( this, wxID_ANY, _("New"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer31->Add( m_bNew, 0, wxALL, 5 );
 	
-	m_bEdit = new wxButton( sbSizer7->GetStaticBox(), wxID_ANY, _("Edit"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_bEdit = new wxButton( this, wxID_ANY, _("Edit"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer31->Add( m_bEdit, 0, wxALL, 5 );
 	
-	m_bDelete = new wxButton( sbSizer7->GetStaticBox(), wxID_ANY, _("Delete"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_bDelete = new wxButton( this, wxID_ANY, _("Delete"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer31->Add( m_bDelete, 0, wxALL, 5 );
 	
-	m_bDeleteAll = new wxButton( sbSizer7->GetStaticBox(), wxID_ANY, _("Delete All"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_bDeleteAll = new wxButton( this, wxID_ANY, _("Delete All"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer31->Add( m_bDeleteAll, 0, wxALL, 5 );
 	
 	
 	fgSizer29->Add( fgSizer31, 1, wxEXPAND, 5 );
 	
-	m_lAlarms = new wxListCtrl( sbSizer7->GetStaticBox(), wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxLC_SINGLE_SEL );
+	m_lAlarms = new wxListCtrl( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxLC_SINGLE_SEL );
 	fgSizer29->Add( m_lAlarms, 0, wxALL|wxEXPAND, 5 );
 	
 	
@@ -267,34 +267,34 @@ EditAlarmDialogBase::EditAlarmDialogBase( wxWindow* parent, wxWindowID id, const
 	fgSizer6->SetFlexibleDirection( wxBOTH );
 	fgSizer6->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_cbSound = new wxCheckBox( sbSizer4->GetStaticBox(), wxID_ANY, _("Sound"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_cbSound = new wxCheckBox( this, wxID_ANY, _("Sound"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer6->Add( m_cbSound, 0, wxALL, 5 );
 	
-	m_fpSound = new wxFilePickerCtrl( sbSizer4->GetStaticBox(), wxID_ANY, wxT("/initrd.img"), _("Select a file"), wxT("Wav Files (*.wav)|*.WAV;*.wav|All Files (*.*)|*.*"), wxDefaultPosition, wxDefaultSize, wxFLP_DEFAULT_STYLE );
+	m_fpSound = new wxFilePickerCtrl( this, wxID_ANY, wxT("/initrd.img"), _("Select a file"), wxT("Wav Files (*.wav)|*.WAV;*.wav|All Files (*.*)|*.*"), wxDefaultPosition, wxDefaultSize, wxFLP_DEFAULT_STYLE );
 	fgSizer6->Add( m_fpSound, 0, wxALL|wxEXPAND, 5 );
 	
-	m_cbCommand = new wxCheckBox( sbSizer4->GetStaticBox(), wxID_ANY, _("Command"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_cbCommand = new wxCheckBox( this, wxID_ANY, _("Command"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer6->Add( m_cbCommand, 0, wxALL, 5 );
 	
-	m_tCommand = new wxTextCtrl( sbSizer4->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_tCommand = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer6->Add( m_tCommand, 0, wxALL|wxEXPAND, 5 );
 	
-	m_cbMessageBox = new wxCheckBox( sbSizer4->GetStaticBox(), wxID_ANY, _("Message Box"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_cbMessageBox = new wxCheckBox( this, wxID_ANY, _("Message Box"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer6->Add( m_cbMessageBox, 0, wxALL, 5 );
 	
 	
 	fgSizer6->Add( 0, 0, 1, wxEXPAND, 5 );
 	
-	m_cbRepeat = new wxCheckBox( sbSizer4->GetStaticBox(), wxID_ANY, _("Repeat Alarm after seconds"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_cbRepeat = new wxCheckBox( this, wxID_ANY, _("Repeat Alarm after seconds"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer6->Add( m_cbRepeat, 0, wxALL, 5 );
 	
-	m_sRepeatSeconds = new wxSpinCtrl( sbSizer4->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 10000, 60 );
+	m_sRepeatSeconds = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 10000, 60 );
 	fgSizer6->Add( m_sRepeatSeconds, 0, wxALL, 5 );
 	
-	m_cbAutoReset = new wxCheckBox( sbSizer4->GetStaticBox(), wxID_ANY, _("Automatically Reset"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_cbAutoReset = new wxCheckBox( this, wxID_ANY, _("Automatically Reset"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer6->Add( m_cbAutoReset, 0, wxALL, 5 );
 	
-	m_cbgfxEnabled = new wxCheckBox( sbSizer4->GetStaticBox(), wxID_ANY, _("Graphics Enabled"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_cbgfxEnabled = new wxCheckBox( this, wxID_ANY, _("Graphics Enabled"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer6->Add( m_cbgfxEnabled, 0, wxALL, 5 );
 	
 	m_bTest = new wxButton( this, wxID_ANY, _("Test"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -720,34 +720,34 @@ SpeedPanel::SpeedPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, con
 	fgSizer14->SetFlexibleDirection( wxBOTH );
 	fgSizer14->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_staticText51 = new wxStaticText( sbSizer7->GetStaticBox(), wxID_ANY, _("Type"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText51 = new wxStaticText( this, wxID_ANY, _("Type"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText51->Wrap( -1 );
 	fgSizer14->Add( m_staticText51, 0, wxALL, 5 );
 	
 	wxString m_cModeChoices[] = { _("Under Speed"), _("Over Speed") };
 	int m_cModeNChoices = sizeof( m_cModeChoices ) / sizeof( wxString );
-	m_cMode = new wxChoice( sbSizer7->GetStaticBox(), wxID_ANY, wxDefaultPosition, wxDefaultSize, m_cModeNChoices, m_cModeChoices, 0 );
+	m_cMode = new wxChoice( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_cModeNChoices, m_cModeChoices, 0 );
 	m_cMode->SetSelection( 0 );
 	fgSizer14->Add( m_cMode, 0, wxALL, 5 );
 	
 	
 	fgSizer14->Add( 0, 0, 1, wxEXPAND, 5 );
 	
-	m_staticText44 = new wxStaticText( sbSizer7->GetStaticBox(), wxID_ANY, _("Speed over ground"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText44 = new wxStaticText( this, wxID_ANY, _("Speed over ground"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText44->Wrap( -1 );
 	fgSizer14->Add( m_staticText44, 0, wxALL, 5 );
 	
-	m_tSpeed = new wxTextCtrl( sbSizer7->GetStaticBox(), wxID_ANY, _("1"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_tSpeed = new wxTextCtrl( this, wxID_ANY, _("1"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer14->Add( m_tSpeed, 0, wxALL, 5 );
 	
-	m_staticText24 = new wxStaticText( sbSizer7->GetStaticBox(), wxID_ANY, _("knots"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText24 = new wxStaticText( this, wxID_ANY, _("knots"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText24->Wrap( -1 );
 	fgSizer14->Add( m_staticText24, 0, wxALL, 5 );
 	
 	
 	sbSizer7->Add( fgSizer14, 1, wxEXPAND, 5 );
 	
-	m_staticText391 = new wxStaticText( sbSizer7->GetStaticBox(), wxID_ANY, _("Graphical overlay displays circle with radius of this speed"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText391 = new wxStaticText( this, wxID_ANY, _("Graphical overlay displays circle with radius of this speed"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText391->Wrap( -1 );
 	sbSizer7->Add( m_staticText391, 0, wxALL, 5 );
 	

@@ -91,8 +91,8 @@ be triggered again later."),
 
 void BoundaryPanel::OnGetBoundaryGUID( wxCommandEvent& event )
 {
-extern wxJSONValue g_ReceivedBoundaryGUIDJSONMsg;
-extern wxString    g_ReceivedBoundaryGUIDMessage;
+    extern wxJSONValue g_ReceivedBoundaryGUIDJSONMsg;
+    extern wxString    g_ReceivedBoundaryGUIDMessage;
 
     wxJSONValue jMsg;
     wxJSONWriter writer;
