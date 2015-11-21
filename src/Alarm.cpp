@@ -231,6 +231,10 @@ protected:
 
 extern wxJSONValue g_ReceivedBoundaryTimeJSONMsg;
 extern wxString    g_ReceivedBoundaryTimeMessage;
+extern wxJSONValue g_ReceivedBoundaryDistanceJSONMsg;
+extern wxString    g_ReceivedBoundaryDistanceMessage;
+extern wxJSONValue g_ReceivedBoundaryAnchorJSONMsg;
+extern wxString    g_ReceivedBoundaryAnchorMessage;
 
 class BoundaryAlarm : public Alarm
 {
@@ -247,9 +251,10 @@ public:
         switch(m_Mode) {
         case TIME: s = _("Time") + wxString::Format(_T(" < %f"), m_TimeMinutes);
         case DISTANCE: s = _("Distance") + wxString::Format(_T(" < %f nm"), m_Distance);
+        case ANCHOR: s = _("Boundary GUID") + wxString::Format(_T(" %s"), m_BoundaryGUID);
         default: s = _T("");
         }
-        return s + _T(" GUID:") + m_BoundaryGUID;
+        return s;
     }
 
     bool Test() {
@@ -269,19 +274,20 @@ public:
         case TIME:
             while(count < 10) {
                 PositionBearingDistanceMercator_Plugin
-                    (lastfix.Lat, lastfix.Lon, lastfix.Cog, dist + dist1, &lat2, &lon2);
+                    (lastfix.Lat, lastfix.Lon, lastfix.Cog, lastfix.Sog * ( m_TimeMinutes / 60 ) + dist1, &lat2, &lon2);
 
                 // Do JSON message to OD Plugin to check if boundary m_crossinglat
                 wxJSONValue jMsg;
                 wxJSONWriter writer;
                 wxString    MsgString;
                 jMsg[wxS("Source")] = wxS("WATCHDOG_PI");
-                jMsg[wxS("Type")] = wxS("FindPointInAnyBoundary");
-                jMsg[wxS("MsgId")] = wxS("time");
+                jMsg[wxT("Type")] = wxT("Request");
+                jMsg[wxT("Msg")] = wxS("FindPointInAnyBoundary");
+                jMsg[wxT("MsgId")] = wxS("time");
                 jMsg[wxS("lat")] = lat2;
                 jMsg[wxS("lon")] = lon2;
                 writer.Write( jMsg, MsgString );
-                SendPluginMessage( wxS("BOUNDARY_CHECK"), MsgString );
+                SendPluginMessage( wxS("OCPN_DRAW_PI"), MsgString );
                 if(g_ReceivedBoundaryTimeMessage != wxEmptyString &&
                    g_ReceivedBoundaryTimeJSONMsg[wxS("MsgId")].AsString() == wxS("time") &&
                    g_ReceivedBoundaryTimeJSONMsg[wxS("Found")].AsBool() == true ) {
@@ -290,8 +296,10 @@ public:
                         m_BoundaryTime = wxTimeSpan::Seconds(3600.0 * dist / lastfix.Sog);
                         m_crossinglat1 = lat1, m_crossinglon1 = lon1;
                         m_crossinglat2 = lat2, m_crossinglon2 = lon2;
-                        if(m_BoundaryTime.GetMinutes() <= m_TimeMinutes)
+                        if(m_BoundaryTime.GetMinutes() <= m_TimeMinutes) {
+                            g_ReceivedBoundaryDistanceMessage = wxEmptyString;
                             return true;
+                        }
                     }
                     count = 0;
                     dist1 /= 2;
@@ -302,7 +310,7 @@ public:
                     count++;
                 }
                 g_ReceivedBoundaryTimeMessage = wxEmptyString;
-                g_ReceivedBoundaryTimeJSONMsg.Clear();
+                //g_ReceivedBoundaryTimeJSONMsg.Clear();
             }
             break;
        case DISTANCE:
@@ -312,18 +320,51 @@ public:
                                                        m_Distance, &dlat, &dlon);
                 
                 wxJSONValue jMsg;
-                jMsg[wxS("Type")] = wxS("FindPointInAnyBoundary");
-                jMsg[wxS("id")] = wxS("time");
-                jMsg[wxS("lat")] = lat2;
-                jMsg[wxS("lon")] = lon2;
-                SendPluginMessage( wxS("OD_BOUNDARY_CHECK"), jMsg.AsString() );
-                if(PlugIn_GSHHS_CrossesLand(lastfix.Lat, lastfix.Lon, dlat, dlon)) {
-                    m_crossinglat1 = dlat, m_crossinglon1 = dlon;
-                    m_crossinglat2 = dlat, m_crossinglon2 = dlon;
+                wxJSONWriter writer;
+                wxString    MsgString;
+                jMsg[wxS("Source")] = wxS("WATCHDOG_PI");
+                jMsg[wxT("Type")] = wxT("Request");
+                jMsg[wxT("Msg")] = wxS("FindPointInAnyBoundary");
+                jMsg[wxT("MsgId")] = wxS("distance");
+                jMsg[wxS("lat")] = dlat;
+                jMsg[wxS("lon")] = dlon;
+                writer.Write( jMsg, MsgString );
+                SendPluginMessage( wxS("OCPN_DRAW_PI"), MsgString );
+                if(g_ReceivedBoundaryDistanceMessage != wxEmptyString &&
+                   g_ReceivedBoundaryDistanceJSONMsg[wxS("MsgId")].AsString() == wxS("distance") &&
+                   g_ReceivedBoundaryDistanceJSONMsg[wxS("Found")].AsBool() == true ) {
+                    // This is our message
+                    g_ReceivedBoundaryDistanceMessage = wxEmptyString;
                     return true;
                 }
+                g_ReceivedBoundaryDistanceMessage = wxEmptyString;
+                //g_ReceivedBoundaryDistanceJSONMsg.Clear();
             }
             break;
+       case ANCHOR:
+            wxJSONValue jMsg;
+            wxJSONWriter writer;
+            wxString    MsgString;
+            jMsg[wxS("Source")] = wxS("WATCHDOG_PI");
+            jMsg[wxT("Type")] = wxT("Request");
+            jMsg[wxT("Msg")] = wxS("FindPointInBoundary");
+            jMsg[wxT("MsgId")] = wxS("anchor");
+            jMsg[wxS("GUID")] = m_BoundaryGUID;
+            jMsg[wxS("lat")] = lastfix.Lat;
+            jMsg[wxS("lon")] = lastfix.Lon;
+            
+            writer.Write( jMsg, MsgString );
+            SendPluginMessage( wxS("OCPN_DRAW_PI"), MsgString );
+            if(g_ReceivedBoundaryAnchorMessage != wxEmptyString &&
+                g_ReceivedBoundaryAnchorJSONMsg[wxS("MsgId")].AsString() == wxS("anchor") &&
+                g_ReceivedBoundaryAnchorJSONMsg[wxS("Found")].AsBool() == false ) {
+                // This is our message
+                g_ReceivedBoundaryDistanceMessage = wxEmptyString;
+                return true;
+            }
+            g_ReceivedBoundaryDistanceMessage = wxEmptyString;
+               //g_ReceivedBoundaryDistanceJSONMsg.Clear();
+           break;
         }
 
         return false;
@@ -331,49 +372,57 @@ public:
 
     wxString GetStatus() {
         switch(m_Mode) {
-        case TIME:
-        {
-            if(m_BoundaryTime.IsNull())
-                return _("Boundary Time Invalid");
+            case TIME:
+            {
+                if(m_BoundaryTime.IsNull())
+                    return _("Boundary Time Invalid");
 
-            wxString s, fmt(_T(" %d "));
-            int days = m_BoundaryTime.GetDays();
-            if(days > 1)
-                s = wxString::Format(fmt + _("Days"), days);
-            else {
-                if(days)
-                    s = wxString::Format(fmt + _("Day"), days);
-                    
-                int hours = m_BoundaryTime.GetHours();
-                if(hours > 1)
-                    s += wxString::Format(fmt + _("Hours"), hours);
+                wxString s, fmt(_T(" %d "));
+                int days = m_BoundaryTime.GetDays();
+                if(days > 1)
+                    s = wxString::Format(fmt + _("Days"), days);
                 else {
-                    if(hours)
-                        s += wxString::Format(fmt + _("Hour"), hours);
-
-                    int minutes = m_BoundaryTime.GetMinutes() - 60*hours;
-                    if(minutes > 1)
-                        s += wxString::Format(fmt + _("Minutes"), minutes);
+                    if(days)
+                        s = wxString::Format(fmt + _("Day"), days);
+                        
+                    int hours = m_BoundaryTime.GetHours();
+                    if(hours > 1)
+                        s += wxString::Format(fmt + _("Hours"), hours);
                     else {
-                        if(minutes)
-                            s += wxString::Format(fmt + _("Minute"), minutes);
-                            
-                        int seconds = m_BoundaryTime.GetSeconds().ToLong() - 60*minutes;
-                        if(seconds > 1)
-                            s += wxString::Format(fmt + _("Seconds"), seconds);
-                        else
-                            s += wxString::Format(fmt + _("Second"), seconds);
+                        if(hours)
+                            s += wxString::Format(fmt + _("Hour"), hours);
+
+                        int minutes = m_BoundaryTime.GetMinutes() - 60*hours;
+                        if(minutes > 1)
+                            s += wxString::Format(fmt + _("Minutes"), minutes);
+                        else {
+                            if(minutes)
+                                s += wxString::Format(fmt + _("Minute"), minutes);
+                                
+                            int seconds = m_BoundaryTime.GetSeconds().ToLong() - 60*minutes;
+                            if(seconds > 1)
+                                s += wxString::Format(fmt + _("Seconds"), seconds);
+                            else
+                                s += wxString::Format(fmt + _("Second"), seconds);
+                        }
                     }
                 }
+                return s;
             }
-            return s;
-        }
-        case DISTANCE:
-        {
-            return wxString::Format(_T(" ") + wxString(_("Distance")) +
-                                    (m_bFired ? _T(" <") : _T(" >")) +
-                                    _T(" %.2f nm"), m_Distance);
-        } break;
+            case DISTANCE:
+            {
+                return wxString::Format(_T(" ") + wxString(_("Distance")) +
+                                        (m_bFired ? _T(" <") : _T(" >")) +
+                                        _T(" %.2f nm"), m_Distance);
+                break;
+            } 
+            case ANCHOR:
+            {
+                return wxString::Format(_T(" ") + wxString(_("Anchor")) +
+                    (m_bFired ? _T(" <") : _T(" >")) +
+                    _T(" Outside boundary %s "), m_BoundaryGUID);
+                break;
+            }
         }
         return _T("");
     }
@@ -382,6 +431,7 @@ public:
         BoundaryPanel *panel = new BoundaryPanel(parent);
         panel->m_rbTime->SetValue(m_Mode == TIME);
         panel->m_rbDistance->SetValue(m_Mode == DISTANCE);
+        panel->m_rbAnchor->SetValue(m_Mode == ANCHOR);
         panel->m_sTimeMinutes->SetValue(m_TimeMinutes);
         panel->m_tDistance->SetValue(wxString::Format(_T("%f"), m_Distance));
         panel->m_tBoundaryGUID->SetValue(m_BoundaryGUID);
@@ -390,7 +440,10 @@ public:
 
     void SavePanel(wxWindow *p) {
         BoundaryPanel *panel = (BoundaryPanel*)p;
-        m_Mode = panel->m_rbDistance->GetValue() ? TIME : DISTANCE;
+        if(panel->m_rbTime->GetValue()) m_Mode = TIME;
+        else if(panel->m_rbDistance->GetValue()) m_Mode = DISTANCE;
+        else if(panel->m_rbAnchor->GetValue()) m_Mode = ANCHOR;
+        else m_Mode = TIME;
         m_TimeMinutes = panel->m_sTimeMinutes->GetValue();
         panel->m_tDistance->GetValue().ToDouble(&m_Distance);
         m_BoundaryGUID = panel->m_tBoundaryGUID->GetValue();
@@ -400,6 +453,7 @@ public:
         const char *mode = e->Attribute("Mode");
         if(!strcasecmp(mode, "Time")) m_Mode = TIME;
         else if(!strcasecmp(mode, "Distance")) m_Mode = DISTANCE;
+        else if(!strcasecmp(mode, "Anchor")) m_Mode = ANCHOR;
         else wxLogMessage(_T("Watchdog: ") + wxString(_("invalid Boundary mode")) + _T(": ")
                          + wxString::FromUTF8(mode));
 
@@ -413,6 +467,7 @@ public:
         switch(m_Mode) {
         case TIME: c->SetAttribute("Mode", "Time");
         case DISTANCE: c->SetAttribute("Mode", "Distance");
+        case ANCHOR: c->SetAttribute("Mode", "Anchor");
         }
 
         c->SetAttribute("TimeMinutes", m_TimeMinutes);
@@ -426,7 +481,7 @@ private:
     double m_crossinglat2, m_crossinglon2;
     wxTimeSpan m_BoundaryTime;
 
-    enum Mode { TIME, DISTANCE } m_Mode;
+    enum Mode { TIME, DISTANCE, ANCHOR } m_Mode;
     double m_TimeMinutes, m_Distance;
     wxString m_BoundaryGUID;
 };
@@ -1099,8 +1154,8 @@ void Alarm::SaveConfigBase(TiXmlElement *c)
 void Alarm::OnTimer( wxTimerEvent & )
 {
     wxFileConfig *pConf = GetOCPNConfigObject();
-    pConf->SetPath ( _T( "/Settings/Watchdog" ) );
-    int enabled = pConf->Read ( _T ( "Enabled" ), 0L );
+    pConf->SetPath ( _T( "/PlugIns/libwatchdog_pi.so" ) );
+    int enabled = pConf->Read ( _T ( "bEnabled" ), 0L );
 
     if(enabled == 2 && !g_watchdog_pi->m_WatchdogDialog)
         enabled = 0;

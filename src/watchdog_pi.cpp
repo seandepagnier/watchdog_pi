@@ -38,8 +38,12 @@
 
 wxJSONValue g_ReceivedBoundaryTimeJSONMsg;
 wxString    g_ReceivedBoundaryTimeMessage;
+wxJSONValue g_ReceivedBoundaryDistanceJSONMsg;
+wxString    g_ReceivedBoundaryDistanceMessage;
 wxJSONValue g_ReceivedBoundaryAnchorJSONMsg;
 wxString    g_ReceivedBoundaryAnchorMessage;
+wxJSONValue g_ReceivedBoundaryGUIDJSONMsg;
+wxString    g_ReceivedBoundaryGUIDMessage;
 
 
 double heading_resolve(double degrees)
@@ -78,6 +82,10 @@ watchdog_pi::watchdog_pi(void *ppimgr)
     m_lastfix.Lat = NAN;
     m_lasttimerfix.Lat = NAN;
     m_sog = m_cog = NAN;
+    g_ReceivedBoundaryAnchorMessage = wxEmptyString;
+    g_ReceivedBoundaryDistanceMessage = wxEmptyString;
+    g_ReceivedBoundaryTimeMessage = wxEmptyString;
+    g_ReceivedBoundaryGUIDMessage = wxEmptyString;
 
     g_watchdog_pi = this;
 }
@@ -346,12 +354,19 @@ void watchdog_pi::SetPluginMessage(wxString &message_id, wxString &message_body)
         
         if(!bFail) {
             if(root[wxS("Type")].AsString() == wxS("Response") && root[wxS("Source")].AsString() == wxS("OCPN_DRAW_PI")) {
-                if(root[wxS("Msg")].AsString() == wxS("FindPointInAnyBoundary") && root[wxS("MsgId")].AsString() == wxS("time")) {
+                if(root[wxS("Msg")].AsString() == wxS("FindPointInAnyBoundary") ) {
+                    if(root[wxS("MsgId")].AsString() == wxS("time")) {
                     g_ReceivedBoundaryTimeJSONMsg = root;
                     g_ReceivedBoundaryTimeMessage = message_body;
-                } else
-                if(root[wxS("Type")].AsString() == wxS("Response") && root[wxS("Source")].AsString() == wxS("OCPN_DRAW_PI")) {
-                    if(root[wxS("Msg")].AsString() == wxS("FindPointInAnyBoundary") && root[wxS("MsgId")].AsString() == wxS("anchor")) {
+                    } else if(root[wxS("MsgId")].AsString() == wxS("distance")) {
+                        g_ReceivedBoundaryDistanceJSONMsg = root;
+                        g_ReceivedBoundaryDistanceMessage = message_body;
+                    } else if(root[wxS("MsgId")].AsString() == wxS("GetGUID")) {
+                        g_ReceivedBoundaryGUIDJSONMsg = root;
+                        g_ReceivedBoundaryGUIDMessage = message_body;
+                    }
+                } else if(root[wxS("Msg")].AsString() == wxS("FindPointInBoundary") ) {
+                    if(root[wxS("MsgId")].AsString() == wxS("anchor")) {
                         g_ReceivedBoundaryAnchorJSONMsg = root;
                         g_ReceivedBoundaryAnchorMessage = message_body;
                     }
