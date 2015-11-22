@@ -1158,7 +1158,7 @@ void Alarm::SaveConfigBase(TiXmlElement *c)
 void Alarm::OnTimer( wxTimerEvent & )
 {
     wxFileConfig *pConf = GetOCPNConfigObject();
-    pConf->SetPath ( _T( "/PlugIns/libwatchdog_pi.so" ) );
+    pConf->SetPath ( _T( "/PlugIns/Watchdog" ) );
     int enabled = pConf->Read ( _T ( "bEnabled" ), 0L );
 
     if(enabled == 2 && !g_watchdog_pi->m_WatchdogDialog)
