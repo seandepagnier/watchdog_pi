@@ -1159,7 +1159,7 @@ void Alarm::OnTimer( wxTimerEvent & )
 {
     wxFileConfig *pConf = GetOCPNConfigObject();
     pConf->SetPath ( _T( "/PlugIns/Watchdog" ) );
-    int enabled = pConf->Read ( _T ( "bEnabled" ), 0L );
+    int enabled = pConf->Read ( _T ( "Enabled" ), 0L );
 
     if(enabled == 2 && !g_watchdog_pi->m_WatchdogDialog)
         enabled = 0;
