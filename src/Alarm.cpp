@@ -252,7 +252,7 @@ public:
         switch(m_Mode) {
         case TIME: s = _("Time") + wxString::Format(_T(" < %f"), m_TimeMinutes);
         case DISTANCE: s = _("Distance") + wxString::Format(_T(" < %f nm"), m_Distance);
-        case ANCHOR: s = _("Boundary GUID") + wxString::Format(_T(" %s"), m_BoundaryGUID);
+        case ANCHOR: s = _("Boundary GUID") + wxString(_T(" ")) + m_BoundaryGUID;
         default: s = _T("");
         }
         return s;
@@ -421,10 +421,10 @@ public:
             } 
             case ANCHOR:
             {
-                return wxString::Format(_T(" ") + wxString(_("Anchor")) + _T(" ") +
-                                        (m_bAnchorOutside ? _("Outside") : _("Inside")) +
-                                        _T(" boundary %s"), m_BoundaryGUID);
-                break;
+                return _T(" ") + wxString(_("Anchor")) + _T(" ") +
+                    (m_bAnchorOutside ? _("Outside") : _("Inside")) +
+                    wxString(_T(" boundary ")) + m_BoundaryGUID;
+            break;
             }
         }
         return _T("");

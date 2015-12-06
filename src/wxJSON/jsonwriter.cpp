@@ -8,10 +8,9 @@
 // Licence:     wxWidgets licence
 /////////////////////////////////////////////////////////////////////////////
 
-#ifdef __GNUG__
-    #pragma implementation "jsonwriter.cpp"
-    #pragma GCC diagnostic ignored "-Wunused-variable"
-#endif
+//#ifdef __GNUG__
+//    #pragma implementation "jsonwriter.cpp"
+//#endif
 
 
 #include "jsonwriter.h"
