@@ -72,7 +72,7 @@ public:
 
         switch(m_Mode) {
         case TIME:
-            while(count < 10) {
+            while(count < 10 && dist1 > 1e-6) {
                 PositionBearingDistanceMercator_Plugin
                     (lastfix.Lat, lastfix.Lon, lastfix.Cog, dist + dist1, &lat2, &lon2);
                 if(!wxIsNaN(lat2) && PlugIn_GSHHS_CrossesLand(lat1, lon1, lat2, lon2)) {
@@ -1160,7 +1160,7 @@ void Alarm::OnTimer( wxTimerEvent & )
     wxFileConfig *pConf = GetOCPNConfigObject();
     pConf->SetPath ( _T( "/Settings/Watchdog" ) );
 
-    int enabled = pConf->Read ( _T ( "Enabled" ), 0L );
+    int enabled = pConf->Read ( _T ( "Enabled" ), 1L );
 
     if(enabled == 2 && !g_watchdog_pi->m_WatchdogDialog)
         enabled = 0;
