@@ -236,6 +236,16 @@ extern wxString    g_ReceivedBoundaryDistanceMessage;
 extern wxJSONValue g_ReceivedBoundaryAnchorJSONMsg;
 extern wxString    g_ReceivedBoundaryAnchorMessage;
 
+enum 
+{   
+    ID_BOUNDARY_ANY = 0,
+    ID_BOUNDARY_EXCLUSION,
+    ID_BOUNDARY_INCLUSION,
+    ID_BOUNDARY_NEITHER,
+    
+    ID_BOUNDARY_TYPE_LAST
+};
+
 class BoundaryAlarm : public Alarm
 {
 public:
@@ -243,6 +253,7 @@ public:
                       m_Mode(TIME),
                       m_TimeMinutes(20),
                       m_Distance(3),
+                      m_BoundaryType(ID_BOUNDARY_ANY),
                       m_bAnchorOutside(false)
         {}
 
@@ -293,13 +304,19 @@ public:
                    g_ReceivedBoundaryTimeJSONMsg[wxS("MsgId")].AsString() == wxS("time") &&
                    g_ReceivedBoundaryTimeJSONMsg[wxS("Found")].AsBool() == true ) {
                     // This is our message
-                    if(dist1 < 1) {
-                        m_BoundaryTime = wxTimeSpan::Seconds(3600.0 * dist / lastfix.Sog);
-                        m_crossinglat1 = lat1, m_crossinglon1 = lon1;
-                        m_crossinglat2 = lat2, m_crossinglon2 = lon2;
-                        if(m_BoundaryTime.GetMinutes() <= m_TimeMinutes) {
-                            g_ReceivedBoundaryDistanceMessage = wxEmptyString;
-                            return true;
+                    int l_BoundaryType = ID_BOUNDARY_ANY;
+                    if(g_ReceivedBoundaryTimeJSONMsg[wxS("BoundaryType")].AsString() == wxT("Exclusion")) l_BoundaryType = ID_BOUNDARY_EXCLUSION;
+                    else if(g_ReceivedBoundaryTimeJSONMsg[wxS("BoundaryType")].AsString() == wxT("Inclusion")) l_BoundaryType = ID_BOUNDARY_INCLUSION;
+                    else if(g_ReceivedBoundaryTimeJSONMsg[wxS("BoundaryType")].AsString() == wxT("Neither")) l_BoundaryType = ID_BOUNDARY_NEITHER;
+                    if(m_BoundaryType == ID_BOUNDARY_ANY || m_BoundaryType == l_BoundaryType ) {
+                        if(dist1 < 1) {
+                            m_BoundaryTime = wxTimeSpan::Seconds(3600.0 * dist / lastfix.Sog);
+                            m_crossinglat1 = lat1, m_crossinglon1 = lon1;
+                            m_crossinglat2 = lat2, m_crossinglon2 = lon2;
+                            if(m_BoundaryTime.GetMinutes() <= m_TimeMinutes) {
+                                g_ReceivedBoundaryDistanceMessage = wxEmptyString;
+                                return true;
+                            }
                         }
                     }
                     count = 0;
@@ -335,8 +352,14 @@ public:
                    g_ReceivedBoundaryDistanceJSONMsg[wxS("MsgId")].AsString() == wxS("distance") &&
                    g_ReceivedBoundaryDistanceJSONMsg[wxS("Found")].AsBool() == true ) {
                     // This is our message
-                    g_ReceivedBoundaryDistanceMessage = wxEmptyString;
-                    return true;
+                    int l_BoundaryType = ID_BOUNDARY_ANY;
+                    if(g_ReceivedBoundaryDistanceJSONMsg[wxS("BoundaryType")].AsString() == wxS("Exclusion")) l_BoundaryType = ID_BOUNDARY_EXCLUSION;
+                    else if(g_ReceivedBoundaryDistanceJSONMsg[wxS("BoundaryType")].AsString() == wxS("Inclusion")) l_BoundaryType = ID_BOUNDARY_INCLUSION;
+                    else if(g_ReceivedBoundaryDistanceJSONMsg[wxS("BoundaryType")].AsString() == wxS("Neither")) l_BoundaryType = ID_BOUNDARY_NEITHER;
+                    if(m_BoundaryType == ID_BOUNDARY_ANY || m_BoundaryType == l_BoundaryType ) {
+                        g_ReceivedBoundaryDistanceMessage = wxEmptyString;
+                        return true;
+                    }
                 }
                 g_ReceivedBoundaryDistanceMessage = wxEmptyString;
                 //g_ReceivedBoundaryDistanceJSONMsg.Clear();
@@ -437,6 +460,7 @@ public:
         panel->m_rbAnchor->SetValue(m_Mode == ANCHOR);
         panel->m_sTimeMinutes->SetValue(m_TimeMinutes);
         panel->m_tDistance->SetValue(wxString::Format(_T("%f"), m_Distance));
+        panel->m_radioBoxBoundaryType->SetSelection(m_BoundaryType);
         panel->m_tBoundaryGUID->SetValue(m_BoundaryGUID);
         return panel;
     }
@@ -449,6 +473,7 @@ public:
         else m_Mode = TIME;
         m_TimeMinutes = panel->m_sTimeMinutes->GetValue();
         panel->m_tDistance->GetValue().ToDouble(&m_Distance);
+        m_BoundaryType = panel->m_radioBoxBoundaryType->GetSelection();
         m_BoundaryGUID = panel->m_tBoundaryGUID->GetValue();
     }
 
@@ -462,11 +487,13 @@ public:
 
         e->Attribute("TimeMinutes", &m_TimeMinutes);
         e->Attribute("Distance", &m_Distance);
+        e->Attribute("BoundaryType", &m_BoundaryType);
         m_BoundaryGUID = wxString::FromUTF8(e->Attribute("BoundaryGUID"));
     }
 
     void SaveConfig(TiXmlElement *c) {
         c->SetAttribute("Type", "Boundary");
+        c->SetAttribute(("BoundaryType"), m_BoundaryType);
         switch(m_Mode) {
         case TIME: c->SetAttribute("Mode", "Time");
         case DISTANCE: c->SetAttribute("Mode", "Distance");
@@ -488,6 +515,7 @@ private:
     double m_TimeMinutes, m_Distance;
     bool m_bAnchorOutside;
     wxString m_BoundaryGUID;
+    int m_BoundaryType;
 };
 
 class NMEADataAlarm : public Alarm
