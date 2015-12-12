@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Oct 12 2015)
+// C++ code generated with wxFormBuilder (version Jun 17 2015)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
@@ -28,6 +28,7 @@
 #include <wx/spinctrl.h>
 #include <wx/stattext.h>
 #include <wx/panel.h>
+#include <wx/radiobox.h>
 #include <wx/choice.h>
 
 ///////////////////////////////////////////////////////////////////////////
@@ -207,6 +208,7 @@ class BoundaryPanel : public wxPanel
 		wxSpinCtrl* m_sTimeMinutes;
 		wxRadioButton* m_rbDistance;
 		wxTextCtrl* m_tDistance;
+		wxRadioBox* m_radioBoxBoundaryType;
 		wxRadioButton* m_rbAnchor;
 		wxTextCtrl* m_tBoundaryGUID;
 		
