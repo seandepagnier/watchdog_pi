@@ -314,6 +314,9 @@ public:
                             m_crossinglat1 = lat1, m_crossinglon1 = lon1;
                             m_crossinglat2 = lat2, m_crossinglon2 = lon2;
                             if(m_BoundaryTime.GetMinutes() <= m_TimeMinutes) {
+                                m_MsgBoundaryName = g_ReceivedBoundaryTimeJSONMsg[wxS("Name")].AsString();
+                                m_MsgBoundaryDescription = g_ReceivedBoundaryTimeJSONMsg[wxS("Description")].AsString();
+                                m_MsgBoundaryGUID = g_ReceivedBoundaryTimeJSONMsg[wxS("GUID")].AsString();
                                 g_ReceivedBoundaryDistanceMessage = wxEmptyString;
                                 return true;
                             }
@@ -357,12 +360,14 @@ public:
                     else if(g_ReceivedBoundaryDistanceJSONMsg[wxS("BoundaryType")].AsString() == wxS("Inclusion")) l_BoundaryType = ID_BOUNDARY_INCLUSION;
                     else if(g_ReceivedBoundaryDistanceJSONMsg[wxS("BoundaryType")].AsString() == wxS("Neither")) l_BoundaryType = ID_BOUNDARY_NEITHER;
                     if(m_BoundaryType == ID_BOUNDARY_ANY || m_BoundaryType == l_BoundaryType ) {
+                        m_MsgBoundaryName = g_ReceivedBoundaryDistanceJSONMsg[wxS("Name")].AsString();
+                        m_MsgBoundaryDescription = g_ReceivedBoundaryDistanceJSONMsg[wxS("Description")].AsString();
+                        m_MsgBoundaryGUID = g_ReceivedBoundaryDistanceJSONMsg[wxS("GUID")].AsString();
                         g_ReceivedBoundaryDistanceMessage = wxEmptyString;
                         return true;
                     }
                 }
                 g_ReceivedBoundaryDistanceMessage = wxEmptyString;
-                //g_ReceivedBoundaryDistanceJSONMsg.Clear();
             }
             break;
        case ANCHOR:
@@ -384,6 +389,9 @@ public:
                 g_ReceivedBoundaryAnchorJSONMsg[wxS("Found")].AsBool() == false ) {
                 // This is our message
                 g_ReceivedBoundaryDistanceMessage = wxEmptyString;
+                m_MsgBoundaryName = wxEmptyString;
+                m_MsgBoundaryDescription = wxEmptyString;
+                m_MsgBoundaryGUID = wxEmptyString;
                 m_bAnchorOutside = true;
                 return true;
             }
@@ -495,9 +503,15 @@ public:
         c->SetAttribute("Type", "Boundary");
         c->SetAttribute(("BoundaryType"), m_BoundaryType);
         switch(m_Mode) {
-        case TIME: c->SetAttribute("Mode", "Time");
-        case DISTANCE: c->SetAttribute("Mode", "Distance");
-        case ANCHOR: c->SetAttribute("Mode", "Anchor");
+        case TIME: 
+            c->SetAttribute("Mode", "Time");
+            break;
+        case DISTANCE: 
+            c->SetAttribute("Mode", "Distance");
+            break;
+        case ANCHOR: 
+            c->SetAttribute("Mode", "Anchor");
+            break;
         }
 
         c->SetAttribute("TimeMinutes", m_TimeMinutes);
@@ -506,6 +520,32 @@ public:
 //        alarm->ConfigItem(read, _T ( "LatLonorBoundary" ), m_rbUse );
     }
 
+    void Run()
+    {
+        if(m_bSound)
+            PlugInPlaySound(m_sSound);
+        
+        if(m_bCommand)
+            if(!wxProcess::Open(m_sCommand)) {
+                wxMessageDialog mdlg(GetOCPNCanvasWindow(),
+                                     Type() + _T(" ") +
+                                     _("Failed to execute command: ") + m_sCommand,
+                                     _("Watchdog"), wxOK | wxICON_ERROR);
+                mdlg.ShowModal();
+                m_bCommand = false;
+            }
+            
+            if(m_bMessageBox) {
+                wxMessageDialog mdlg(GetOCPNCanvasWindow(), Type() + _T(" ") + _("ALARM!") + _T("\n") 
+                                    + _("Name") + _T(": ") + m_MsgBoundaryName + _T("\n")
+                                    + _("Description") + _T(": ") + m_MsgBoundaryDescription + _T("\n")
+                                    + _("GUID") + _T(": ") + m_MsgBoundaryGUID, 
+                                     _("Watchman"), wxOK | wxICON_WARNING);
+                mdlg.ShowModal();
+            }
+    }
+    
+    
 private:
     double m_crossinglat1, m_crossinglon1;
     double m_crossinglat2, m_crossinglon2;
@@ -513,9 +553,12 @@ private:
 
     enum Mode { TIME, DISTANCE, ANCHOR } m_Mode;
     double m_TimeMinutes, m_Distance;
+    int m_BoundaryType;
     bool m_bAnchorOutside;
     wxString m_BoundaryGUID;
-    int m_BoundaryType;
+    wxString m_MsgBoundaryName;
+    wxString m_MsgBoundaryDescription;
+    wxString m_MsgBoundaryGUID;
 };
 
 class NMEADataAlarm : public Alarm
