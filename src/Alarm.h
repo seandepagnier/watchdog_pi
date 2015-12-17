@@ -48,7 +48,7 @@ public:
     Alarm(bool gfx=false, int interval=1);
 
     wxString Action();
-    void Run();
+    virtual void Run();
 
     virtual wxString Type() = 0;
     virtual wxString Options() = 0;
@@ -68,14 +68,16 @@ public:
 
     bool m_bHasGraphics, m_bEnabled, m_bgfxEnabled, m_bFired;
 
+protected:
+    bool m_bSound, m_bCommand, m_bMessageBox, m_bRepeat, m_bAutoReset;
+    wxString m_sSound, m_sCommand;
+    
 private:
     friend class EditAlarmDialog;
 
     void ConfigItem(bool read, wxString name, wxControl *control);
     virtual void GetStatusControls(wxControl *&Text, wxControl *&status) { Text = status = NULL; }
 
-    bool m_bSound, m_bCommand, m_bMessageBox, m_bRepeat, m_bAutoReset;
-    wxString m_sSound, m_sCommand;
     int m_iRepeatSeconds;
 
     int m_interval;
