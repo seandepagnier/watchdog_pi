@@ -261,13 +261,23 @@ public:
                       m_bAnchorOutside(false)
         {}
 
-    wxString Type() { return _("Boundary"); }
+    wxString Type() { 
+        switch(m_Mode) {
+            case TIME: return _("Boundary Time");
+            case DISTANCE: return _("Boundary Distance");
+            case ANCHOR: return _("Boundary GUID");
+            case GUARD: return _("Guard Zone GUID");
+            default: return _("Boundary");
+        }
+    }
+    
     wxString Options() {
         wxString s;
         switch(m_Mode) {
         case TIME: s = _("Time") + wxString::Format(_T(" < %f"), m_TimeMinutes);
         case DISTANCE: s = _("Distance") + wxString::Format(_T(" < %f nm"), m_Distance);
         case ANCHOR: s = _("Boundary GUID") + wxString(_T(" ")) + m_BoundaryGUID;
+        case GUARD: s = _("Guard Zone GUID") + wxString(_T(" ")) + m_GuardZoneGUID;
         default: s = _T("");
         }
         return s;
@@ -406,6 +416,7 @@ public:
                 break;
             }
             case GUARD: {
+                if(g_ReceivedGuardZoneMessage == wxEmptyString) return false;
                 wxJSONValue jMsg;
                 wxJSONWriter writer;
                 wxString    MsgString;
@@ -419,17 +430,17 @@ public:
                 
                 writer.Write( jMsg, MsgString );
                 SendPluginMessage( wxS("OCPN_DRAW_PI"), MsgString );
-                if(g_ReceivedBoundaryAnchorMessage != wxEmptyString &&
-                    g_ReceivedBoundaryAnchorJSONMsg[wxS("MsgId")].AsString() == wxS("guard") &&
-                    g_ReceivedBoundaryAnchorJSONMsg[wxS("Found")].AsBool() == true ) {
+                if(g_ReceivedGuardZoneMessage != wxEmptyString &&
+                    g_ReceivedGuardZoneJSONMsg[wxS("MsgId")].AsString() == wxS("guard") &&
+                    g_ReceivedGuardZoneJSONMsg[wxS("Found")].AsBool() == true ) {
                     // This is our message
-                    g_ReceivedBoundaryDistanceMessage = wxEmptyString;
+                    g_ReceivedGuardZoneMessage = wxEmptyString;
                     m_MsgBoundaryName = g_ReceivedGuardZoneJSONMsg[wxS("Name")].AsString();
                     m_MsgBoundaryDescription = g_ReceivedGuardZoneJSONMsg[wxS("Description")].AsString();
                     m_MsgBoundaryGUID = g_ReceivedGuardZoneJSONMsg[wxS("GUID")].AsString();
                     return true;
                 }
-                g_ReceivedBoundaryDistanceMessage = wxEmptyString;
+                g_ReceivedGuardZoneMessage = wxEmptyString;
                 break;
             }
         }
@@ -506,6 +517,7 @@ public:
         panel->m_rbTime->SetValue(m_Mode == TIME);
         panel->m_rbDistance->SetValue(m_Mode == DISTANCE);
         panel->m_rbAnchor->SetValue(m_Mode == ANCHOR);
+        panel->m_rbGuard->SetValue(m_Mode == GUARD);
         panel->m_sTimeMinutes->SetValue(m_TimeMinutes);
         panel->m_tDistance->SetValue(wxString::Format(_T("%f"), m_Distance));
         panel->m_radioBoxBoundaryType->SetSelection(m_BoundaryType);
@@ -565,7 +577,7 @@ public:
         c->SetAttribute("TimeMinutes", m_TimeMinutes);
         c->SetDoubleAttribute("Distance", m_Distance);
         c->SetAttribute("BoundaryGUID", m_BoundaryGUID.mb_str());
-        c->SetAttribute("GuardGUID", m_GuardZoneGUID.mb_str());
+        c->SetAttribute("GuardZoneGUID", m_GuardZoneGUID.mb_str());
         //        alarm->ConfigItem(read, _T ( "LatLonorBoundary" ), m_rbUse );
     }
 
