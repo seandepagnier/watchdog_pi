@@ -197,6 +197,7 @@ class BoundaryPanel : public wxPanel
 		wxStaticText* m_staticText7;
 		wxStaticText* m_staticText32;
 		wxButton* m_button12;
+		wxStaticText* m_staticText321;
 		wxStaticText* m_staticText39122;
 		
 		// Virtual event handlers, overide them in your derived class
@@ -211,6 +212,8 @@ class BoundaryPanel : public wxPanel
 		wxRadioBox* m_radioBoxBoundaryType;
 		wxRadioButton* m_rbAnchor;
 		wxTextCtrl* m_tBoundaryGUID;
+		wxRadioButton* m_rbGuard;
+		wxTextCtrl* m_tGuardZoneGUID;
 		
 		BoundaryPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL ); 
 		~BoundaryPanel();

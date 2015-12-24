@@ -35,6 +35,7 @@
 #include "WatchdogDialog.h"
 #include "ConfigurationDialog.h"
 #include "icons.h"
+#include "AIS_Target_Info.h"
 
 wxJSONValue g_ReceivedBoundaryTimeJSONMsg;
 wxString    g_ReceivedBoundaryTimeMessage;
@@ -44,6 +45,9 @@ wxJSONValue g_ReceivedBoundaryAnchorJSONMsg;
 wxString    g_ReceivedBoundaryAnchorMessage;
 wxJSONValue g_ReceivedBoundaryGUIDJSONMsg;
 wxString    g_ReceivedBoundaryGUIDMessage;
+wxJSONValue g_ReceivedGuardZoneJSONMsg;
+wxString    g_ReceivedGuardZoneMessage;
+AIS_Target_Info g_AISTarget;
 
 
 double heading_resolve(double degrees)
@@ -86,7 +90,16 @@ watchdog_pi::watchdog_pi(void *ppimgr)
     g_ReceivedBoundaryDistanceMessage = wxEmptyString;
     g_ReceivedBoundaryTimeMessage = wxEmptyString;
     g_ReceivedBoundaryGUIDMessage = wxEmptyString;
-
+    g_ReceivedGuardZoneMessage = wxEmptyString;
+    
+    g_AISTarget.m_dLat = 0.;
+    g_AISTarget.m_dLon = 0.;
+    g_AISTarget.m_dSOG = 0.;
+    g_AISTarget.m_dCOG = 0.;
+    g_AISTarget.m_dHDG = 0.;
+    g_AISTarget.m_iMMSI = 0;
+    strncpy(g_AISTarget.m_cShipName, " ", 2);
+    
     g_watchdog_pi = this;
 }
 
@@ -370,10 +383,70 @@ void watchdog_pi::SetPluginMessage(wxString &message_id, wxString &message_body)
                         g_ReceivedBoundaryAnchorJSONMsg = root;
                         g_ReceivedBoundaryAnchorMessage = message_body;
                     }
+                } else if(root[wxS("Msg")].AsString() == wxS("FindPointInGuardZone") ) {
+                    if(root[wxS("MsgId")].AsString() == wxS("guard")) {
+                        g_ReceivedGuardZoneJSONMsg = root;
+                        g_ReceivedGuardZoneMessage = message_body;
+                    }
                 }
             }
         }
         return;
+    } else if(message_id == wxS("AIS")) {
+        int numErrors = reader.Parse( message_body, &root );
+        if ( numErrors > 0 )  {
+            const wxArrayString& errors = reader.GetErrors();
+            for(int i = 0; i < (int)errors.GetCount(); i++)
+            {
+                if(i == 0) {
+                    sLogMessage.clear();
+                    sLogMessage.Append(wxT("watchdog_pi: Error parsing JSON message - "));
+                    sLogMessage.Append( message_id );
+                    sLogMessage.Append(wxT(", error text: "));
+                } else sLogMessage.Append(wxT("\n"));
+                sLogMessage.append( errors.Item( i ) );
+                wxLogMessage( sLogMessage );
+            }
+            return;
+        }
+        
+        if(!root.HasMember( wxS("Source"))) {
+            // Originator
+            wxLogMessage( wxS("No Source found in message") );
+            bFail = true;
+        }
+        
+        if(!root.HasMember( wxS("Msg"))) {
+            // Message identifier
+            wxLogMessage( wxS("No Msg found in message") );
+            bFail = true;
+        }
+        
+        if(!root.HasMember( wxS("Type"))) {
+            // Message type, orig or resp
+            wxLogMessage( wxS("No Type found in message") );
+            bFail = true;
+        }
+        
+        if(!root.HasMember( wxS("MsgId"))) {
+            // Unique (?) Msg number/identifier
+            wxLogMessage( wxS("No MsgNo found in message") );
+            bFail = true;
+        }
+        
+        if(!bFail) {
+            if(root[wxS("Type")].AsString() == wxS("Information") && root[wxS("Source")].AsString() == wxS("AIS_Decoder")) {
+                g_ReceivedGuardZoneJSONMsg = root;
+                g_ReceivedGuardZoneMessage = message_body;
+                g_ReceivedGuardZoneJSONMsg[wxS("lat")].AsString().ToDouble( &g_AISTarget.m_dLat );
+                g_ReceivedGuardZoneJSONMsg[wxS("lon")].AsString().ToDouble( &g_AISTarget.m_dLon );
+                g_ReceivedGuardZoneJSONMsg[wxS("sog")].AsString().ToDouble( &g_AISTarget.m_dSOG );
+                g_ReceivedGuardZoneJSONMsg[wxS("cog")].AsString().ToDouble( &g_AISTarget.m_dCOG );
+                g_ReceivedGuardZoneJSONMsg[wxS("hdg")].AsString().ToDouble( &g_AISTarget.m_dHDG );
+                g_AISTarget.m_iMMSI = g_ReceivedGuardZoneJSONMsg[wxS("mmsi")].AsLong();
+                strncpy(g_AISTarget.m_cShipName, g_ReceivedGuardZoneJSONMsg[wxS("shipname")].AsString().mb_str(), 21);
+            }
+        }
     }
 }
 
