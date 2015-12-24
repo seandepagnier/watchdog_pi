@@ -486,6 +486,24 @@ BoundaryPanel::BoundaryPanel( wxWindow* parent, wxWindowID id, const wxPoint& po
 	
 	fgSizer17->Add( fgSizer28, 1, wxEXPAND, 5 );
 	
+	wxFlexGridSizer* fgSizer30;
+	fgSizer30 = new wxFlexGridSizer( 0, 3, 0, 0 );
+	fgSizer30->SetFlexibleDirection( wxBOTH );
+	fgSizer30->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_rbGuard = new wxRadioButton( this, wxID_ANY, _("Guard Zone"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer30->Add( m_rbGuard, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	
+	m_staticText321 = new wxStaticText( this, wxID_ANY, _("Guard Zone GUID"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText321->Wrap( -1 );
+	fgSizer30->Add( m_staticText321, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	
+	m_tGuardZoneGUID = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer30->Add( m_tGuardZoneGUID, 0, wxALL, 5 );
+	
+	
+	fgSizer17->Add( fgSizer30, 1, wxEXPAND, 5 );
+	
 	m_staticText39122 = new wxStaticText( this, wxID_ANY, _("Graphical overlay for time displays line from boat to location of boundary crossing"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText39122->Wrap( 400 );
 	fgSizer17->Add( m_staticText39122, 0, wxALL, 5 );
