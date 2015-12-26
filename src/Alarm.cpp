@@ -244,10 +244,10 @@ extern AIS_Target_Info g_AISTarget;
 
 enum 
 {   
-    ID_BOUNDARY_ANY = 0,
-    ID_BOUNDARY_EXCLUSION,
+    ID_BOUNDARY_EXCLUSION = 0,
     ID_BOUNDARY_INCLUSION,
     ID_BOUNDARY_NEITHER,
+    ID_BOUNDARY_ANY,
     
     ID_BOUNDARY_TYPE_LAST
 };
@@ -314,6 +314,23 @@ public:
                     jMsg[wxT("MsgId")] = wxS("time");
                     jMsg[wxS("lat")] = lat2;
                     jMsg[wxS("lon")] = lon2;
+                    switch (m_BoundaryType) {
+                        case ID_BOUNDARY_ANY:
+                            jMsg[wxS("BoundaryType")] = wxT("Any");
+                            break;
+                        case ID_BOUNDARY_EXCLUSION:
+                            jMsg[wxS("BoundaryType")] = wxT("Exclusion");
+                            break;
+                        case ID_BOUNDARY_INCLUSION:
+                            jMsg[wxS("BoundaryType")] = wxT("Inclusion");
+                            break;
+                        case ID_BOUNDARY_NEITHER:
+                            jMsg[wxS("BoundaryType")] = wxT("Neither");
+                            break;
+                        default:
+                            jMsg[wxS("BoundaryType")] = wxT("Any");
+                            break;
+                    }
                     writer.Write( jMsg, MsgString );
                     SendPluginMessage( wxS("OCPN_DRAW_PI"), MsgString );
                     if(g_ReceivedBoundaryTimeMessage != wxEmptyString &&
@@ -366,6 +383,23 @@ public:
                     jMsg[wxT("MsgId")] = wxS("distance");
                     jMsg[wxS("lat")] = dlat;
                     jMsg[wxS("lon")] = dlon;
+                    switch (m_BoundaryType) {
+                        case ID_BOUNDARY_ANY:
+                            jMsg[wxS("BoundaryType")] = wxT("Any");
+                            break;
+                        case ID_BOUNDARY_EXCLUSION:
+                            jMsg[wxS("BoundaryType")] = wxT("Exclusion");
+                            break;
+                        case ID_BOUNDARY_INCLUSION:
+                            jMsg[wxS("BoundaryType")] = wxT("Inclusion");
+                            break;
+                        case ID_BOUNDARY_NEITHER:
+                            jMsg[wxS("BoundaryType")] = wxT("Neither");
+                            break;
+                        default:
+                            jMsg[wxS("BoundaryType")] = wxT("Any");
+                            break;
+                    }
                     writer.Write( jMsg, MsgString );
                     SendPluginMessage( wxS("OCPN_DRAW_PI"), MsgString );
                     if(g_ReceivedBoundaryDistanceMessage != wxEmptyString &&
@@ -522,7 +556,23 @@ public:
         panel->m_rbGuard->SetValue(m_Mode == GUARD);
         panel->m_sTimeMinutes->SetValue(m_TimeMinutes);
         panel->m_tDistance->SetValue(wxString::Format(_T("%f"), m_Distance));
-        panel->m_radioBoxBoundaryType->SetSelection(m_BoundaryType);
+        switch (m_BoundaryType) {
+            case ID_BOUNDARY_ANY:
+                panel->m_radioBoxBoundaryType->SetSelection(0);
+                break;
+            case ID_BOUNDARY_EXCLUSION:
+                panel->m_radioBoxBoundaryType->SetSelection(1);
+                break;
+            case ID_BOUNDARY_INCLUSION:
+                panel->m_radioBoxBoundaryType->SetSelection(2);
+                break;
+            case ID_BOUNDARY_NEITHER:
+                panel->m_radioBoxBoundaryType->SetSelection(3);
+                break;
+            default:
+                panel->m_radioBoxBoundaryType->SetSelection(0);
+                break;
+        }
         panel->m_tBoundaryGUID->SetValue(m_BoundaryGUID);
         panel->m_tGuardZoneGUID->SetValue(m_GuardZoneGUID);
         return panel;
@@ -537,7 +587,23 @@ public:
         else m_Mode = TIME;
         m_TimeMinutes = panel->m_sTimeMinutes->GetValue();
         panel->m_tDistance->GetValue().ToDouble(&m_Distance);
-        m_BoundaryType = panel->m_radioBoxBoundaryType->GetSelection();
+        switch (panel->m_radioBoxBoundaryType->GetSelection()) {
+            case 0:
+                m_BoundaryType = ID_BOUNDARY_ANY;
+                break;
+            case 1:
+                m_BoundaryType = ID_BOUNDARY_EXCLUSION;
+                break;
+            case 2:
+                m_BoundaryType = ID_BOUNDARY_INCLUSION;
+                break;
+            case 3:
+                m_BoundaryType = ID_BOUNDARY_NEITHER;
+                break;
+            default:
+                m_BoundaryType = ID_BOUNDARY_ANY;
+                break;
+        }
         m_BoundaryGUID = panel->m_tBoundaryGUID->GetValue();
         m_GuardZoneGUID = panel->m_tGuardZoneGUID->GetValue();
     }
