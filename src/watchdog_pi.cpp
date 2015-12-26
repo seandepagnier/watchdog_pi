@@ -47,6 +47,8 @@ wxJSONValue g_ReceivedBoundaryGUIDJSONMsg;
 wxString    g_ReceivedBoundaryGUIDMessage;
 wxJSONValue g_ReceivedGuardZoneJSONMsg;
 wxString    g_ReceivedGuardZoneMessage;
+wxJSONValue g_ReceivedAISJSONMsg;
+wxString    g_ReceivedAISMessage;
 AIS_Target_Info g_AISTarget;
 
 
@@ -91,6 +93,7 @@ watchdog_pi::watchdog_pi(void *ppimgr)
     g_ReceivedBoundaryTimeMessage = wxEmptyString;
     g_ReceivedBoundaryGUIDMessage = wxEmptyString;
     g_ReceivedGuardZoneMessage = wxEmptyString;
+    g_ReceivedAISMessage = wxEmptyString;
     
     g_AISTarget.m_dLat = 0.;
     g_AISTarget.m_dLon = 0.;
@@ -436,15 +439,15 @@ void watchdog_pi::SetPluginMessage(wxString &message_id, wxString &message_body)
         
         if(!bFail) {
             if(root[wxS("Type")].AsString() == wxS("Information") && root[wxS("Source")].AsString() == wxS("AIS_Decoder")) {
-                g_ReceivedGuardZoneJSONMsg = root;
-                g_ReceivedGuardZoneMessage = message_body;
-                g_ReceivedGuardZoneJSONMsg[wxS("lat")].AsString().ToDouble( &g_AISTarget.m_dLat );
-                g_ReceivedGuardZoneJSONMsg[wxS("lon")].AsString().ToDouble( &g_AISTarget.m_dLon );
-                g_ReceivedGuardZoneJSONMsg[wxS("sog")].AsString().ToDouble( &g_AISTarget.m_dSOG );
-                g_ReceivedGuardZoneJSONMsg[wxS("cog")].AsString().ToDouble( &g_AISTarget.m_dCOG );
-                g_ReceivedGuardZoneJSONMsg[wxS("hdg")].AsString().ToDouble( &g_AISTarget.m_dHDG );
-                g_AISTarget.m_iMMSI = g_ReceivedGuardZoneJSONMsg[wxS("mmsi")].AsLong();
-                strncpy(g_AISTarget.m_cShipName, g_ReceivedGuardZoneJSONMsg[wxS("shipname")].AsString().mb_str(), 21);
+                g_ReceivedAISJSONMsg = root;
+                g_ReceivedAISMessage = message_body;
+                g_ReceivedAISJSONMsg[wxS("lat")].AsString().ToDouble( &g_AISTarget.m_dLat );
+                g_ReceivedAISJSONMsg[wxS("lon")].AsString().ToDouble( &g_AISTarget.m_dLon );
+                g_ReceivedAISJSONMsg[wxS("sog")].AsString().ToDouble( &g_AISTarget.m_dSOG );
+                g_ReceivedAISJSONMsg[wxS("cog")].AsString().ToDouble( &g_AISTarget.m_dCOG );
+                g_ReceivedAISJSONMsg[wxS("hdg")].AsString().ToDouble( &g_AISTarget.m_dHDG );
+                g_AISTarget.m_iMMSI = g_ReceivedAISJSONMsg[wxS("mmsi")].AsLong();
+                strncpy(g_AISTarget.m_cShipName, g_ReceivedAISJSONMsg[wxS("shipname")].AsString().mb_str(), 21);
             }
             for(unsigned int i=0; i<Alarm::s_Alarms.size(); i++) {
                 Alarm *p_Alarm = Alarm::s_Alarms[i];

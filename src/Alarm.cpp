@@ -238,6 +238,8 @@ extern wxJSONValue g_ReceivedBoundaryAnchorJSONMsg;
 extern wxString    g_ReceivedBoundaryAnchorMessage;
 extern wxJSONValue g_ReceivedGuardZoneJSONMsg;
 extern wxString    g_ReceivedGuardZoneMessage;
+extern wxJSONValue g_ReceivedAISJSONMsg;
+extern wxString    g_ReceivedAISMessage;
 extern AIS_Target_Info g_AISTarget;
 
 enum 
@@ -416,7 +418,7 @@ public:
                 break;
             }
             case GUARD: {
-                if(g_ReceivedGuardZoneMessage == wxEmptyString) return false;
+                if(g_ReceivedAISMessage == wxEmptyString) return false;
                 wxJSONValue jMsg;
                 wxJSONWriter writer;
                 wxString    MsgString;
