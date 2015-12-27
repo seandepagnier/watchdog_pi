@@ -665,11 +665,20 @@ public:
             }
             
             if(m_bMessageBox) {
-                wxMessageDialog mdlg(GetOCPNCanvasWindow(), Type() + _T(" ") + _("ALARM!") + _T("\n") 
-                                    + _("Name") + _T(": ") + m_MsgBoundaryName + _T("\n")
-                                    + _("Description") + _T(": ") + m_MsgBoundaryDescription + _T("\n")
-                                    + _("GUID") + _T(": ") + m_MsgBoundaryGUID, 
-                                     _("Watchman"), wxOK | wxICON_WARNING);
+                wxMessageDialog mdlg(GetOCPNCanvasWindow(), wxEmptyString, _("Watchman"), wxOK | wxICON_WARNING);
+                if(m_Mode == GUARD) {
+                    mdlg.SetMessage(Type() + _T(" ") + _("ALARM!") + _T("\n") 
+                        + _("Guard Zone Name") + _T(": ") + m_MsgBoundaryName + _T("\n")
+                        + _("Description") + _T(": ") + m_MsgBoundaryDescription + _T("\n")
+                        + _("GUID") + _T(": ") + m_MsgBoundaryGUID + _T("\n") 
+                        + _("Ship Name") + _T(": ") + g_AISTarget.m_sShipName + _T("\n")
+                        + _("Ship MMSI") + _T(": ") + wxString::Format(_T("%i"), g_AISTarget.m_iMMSI));
+                } else {
+                    mdlg.SetMessage( Type() + _T(" ") + _("ALARM!") + _T("\n") 
+                        + _("Name") + _T(": ") + m_MsgBoundaryName + _T("\n")
+                        + _("Description") + _T(": ") + m_MsgBoundaryDescription + _T("\n")
+                        + _("GUID") + _T(": ") + m_MsgBoundaryGUID);
+                }
                 mdlg.ShowModal();
             }
     }

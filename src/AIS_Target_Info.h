@@ -40,7 +40,7 @@ public:
     double      m_dCOG;
     double      m_dHDG;
     int         m_iMMSI;
-    char        m_cShipName[21];
+    wxString    m_sShipName;
 };
 
 #endif

@@ -101,7 +101,7 @@ watchdog_pi::watchdog_pi(void *ppimgr)
     g_AISTarget.m_dCOG = 0.;
     g_AISTarget.m_dHDG = 0.;
     g_AISTarget.m_iMMSI = 0;
-    strncpy(g_AISTarget.m_cShipName, " ", 2);
+    g_AISTarget.m_sShipName = wxEmptyString;
     
     g_watchdog_pi = this;
 }
@@ -412,28 +412,48 @@ void watchdog_pi::SetPluginMessage(wxString &message_id, wxString &message_body)
             }
             return;
         }
-        
         if(!root.HasMember( wxS("Source"))) {
-            // Originator
             wxLogMessage( wxS("No Source found in message") );
             bFail = true;
         }
-        
         if(!root.HasMember( wxS("Msg"))) {
-            // Message identifier
             wxLogMessage( wxS("No Msg found in message") );
             bFail = true;
         }
-        
         if(!root.HasMember( wxS("Type"))) {
-            // Message type, orig or resp
             wxLogMessage( wxS("No Type found in message") );
             bFail = true;
         }
-        
         if(!root.HasMember( wxS("MsgId"))) {
-            // Unique (?) Msg number/identifier
             wxLogMessage( wxS("No MsgNo found in message") );
+            bFail = true;
+        }
+        if(!root.HasMember( wxS("lat"))) {
+            wxLogMessage( wxS("No Latitude found in message") );
+            bFail = true;
+        }
+        if(!root.HasMember( wxS("lon"))) {
+            wxLogMessage( wxS("No Longitude found in message") );
+            bFail = true;
+        }
+        if(!root.HasMember( wxS("sog"))) {
+            wxLogMessage( wxS("No SOG found in message") );
+            bFail = true;
+        }
+        if(!root.HasMember( wxS("cog"))) {
+            wxLogMessage( wxS("No COG found in message") );
+            bFail = true;
+        }
+        if(!root.HasMember( wxS("hdg"))) {
+            wxLogMessage( wxS("No Heading found in message") );
+            bFail = true;
+        }
+        if(!root.HasMember( wxS("mmsi"))) {
+            wxLogMessage( wxS("No MMSI found in message") );
+            bFail = true;
+        }
+        if(!root.HasMember( wxS("shipname"))) {
+            wxLogMessage( wxS("No Ship Name found in message") );
             bFail = true;
         }
         
@@ -447,7 +467,7 @@ void watchdog_pi::SetPluginMessage(wxString &message_id, wxString &message_body)
                 g_ReceivedAISJSONMsg[wxS("cog")].AsString().ToDouble( &g_AISTarget.m_dCOG );
                 g_ReceivedAISJSONMsg[wxS("hdg")].AsString().ToDouble( &g_AISTarget.m_dHDG );
                 g_AISTarget.m_iMMSI = g_ReceivedAISJSONMsg[wxS("mmsi")].AsLong();
-                strncpy(g_AISTarget.m_cShipName, g_ReceivedAISJSONMsg[wxS("shipname")].AsString().mb_str(), 21);
+                g_AISTarget.m_sShipName = g_ReceivedAISJSONMsg[wxS("shipname")].AsString();
             }
             for(unsigned int i=0; i<Alarm::s_Alarms.size(); i++) {
                 Alarm *p_Alarm = Alarm::s_Alarms[i];
