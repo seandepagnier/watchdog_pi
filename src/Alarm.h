@@ -25,6 +25,7 @@
  */
 
 #include <vector>
+#include <list>
 
 class wdDC;
 class TiXmlElement;
@@ -60,7 +61,9 @@ public:
     virtual void SavePanel(wxWindow *panel) = 0;
     virtual void LoadConfig(TiXmlElement *e) = 0;
     virtual void SaveConfig(TiXmlElement *c) = 0;
-
+    virtual void OnAISMessage(int iAlarmIndex) {return;}
+    virtual void OnAISMessage() {return;}
+    
     void LoadConfigBase(TiXmlElement *e);
     void SaveConfigBase(TiXmlElement *c);
 
@@ -71,6 +74,8 @@ public:
 protected:
     bool m_bSound, m_bCommand, m_bMessageBox, m_bRepeat, m_bAutoReset;
     wxString m_sSound, m_sCommand;
+    wxDateTime m_LastAlarmTime;
+    int m_iRepeatSeconds;
     
 private:
     friend class EditAlarmDialog;
@@ -78,12 +83,9 @@ private:
     void ConfigItem(bool read, wxString name, wxControl *control);
     virtual void GetStatusControls(wxControl *&Text, wxControl *&status) { Text = status = NULL; }
 
-    int m_iRepeatSeconds;
-
     int m_interval;
 
     wxTimer    m_Timer;
-    wxDateTime m_LastAlarmTime;
 };
 
 class TestAlarm : public Alarm

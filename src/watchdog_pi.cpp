@@ -37,6 +37,8 @@
 #include "icons.h"
 #include "AIS_Target_Info.h"
 
+wxJSONValue g_ReceivedPathGUIDJSONMsg;
+wxString    g_ReceivedPathGUIDMessage;
 wxJSONValue g_ReceivedBoundaryTimeJSONMsg;
 wxString    g_ReceivedBoundaryTimeMessage;
 wxJSONValue g_ReceivedBoundaryDistanceJSONMsg;
@@ -47,6 +49,12 @@ wxJSONValue g_ReceivedBoundaryGUIDJSONMsg;
 wxString    g_ReceivedBoundaryGUIDMessage;
 wxJSONValue g_ReceivedGuardZoneJSONMsg;
 wxString    g_ReceivedGuardZoneMessage;
+wxJSONValue g_ReceivedGuardZoneGUIDJSONMsg;
+wxString    g_ReceivedGuardZoneGUIDMessage;
+wxString    g_GuardZoneName;
+wxString    g_GuardZoneDescription;
+wxString    g_GuardZoneGUID;
+
 AIS_Target_Info g_AISTarget;
 
 
@@ -86,11 +94,17 @@ watchdog_pi::watchdog_pi(void *ppimgr)
     m_lastfix.Lat = NAN;
     m_lasttimerfix.Lat = NAN;
     m_sog = m_cog = NAN;
-    g_ReceivedBoundaryAnchorMessage = wxEmptyString;
-    g_ReceivedBoundaryDistanceMessage = wxEmptyString;
+    
+    g_ReceivedPathGUIDMessage = wxEmptyString;
     g_ReceivedBoundaryTimeMessage = wxEmptyString;
+    g_ReceivedBoundaryDistanceMessage = wxEmptyString;
+    g_ReceivedBoundaryAnchorMessage = wxEmptyString;
     g_ReceivedBoundaryGUIDMessage = wxEmptyString;
     g_ReceivedGuardZoneMessage = wxEmptyString;
+    g_ReceivedGuardZoneGUIDMessage = wxEmptyString;
+    g_GuardZoneName = wxEmptyString;
+    g_GuardZoneDescription = wxEmptyString;
+    g_GuardZoneGUID = wxEmptyString;
     
     g_AISTarget.m_dLat = 0.;
     g_AISTarget.m_dLon = 0.;
@@ -367,7 +381,12 @@ void watchdog_pi::SetPluginMessage(wxString &message_id, wxString &message_body)
         
         if(!bFail) {
             if(root[wxS("Type")].AsString() == wxS("Response") && root[wxS("Source")].AsString() == wxS("OCPN_DRAW_PI")) {
-                if(root[wxS("Msg")].AsString() == wxS("FindPointInAnyBoundary") ) {
+                if(root[wxS("Msg")].AsString() == wxS("FindPathByGUID") ) {
+                    if(root[wxS("MsgId")].AsString() == wxS("guard")) {
+                        g_ReceivedPathGUIDJSONMsg = root;
+                        g_ReceivedPathGUIDMessage = message_body;
+                    }
+                } else if(root[wxS("Msg")].AsString() == wxS("FindPointInAnyBoundary") ) {
                     if(root[wxS("MsgId")].AsString() == wxS("time")) {
                     g_ReceivedBoundaryTimeJSONMsg = root;
                     g_ReceivedBoundaryTimeMessage = message_body;
@@ -449,7 +468,7 @@ void watchdog_pi::SetPluginMessage(wxString &message_id, wxString &message_body)
             for(unsigned int i=0; i<Alarm::s_Alarms.size(); i++) {
                 Alarm *p_Alarm = Alarm::s_Alarms[i];
                 if(p_Alarm->Type() == _("Guard Zone GUID")) {
-                    if(p_Alarm->Test()) p_Alarm->Run();
+                    p_Alarm->OnAISMessage(i);
                 }
             }
         }
