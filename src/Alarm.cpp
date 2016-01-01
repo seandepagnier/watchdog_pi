@@ -743,12 +743,21 @@ public:
         }
     }
 
-    void OnTimer( wxTimerEvent & )
+    void OnTimer( wxTimerEvent &tEvent )
     {
-        if(g_watchdog_pi->m_WatchdogDialog && g_watchdog_pi->m_WatchdogDialog->IsShown())
-            for(unsigned int i=0; i<Alarm::s_Alarms.size(); i++)
-                if(Alarm::s_Alarms[i] == this)
-                    g_watchdog_pi->m_WatchdogDialog->UpdateStatus(i);
+        switch (m_Mode) {
+            case TIME:
+            case DISTANCE:
+            case ANCHOR:
+                Alarm::OnTimer( tEvent );
+                break;
+            case GUARD:
+                if(g_watchdog_pi->m_WatchdogDialog && g_watchdog_pi->m_WatchdogDialog->IsShown())
+                    for(unsigned int i=0; i<Alarm::s_Alarms.size(); i++)
+                        if(Alarm::s_Alarms[i] == this)
+                            g_watchdog_pi->m_WatchdogDialog->UpdateStatus(i);
+                break;
+        }
         return;
     }
     
