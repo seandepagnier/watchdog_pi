@@ -238,8 +238,7 @@ extern wxJSONValue g_ReceivedBoundaryAnchorJSONMsg;
 extern wxString    g_ReceivedBoundaryAnchorMessage;
 extern wxJSONValue g_ReceivedGuardZoneJSONMsg;
 extern wxString    g_ReceivedGuardZoneMessage;
-extern wxJSONValue g_ReceivedAISJSONMsg;
-extern wxString    g_ReceivedAISMessage;
+extern wxString    g_GuardZoneName;
 extern AIS_Target_Info g_AISTarget;
 
 enum 
@@ -260,7 +259,8 @@ public:
                       m_TimeMinutes(20),
                       m_Distance(3),
                       m_BoundaryType(ID_BOUNDARY_ANY),
-                      m_bAnchorOutside(false)
+                      m_bAnchorOutside(false),
+                      m_bGuardZoneFired(false)
         {}
 
     wxString Type() { 
@@ -452,7 +452,7 @@ public:
                 break;
             }
             case GUARD: {
-                if(g_ReceivedAISMessage == wxEmptyString) return false;
+                //if(g_ReceivedGuardZoneMessage == wxEmptyString) return false;
                 wxJSONValue jMsg;
                 wxJSONWriter writer;
                 wxString    MsgString;
@@ -471,9 +471,12 @@ public:
                     g_ReceivedGuardZoneJSONMsg[wxS("Found")].AsBool() == true ) {
                     // This is our message
                     g_ReceivedGuardZoneMessage = wxEmptyString;
-                    m_MsgBoundaryName = g_ReceivedGuardZoneJSONMsg[wxS("Name")].AsString();
-                    m_MsgBoundaryDescription = g_ReceivedGuardZoneJSONMsg[wxS("Description")].AsString();
-                    m_MsgBoundaryGUID = g_ReceivedGuardZoneJSONMsg[wxS("GUID")].AsString();
+                    m_GuardZoneName = g_ReceivedGuardZoneJSONMsg[wxS("Name")].AsString();
+                    m_GuardZoneDescription = g_ReceivedGuardZoneJSONMsg[wxS("Description")].AsString();
+                    m_GuardZoneGUID = g_ReceivedGuardZoneJSONMsg[wxS("GUID")].AsString();
+                    m_MsgBoundaryName = m_GuardZoneName;
+                    m_MsgBoundaryDescription = m_GuardZoneDescription;
+                    m_MsgBoundaryGUID = m_GuardZoneGUID;
                     return true;
                 }
                 g_ReceivedGuardZoneMessage = wxEmptyString;
@@ -539,9 +542,8 @@ public:
             }
             case GUARD:
             {
-                return _T(" ") + wxString(_("Guard")) + _T(" ") +
-                (m_bFired ? _("AIS Target in zone") : _("NO AIS tagets found in zone")) +
-                wxString(_T("Zone name  ")) ;
+                return _T(" ") + _("Guard Zone") + _T(": ") + m_GuardZoneName + _T(": ") +
+                (m_bGuardZoneFired ? _("AIS Target in zone") : _("NO AIS tagets found in zone"));
                 break;
             }
         }
@@ -606,6 +608,7 @@ public:
         }
         m_BoundaryGUID = panel->m_tBoundaryGUID->GetValue();
         m_GuardZoneGUID = panel->m_tGuardZoneGUID->GetValue();
+        m_GuardZoneName = g_GuardZoneName;
     }
 
     void LoadConfig(TiXmlElement *e) {
@@ -622,6 +625,7 @@ public:
         e->Attribute("BoundaryType", &m_BoundaryType);
         m_BoundaryGUID = wxString::FromUTF8(e->Attribute("BoundaryGUID"));
         m_GuardZoneGUID = wxString::FromUTF8(e->Attribute("GuardZoneGUID"));
+        m_GuardZoneName = wxString::FromUTF8(e->Attribute("GuardZoneName"));
     }
 
     void SaveConfig(TiXmlElement *c) {
@@ -646,6 +650,7 @@ public:
         c->SetDoubleAttribute("Distance", m_Distance);
         c->SetAttribute("BoundaryGUID", m_BoundaryGUID.mb_str());
         c->SetAttribute("GuardZoneGUID", m_GuardZoneGUID.mb_str());
+        c->SetAttribute("GuardZoneName", m_GuardZoneName.mb_str());
         //        alarm->ConfigItem(read, _T ( "LatLonorBoundary" ), m_rbUse );
     }
 
@@ -683,6 +688,73 @@ public:
             }
     }
     
+    void OnAISMessage (int iAlarmIndex) 
+    {
+        bool l_bFoundMMSI = false;
+        AISMMSITIME l_AISMsgInfo;
+        
+        DEBUGST("Testing zone: ");
+        DEBUGEND(m_GuardZoneName);
+        if(m_bEnabled) {
+            std::list<AISMMSITIME>::iterator it = AISMsgInfoList.begin();
+            while(it != AISMsgInfoList.end()) {
+                if((wxDateTime::Now() - it->MsgTime).GetSeconds() > m_iRepeatSeconds) {
+                    AISMsgInfoList.erase(it);
+                    it = AISMsgInfoList.begin();
+                    continue;
+                } else if(it->MMSI == g_AISTarget.m_iMMSI) {
+                    l_bFoundMMSI = true;
+                    break;
+                } else if(it == AISMsgInfoList.end()) break;
+                else {
+                    it++;
+                }
+            }
+            
+            if(Test()) {  
+                DEBUGST("Found target in zone: ");
+                DEBUGEND(m_GuardZoneName);
+                wxDateTime now = wxDateTime::Now();
+                if(l_bFoundMMSI) {
+                    if((now - it->MsgTime).GetSeconds() > m_iRepeatSeconds && m_bRepeat) {
+                        AISMsgInfoList.erase(it);
+                        l_AISMsgInfo.MMSI = g_AISTarget.m_iMMSI;
+                        l_AISMsgInfo.MsgTime = now;
+                        AISMsgInfoList.push_back(l_AISMsgInfo);
+                        Run();
+                    }
+                } else {
+                    l_AISMsgInfo.MMSI = g_AISTarget.m_iMMSI;
+                    l_AISMsgInfo.MsgTime = wxDateTime::Now();
+                    AISMsgInfoList.push_back(l_AISMsgInfo);
+                    Run();
+                }
+            }
+            
+            if(AISMsgInfoList.empty()) {
+                if(m_bAutoReset) {
+                    m_bGuardZoneFired = false;
+                    m_bFired = false;
+                }
+            }
+            else {
+                m_bGuardZoneFired = true;
+                m_bFired = true;
+            }
+            if(g_watchdog_pi->m_WatchdogDialog && g_watchdog_pi->m_WatchdogDialog->IsShown())
+                g_watchdog_pi->m_WatchdogDialog->UpdateStatus(iAlarmIndex);
+            
+        }
+    }
+
+    void OnTimer( wxTimerEvent & )
+    {
+        if(g_watchdog_pi->m_WatchdogDialog && g_watchdog_pi->m_WatchdogDialog->IsShown())
+            for(unsigned int i=0; i<Alarm::s_Alarms.size(); i++)
+                if(Alarm::s_Alarms[i] == this)
+                    g_watchdog_pi->m_WatchdogDialog->UpdateStatus(i);
+        return;
+    }
     
 private:
     double m_crossinglat1, m_crossinglon1;
@@ -694,10 +766,21 @@ private:
     int m_BoundaryType;
     bool m_bAnchorOutside;
     wxString m_BoundaryGUID;
-    wxString m_GuardZoneGUID;
+    wxString m_BoundaryName;
     wxString m_MsgBoundaryName;
     wxString m_MsgBoundaryDescription;
     wxString m_MsgBoundaryGUID;
+    wxString m_GuardZoneName;
+    wxString m_GuardZoneDescription;
+    wxString m_GuardZoneGUID;
+    bool    m_bGuardZoneFired;
+    
+    struct AISMMSITIME {
+        int MMSI;
+        wxDateTime MsgTime;
+    };
+    
+    std::list<AISMMSITIME> AISMsgInfoList;
 };
 
 class NMEADataAlarm : public Alarm

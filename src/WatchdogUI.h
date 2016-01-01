@@ -202,6 +202,7 @@ class BoundaryPanel : public wxPanel
 		
 		// Virtual event handlers, overide them in your derived class
 		void OnGetBoundaryGUID( wxCommandEvent& event );
+		void OnGuardZoneGUIDKillFocus( wxFocusEvent& event );
 		
 	
 	public:

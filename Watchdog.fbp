@@ -5087,7 +5087,7 @@
                                 <event name="OnEraseBackground"></event>
                                 <event name="OnKeyDown"></event>
                                 <event name="OnKeyUp"></event>
-                                <event name="OnKillFocus"></event>
+                                <event name="OnKillFocus">OnGuardZoneGUIDKillFocus</event>
                                 <event name="OnLeaveWindow"></event>
                                 <event name="OnLeftDClick"></event>
                                 <event name="OnLeftDown"></event>
