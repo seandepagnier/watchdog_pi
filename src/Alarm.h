@@ -67,7 +67,7 @@ public:
     void LoadConfigBase(TiXmlElement *e);
     void SaveConfigBase(TiXmlElement *c);
 
-    void OnTimer(wxTimerEvent &);
+    virtual void OnTimer(wxTimerEvent &);
 
     bool m_bHasGraphics, m_bEnabled, m_bgfxEnabled, m_bFired;
 

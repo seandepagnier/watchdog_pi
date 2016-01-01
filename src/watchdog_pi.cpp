@@ -51,6 +51,8 @@ wxJSONValue g_ReceivedGuardZoneJSONMsg;
 wxString    g_ReceivedGuardZoneMessage;
 wxJSONValue g_ReceivedGuardZoneGUIDJSONMsg;
 wxString    g_ReceivedGuardZoneGUIDMessage;
+wxJSONValue g_ReceivedAISJSONMsg;
+wxString    g_ReceivedAISMessage;
 wxString    g_GuardZoneName;
 wxString    g_GuardZoneDescription;
 wxString    g_GuardZoneGUID;

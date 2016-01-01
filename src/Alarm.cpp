@@ -693,8 +693,6 @@ public:
         bool l_bFoundMMSI = false;
         AISMMSITIME l_AISMsgInfo;
         
-        DEBUGST("Testing zone: ");
-        DEBUGEND(m_GuardZoneName);
         if(m_bEnabled) {
             std::list<AISMMSITIME>::iterator it = AISMsgInfoList.begin();
             while(it != AISMsgInfoList.end()) {
@@ -712,8 +710,6 @@ public:
             }
             
             if(Test()) {  
-                DEBUGST("Found target in zone: ");
-                DEBUGEND(m_GuardZoneName);
                 wxDateTime now = wxDateTime::Now();
                 if(l_bFoundMMSI) {
                     if((now - it->MsgTime).GetSeconds() > m_iRepeatSeconds && m_bRepeat) {
