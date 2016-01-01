@@ -274,15 +274,18 @@ public:
     }
     
     wxString Options() {
-        wxString s;
         switch(m_Mode) {
-        case TIME: s = _("Time") + wxString::Format(_T(" < %f"), m_TimeMinutes);
-        case DISTANCE: s = _("Distance") + wxString::Format(_T(" < %f nm"), m_Distance);
-        case ANCHOR: s = _("Boundary GUID") + wxString(_T(" ")) + m_BoundaryGUID;
-        case GUARD: s = _("Guard Zone GUID") + wxString(_T(" ")) + m_GuardZoneGUID;
-        default: s = _T("");
+        case TIME: return _("Time") + wxString::Format(_T(" < %f"), m_TimeMinutes);
+        case DISTANCE: return _("Distance") + wxString::Format(_T(" < %f nm"), m_Distance);
+        case ANCHOR: return _("Boundary GUID") + wxString(_T(" ")) + m_BoundaryGUID;
+        case GUARD: {
+            if(m_GuardZoneName == wxEmptyString)
+                return _("Guard Zone GUID") + wxString(_T(": ")) + m_GuardZoneGUID;
+            else
+                return _("Guard Zone Name") + _T(": ") + m_GuardZoneName;
         }
-        return s;
+        default: return _T("");
+        }
     }
 
     bool Test() {
@@ -651,7 +654,6 @@ public:
         c->SetAttribute("BoundaryGUID", m_BoundaryGUID.mb_str());
         c->SetAttribute("GuardZoneGUID", m_GuardZoneGUID.mb_str());
         c->SetAttribute("GuardZoneName", m_GuardZoneName.mb_str());
-        //        alarm->ConfigItem(read, _T ( "LatLonorBoundary" ), m_rbUse );
     }
 
     void Run()
