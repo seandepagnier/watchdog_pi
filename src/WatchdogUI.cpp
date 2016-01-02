@@ -18,7 +18,7 @@ WatchdogDialogBase::WatchdogDialogBase( wxWindow* parent, wxWindowID id, const w
 	fgSizer8->AddGrowableCol( 0 );
 	fgSizer8->AddGrowableRow( 0 );
 	fgSizer8->SetFlexibleDirection( wxBOTH );
-	fgSizer8->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	fgSizer8->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_ALL );
 	
 	m_lStatus = new wxListCtrl( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_NO_HEADER|wxLC_REPORT );
 	fgSizer8->Add( m_lStatus, 1, wxALL|wxEXPAND, 5 );

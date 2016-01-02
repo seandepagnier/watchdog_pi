@@ -144,7 +144,10 @@ void ConfigurationDialog::UpdateStates()
     bool enable = CurrentSelection() >= 0;
     m_bEdit->Enable(enable);
     m_bDelete->Enable(enable);
-    m_bDeleteAll->Enable(m_lAlarms->GetItemCount());
+    if(m_lAlarms->GetItemCount() > 0)
+        m_bDeleteAll->Enable( true );
+    else
+        m_bDeleteAll->Enable( false );
     this->GetSizer()->Fit( this );
     this->Layout();
     
