@@ -18,10 +18,10 @@ WatchdogDialogBase::WatchdogDialogBase( wxWindow* parent, wxWindowID id, const w
 	fgSizer8->AddGrowableCol( 0 );
 	fgSizer8->AddGrowableRow( 0 );
 	fgSizer8->SetFlexibleDirection( wxBOTH );
-	fgSizer8->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	fgSizer8->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_ALL );
 	
 	m_lStatus = new wxListCtrl( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_NO_HEADER|wxLC_REPORT );
-	fgSizer8->Add( m_lStatus, 0, wxALL|wxEXPAND, 5 );
+	fgSizer8->Add( m_lStatus, 1, wxALL|wxEXPAND, 5 );
 	
 	wxFlexGridSizer* fgSizer71;
 	fgSizer71 = new wxFlexGridSizer( 0, 4, 0, 0 );
@@ -139,7 +139,7 @@ ConfigurationDialogBase::ConfigurationDialogBase( wxWindow* parent, wxWindowID i
 	fgSizer29->Add( fgSizer31, 1, wxEXPAND, 5 );
 	
 	m_lAlarms = new wxListCtrl( sbSizer7->GetStaticBox(), wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxLC_SINGLE_SEL );
-	fgSizer29->Add( m_lAlarms, 0, wxALL|wxEXPAND, 5 );
+	fgSizer29->Add( m_lAlarms, 1, wxALL|wxEXPAND, 5 );
 	
 	
 	sbSizer7->Add( fgSizer29, 1, wxEXPAND, 5 );
@@ -515,12 +515,14 @@ BoundaryPanel::BoundaryPanel( wxWindow* parent, wxWindowID id, const wxPoint& po
 	
 	// Connect Events
 	m_button12->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BoundaryPanel::OnGetBoundaryGUID ), NULL, this );
+	m_tGuardZoneGUID->Connect( wxEVT_KILL_FOCUS, wxFocusEventHandler( BoundaryPanel::OnGuardZoneGUIDKillFocus ), NULL, this );
 }
 
 BoundaryPanel::~BoundaryPanel()
 {
 	// Disconnect Events
 	m_button12->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( BoundaryPanel::OnGetBoundaryGUID ), NULL, this );
+	m_tGuardZoneGUID->Disconnect( wxEVT_KILL_FOCUS, wxFocusEventHandler( BoundaryPanel::OnGuardZoneGUIDKillFocus ), NULL, this );
 	
 }
 

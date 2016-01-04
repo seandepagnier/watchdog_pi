@@ -45,7 +45,7 @@
             <property name="name">WatchdogDialogBase</property>
             <property name="pos"></property>
             <property name="size">-1,-1</property>
-            <property name="style">wxCAPTION|wxDEFAULT_DIALOG_STYLE</property>
+            <property name="style">wxCAPTION|wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER</property>
             <property name="subclass"></property>
             <property name="title">WatchDog</property>
             <property name="tooltip"></property>
@@ -96,15 +96,15 @@
                 <property name="hgap">0</property>
                 <property name="minimum_size"></property>
                 <property name="name">fgSizer8</property>
-                <property name="non_flexible_grow_mode">wxFLEX_GROWMODE_SPECIFIED</property>
+                <property name="non_flexible_grow_mode">wxFLEX_GROWMODE_ALL</property>
                 <property name="permission">none</property>
                 <property name="rows">2</property>
                 <property name="vgap">0</property>
-                <object class="sizeritem" expanded="1">
+                <object class="sizeritem" expanded="0">
                     <property name="border">5</property>
                     <property name="flag">wxALL|wxEXPAND</property>
-                    <property name="proportion">0</property>
-                    <object class="wxListCtrl" expanded="1">
+                    <property name="proportion">1</property>
+                    <object class="wxListCtrl" expanded="0">
                         <property name="BottomDockable">1</property>
                         <property name="LeftDockable">1</property>
                         <property name="RightDockable">1</property>
@@ -205,11 +205,11 @@
                         <event name="OnUpdateUI"></event>
                     </object>
                 </object>
-                <object class="sizeritem" expanded="0">
+                <object class="sizeritem" expanded="1">
                     <property name="border">5</property>
                     <property name="flag">wxEXPAND</property>
                     <property name="proportion">1</property>
-                    <object class="wxFlexGridSizer" expanded="0">
+                    <object class="wxFlexGridSizer" expanded="1">
                         <property name="cols">4</property>
                         <property name="flexible_direction">wxBOTH</property>
                         <property name="growablecols"></property>
@@ -551,7 +551,7 @@
             <event name="OnSetFocus"></event>
             <event name="OnSize"></event>
             <event name="OnUpdateUI"></event>
-            <object class="wxFlexGridSizer" expanded="0">
+            <object class="wxFlexGridSizer" expanded="1">
                 <property name="cols">1</property>
                 <property name="flexible_direction">wxBOTH</property>
                 <property name="growablecols"></property>
@@ -1364,7 +1364,7 @@
                                         <object class="sizeritem" expanded="0">
                                             <property name="border">5</property>
                                             <property name="flag">wxALL|wxEXPAND</property>
-                                            <property name="proportion">0</property>
+                                            <property name="proportion">1</property>
                                             <object class="wxListCtrl" expanded="0">
                                                 <property name="BottomDockable">1</property>
                                                 <property name="LeftDockable">1</property>
@@ -5087,7 +5087,7 @@
                                 <event name="OnEraseBackground"></event>
                                 <event name="OnKeyDown"></event>
                                 <event name="OnKeyUp"></event>
-                                <event name="OnKillFocus"></event>
+                                <event name="OnKillFocus">OnGuardZoneGUIDKillFocus</event>
                                 <event name="OnLeaveWindow"></event>
                                 <event name="OnLeftDClick"></event>
                                 <event name="OnLeftDown"></event>

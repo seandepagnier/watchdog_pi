@@ -54,6 +54,7 @@ ConfigurationDialog::ConfigurationDialog( watchdog_pi &_watchdog_pi, wxWindow* p
         UpdateItem(i);
     }
     UpdateStates();
+    
 }
 
 void ConfigurationDialog::OnEnabled( wxCommandEvent& event )
@@ -143,7 +144,13 @@ void ConfigurationDialog::UpdateStates()
     bool enable = CurrentSelection() >= 0;
     m_bEdit->Enable(enable);
     m_bDelete->Enable(enable);
-    m_bDeleteAll->Enable(m_lAlarms->GetItemCount());
+    if(m_lAlarms->GetItemCount() > 0)
+        m_bDeleteAll->Enable( true );
+    else
+        m_bDeleteAll->Enable( false );
+    this->GetSizer()->Fit( this );
+    this->Layout();
+    
 }
 
 int ConfigurationDialog::CurrentSelection()

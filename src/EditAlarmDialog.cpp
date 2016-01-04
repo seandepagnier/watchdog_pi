@@ -114,6 +114,45 @@ void BoundaryPanel::OnGetBoundaryGUID( wxCommandEvent& event )
         m_tBoundaryGUID->Clear();
 }
 
+void BoundaryPanel::OnGuardZoneGUIDKillFocus( wxFocusEvent& event )
+{
+    extern wxJSONValue g_ReceivedGuardZoneGUIDJSONMsg;
+    extern wxString    g_ReceivedGuardZoneGUIDMessage;
+    extern wxString    g_GuardZoneName;
+    extern wxString    g_GuardZoneDescription;
+    extern wxString    g_GuardZoneGUID;
+    extern wxJSONValue g_ReceivedPathGUIDJSONMsg;
+    extern wxString    g_ReceivedPathGUIDMessage;
+    
+    
+    
+    wxJSONValue jMsg;
+    wxJSONWriter writer;
+    wxString    MsgString;
+    wxJSONValue v;
+    v[_T("GUID")] = wxT("GUID");
+    jMsg[wxT("Source")] = wxT("WATCHDOG_PI");
+    jMsg[wxT("Type")] = wxT("Request");
+    jMsg[wxT("Msg")] = wxS("FindPathByGUID");
+    jMsg[wxT("MsgId")] = wxS("guard");
+    jMsg[wxS("GUID")] = m_tGuardZoneGUID->GetValue();
+    writer.Write( jMsg, MsgString );
+    g_ReceivedPathGUIDMessage = wxEmptyString;
+    SendPluginMessage( wxS("OCPN_DRAW_PI"), MsgString );
+    if(g_ReceivedPathGUIDMessage != wxEmptyString && 
+        g_ReceivedPathGUIDJSONMsg[wxT("MsgId")].AsString() == wxS("guard") && 
+        g_ReceivedPathGUIDJSONMsg[wxT("Found")].AsBool() == true ) {
+        g_GuardZoneName = g_ReceivedPathGUIDJSONMsg[wxS("Name")].AsString();
+        g_GuardZoneDescription = g_ReceivedPathGUIDJSONMsg[wxS("Description")].AsString();
+        g_GuardZoneGUID = g_ReceivedPathGUIDJSONMsg[wxS("GUID")].AsString();
+        } else {
+            wxMessageDialog mdlg(GetOCPNCanvasWindow(), _T(" ") + _("Error!") + _T("\n") 
+            + _("GUID") + _T(": ") + m_tGuardZoneGUID->GetValue() + _(" does not exist"), 
+                                 _("Watchman"), wxOK | wxICON_WARNING);
+            mdlg.ShowModal();
+        }
+}
+
 void AnchorPanel::OnSyncToBoat( wxCommandEvent& event )
 {
     m_tLatitude->SetValue(wxString::Format(_T("%f"), g_watchdog_pi->LastFix().Lat));
