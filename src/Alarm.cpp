@@ -269,8 +269,8 @@ public:
         switch(m_Mode) {
             case TIME: return _("Boundary Time");
             case DISTANCE: return _("Boundary Distance");
-            case ANCHOR: return _("Boundary GUID");
-            case GUARD: return _("Guard Zone GUID");
+            case ANCHOR: return _("Anchor Watch");
+            case GUARD: return _("Guard Zone");
             default: return _("Boundary");
         }
     }
@@ -306,6 +306,7 @@ public:
         switch(m_Mode) {
             case TIME: {
                 while(count < 10) {
+                    if(wxIsNaN(lastfix.Lat) || wxIsNaN(lastfix.Lon) ||wxIsNaN(lastfix.Cog) || wxIsNaN(lastfix.Sog)) break;
                     PositionBearingDistanceMercator_Plugin
                         (lastfix.Lat, lastfix.Lon, lastfix.Cog, lastfix.Sog * ( m_TimeMinutes / 60 ) + dist1, &lat2, &lon2);
 
@@ -374,6 +375,7 @@ public:
                 break;
             }
             case DISTANCE: {
+                if(wxIsNaN(lastfix.Lat) || wxIsNaN(lastfix.Lon)) break;
                 for(double t = 0; t<360; t+=9) {
                     double dlat, dlon;
                     PositionBearingDistanceMercator_Plugin(lastfix.Lat, lastfix.Lon, t,
@@ -428,6 +430,7 @@ public:
                 break;
             }
             case ANCHOR: {
+                if(wxIsNaN(lastfix.Lat) || wxIsNaN(lastfix.Lon)) break;
                 wxJSONValue jMsg;
                 wxJSONWriter writer;
                 wxString    MsgString;
@@ -457,7 +460,7 @@ public:
                 break;
             }
             case GUARD: {
-                //if(g_ReceivedGuardZoneMessage == wxEmptyString) return false;
+                if(wxIsNaN(g_AISTarget.m_dLat) || wxIsNaN(g_AISTarget.m_dLat)) break;
                 wxJSONValue jMsg;
                 wxJSONWriter writer;
                 wxString    MsgString;
