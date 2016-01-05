@@ -261,7 +261,9 @@ public:
                       m_BoundaryType(ID_BOUNDARY_ANY),
                       m_bAnchorOutside(false),
                       m_bGuardZoneFired(false)
-        {}
+        {
+            g_GuardZoneName = wxEmptyString;
+        }
 
     wxString Type() { 
         switch(m_Mode) {
@@ -611,7 +613,10 @@ public:
         }
         m_BoundaryGUID = panel->m_tBoundaryGUID->GetValue();
         m_GuardZoneGUID = panel->m_tGuardZoneGUID->GetValue();
-        m_GuardZoneName = g_GuardZoneName;
+        if(g_GuardZoneName != wxEmptyString) {
+            m_GuardZoneName = g_GuardZoneName;
+            g_GuardZoneName = wxEmptyString;
+        }
     }
 
     void LoadConfig(TiXmlElement *e) {
@@ -629,6 +634,7 @@ public:
         m_BoundaryGUID = wxString::FromUTF8(e->Attribute("BoundaryGUID"));
         m_GuardZoneGUID = wxString::FromUTF8(e->Attribute("GuardZoneGUID"));
         m_GuardZoneName = wxString::FromUTF8(e->Attribute("GuardZoneName"));
+        if(m_GuardZoneName == wxEmptyString) m_GuardZoneName = m_GuardZoneGUID;
     }
 
     void SaveConfig(TiXmlElement *c) {

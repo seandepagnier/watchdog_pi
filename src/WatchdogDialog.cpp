@@ -107,9 +107,13 @@ WatchdogDialog::WatchdogDialog( watchdog_pi &_watchdog_pi, wxWindow* parent)
     m_lStatus->InsertColumn(ALARM_ENABLED, _T("X"));
     m_lStatus->InsertColumn(ALARM_TYPE, _("Type"));
     m_lStatus->InsertColumn(ALARM_STATUS, _("Status"));
-    
-    this->GetSizer()->Fit( this );
+    m_lStatus->SetColumnWidth(ALARM_ENABLED, wxLIST_AUTOSIZE);
+    m_lStatus->SetColumnWidth(ALARM_TYPE, wxLIST_AUTOSIZE);
+    m_lStatus->SetColumnWidth(ALARM_STATUS, wxLIST_AUTOSIZE);
+
     this->Layout();
+    this->GetSizer()->Fit( this );
+    this->SetSizeHints( GetSize().x, GetSize().y );
 }
 
 WatchdogDialog::~WatchdogDialog()
@@ -135,10 +139,6 @@ void WatchdogDialog::UpdateAlarms()
 
     for(unsigned int i=0; i<Alarm::s_Alarms.size(); i++)
         UpdateStatus(i);
-
-    this->GetSizer()->Fit( this );
-    this->Layout();
-    Fit();
     
 }
 
@@ -155,8 +155,6 @@ void WatchdogDialog::UpdateStatus(int index)
     m_lStatus->SetItemTextColour(index, alarm->m_bFired ? *wxRED: *wxBLACK);
     m_lStatus->SetColumnWidth(ALARM_STATUS, wxLIST_AUTOSIZE);
 
-    this->GetSizer()->Fit( this );
-    this->Layout();
 }
 
 void WatchdogDialog::OnLeftDown( wxMouseEvent& event )

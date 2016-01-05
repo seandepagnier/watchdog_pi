@@ -30,6 +30,7 @@
 NewAlarmDialog::NewAlarmDialog(wxWindow* parent)
     : NewAlarmDialogBase(parent)
 {
+    m_lAlarmType->InsertColumn(0, _T(""));
     m_lAlarmType->InsertItem(LANDFALL, _("Landfall"));
     m_lAlarmType->InsertItem(BOUNDARY, _("Boundary"));
     m_lAlarmType->InsertItem(NMEADATA, _("NMEA Data"));

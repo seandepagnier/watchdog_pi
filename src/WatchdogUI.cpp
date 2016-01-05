@@ -14,9 +14,8 @@ WatchdogDialogBase::WatchdogDialogBase( wxWindow* parent, wxWindowID id, const w
 	this->SetSizeHints( wxSize( -1,-1 ), wxSize( -1,-1 ) );
 	
 	wxFlexGridSizer* fgSizer8;
-	fgSizer8 = new wxFlexGridSizer( 2, 1, 0, 0 );
+	fgSizer8 = new wxFlexGridSizer( 0, 1, 0, 0 );
 	fgSizer8->AddGrowableCol( 0 );
-	fgSizer8->AddGrowableRow( 0 );
 	fgSizer8->SetFlexibleDirection( wxBOTH );
 	fgSizer8->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_ALL );
 	
@@ -25,7 +24,7 @@ WatchdogDialogBase::WatchdogDialogBase( wxWindow* parent, wxWindowID id, const w
 	
 	wxFlexGridSizer* fgSizer71;
 	fgSizer71 = new wxFlexGridSizer( 0, 4, 0, 0 );
-	fgSizer71->SetFlexibleDirection( wxBOTH );
+	fgSizer71->SetFlexibleDirection( wxHORIZONTAL );
 	fgSizer71->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
 	m_bConfiguration = new wxButton( this, wxID_ANY, _("Configuration"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -38,7 +37,7 @@ WatchdogDialogBase::WatchdogDialogBase( wxWindow* parent, wxWindowID id, const w
 	fgSizer71->Add( m_bClose, 0, wxALL, 5 );
 	
 	
-	fgSizer8->Add( fgSizer71, 1, wxEXPAND, 5 );
+	fgSizer8->Add( fgSizer71, 0, wxEXPAND, 5 );
 	
 	
 	this->SetSizer( fgSizer8 );
@@ -220,7 +219,7 @@ NewAlarmDialogBase::NewAlarmDialogBase( wxWindow* parent, wxWindowID id, const w
 	fgSizer40->SetFlexibleDirection( wxBOTH );
 	fgSizer40->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_lAlarmType = new wxListCtrl( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_ICON|wxLC_SINGLE_SEL );
+	m_lAlarmType = new wxListCtrl( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_NO_HEADER|wxLC_REPORT|wxLC_SINGLE_SEL );
 	fgSizer40->Add( m_lAlarmType, 0, wxALL|wxEXPAND, 5 );
 	
 	m_sdbSizer3 = new wxStdDialogButtonSizer();
