@@ -93,7 +93,10 @@ void BoundaryPanel::OnGetBoundaryGUID( wxCommandEvent& event )
 {
     extern wxJSONValue g_ReceivedBoundaryGUIDJSONMsg;
     extern wxString    g_ReceivedBoundaryGUIDMessage;
-
+    extern wxString    g_BoundaryName;
+    extern wxString    g_BoundaryDescription;
+    extern wxString    g_BoundaryGUID;
+    
     wxJSONValue jMsg;
     wxJSONWriter writer;
     wxString    MsgString;
@@ -105,13 +108,21 @@ void BoundaryPanel::OnGetBoundaryGUID( wxCommandEvent& event )
     jMsg[wxT("MsgId")] = wxS("GetGUID");
     jMsg[wxT("lat")] = g_watchdog_pi->LastFix().Lat;
     jMsg[wxT("lon")] = g_watchdog_pi->LastFix().Lon;
+    jMsg[wxS("BoundaryType")] = wxT("Any");
     writer.Write( jMsg, MsgString );
     g_ReceivedBoundaryGUIDMessage = wxEmptyString;
     SendPluginMessage( wxS("OCPN_DRAW_PI"), MsgString );
     if(g_ReceivedBoundaryGUIDMessage != wxEmptyString && g_ReceivedBoundaryGUIDJSONMsg[wxT("MsgId")].AsString() == wxS("GetGUID") && g_ReceivedBoundaryGUIDJSONMsg[wxT("Found")].AsBool() == true ) {
         m_tBoundaryGUID->SetValue( g_ReceivedBoundaryGUIDJSONMsg[wxT("GUID")].AsString() );
-    } else
+        g_BoundaryGUID = m_tBoundaryGUID->GetValue();
+        g_BoundaryName = g_ReceivedBoundaryGUIDJSONMsg[wxT("Name")].AsString();
+        g_BoundaryDescription = g_ReceivedBoundaryGUIDJSONMsg[wxT("Description")].AsString();
+    } else {
         m_tBoundaryGUID->Clear();
+        g_BoundaryGUID = wxEmptyString;
+        g_BoundaryName = wxEmptyString;
+        g_BoundaryDescription = wxEmptyString;
+    }
 }
 
 void BoundaryPanel::OnGuardZoneGUIDKillFocus( wxFocusEvent& event )

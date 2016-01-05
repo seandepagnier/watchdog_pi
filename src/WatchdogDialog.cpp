@@ -111,8 +111,8 @@ WatchdogDialog::WatchdogDialog( watchdog_pi &_watchdog_pi, wxWindow* parent)
     m_lStatus->SetColumnWidth(ALARM_TYPE, wxLIST_AUTOSIZE);
     m_lStatus->SetColumnWidth(ALARM_STATUS, wxLIST_AUTOSIZE);
 
-    this->Layout();
     this->GetSizer()->Fit( this );
+    this->Layout();
     this->SetSizeHints( GetSize().x, GetSize().y );
 }
 

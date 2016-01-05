@@ -29,6 +29,7 @@
 #include <wx/stattext.h>
 #include <wx/panel.h>
 #include <wx/radiobox.h>
+#include <wx/statline.h>
 #include <wx/choice.h>
 
 ///////////////////////////////////////////////////////////////////////////
@@ -195,10 +196,11 @@ class BoundaryPanel : public wxPanel
 	protected:
 		wxStaticText* m_staticText30;
 		wxStaticText* m_staticText7;
+		wxStaticLine* m_staticline1;
 		wxStaticText* m_staticText32;
 		wxButton* m_button12;
 		wxStaticText* m_staticText321;
-		wxStaticText* m_staticText39122;
+		wxStaticLine* m_staticline2;
 		
 		// Virtual event handlers, overide them in your derived class
 		void OnGetBoundaryGUID( wxCommandEvent& event );

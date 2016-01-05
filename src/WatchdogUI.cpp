@@ -464,6 +464,9 @@ BoundaryPanel::BoundaryPanel( wxWindow* parent, wxWindowID id, const wxPoint& po
 	
 	fgSizer17->Add( fgSizer29, 1, wxEXPAND, 5 );
 	
+	m_staticline1 = new wxStaticLine( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
+	fgSizer17->Add( m_staticline1, 0, wxEXPAND | wxALL, 5 );
+	
 	wxFlexGridSizer* fgSizer28;
 	fgSizer28 = new wxFlexGridSizer( 0, 4, 0, 0 );
 	fgSizer28->SetFlexibleDirection( wxBOTH );
@@ -503,9 +506,8 @@ BoundaryPanel::BoundaryPanel( wxWindow* parent, wxWindowID id, const wxPoint& po
 	
 	fgSizer17->Add( fgSizer30, 1, wxEXPAND, 5 );
 	
-	m_staticText39122 = new wxStaticText( this, wxID_ANY, _("Graphical overlay for time displays line from boat to location of boundary crossing"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText39122->Wrap( 400 );
-	fgSizer17->Add( m_staticText39122, 0, wxALL, 5 );
+	m_staticline2 = new wxStaticLine( this, wxID_ANY, wxPoint( -1,-1 ), wxSize( -1,-1 ), 0 );
+	fgSizer17->Add( m_staticline2, 0, wxEXPAND, 5 );
 	
 	
 	this->SetSizer( fgSizer17 );
