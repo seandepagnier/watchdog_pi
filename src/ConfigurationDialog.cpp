@@ -94,6 +94,8 @@ void ConfigurationDialog::OnNewAlarm( wxCommandEvent& event )
     UpdateStates();
 
     OnEditAlarm(event);
+    if(m_bOnEditAlarmOK) return;
+    else OnDeleteAlarm(event);
 }
 
 void ConfigurationDialog::OnEditAlarm( wxCommandEvent& event )
@@ -102,7 +104,9 @@ void ConfigurationDialog::OnEditAlarm( wxCommandEvent& event )
     if(dlg.ShowModal() == wxID_OK) {
         dlg.Save();
         UpdateItem(CurrentSelection());
-    }
+        m_bOnEditAlarmOK = true;
+    } else
+        m_bOnEditAlarmOK = false;
 }
 
 void ConfigurationDialog::OnDeleteAlarm( wxCommandEvent& event )
