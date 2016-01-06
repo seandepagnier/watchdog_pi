@@ -287,7 +287,7 @@ public:
             if(m_GuardZoneName == wxEmptyString)
                 return _("Guard Zone GUID") + wxString(_T(": ")) + m_GuardZoneGUID;
             else
-                return _("Guard Zone Name") + _T(": ") + m_GuardZoneName;
+                return _("Guard Zone Name") + wxString(_T(": ")) + m_GuardZoneName;
         }
         default: return _T("");
         }
@@ -522,10 +522,13 @@ public:
                     l_s =  _T(" ") + wxString(_("Boundary GUID")) + _T(": ") + m_BoundaryGUID;
 
                 if(m_BoundaryTime.IsNull()) {
-                    if(!m_bCurrentBoatPos)
-                        l_s = _("No Boundary within ") + wxString::FromDouble(m_TimeMinutes) + _(" minutes" );
+                    if(!m_bCurrentBoatPos) {
+                        l_s = _("No Boundary within ");
+                        l_s << m_TimeMinutes;
+                        l_s += _(" minutes");
+                    }
                     else
-                        l_s.append(_T(" - ") + _("inside boundary"));
+                        l_s.append(_T(" - ") + wxString(_("inside boundary")));
                 } else {
                     l_s.append(_(" in ") + TimeBoundaryMsg());
                 }
@@ -541,9 +544,12 @@ public:
                     else
                         l_s =  _T(" ") + wxString(_("Boundary GUID")) + _T(": ") + m_BoundaryGUID;
                     if(m_bCurrentBoatPos)
-                        l_s.append(_T(" - ") + _("inside boundary"));
-                    else
-                       l_s.append(_(" <= ") + wxString::FromDouble(m_BoundaryDistance) + _T(" nm"));
+                        l_s.append(_T(" - ") + wxString(_("inside boundary")));
+                    else {
+                        l_s.append(_T(" <= "));
+                        l_s << m_BoundaryDistance;
+                        l_s.append(_T(" nm"));
+                    }
                 } else
                     l_s = wxString::Format(_T(" ") + wxString(_("Distance")) + _T(" >") + _T(" %.2f nm"), m_Distance);
                 return l_s;
@@ -557,15 +563,15 @@ public:
                     wxString(_T(" boundary ")) + m_BoundaryName;
                 } else {
                 return _T(" ") + wxString(_("Anchor")) + _T(" ") +
-                    (m_bAnchorOutside ? _("Outside") : _("Inside")) +
-                    wxString(_T(" boundary ")) + m_BoundaryGUID;
+                    (m_bAnchorOutside ? wxString(_("Outside")) : wxString(_("Inside"))) +
+                    wxString(_(" boundary ")) + m_BoundaryGUID;
                 }
                 break;
             }
             case GUARD:
             {
-                return _T(" ") + _("Guard Zone") + _T(": ") + m_GuardZoneName + _T(": ") +
-                (m_bGuardZoneFired ? _("AIS Target in zone") : _("NO AIS tagets found in zone"));
+                return _T(" ") + wxString(_("Guard Zone")) + _T(": ") + m_GuardZoneName + _T(": ") +
+                (m_bGuardZoneFired ? wxString(_("AIS Target in zone")) : wxString(_("NO AIS tagets found in zone")));
                 break;
             }
         }
@@ -699,7 +705,6 @@ public:
             }
             
             if(m_bMessageBox) {
-                wxMessageDialog mdlg(GetOCPNCanvasWindow(), wxEmptyString, _("Watchman"), wxOK | wxICON_WARNING);
                 switch (m_Mode) {
                     case TIME: {
                         wxString  l_s = Type() + _T(" ") + _("ALARM!") + _T("\n") 
@@ -707,10 +712,11 @@ public:
                             + _("Description") + _T(": ") + m_BoundaryDescription + _T("\n")
                             + _("GUID") + _T(": ") + m_BoundaryGUID + _T("\n");
                         if(m_bCurrentBoatPos)
-                            l_s.append("inside boundary");
+                            l_s.append(wxString(_("inside boundary")));
                         else
-                            l_s.append(_("in") + _T(": ") + TimeBoundaryMsg());
-                        mdlg.SetMessage(l_s);
+                            l_s.append(wxString(_("in")) + _T(": ") + TimeBoundaryMsg());
+                        wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchman"), wxOK | wxICON_WARNING);
+                        mdlg.ShowModal();
                         break;
                     }
                     case DISTANCE: {
@@ -719,31 +725,38 @@ public:
                             + _("Description") + _T(": ") + m_BoundaryDescription + _T("\n")
                             + _("GUID") + _T(": ") + m_BoundaryGUID + _T("\n");
                         if(m_bCurrentBoatPos)
-                            l_s.append("inside boundary");
-                        else
-                            l_s.append(_("in") + _T(": ") + wxString::FromDouble(m_BoundaryDistance) + _T(" nm"));
-                        mdlg.SetMessage(l_s);
+                            l_s.append(wxString(_("inside boundary")));
+                        else {
+                            l_s += wxString(_("in")) + _T(": ");
+                            l_s << m_BoundaryDistance;
+                            l_s += _T(" nm");
+                        }
+                        wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchman"), wxOK | wxICON_WARNING);
+                        mdlg.ShowModal();
                         break;
                     }
                     case ANCHOR: {
-                        mdlg.SetMessage( Type() + _T(" ") + _("ALARM!") + _T("\n") 
+                        wxString l_s = Type() + _T(" ") + _("ALARM!") + _T("\n") 
                             + _("Outside") + _T("\n")
                             + _("Name") + _T(": ") + m_BoundaryName + _T("\n")
                             + _("Description") + _T(": ") + m_BoundaryDescription + _T("\n")
-                            + _("GUID") + _T(": ") + m_BoundaryGUID);
+                            + _("GUID") + _T(": ") + m_BoundaryGUID;
+                        wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchman"), wxOK | wxICON_WARNING);
+                        mdlg.ShowModal();
                         break;
                     }
                     case GUARD: {
-                        mdlg.SetMessage(Type() + _T(" ") + _("ALARM!") + _T("\n") 
+                        wxString l_s = Type() + _T(" ") + _("ALARM!") + _T("\n") 
                             + _("Guard Zone Name") + _T(": ") + m_GuardZoneName + _T("\n")
                             + _("Description") + _T(": ") + m_GuardZoneDescription + _T("\n")
                             + _("GUID") + _T(": ") + m_GuardZoneGUID + _T("\n") 
                             + _("Ship Name") + _T(": ") + g_AISTarget.m_sShipName + _T("\n")
-                            + _("Ship MMSI") + _T(": ") + wxString::Format(_T("%i"), g_AISTarget.m_iMMSI));
-                        break;
+                            + _("Ship MMSI") + _T(": ") + wxString::Format(_T("%i"), g_AISTarget.m_iMMSI);
+                            wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchman"), wxOK | wxICON_WARNING);
+                            mdlg.ShowModal();
+                            break;
                     }
                 }
-                mdlg.ShowModal();
             }
     }
     
