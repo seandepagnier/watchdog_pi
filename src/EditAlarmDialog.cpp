@@ -127,8 +127,6 @@ void BoundaryPanel::OnGetBoundaryGUID( wxCommandEvent& event )
 
 void BoundaryPanel::OnGuardZoneGUIDKillFocus( wxFocusEvent& event )
 {
-    extern wxJSONValue g_ReceivedGuardZoneGUIDJSONMsg;
-    extern wxString    g_ReceivedGuardZoneGUIDMessage;
     extern wxString    g_GuardZoneName;
     extern wxString    g_GuardZoneDescription;
     extern wxString    g_GuardZoneGUID;
@@ -155,9 +153,9 @@ void BoundaryPanel::OnGuardZoneGUIDKillFocus( wxFocusEvent& event )
         g_GuardZoneDescription = g_ReceivedPathGUIDJSONMsg[wxS("Description")].AsString();
         g_GuardZoneGUID = g_ReceivedPathGUIDJSONMsg[wxS("GUID")].AsString();
     } else {
-        wxMessageDialog mdlg(GetOCPNCanvasWindow(), _T(" ") + _("Error!") + _T("\n") 
-        + _("GUID") + _T(": ") + m_tGuardZoneGUID->GetValue() + _(" does not exist"), 
-                                _("Watchman"), wxOK | wxICON_WARNING);
+        wxString l_s = _T(" ") + wxString(_("Error!")) + _T("\n") 
+            + _("GUID") + _T(": ") + m_tGuardZoneGUID->GetValue() + _(" does not exist");
+        wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchman"), wxOK | wxICON_WARNING);
         mdlg.ShowModal();
     }
 }

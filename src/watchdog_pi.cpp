@@ -493,7 +493,7 @@ void watchdog_pi::SetPluginMessage(wxString &message_id, wxString &message_body)
             }
             for(unsigned int i=0; i<Alarm::s_Alarms.size(); i++) {
                 Alarm *p_Alarm = Alarm::s_Alarms[i];
-                if(p_Alarm->Type() == _("Guard Zone GUID")) {
+                if(p_Alarm->Type() == _("Guard Zone")) {
                     p_Alarm->OnAISMessage(i);
                 }
             }
