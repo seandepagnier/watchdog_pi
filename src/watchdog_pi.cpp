@@ -297,7 +297,7 @@ void watchdog_pi::OnTimer( wxTimerEvent & )
         return;
     }
     
-    double dt = difftime(m_lastfix.FixTime, m_lasttimerfix.FixTime);
+    double dt = m_lastfix.FixTime - m_lasttimerfix.FixTime;
     if(!isnan(m_lastfix.Lat) && !isnan(m_lasttimerfix.Lat) && dt > 0) {
         /* this way helps avoid surge speed from gps from surfing waves etc... */
         double cog, sog;
