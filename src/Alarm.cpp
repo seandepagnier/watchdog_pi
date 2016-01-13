@@ -1300,9 +1300,9 @@ public:
         else {
             wxString fmt(_T("%.1f"));
             double knots = Knots();
-            s = wxString::Format(fmt + (g_watchdog_pi->m_sog < knots ?
+            s = wxString::Format(fmt + (g_watchdog_pi->LastFix().Sog < m_Speed ?
                                         _T(" < ") : _T(" > "))
-                                 + fmt, g_watchdog_pi->m_sog, knots);
+                                 + fmt, g_watchdog_pi->LastFix().Sog, m_Speed);
         }
 
         return s;
@@ -1370,8 +1370,8 @@ public:
 
 private:
     double Knots() {
-        if(isnan(g_watchdog_pi->m_sog)) return 0.;
-        else return g_watchdog_pi->m_sog;
+        if(isnan(g_watchdog_pi->LastFix().Sog)) return 0.;
+        else return g_watchdog_pi->LastFix().Sog;
     }
 
     enum Mode { UNDERSPEED, OVERSPEED } m_Mode;
