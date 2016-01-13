@@ -1330,9 +1330,9 @@ public:
 
     bool Test() {
         if(m_Mode == UNDERSPEED)
-            return g_watchdog_pi->m_sog < Knots();
+            return m_Speed > Knots();
         else
-            return g_watchdog_pi->m_sog > Knots();
+            return m_Speed < Knots();
     }
 
     wxWindow *OpenPanel(wxWindow *parent) {
@@ -1350,8 +1350,8 @@ public:
 
     void LoadConfig(TiXmlElement *e) {
         const char *mode = e->Attribute("Mode");
-        if(!strcasecmp(mode, "Underspeed")) m_Mode = UNDERSPEED;
-        else if(!strcasecmp(mode, "Overspeed")) m_Mode = OVERSPEED;
+        if(strcasecmp(mode, "Underspeed")) m_Mode = UNDERSPEED;
+        else if(strcasecmp(mode, "Overspeed")) m_Mode = OVERSPEED;
         else wxLogMessage(_T("Watchdog: ") + wxString(_("invalid Speed mode")) + _T(": ")
                          + wxString::FromUTF8(mode));
 
@@ -1370,7 +1370,8 @@ public:
 
 private:
     double Knots() {
-        return g_watchdog_pi->m_sog;
+        if(isnan(g_watchdog_pi->m_sog)) return 0.;
+        else return g_watchdog_pi->m_sog;
     }
 
     enum Mode { UNDERSPEED, OVERSPEED } m_Mode;
