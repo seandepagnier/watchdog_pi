@@ -779,6 +779,13 @@ SpeedPanel::SpeedPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, con
 	m_staticText24->Wrap( -1 );
 	fgSizer14->Add( m_staticText24, 0, wxALL, 5 );
 	
+	m_staticText28 = new wxStaticText( sbSizer7->GetStaticBox(), wxID_ANY, _("Seconds to Average\nSOG over"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText28->Wrap( -1 );
+	fgSizer14->Add( m_staticText28, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	
+	m_sliderSOGAverageNumber = new wxSlider( sbSizer7->GetStaticBox(), wxID_ANY, 10, 1, 120, wxDefaultPosition, wxDefaultSize, wxSL_AUTOTICKS|wxSL_HORIZONTAL|wxSL_LABELS );
+	fgSizer14->Add( m_sliderSOGAverageNumber, 0, wxALL|wxEXPAND, 5 );
+	
 	
 	sbSizer7->Add( fgSizer14, 1, wxEXPAND, 5 );
 	

@@ -31,6 +31,7 @@
 #include <wx/radiobox.h>
 #include <wx/statline.h>
 #include <wx/choice.h>
+#include <wx/slider.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -333,11 +334,13 @@ class SpeedPanel : public wxPanel
 		wxStaticText* m_staticText51;
 		wxStaticText* m_staticText44;
 		wxStaticText* m_staticText24;
+		wxStaticText* m_staticText28;
 		wxStaticText* m_staticText391;
 	
 	public:
 		wxChoice* m_cMode;
 		wxTextCtrl* m_tSpeed;
+		wxSlider* m_sliderSOGAverageNumber;
 		
 		SpeedPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL ); 
 		~SpeedPanel();
