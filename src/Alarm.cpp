@@ -1350,8 +1350,8 @@ public:
 
     void LoadConfig(TiXmlElement *e) {
         const char *mode = e->Attribute("Mode");
-        if(strcasecmp(mode, "Underspeed")) m_Mode = UNDERSPEED;
-        else if(strcasecmp(mode, "Overspeed")) m_Mode = OVERSPEED;
+        if(!strcasecmp(mode, "Underspeed")) m_Mode = UNDERSPEED;
+        else if(!strcasecmp(mode, "Overspeed")) m_Mode = OVERSPEED;
         else wxLogMessage(_T("Watchdog: ") + wxString(_("invalid Speed mode")) + _T(": ")
                          + wxString::FromUTF8(mode));
 
