@@ -782,6 +782,22 @@ SpeedPanel::SpeedPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, con
 	
 	sbSizer7->Add( fgSizer14, 1, wxEXPAND, 5 );
 	
+	wxFlexGridSizer* fgSizer31;
+	fgSizer31 = new wxFlexGridSizer( 0, 2, 0, 0 );
+	fgSizer31->AddGrowableCol( 1 );
+	fgSizer31->SetFlexibleDirection( wxBOTH );
+	fgSizer31->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_staticText28 = new wxStaticText( sbSizer7->GetStaticBox(), wxID_ANY, _("Seconds to Average\nSOG over"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText28->Wrap( -1 );
+	fgSizer31->Add( m_staticText28, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	
+	m_sliderSOGAverageNumber = new wxSlider( sbSizer7->GetStaticBox(), wxID_ANY, 10, 1, 120, wxDefaultPosition, wxDefaultSize, wxSL_AUTOTICKS|wxSL_HORIZONTAL|wxSL_LABELS );
+	fgSizer31->Add( m_sliderSOGAverageNumber, 0, wxALL|wxEXPAND, 5 );
+	
+	
+	sbSizer7->Add( fgSizer31, 1, wxEXPAND, 5 );
+	
 	m_staticText391 = new wxStaticText( sbSizer7->GetStaticBox(), wxID_ANY, _("Graphical overlay displays circle with radius of this speed"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText391->Wrap( -1 );
 	sbSizer7->Add( m_staticText391, 0, wxALL, 5 );

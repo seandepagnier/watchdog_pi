@@ -1281,7 +1281,7 @@ private:
 class SpeedAlarm : public Alarm
 {
 public:
-    SpeedAlarm() : Alarm(true), m_Mode(UNDERSPEED), m_Speed(1) {}
+    SpeedAlarm() : Alarm(true), m_Mode(UNDERSPEED), m_dSpeed(1) {}
 
     wxString Type() { return _("Speed"); }
     wxString Options() {
@@ -1290,7 +1290,7 @@ public:
         case UNDERSPEED: s += _("UnderSpeed") + wxString(_T(" ")); break;
         case OVERSPEED: s += _("OverSpeed") + wxString(_T(" ")); break;
         }
-        return s + wxString::Format(_T(" %f"), m_Speed);
+        return s + wxString::Format(_T(" %f"), m_dSpeed);
     }
 
     wxString GetStatus() {
@@ -1299,10 +1299,15 @@ public:
             s = _T("N/A");
         else {
             wxString fmt(_T("%.1f"));
-            double knots = Knots();
-            s = wxString::Format(fmt + (g_watchdog_pi->LastFix().Sog < m_Speed ?
+            // average speed in list
+            double l_avSpeed = 0.0;
+            for(std::list<double>::iterator it = m_SOGqueue.begin(); it != m_SOGqueue.end(); it++) {
+                l_avSpeed += *it;
+            }
+            l_avSpeed /= m_SOGqueue.size();
+            s = wxString::Format(fmt + (l_avSpeed < m_dSpeed ?
                                         _T(" < ") : _T(" > "))
-                                 + fmt, g_watchdog_pi->LastFix().Sog, m_Speed);
+                                 + fmt, l_avSpeed, m_dSpeed);
         }
 
         return s;
@@ -1330,44 +1335,61 @@ public:
 
     bool Test() {
         if(m_Mode == UNDERSPEED)
-            return m_Speed > Knots();
+            return m_dSpeed > Knots();
         else
-            return m_Speed < Knots();
+            return m_dSpeed < Knots();
     }
 
     wxWindow *OpenPanel(wxWindow *parent) {
         SpeedPanel *panel = new SpeedPanel(parent);
         panel->m_cMode->SetSelection((int)m_Mode);
-        panel->m_tSpeed->SetValue(wxString::Format(_T("%f"), m_Speed));
+        panel->m_tSpeed->SetValue(wxString::Format(_T("%f"), m_dSpeed));
+        panel->m_sliderSOGAverageNumber->SetValue(m_iAverageTime);
         return panel;
     }
 
     void SavePanel(wxWindow *p) {
         SpeedPanel *panel = (SpeedPanel*)p;
         m_Mode = (Mode)panel->m_cMode->GetSelection();
-        panel->m_tSpeed->GetValue().ToDouble(&m_Speed);
+        panel->m_tSpeed->GetValue().ToDouble(&m_dSpeed);
+        m_iAverageTime = panel->m_sliderSOGAverageNumber->GetValue();
     }
 
     void LoadConfig(TiXmlElement *e) {
         const char *mode = e->Attribute("Mode");
-        if(strcasecmp(mode, "Underspeed")) m_Mode = UNDERSPEED;
-        else if(strcasecmp(mode, "Overspeed")) m_Mode = OVERSPEED;
+        if(!strcasecmp(mode, "Underspeed")) m_Mode = UNDERSPEED;
+        else if(!strcasecmp(mode, "Overspeed")) m_Mode = OVERSPEED;
         else wxLogMessage(_T("Watchdog: ") + wxString(_("invalid Speed mode")) + _T(": ")
                          + wxString::FromUTF8(mode));
 
-        e->Attribute("Speed", &m_Speed);
+        e->Attribute("Speed", &m_dSpeed);
+        m_iAverageTime = 10;
+        e->Attribute("AverageTime", &m_iAverageTime);
     }
 
     void SaveConfig(TiXmlElement *c) {
         c->SetAttribute("Type", "Speed");
         switch(m_Mode) {
-        case UNDERSPEED: c->SetAttribute("Mode", "Underspeed");
-        case OVERSPEED: c->SetAttribute("Mode", "Overspeed");
+        case UNDERSPEED: 
+            c->SetAttribute("Mode", "Underspeed");
+            break;
+        case OVERSPEED: 
+            c->SetAttribute("Mode", "Overspeed");
+            break;
         }
 
-        c->SetDoubleAttribute("Speed", m_Speed);
+        c->SetDoubleAttribute("Speed", m_dSpeed);
+        c->SetAttribute("AverageTime", m_iAverageTime);
     }
 
+    void OnTimer( wxTimerEvent &tEvent )
+    {
+        Alarm::OnTimer( tEvent );
+        if(!isnan(g_watchdog_pi->LastFix().Sog)) m_SOGqueue.push_front(Knots()) ;
+        while((int)m_SOGqueue.size() > m_iAverageTime) m_SOGqueue.pop_back();
+        return;
+    }
+    
 private:
     double Knots() {
         if(isnan(g_watchdog_pi->LastFix().Sog)) return 0.;
@@ -1375,7 +1397,9 @@ private:
     }
 
     enum Mode { UNDERSPEED, OVERSPEED } m_Mode;
-    double m_Speed;
+    double  m_dSpeed;
+    int     m_iAverageTime;
+    std::list<double> m_SOGqueue;
 };
 
 ////////// Alarm Base Class /////////////////
