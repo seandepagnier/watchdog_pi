@@ -1361,8 +1361,12 @@ public:
     void SaveConfig(TiXmlElement *c) {
         c->SetAttribute("Type", "Speed");
         switch(m_Mode) {
-        case UNDERSPEED: c->SetAttribute("Mode", "Underspeed");
-        case OVERSPEED: c->SetAttribute("Mode", "Overspeed");
+        case UNDERSPEED: 
+            c->SetAttribute("Mode", "Underspeed");
+            break;
+        case OVERSPEED: 
+            c->SetAttribute("Mode", "Overspeed");
+            break;
         }
 
         c->SetDoubleAttribute("Speed", m_Speed);
