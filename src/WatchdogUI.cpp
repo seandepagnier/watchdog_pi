@@ -464,22 +464,6 @@ BoundaryPanel::BoundaryPanel( wxWindow* parent, wxWindowID id, const wxPoint& po
 	
 	fgSizer17->Add( fgSizer29, 1, wxEXPAND, 5 );
 	
-	wxFlexGridSizer* fgSizer32;
-	fgSizer32 = new wxFlexGridSizer( 0, 2, 0, 0 );
-	fgSizer32->AddGrowableCol( 1 );
-	fgSizer32->SetFlexibleDirection( wxBOTH );
-	fgSizer32->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
-	
-	m_staticTextCheckFrequency = new wxStaticText( this, wxID_ANY, _("Check Frequency  (Secs)"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticTextCheckFrequency->Wrap( -1 );
-	fgSizer32->Add( m_staticTextCheckFrequency, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-	
-	m_sliderCheckFrequency = new wxSlider( this, wxID_ANY, 10, 1, 120, wxDefaultPosition, wxDefaultSize, wxSL_AUTOTICKS|wxSL_BOTTOM|wxSL_HORIZONTAL|wxSL_LABELS );
-	fgSizer32->Add( m_sliderCheckFrequency, 1, wxALL|wxEXPAND, 5 );
-	
-	
-	fgSizer17->Add( fgSizer32, 1, wxEXPAND, 5 );
-	
 	m_staticline1 = new wxStaticLine( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
 	fgSizer17->Add( m_staticline1, 0, wxEXPAND | wxALL, 5 );
 	
@@ -524,6 +508,22 @@ BoundaryPanel::BoundaryPanel( wxWindow* parent, wxWindowID id, const wxPoint& po
 	
 	m_staticline2 = new wxStaticLine( this, wxID_ANY, wxPoint( -1,-1 ), wxSize( -1,-1 ), 0 );
 	fgSizer17->Add( m_staticline2, 0, wxEXPAND, 5 );
+	
+	wxFlexGridSizer* fgSizer32;
+	fgSizer32 = new wxFlexGridSizer( 0, 2, 0, 0 );
+	fgSizer32->AddGrowableCol( 1 );
+	fgSizer32->SetFlexibleDirection( wxBOTH );
+	fgSizer32->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_staticTextCheckFrequency = new wxStaticText( this, wxID_ANY, _("Check Frequency  (Secs)"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextCheckFrequency->Wrap( -1 );
+	fgSizer32->Add( m_staticTextCheckFrequency, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	
+	m_sliderCheckFrequency = new wxSlider( this, wxID_ANY, 10, 1, 120, wxDefaultPosition, wxDefaultSize, wxSL_AUTOTICKS|wxSL_BOTTOM|wxSL_HORIZONTAL|wxSL_LABELS );
+	fgSizer32->Add( m_sliderCheckFrequency, 1, wxALL|wxEXPAND, 5 );
+	
+	
+	fgSizer17->Add( fgSizer32, 1, wxEXPAND, 5 );
 	
 	m_staticText39122 = new wxStaticText( this, wxID_ANY, _("Graphical overlay for GPS fix displays line from boat to location of the point in the found boundary"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText39122->Wrap( 400 );
