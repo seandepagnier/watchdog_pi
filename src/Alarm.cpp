@@ -257,7 +257,7 @@ enum
 class BoundaryAlarm : public Alarm
 {
 public:
-    BoundaryAlarm() : Alarm(true, 1 /* seconds */),
+    BoundaryAlarm() : Alarm(true, 3 /* seconds */),
                       m_Mode(TIME),
                       m_TimeMinutes(20),
                       m_Distance(3),
@@ -266,6 +266,8 @@ public:
                       m_bGuardZoneFired(false)
         {
             g_GuardZoneName = wxEmptyString;
+            m_baTimer.Connect(wxEVT_TIMER, wxTimerEventHandler( BoundaryAlarm::OnFlashTimer ), NULL, this);
+            m_baTimer.Start(1000, wxTIMER_CONTINUOUS);
         }
 
     wxString Type() { 
@@ -838,13 +840,7 @@ public:
     {
         switch (m_Mode) {
             case TIME:
-                Alarm::OnTimer( tEvent );
-                break;
             case DISTANCE:
-                m_bHighlight = (m_bHighlight ? false : true);
-                RequestRefresh(GetOCPNCanvasWindow());
-                Alarm::OnTimer( tEvent );
-                break;
             case ANCHOR:
                 Alarm::OnTimer( tEvent );
                 break;
@@ -858,7 +854,25 @@ public:
         return;
     }
     
-    wxString TimeBoundaryMsg()
+    void OnFlashTimer( wxTimerEvent &tEvent )
+    {
+        if(m_bFired) {
+            switch (m_Mode) {
+                case TIME:
+                    break;
+                case DISTANCE:
+                    m_bHighlight = (m_bHighlight ? false : true);
+                    RequestRefresh(GetOCPNCanvasWindow());
+                    break;
+                case ANCHOR:
+                    break;
+                case GUARD:
+                    break;
+            }
+        }
+    }
+    
+        wxString TimeBoundaryMsg()
     {
         wxString s, fmt(_T(" %d "));
         int days = m_BoundaryTime.GetDays();
@@ -920,6 +934,9 @@ private:
     };
     
     std::list<AISMMSITIME> AISMsgInfoList;
+    
+    wxTimer    m_baTimer;
+    
 };
 
 class NMEADataAlarm : public Alarm
