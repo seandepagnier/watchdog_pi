@@ -77,6 +77,8 @@ protected:
     wxDateTime m_LastAlarmTime;
     int m_iRepeatSeconds;
     
+    wxTimer    m_Timer;
+
 private:
     friend class EditAlarmDialog;
 
@@ -85,7 +87,6 @@ private:
 
     int m_interval;
 
-    wxTimer    m_Timer;
 };
 
 class TestAlarm : public Alarm
