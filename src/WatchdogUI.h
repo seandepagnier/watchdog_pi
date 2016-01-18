@@ -202,6 +202,7 @@ class BoundaryPanel : public wxPanel
 		wxButton* m_button12;
 		wxStaticText* m_staticText321;
 		wxStaticLine* m_staticline2;
+		wxStaticText* m_staticText39122;
 		
 		// Virtual event handlers, overide them in your derived class
 		void OnGetBoundaryGUID( wxCommandEvent& event );
