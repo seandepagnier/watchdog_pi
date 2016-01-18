@@ -509,6 +509,10 @@ BoundaryPanel::BoundaryPanel( wxWindow* parent, wxWindowID id, const wxPoint& po
 	m_staticline2 = new wxStaticLine( this, wxID_ANY, wxPoint( -1,-1 ), wxSize( -1,-1 ), 0 );
 	fgSizer17->Add( m_staticline2, 0, wxEXPAND, 5 );
 	
+	m_staticText39122 = new wxStaticText( this, wxID_ANY, _("Graphical overlay for GPS fix displays line from boat to location of the point in the found boundary"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText39122->Wrap( 400 );
+	fgSizer17->Add( m_staticText39122, 0, wxALL, 5 );
+	
 	
 	this->SetSizer( fgSizer17 );
 	this->Layout();
