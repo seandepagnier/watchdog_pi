@@ -268,6 +268,7 @@ public:
             g_GuardZoneName = wxEmptyString;
             m_baTimer.Connect(wxEVT_TIMER, wxTimerEventHandler( BoundaryAlarm::OnFlashTimer ), NULL, this);
             m_baTimer.Start(1000, wxTIMER_CONTINUOUS);
+            m_iCheckFrequency = 3;
         }
 
     wxString Type() { 
@@ -603,6 +604,7 @@ public:
         BoundaryPanel *panel = new BoundaryPanel(parent);
         panel->m_rbTime->SetValue(m_Mode == TIME);
         panel->m_rbDistance->SetValue(m_Mode == DISTANCE);
+        panel->m_sliderCheckFrequency->SetValue(m_iCheckFrequency);
         panel->m_rbAnchor->SetValue(m_Mode == ANCHOR);
         panel->m_rbGuard->SetValue(m_Mode == GUARD);
         panel->m_sTimeMinutes->SetValue(m_TimeMinutes);
@@ -638,6 +640,9 @@ public:
         else m_Mode = TIME;
         m_TimeMinutes = panel->m_sTimeMinutes->GetValue();
         panel->m_tDistance->GetValue().ToDouble(&m_Distance);
+        m_iCheckFrequency = panel->m_sliderCheckFrequency->GetValue();
+        m_Timer.Start(m_iCheckFrequency * 1000, wxTIMER_CONTINUOUS);
+        
         switch (panel->m_radioBoxBoundaryType->GetSelection()) {
             case 0:
                 m_BoundaryType = ID_BOUNDARY_ANY;
@@ -674,6 +679,7 @@ public:
 
         e->Attribute("TimeMinutes", &m_TimeMinutes);
         e->Attribute("Distance", &m_Distance);
+        e->Attribute("CheckFrequency", &m_iCheckFrequency);
         e->Attribute("BoundaryType", &m_BoundaryType);
         m_BoundaryGUID = wxString::FromUTF8(e->Attribute("BoundaryGUID"));
         m_BoundaryDescription = wxString::FromUTF8(e->Attribute("BoundaryDescription"));
@@ -701,6 +707,7 @@ public:
             break;
         }
 
+        c->SetAttribute("CheckFrequency", m_iCheckFrequency);
         c->SetAttribute("TimeMinutes", m_TimeMinutes);
         c->SetDoubleAttribute("Distance", m_Distance);
         c->SetAttribute("BoundaryGUID", m_BoundaryGUID.mb_str());
@@ -927,6 +934,7 @@ private:
     bool        m_bGuardZoneFired;
     bool        m_bCurrentBoatPos;
     bool        m_bHighlight;
+    int         m_iCheckFrequency;
     
     struct AISMMSITIME {
         int MMSI;

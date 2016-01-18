@@ -29,9 +29,9 @@
 #include <wx/stattext.h>
 #include <wx/panel.h>
 #include <wx/radiobox.h>
+#include <wx/slider.h>
 #include <wx/statline.h>
 #include <wx/choice.h>
-#include <wx/slider.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -197,6 +197,7 @@ class BoundaryPanel : public wxPanel
 	protected:
 		wxStaticText* m_staticText30;
 		wxStaticText* m_staticText7;
+		wxStaticText* m_staticTextCheckFrequency;
 		wxStaticLine* m_staticline1;
 		wxStaticText* m_staticText32;
 		wxButton* m_button12;
@@ -215,6 +216,7 @@ class BoundaryPanel : public wxPanel
 		wxRadioButton* m_rbDistance;
 		wxTextCtrl* m_tDistance;
 		wxRadioBox* m_radioBoxBoundaryType;
+		wxSlider* m_sliderCheckFrequency;
 		wxRadioButton* m_rbAnchor;
 		wxTextCtrl* m_tBoundaryGUID;
 		wxRadioButton* m_rbGuard;
