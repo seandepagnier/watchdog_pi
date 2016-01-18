@@ -283,8 +283,9 @@ bool watchdog_pi::RenderGLOverlay(wxGLContext *pcontext, PlugIn_ViewPort *vp)
 
 void watchdog_pi::Render(wdDC &dc, PlugIn_ViewPort &vp)
 {
-    if(!m_WatchdogDialog || !m_WatchdogDialog->IsShown())
-        return;
+    // It should be up to the alarm to decide if it should do a render and what to render
+    //if(!m_WatchdogDialog || !m_WatchdogDialog->IsShown()) 
+    //    return;
 
     Alarm::RenderAll(dc, vp);
 }
