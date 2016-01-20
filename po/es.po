@@ -1,7 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: watchdog_pi 1.1\n"
-"POT-Creation-Date: 2014-07-30 19:43+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-01-21 07:41+1100\n"
 "PO-Revision-Date: 2014-07-30 19:44+0100\n"
 "Last-Translator: sailoog <info@sailoog.com>\n"
 "Language-Team: sailoog <info@sailoog.com>\n"
@@ -13,25 +14,280 @@ msgstr ""
 "X-Poedit-KeywordsList: _;gettext;gettext_noop\n"
 "X-Poedit-Basepath: /home/sailoog/watchdog_pi\n"
 "X-Poedit-SearchPath-0: src\n"
-
-#: src/WatchdogPrefsDialog.cpp:180 src/Alarm.cpp:405 src/Alarm.cpp:499
-#: src/WatchdogUI.cpp:375
-msgid "Off Course"
+#
+msgid " boundary "
+msgstr ""
+#
+msgid " does not exist"
+msgstr ""
+#
+msgid " in "
+msgstr ""
+#
+#, fuzzy
+msgid " minutes"
+msgstr "minutos"
+#
+msgid "$GPGGA"
+msgstr ""
+#
+msgid "1"
+msgstr ""
+#
+msgid "3"
+msgstr ""
+#
+msgid "AIS Target in zone"
+msgstr ""
+#
+#, fuzzy
+msgid "ALARM!"
+msgstr " ¡ALARMA!"
+#
+msgid "About Author"
+msgstr "Sobre el autor"
+#
+#, fuzzy
+msgid "Action"
+msgstr "Acciones de Alarma"
+#
+msgid "Alarm Action"
+msgstr "Acciones de Alarma"
+#
+#, fuzzy
+msgid "Alarms"
+msgstr "Probar alarma"
+#
+msgid "Anchor"
+msgstr "Fondeo"
+#
+msgid "Anchor Watch"
+msgstr "Garreo"
+#
+msgid "Any"
+msgstr ""
+#
+#, fuzzy
+msgid "Auto Reset"
+msgstr "Reiniciar automáticamente"
+#
+#, fuzzy
+msgid "Automatically Reset"
+msgstr "Reiniciar automáticamente"
+#
+msgid "Automatically syncronize to the boat whenever enabled"
+msgstr ""
+#
+#, fuzzy
+msgid "Boundary"
+msgstr "Sonido"
+#
+#, fuzzy
+msgid "Boundary Distance"
+msgstr "Distancia a tierra >"
+#
+msgid "Boundary GUID"
+msgstr ""
+#
+msgid "Boundary Time"
+msgstr ""
+#
+msgid "Boundary Type"
+msgstr ""
+#
+msgid "Boundary name"
+msgstr ""
+#
+msgid ""
+"Check Frequency  (Secs)\n"
+"(Note: not Guard Zone)"
+msgstr ""
+#
+msgid "Close"
+msgstr "Cerrar"
+#
+msgid "Command"
+msgstr "Comando"
+#
+#, fuzzy
+msgid "Configuration"
+msgstr "Información"
+#
+#, fuzzy
+msgid "Course"
 msgstr "Fuera de rumbo"
-
-#: src/WatchdogPrefsDialog.cpp:180 src/WatchdogUI.cpp:69
-msgid "Course Error"
-msgstr "Error de rumbo"
-
-#: src/WatchdogPrefsDialog.cpp:180 src/Alarm.cpp:406
-msgid "Port"
-msgstr "babor"
-
-#: src/WatchdogPrefsDialog.cpp:184 src/WatchdogUI.cpp:390
-msgid "Off Course Starboard"
-msgstr "Fuera de rumbo estribor"
-
-#: src/WatchdogPrefsDialog.cpp:196
+#
+msgid "Current Course"
+msgstr "Rumbo actual"
+#
+msgid "Day"
+msgstr "Día"
+#
+msgid "Days"
+msgstr "Días"
+#
+msgid "Deadman"
+msgstr "Inactividad"
+#
+msgid "Degrees"
+msgstr "Grados"
+#
+msgid "Delete"
+msgstr ""
+#
+msgid "Delete All"
+msgstr ""
+#
+msgid "Description"
+msgstr ""
+#
+msgid "Disable All Alarms"
+msgstr "Desactivar todas las alarmas"
+#
+msgid "Distance"
+msgstr "Distancia"
+#
+msgid "Edit"
+msgstr ""
+#
+#, fuzzy
+msgid "Edit Alarm"
+msgstr "Probar alarma"
+#
+#, fuzzy
+msgid "Enable All Alarms"
+msgstr "Desactivar todas las alarmas"
+#
+msgid "Enabled after first time Watchdog Dialog is visible"
+msgstr ""
+#
+msgid "Enabled only if Watchdog Dialog is visible"
+msgstr ""
+#
+msgid "Error!"
+msgstr ""
+#
+msgid "Exclusion"
+msgstr ""
+#
+msgid "Failed to execute command: "
+msgstr "Error ejecutando el comando: "
+#
+#, fuzzy
+msgid "Failed to read"
+msgstr "Error ejecutando el comando: "
+#
+#, fuzzy
+msgid "GPS course crosses boundary in <"
+msgstr "El rumbo de GPS cruza tierra en < de "
+#
+msgid "GPS course crosses land in <"
+msgstr "El rumbo de GPS cruza tierra en < de "
+#
+msgid "GPS fix is <"
+msgstr "Posición GPS está a < de "
+#
+msgid "GUID"
+msgstr ""
+#
+msgid "General Setup"
+msgstr ""
+#
+msgid "Get Boundary GUID"
+msgstr ""
+#
+msgid "Graphical overlay displays bounding anchor area"
+msgstr "La representación gráfica muestra un área delimitando la zona segura"
+#
+msgid "Graphical overlay displays circle with radius of this speed"
+msgstr ""
+"La representación gráfica muestra un círculo con esta velocidad como radio"
+#
+msgid "Graphical overlay displays lines bounding valid courses"
+msgstr "La representación gráfica muestra lineas delimitando los rumbos válidos"
+#
+#, fuzzy
+msgid ""
+"Graphical overlay for GPS fix displays line from boat to location of the "
+"point in the found boundary"
+msgstr ""
+"La representación gráfica muestra una linea desde el barco hasta el punto de "
+"la costa"
+#
+msgid ""
+"Graphical overlay for time displays line from boat to location of land "
+"crossing"
+msgstr ""
+"La representación gráfica muestra una linea desde el barco hasta el punto de "
+"la costa"
+#
+#, fuzzy
+msgid "Graphics Enabled"
+msgstr "Activada"
+#
+msgid "Guard Zone"
+msgstr ""
+#
+msgid "Guard Zone GUID"
+msgstr ""
+#
+msgid "Guard Zone Name"
+msgstr ""
+#
+msgid "Hour"
+msgstr "Hora"
+#
+msgid "Hours"
+msgstr "Horas"
+#
+msgid "Inclusion"
+msgstr ""
+#
+msgid "Information"
+msgstr "Información"
+#
+msgid "Inside"
+msgstr ""
+#
+msgid "LandFall"
+msgstr "Tierra a la vista"
+#
+#, fuzzy
+msgid "LandFall Time Invalid"
+msgstr "Tierra en"
+#
+msgid "Landfall"
+msgstr "Tierra a la vista"
+#
+msgid ""
+"Landfall detection uses gshhs (global heirarchical high-resolution shoreline "
+"data.)\n"
+"Consider installing the highest resolution database for best accuracy."
+msgstr ""
+"La detección de tierra usa datos gshhs (global heirarchical high-resolution "
+"shoreline).\n"
+"Para mejorar la precisión considera instalar la base de datos de mayor "
+"resolución."
+#
+msgid "Latitude"
+msgstr ""
+#
+msgid "Longitude"
+msgstr ""
+#
+msgid "Message Box"
+msgstr "Mensaje en ventana"
+#
+#, fuzzy
+msgid "MessageBox"
+msgstr "Mensaje en ventana"
+#
+msgid "Minute"
+msgstr "Minuto"
+#
+msgid "Minutes"
+msgstr "Minutos"
+#
 msgid ""
 "Most alarms should be self-explanatory\n"
 "Normally a sound is played, however you can execute any command you like, "
@@ -44,403 +300,294 @@ msgstr ""
 "La mayoría de las alarmas deberían explicarse por si solas\n"
 "Normalmente se activará un sonido, sin embargo puedes ejecutar cualquier "
 "comando, por ejemplo: \"aplay /usr/local/share/opencpn/sounds/2bells.wav\"\n"
-"Los mensajes en ventana pueden ser útiles para interrumpir otras "
-"aplicaciones (como un reproductor de vídeo)\n"
+"Los mensajes en ventana pueden ser útiles para interrumpir otras aplicaciones "
+"(como un reproductor de vídeo)\n"
 "\"Reiniciar automáticamente\" reseteará la alarma una vez haya dejado de "
 "estar activa para que pueda activarse de nuevo."
-
-#: src/WatchdogPrefsDialog.cpp:203
-msgid "Watchdog Information"
-msgstr "Información de Watchdog"
-
-#: src/Alarm.cpp:44
-msgid "LandFall"
-msgstr "Tierra a la vista"
-
-#: src/Alarm.cpp:122
-msgid "LandFall not Detected"
-msgstr "Tierra no detectada"
-
-#: src/Alarm.cpp:126
-msgid "Days"
-msgstr "Días"
-
-#: src/Alarm.cpp:129
-msgid "Day"
-msgstr "Día"
-
-#: src/Alarm.cpp:133
-msgid "Hours"
-msgstr "Horas"
-
-#: src/Alarm.cpp:136
-msgid "Hour"
-msgstr "Hora"
-
-#: src/Alarm.cpp:140
-msgid "Minutes"
-msgstr "Minutos"
-
-#: src/Alarm.cpp:143
-msgid "Minute"
-msgstr "Minuto"
-
-#: src/Alarm.cpp:147
-msgid "Seconds"
-msgstr "Segundos"
-
-#: src/Alarm.cpp:149
-msgid "Second"
-msgstr "Segundo"
-
-#: src/Alarm.cpp:170
-msgid "Distance"
-msgstr "Distancia"
-
-#: src/Alarm.cpp:226 src/WatchdogUI.cpp:252
+#
 msgid "NMEA Data"
 msgstr "Datos NMEA"
-
-#: src/Alarm.cpp:245
-msgid "second(s)"
-msgstr "segundo(s)"
-
-#: src/Alarm.cpp:294 src/WatchdogUI.cpp:274
-msgid "Deadman"
-msgstr "Inactividad"
-
-#: src/Alarm.cpp:330
-msgid "Anchor"
-msgstr "Fondeo"
-
-#: src/Alarm.cpp:352
-msgid "meter(s)"
-msgstr "metro(s)"
-
-#: src/Alarm.cpp:433
-msgid "degrees(s)"
-msgstr "grado(s)"
-
-#: src/Alarm.cpp:499
-msgid "Starboard"
-msgstr "estribor"
-
-#: src/Alarm.cpp:521
-msgid "degrees(s) Starboard"
-msgstr "grado(s) estribor"
-
-#: src/Alarm.cpp:593 src/WatchdogUI.cpp:85 src/WatchdogUI.cpp:422
-msgid "Under Speed"
-msgstr "Velocidad baja"
-
-#: src/Alarm.cpp:610 src/WatchdogUI.cpp:93 src/WatchdogUI.cpp:454
+#
+msgid "NO AIS tagets found in zone"
+msgstr ""
+#
+msgid "Name"
+msgstr ""
+#
+msgid "Neither"
+msgstr ""
+#
+msgid "New"
+msgstr ""
+#
+#, fuzzy
+msgid "New Alarm"
+msgstr "Probar alarma"
+#
+msgid "No Boundary within "
+msgstr ""
+#
+msgid "No User Activity for"
+msgstr "Sin actividad del usuario por "
+#
+msgid "Off Course By >"
+msgstr "Desvío > de"
+#
+msgid "Options"
+msgstr ""
+#
+msgid "Outside"
+msgstr ""
+#
 msgid "Over Speed"
 msgstr "Velocidad alta"
-
-#: src/Alarm.cpp:686
-msgid "Failed to execute command: "
-msgstr "Error ejecutando el comando: "
-
-#: src/Alarm.cpp:687 src/watchdog_pi.cpp:98 src/watchdog_pi.cpp:167
+#
+#, fuzzy
+msgid "OverSpeed"
+msgstr "Velocidad alta"
+#
+msgid "Port"
+msgstr "babor"
+#
+#, fuzzy
+msgid "Port or Starboard"
+msgstr "Error de rumbo estribor"
+#
+msgid "Radius"
+msgstr "Radio"
+#
+msgid "Repeat"
+msgstr ""
+#
+msgid "Repeat Alarm after seconds"
+msgstr "Repetir alarma tras segundos"
+#
+msgid "Require following NMEA sentences:"
+msgstr "Requiere las siguientes frases NMEA"
+#
+msgid "Reset"
+msgstr "Reiniciar"
+#
+msgid "Second"
+msgstr "Segundo"
+#
+msgid "Seconds"
+msgstr "Segundos"
+#
+msgid ""
+"Seconds to Average\n"
+"SOG over"
+msgstr ""
+#
+msgid "Select a file"
+msgstr "Seleccionar archivo"
+#
+msgid "Ship MMSI"
+msgstr ""
+#
+msgid "Ship Name"
+msgstr ""
+#
+msgid "Sound"
+msgstr "Sonido"
+#
+#, fuzzy
+msgid "Speed"
+msgstr "Velocidad alta"
+#
+msgid "Speed Alarm"
+msgstr "Alarma de velocidad"
+#
+#, fuzzy
+msgid "Speed over ground"
+msgstr "Velocidad verdadera < de"
+#
+msgid "Starboard"
+msgstr "estribor"
+#
+msgid "Status"
+msgstr ""
+#
+msgid "Sync to Boat"
+msgstr "Posición actual"
+#
+msgid "Test"
+msgstr ""
+#
+msgid "Time"
+msgstr ""
+#
+msgid "Type"
+msgstr ""
+#
+msgid "Under Speed"
+msgstr "Velocidad baja"
+#
+#, fuzzy
+msgid "UnderSpeed"
+msgstr "Velocidad baja"
+#
+msgid "WatchDog"
+msgstr ""
+#
 msgid "Watchdog"
 msgstr ""
-
-#: src/Alarm.cpp:693
-msgid " ALARM!"
-msgstr " ¡ALARMA!"
-
-#: src/Alarm.cpp:694
-msgid "Watchman"
-msgstr "Vigilante"
-
-#: src/watchdog_pi.cpp:172
+#
+#, fuzzy
+msgid "Watchdog Configuration"
+msgstr "Información de Watchdog"
+#
+msgid "Watchdog Information"
+msgstr "Información de Watchdog"
+#
 msgid "Watchdog PlugIn for OpenCPN"
 msgstr "Plugin Watchdog para OpenCPN"
-
-#: src/watchdog_pi.cpp:177
+#
 msgid ""
 "Watchdog PlugIn for OpenCPN\n"
 "Alarm user of changing conditions."
 msgstr ""
 "Plugin Watchdog para OpenCPN\n"
 "Alarma de usuario para condiciones inestables."
-
-#: src/WatchdogUI.cpp:29
-msgid "LandFall in"
-msgstr "Tierra en"
-
-#: src/WatchdogUI.cpp:33 src/WatchdogUI.cpp:41
-msgid "No NMEA Messages"
-msgstr "No hay mensajes NMEA"
-
-#: src/WatchdogUI.cpp:37
-msgid "Land Distance >"
-msgstr "Distancia a tierra >"
-
-#: src/WatchdogUI.cpp:45
-msgid "Last NMEA Updates"
-msgstr "Últimas actualizaciones NMEA"
-
-#: src/WatchdogUI.cpp:53
-msgid "Deadman activity"
-msgstr "Inactividad"
-
-#: src/WatchdogUI.cpp:57
-msgid "No Updates"
-msgstr "Sin actualización"
-
-#: src/WatchdogUI.cpp:61
-msgid "Distance to Anchor"
-msgstr "Distancia al fondeo"
-
-#: src/WatchdogUI.cpp:77
-msgid "Course Error Starboard"
-msgstr "Error de rumbo estribor"
-
-#: src/WatchdogUI.cpp:109
-msgid "Disable All Alarms"
-msgstr "Desactivar todas las alarmas"
-
-#: src/WatchdogUI.cpp:112
-msgid "Preferences"
-msgstr "Preferencias"
-
-#: src/WatchdogUI.cpp:115
-msgid "Reset"
-msgstr "Reiniciar"
-
-#: src/WatchdogUI.cpp:118
-msgid "Close"
-msgstr "Cerrar"
-
-#: src/WatchdogUI.cpp:171
-msgid "GPS course crosses land in <"
-msgstr "El rumbo de GPS cruza tierra en < de "
-
-#: src/WatchdogUI.cpp:177
+#
+msgid "Watchman"
+msgstr "Vigilante"
+#
+msgid "With Course Of"
+msgstr "Con rumbo"
+#
+msgid "at least every"
+msgstr "por lo menos cada "
+#
+msgid "bAutoSync"
+msgstr ""
+#
+#, fuzzy
+msgid "course"
+msgstr "Horas"
+#
+msgid "degrees(s)"
+msgstr "grado(s)"
+#
+msgid "failed to save"
+msgstr ""
+#
+#, fuzzy
+msgid "in"
+msgstr "Viento"
+#
+msgid "inside boundary"
+msgstr ""
+#
+msgid "invalid Boundary mode"
+msgstr ""
+#
+msgid "invalid Course mode"
+msgstr ""
+#
+msgid "invalid LandFall mode"
+msgstr ""
+#
+msgid "invalid Speed mode"
+msgstr ""
+#
+msgid "invalid alarm type"
+msgstr ""
+#
+msgid "knots"
+msgstr "nudos"
+#
+msgid "meter(s)"
+msgstr "metro(s)"
+#
+msgid "meters"
+msgstr "metros"
+#
+msgid "minute(s)"
+msgstr "minuto(s)"
+#
 msgid "minutes"
 msgstr "minutos"
-
-#: src/WatchdogUI.cpp:189
-msgid "GPS fix is <"
-msgstr "Posición GPS está a < de "
-
-#: src/WatchdogUI.cpp:192
-msgid "3"
+#
+#, fuzzy
+msgid ""
+"nm from boundary\n"
+"(any direction)"
 msgstr ""
-
-#: src/WatchdogUI.cpp:195
+"mn de la costa\n"
+"(cualquier dirección)"
+#
 msgid ""
 "nm from coastline\n"
 "(any direction)"
 msgstr ""
 "mn de la costa\n"
 "(cualquier dirección)"
-
-#: src/WatchdogUI.cpp:202
-msgid ""
-"Graphical overlay for time displays line from boat to location of land "
-"crossing"
-msgstr ""
-"La representación gráfica muestra una linea desde el barco hasta el punto de "
-"la costa"
-
-#: src/WatchdogUI.cpp:206
-msgid ""
-"Landfall detection uses gshhs (global heirarchical high-resolution shoreline "
-"data.)\n"
-"Consider installing the highest resolution database for best accuracy."
-msgstr ""
-"La detección de tierra usa datos gshhs (global heirarchical high-resolution "
-"shoreline).\n"
-"Para mejorar la precisión considera instalar la base de datos de mayor "
-"resolución."
-
-#: src/WatchdogUI.cpp:214
-msgid "Landfall"
-msgstr "Tierra a la vista"
-
-#: src/WatchdogUI.cpp:222
-msgid "Require following NMEA sentences:"
-msgstr "Requiere las siguientes frases NMEA"
-
-#: src/WatchdogUI.cpp:226
-msgid "$GPGGA"
-msgstr ""
-
-#: src/WatchdogUI.cpp:234
-msgid "at least every"
-msgstr "por lo menos cada "
-
-#: src/WatchdogUI.cpp:241
+#
+#, fuzzy
+msgid "radius"
+msgstr "Radio"
+#
+msgid "second(s)"
+msgstr "segundo(s)"
+#
 msgid "seconds"
 msgstr "segundos"
-
-#: src/WatchdogUI.cpp:259
-msgid "No User Activity for"
-msgstr "Sin actividad del usuario por "
-
-#: src/WatchdogUI.cpp:266
-msgid "minute(s)"
-msgstr "minuto(s)"
-
-#: src/WatchdogUI.cpp:286
-msgid "Latitude"
-msgstr ""
-
-#: src/WatchdogUI.cpp:296
-msgid "Longitude"
-msgstr ""
-
-#: src/WatchdogUI.cpp:303
-msgid "Sync to Boat"
-msgstr "Posición actual"
-
-#: src/WatchdogUI.cpp:306
-msgid "Radius"
-msgstr "Radio"
-
-#: src/WatchdogUI.cpp:313
-msgid "meters"
-msgstr "metros"
-
-#: src/WatchdogUI.cpp:320
-msgid "Graphical overlay displays bounding anchor area"
-msgstr "La representación gráfica muestra un área delimitando la zona segura"
-
-#: src/WatchdogUI.cpp:328
-msgid "Anchor Watch"
-msgstr "Garreo"
-
-#: src/WatchdogUI.cpp:340
-msgid "Off Course By >"
-msgstr "Desvío > de"
-
-#: src/WatchdogUI.cpp:347
-msgid "Degrees"
-msgstr "Grados"
-
-#: src/WatchdogUI.cpp:351
-msgid "With Course Of"
-msgstr "Con rumbo"
-
-#: src/WatchdogUI.cpp:358
-msgid "Current Course"
-msgstr "Rumbo actual"
-
-#: src/WatchdogUI.cpp:364
-msgid "Separate Port and Starboard Alarms"
-msgstr "Alarmas de babor y estribor separadas"
-
-#: src/WatchdogUI.cpp:367
-msgid "Graphical overlay displays lines bounding valid courses"
-msgstr ""
-"La representación gráfica muestra lineas delimitando los rumbos válidos"
-
-#: src/WatchdogUI.cpp:382
-msgid ""
-"Settings the same as Off Course Port, with different Alarm Actions possible."
-msgstr ""
-"Configuración igual que fuera de rumbo a babor con diferentes acciones de "
-"alarma posibles."
-
-#: src/WatchdogUI.cpp:393 src/WatchdogUI.cpp:425
-msgid "Speed Alarm"
-msgstr "Alarma de velocidad"
-
-#: src/WatchdogUI.cpp:400
-msgid "Speed over ground <"
-msgstr "Velocidad verdadera < de"
-
-#: src/WatchdogUI.cpp:404
-msgid "1"
-msgstr ""
-
-#: src/WatchdogUI.cpp:407 src/WatchdogUI.cpp:439
-msgid "knots"
-msgstr "nudos"
-
-#: src/WatchdogUI.cpp:414 src/WatchdogUI.cpp:446
-msgid "Graphical overlay displays circle with radius of this speed"
-msgstr ""
-"La representación gráfica muestra un círculo con esta velocidad como radio"
-
-#: src/WatchdogUI.cpp:432
-msgid "Speed over ground >"
-msgstr "Velocidad verdadera > de"
-
-#: src/WatchdogUI.cpp:436
-msgid "12"
-msgstr ""
-
-#: src/WatchdogUI.cpp:461 src/WatchdogUI.cpp:476
-msgid "Not implemented"
-msgstr "Aún no implementado"
-
-#: src/WatchdogUI.cpp:469
-msgid "Depth"
-msgstr "Profundidad"
-
-#: src/WatchdogUI.cpp:484
-msgid "Wind"
-msgstr "Viento"
-
-#: src/WatchdogUI.cpp:499
-msgid "Enabled"
-msgstr "Activada"
-
-#: src/WatchdogUI.cpp:502
-msgid "Disabled"
-msgstr "Desactivada"
-
-#: src/WatchdogUI.cpp:505
-msgid "Graphical Overlay Display"
-msgstr "Representación gráfica en pantalla"
-
-#: src/WatchdogUI.cpp:512
-msgid "Alarm Action"
-msgstr "Acciones de Alarma"
-
-#: src/WatchdogUI.cpp:520
-msgid "Sound"
-msgstr "Sonido"
-
-#: src/WatchdogUI.cpp:523
-msgid "Select a file"
-msgstr "Seleccionar archivo"
-
-#: src/WatchdogUI.cpp:526
-msgid "Command"
-msgstr "Comando"
-
-#: src/WatchdogUI.cpp:532
-msgid "Message Box"
-msgstr "Mensaje en ventana"
-
-#: src/WatchdogUI.cpp:538
-msgid "Repeat Alarm after seconds"
-msgstr "Repetir alarma tras segundos"
-
-#: src/WatchdogUI.cpp:544
-msgid "Automatically  Reset"
-msgstr "Reiniciar automáticamente"
-
-#: src/WatchdogUI.cpp:547
-msgid "Test Alarm"
-msgstr "Probar alarma"
-
-#: src/WatchdogUI.cpp:567
-msgid "Information"
-msgstr "Información"
-
-#: src/WatchdogUI.cpp:570
-msgid "About Author"
-msgstr "Sobre el autor"
-
-#: src/WatchdogUI.h:80
-msgid "WatchDog"
-msgstr ""
-
-#: src/WatchdogUI.h:180
-msgid "Watchdog Preferences"
-msgstr "Preferencias de Watchdog"
+#
+#~ msgid "Course Error"
+#~ msgstr "Error de rumbo"
+#
+#~ msgid "Deadman activity"
+#~ msgstr "Inactividad"
+#
+#~ msgid "Depth"
+#~ msgstr "Profundidad"
+#
+#~ msgid "Disabled"
+#~ msgstr "Desactivada"
+#
+#~ msgid "Distance to Anchor"
+#~ msgstr "Distancia al fondeo"
+#
+#~ msgid "Graphical Overlay Display"
+#~ msgstr "Representación gráfica en pantalla"
+#
+#~ msgid "LandFall not Detected"
+#~ msgstr "Tierra no detectada"
+#
+#~ msgid "Last NMEA Updates"
+#~ msgstr "Últimas actualizaciones NMEA"
+#
+#~ msgid "No NMEA Messages"
+#~ msgstr "No hay mensajes NMEA"
+#
+#~ msgid "No Updates"
+#~ msgstr "Sin actualización"
+#
+#~ msgid "Not implemented"
+#~ msgstr "Aún no implementado"
+#
+#~ msgid "Off Course Starboard"
+#~ msgstr "Fuera de rumbo estribor"
+#
+#~ msgid "Preferences"
+#~ msgstr "Preferencias"
+#
+#~ msgid "Separate Port and Starboard Alarms"
+#~ msgstr "Alarmas de babor y estribor separadas"
+#
+#~ msgid ""
+#~ "Settings the same as Off Course Port, with different Alarm Actions "
+#~ "possible."
+#~ msgstr ""
+#~ "Configuración igual que fuera de rumbo a babor con diferentes acciones de "
+#~ "alarma posibles."
+#
+#~ msgid "Speed over ground >"
+#~ msgstr "Velocidad verdadera > de"
+#
+#~ msgid "Watchdog Preferences"
+#~ msgstr "Preferencias de Watchdog"
+#
+#~ msgid "degrees(s) Starboard"
+#~ msgstr "grado(s) estribor"

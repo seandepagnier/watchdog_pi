@@ -515,7 +515,7 @@ BoundaryPanel::BoundaryPanel( wxWindow* parent, wxWindowID id, const wxPoint& po
 	fgSizer32->SetFlexibleDirection( wxBOTH );
 	fgSizer32->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_staticTextCheckFrequency = new wxStaticText( this, wxID_ANY, _("Check Frequency  (Secs)"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextCheckFrequency = new wxStaticText( this, wxID_ANY, _("Check Frequency  (Secs)\n(Note: not Guard Zone)"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextCheckFrequency->Wrap( -1 );
 	fgSizer32->Add( m_staticTextCheckFrequency, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 	
