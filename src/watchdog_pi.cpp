@@ -144,6 +144,18 @@ int watchdog_pi::Init(void)
     m_Timer.Connect(wxEVT_TIMER, wxTimerEventHandler
                     ( watchdog_pi::OnTimer ), NULL, this);
     m_Timer.Start(3000);
+    
+    if(!m_WatchdogDialog)
+    {
+        m_WatchdogDialog = new WatchdogDialog(*this, GetOCPNCanvasWindow());
+        m_ConfigurationDialog = new ConfigurationDialog(*this, m_WatchdogDialog);
+        
+        wxIcon icon;
+        icon.CopyFromBitmap(*_img_watchdog);
+        m_WatchdogDialog->SetIcon(icon);
+        m_ConfigurationDialog->SetIcon(icon);
+    }
+    m_bWatchdogDialogShown = false;
 
     return (WANTS_OVERLAY_CALLBACK |
             WANTS_OPENGL_OVERLAY_CALLBACK |
@@ -253,8 +265,10 @@ void watchdog_pi::OnToolbarToolCallback(int id)
     }
 
     m_WatchdogDialog->Show(!m_WatchdogDialog->IsShown());
-    if(m_WatchdogDialog->IsShown())
+    if(m_WatchdogDialog->IsShown()) {
+        m_bWatchdogDialogShown = true;
         m_WatchdogDialog->UpdateAlarms();
+    }
 
     wxPoint p = m_WatchdogDialog->GetPosition();
     m_WatchdogDialog->Move(0, 0);        // workaround for gtk autocentre dialog behavior
@@ -283,7 +297,11 @@ bool watchdog_pi::RenderGLOverlay(wxGLContext *pcontext, PlugIn_ViewPort *vp)
 
 void watchdog_pi::Render(wdDC &dc, PlugIn_ViewPort &vp)
 {
-    if(!m_WatchdogDialog || !m_WatchdogDialog->IsShown())
+    if((!m_WatchdogDialog || !m_WatchdogDialog->IsShown()) && (m_iEnableType == ID_ALARM_NEVER || m_iEnableType == ID_ALARM_VISIBLE))
+        return;
+    if(m_iEnableType == ID_ALARM_VISIBLE && !m_bWatchdogDialogShown)
+        return;
+    if(m_iEnableType == ID_ALARM_ONCE && !m_bWatchdogDialogShown)
         return;
 
     Alarm::RenderAll(dc, vp);

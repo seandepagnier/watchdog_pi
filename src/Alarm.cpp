@@ -1644,7 +1644,7 @@ void Alarm::OnTimer( wxTimerEvent & )
 
     int enabled = pConf->Read ( _T ( "Enabled" ), 1L );
 
-    if(enabled == 2 && !g_watchdog_pi->m_WatchdogDialog)
+    if(enabled == 2 && !g_watchdog_pi->m_bWatchdogDialogShown)
         enabled = 0;
 
     if(enabled == 3 && (!g_watchdog_pi->m_WatchdogDialog || !g_watchdog_pi->m_WatchdogDialog->IsShown()))

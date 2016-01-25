@@ -54,4 +54,5 @@ private:
 
     watchdog_pi &m_watchdog_pi;
     bool m_bOnEditAlarmOK;
+//    watchdog_pi m_watchdog_pi;
 };
