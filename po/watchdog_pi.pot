@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: watchdog_pi 1.9026\n"
+"Project-Id-Version: watchdog_pi 1.9027\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-21 07:41+1100\n"
+"POT-Creation-Date: 2016-01-25 18:12+1100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -82,7 +82,7 @@ msgid "Anchor Watch"
 msgstr ""
 
 #: src/Alarm.cpp:279 src/Alarm.cpp:579 src/WatchdogUI.cpp:496
-#: src/watchdog_pi.cpp:501
+#: src/watchdog_pi.cpp:519
 msgid "Guard Zone"
 msgstr ""
 
@@ -156,7 +156,7 @@ msgid "Failed to execute command: "
 msgstr ""
 
 #: src/Alarm.cpp:730 src/Alarm.cpp:1600 src/watchdog_pi.cpp:140
-#: src/watchdog_pi.cpp:205
+#: src/watchdog_pi.cpp:217
 msgid "Watchdog"
 msgstr ""
 
@@ -299,16 +299,16 @@ msgstr ""
 msgid "Test"
 msgstr ""
 
-#: src/ConfigurationDialog.cpp:47 src/WatchdogDialog.cpp:108
+#: src/ConfigurationDialog.cpp:48 src/WatchdogDialog.cpp:108
 #: src/WatchdogUI.cpp:711 src/WatchdogUI.cpp:778
 msgid "Type"
 msgstr ""
 
-#: src/ConfigurationDialog.cpp:48
+#: src/ConfigurationDialog.cpp:49
 msgid "Options"
 msgstr ""
 
-#: src/ConfigurationDialog.cpp:49
+#: src/ConfigurationDialog.cpp:50
 msgid "Action"
 msgstr ""
 
@@ -630,11 +630,11 @@ msgstr ""
 msgid "Edit Alarm"
 msgstr ""
 
-#: src/watchdog_pi.cpp:210
+#: src/watchdog_pi.cpp:222
 msgid "Watchdog PlugIn for OpenCPN"
 msgstr ""
 
-#: src/watchdog_pi.cpp:215
+#: src/watchdog_pi.cpp:227
 msgid ""
 "Watchdog PlugIn for OpenCPN\n"
 "Alarm user of changing conditions."
