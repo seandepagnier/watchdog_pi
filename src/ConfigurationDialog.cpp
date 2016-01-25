@@ -39,6 +39,7 @@ ConfigurationDialog::ConfigurationDialog( watchdog_pi &_watchdog_pi, wxWindow* p
     pConf->SetPath ( _T( "/Settings/Watchdog" ) );
     int enabled = pConf->Read ( _T ( "Enabled" ), 1L );
 
+    m_watchdog_pi.m_iEnableType = enabled;
     m_rbAlways->SetValue(enabled == 1);
     m_rbOnce->SetValue(enabled == 2);
     m_rbVisible->SetValue(enabled == 3);
@@ -69,6 +70,7 @@ void ConfigurationDialog::OnEnabled( wxCommandEvent& event )
     else if(m_rbNever->GetValue())
         enabled = 0;
 
+    m_watchdog_pi.m_iEnableType = enabled;
     wxFileConfig *pConf = GetOCPNConfigObject();
     pConf->SetPath ( _T( "/Settings/Watchdog" ) );
 

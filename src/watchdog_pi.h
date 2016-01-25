@@ -84,6 +84,13 @@ class wdDC;
 class WatchdogDialog;
 class ConfigurationDialog;
 
+enum {
+    ID_ALARM_NEVER = 0,
+    ID_ALARM_ALWAYS,
+    ID_ALARM_ONCE,
+    ID_ALARM_VISIBLE
+};
+
 class watchdog_pi : public wxEvtHandler, public opencpn_plugin_110
 {
 public:
@@ -130,7 +137,10 @@ public:
       wxDateTime m_LastFixTime;
       wxDateTime m_cursor_time;
       WatchdogDialog   *m_WatchdogDialog;
-
+      
+      int       m_iEnableType;
+      bool      m_bWatchdogDialogShown;
+      
 protected:
       double m_cursor_lat, m_cursor_lon;
 

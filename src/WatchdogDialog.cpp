@@ -170,6 +170,10 @@ void WatchdogDialog::OnLeftDown( wxMouseEvent& event )
 
     Alarm *alarm = Alarm::s_Alarms[index];
     alarm->m_bEnabled = !alarm->m_bEnabled;
+    if(!alarm->m_bEnabled) {
+        alarm->m_bFired = false;
+        RequestRefresh(GetOCPNCanvasWindow());
+    }
     UpdateStatus(index);
 }
 
