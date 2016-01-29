@@ -38,4 +38,5 @@ NewAlarmDialog::NewAlarmDialog(wxWindow* parent)
     m_lAlarmType->InsertItem(ANCHOR,   _("Anchor"));
     m_lAlarmType->InsertItem(COURSE,   _("Course"));
     m_lAlarmType->InsertItem(SPEED,    _("Speed"));
+    m_lAlarmType->SetColumnWidth(0, wxLIST_AUTOSIZE);
 }
