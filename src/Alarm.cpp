@@ -277,7 +277,7 @@ public:
             case DISTANCE: return _("Boundary Distance");
             case ANCHOR: return _("Anchor Watch");
             case GUARD: return _("Guard Zone");
-            default: return _("Boundary");
+            default: return _("Boundary Distance");
         }
     }
     
