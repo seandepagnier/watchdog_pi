@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Complément WatchDog pour openCPN\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-21 07:41+1100\n"
+"POT-Creation-Date: 2016-01-30 09:18+1100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Gilletarom <contact@gilletarom.fr>\n"
 "Language-Team: Gilletarom <contact@gilletarom.fr>\n"
@@ -78,7 +78,7 @@ msgid "Automatically syncronize to the boat whenever enabled"
 msgstr ""
 #
 #, fuzzy
-msgid "Boundary"
+msgid "Boundary Alarm"
 msgstr "Son"
 #
 #, fuzzy
@@ -523,32 +523,40 @@ msgid "seconds"
 msgstr "secondes"
 #
 #
+#
 #~ msgid "\r\n"
 #~ msgstr "\r\n"
+#
 #
 #
 #~ msgid "\""
 #~ msgstr "\""
 #
 #
+#
 #~ msgid "\"No\""
 #~ msgstr "\"Non\""
+#
 #
 #
 #~ msgid "'"
 #~ msgstr "'"
 #
 #
+#
 #~ msgid "*.*"
 #~ msgstr "*.*"
+#
 #
 #
 #~ msgid "/PlugIns/ROUTE"
 #~ msgstr "/PlugIns/ROUTE"
 #
 #
+#
 #~ msgid "12"
 #~ msgstr "12"
+#
 #
 #
 #~ msgid "Actuell"
@@ -557,8 +565,10 @@ msgstr "secondes"
 #~ "actuel"
 #
 #
+#
 #~ msgid "Add Line"
 #~ msgstr "Ajouter une ligne"
+#
 #
 #
 #~ msgid ""
@@ -569,130 +579,162 @@ msgstr "secondes"
 #~ "Supprimer une ligne = Touche <Del>"
 #
 #
+#
 #~ msgid "Balance"
 #~ msgstr ""
 #~ "Complément\n"
 #~ "nécessaire"
 #
 #
+#
 #~ msgid "Brent's method not converging, check result"
 #~ msgstr "Brent's method not converging, check result"
+#
 #
 #
 #~ msgid "Buy"
 #~ msgstr "Acheter"
 #
 #
+#
 #~ msgid "Buy it"
 #~ msgstr "Acheter ceci"
+#
 #
 #
 #~ msgid "C"
 #~ msgstr "C"
 #
 #
+#
 #~ msgid "Calculate"
 #~ msgstr "Calculer"
+#
 #
 #
 #~ msgid "Calculate speed-bullets for x degrees "
 #~ msgstr "Calculer la vitesse-balles pour x degrés"
 #
 #
+#
 #~ msgid "Choose a file"
 #~ msgstr "Choisir un fichier"
+#
 #
 #
 #~ msgid "Clear Data"
 #~ msgstr "Effacer les données"
 #
 #
+#
 #~ msgid "Collecting Data from: "
 #~ msgstr "Collecte des données depuis : "
+#
 #
 #
 #~ msgid "Collecting: "
 #~ msgstr "Collecte :"
 #
 #
+#
 #~ msgid "Convert to Degree"
 #~ msgstr "Convertir en degré"
+#
 #
 #
 #~ msgid "Course Error"
 #~ msgstr "Erreur de cap"
 #
 #
+#
 #~ msgid "Create"
 #~ msgstr "Créer"
+#
 #
 #
 #~ msgid "DILG1"
 #~ msgstr "DILG1"
 #
 #
+#
 #~ msgid "Data from Logbooks"
 #~ msgstr "Données extraite du livre de bord"
+#
 #
 #
 #~ msgid "Data from NMEA"
 #~ msgstr "Données extraites du réseau NMEA"
 #
 #
+#
 #~ msgid "Data from VDR"
 #~ msgstr "Données extraites de VDR"
+#
 #
 #
 #~ msgid "Deadman activity"
 #~ msgstr "Activité de l'homme mort"
 #
 #
+#
 #~ msgid "Decimal Degree"
 #~ msgstr "Degré décimal"
+#
 #
 #
 #~ msgid "Depth"
 #~ msgstr "Profondeur"
 #
 #
+#
 #~ msgid "Disabled"
 #~ msgstr "Désactivé"
+#
 #
 #
 #~ msgid "Distance to Anchor"
 #~ msgstr "Distance à l'ancre"
 #
 #
+#
 #~ msgid "E"
 #~ msgstr "E"
+#
 #
 #
 #~ msgid "Edit manuell"
 #~ msgstr "Editer manuellement"
 #
 #
+#
 #~ msgid "End     "
 #~ msgstr "Fin"
+#
 #
 #
 #~ msgid "End of Route"
 #~ msgstr "Fin de la route"
 #
 #
+#
 #~ msgid "Engine started / Recording is stopped"
 #~ msgstr "Moteur démarré / Enregistrement stoppé"
+#
 #
 #
 #~ msgid "Enter Searchstring:"
 #~ msgstr "Entrer le texte cherché :"
 #
 #
+#
 #~ msgid "Error in calculation. Please check input!"
 #~ msgstr "Erreur dans le calcul. Vérifier vos entrées."
 #
 #
+#
 #~ msgid "Error occured, aborting GCL calc!"
 #~ msgstr "Une erreur s'est produite. Calcul avorté du grand cercle"
+#
 #
 #
 #~ msgid ""
@@ -707,44 +749,55 @@ msgstr "secondes"
 #~ "Ecart de 2,25 à 2,5 kts."
 #
 #
+#
 #~ msgid "Export"
 #~ msgstr "Exporter"
+#
 #
 #
 #~ msgid "Export GPX file as"
 #~ msgstr "Exporter comme un fichier GPX"
 #
 #
+#
 #~ msgid "Export Great Circle GPX file as"
 #~ msgstr "Exporter la route orthodromique comme un fichier GPX"
+#
 #
 #
 #~ msgid "Export Rhumb Line GPX file as"
 #~ msgstr "Exporter la route loxodromique comme un fichier GPX"
 #
 #
+#
 #~ msgid "Filter"
 #~ msgstr "Filtrer"
+#
 #
 #
 #~ msgid "Filtered by:"
 #~ msgstr "Filtrer par :"
 #
 #
+#
 #~ msgid "FindIt"
 #~ msgstr "FindIt"
+#
 #
 #
 #~ msgid "GPS"
 #~ msgstr "GPS"
 #
 #
+#
 #~ msgid "Graphical Overlay Display"
 #~ msgstr "Affichage graphique avec superposition"
 #
 #
+#
 #~ msgid "Great Circle"
 #~ msgstr "Routes directes"
+#
 #
 #
 #~ msgid ""
@@ -755,12 +808,14 @@ msgstr "secondes"
 #~ "Longueur"
 #
 #
+#
 #~ msgid ""
 #~ "Great Circle\n"
 #~ "Route"
 #~ msgstr ""
 #~ "Routes naturelles\n"
 #~ " "
+#
 #
 #
 #~ msgid ""
@@ -771,16 +826,20 @@ msgstr "secondes"
 #~ "Longueur"
 #
 #
+#
 #~ msgid "Great Circle (shortest) GPX"
 #~ msgstr "Orthodromie (Plus courte)   ---> GPX"
+#
 #
 #
 #~ msgid "If Value of Column \"Balance\" = 0, set Value to"
 #~ msgstr "Si valeur de la colonne \"à acheter\"= 0, écrire"
 #
 #
+#
 #~ msgid "If Value of Column \"Buy\" = No, set Value to"
 #~ msgstr "Si la valeur de la colonne \"Acheter\"= Non, écrire"
+#
 #
 #
 #~ msgid ""
@@ -791,28 +850,35 @@ msgstr "secondes"
 #~ "avec les articles cochés à 'Livre de bord / Maintenance / Pièces achetées''"
 #
 #
+#
 #~ msgid "Input"
 #~ msgstr "Entrée"
+#
 #
 #
 #~ msgid "InputFilename"
 #~ msgstr "Nom de fichier source"
 #
 #
+#
 #~ msgid "Interval"
 #~ msgstr "Intervalle"
+#
 #
 #
 #~ msgid "LandFall not Detected"
 #~ msgstr "Terre non détectée"
 #
 #
+#
 #~ msgid "Last NMEA Updates"
 #~ msgstr "Dernière mise à jour NMEA"
 #
 #
+#
 #~ msgid "Lat "
 #~ msgstr "Lat."
+#
 #
 #
 #~ msgid ""
@@ -823,8 +889,10 @@ msgstr "secondes"
 #~ "Limite"
 #
 #
+#
 #~ msgid "Limited Circle"
 #~ msgstr "Route limitée"
+#
 #
 #
 #~ msgid ""
@@ -833,6 +901,7 @@ msgstr "secondes"
 #~ msgstr ""
 #~ "Route limitée\n"
 #~ "Longueur"
+#
 #
 #
 #~ msgid ""
@@ -843,116 +912,145 @@ msgstr "secondes"
 #~ "(en latitude N ou S)"
 #
 #
+#
 #~ msgid "Limited Circle GPX"
 #~ msgstr "Route avec limite ---> GPX"
+#
 #
 #
 #~ msgid "Load"
 #~ msgstr "Charger"
 #
 #
+#
 #~ msgid "Locations"
 #~ msgstr "Emplacement"
+#
 #
 #
 #~ msgid "Lon"
 #~ msgstr "Lon"
 #
 #
+#
 #~ msgid "Material"
 #~ msgstr "Matériel"
+#
 #
 #
 #~ msgid "Max. only"
 #~ msgstr "Maxi seulement"
 #
 #
+#
 #~ msgid "Menu"
 #~ msgstr "Menu"
+#
 #
 #
 #~ msgid "Mode:"
 #~ msgstr "Mode :"
 #
 #
+#
 #~ msgid "MyLabel"
 #~ msgstr "Mon contenu"
+#
 #
 #
 #~ msgid "N"
 #~ msgstr "N"
 #
 #
+#
 #~ msgid "NM"
 #~ msgstr "NM"
+#
 #
 #
 #~ msgid "Naming"
 #~ msgstr "Nom"
 #
 #
+#
 #~ msgid "No Lat Limit!"
 #~ msgstr "Pas de limite de latitude"
+#
 #
 #
 #~ msgid "No NMEA Messages"
 #~ msgstr "Pas de phrase NMEA"
 #
 #
+#
 #~ msgid "No Updates"
 #~ msgstr "Pas de mise à jour"
+#
 #
 #
 #~ msgid "Not implemented"
 #~ msgstr "Non implémenté"
 #
 #
+#
 #~ msgid "Off Course Starboard"
 #~ msgstr "Off Course"
+#
 #
 #
 #~ msgid "Opacity"
 #~ msgstr "Opacité"
 #
 #
+#
 #~ msgid "OutputFilename"
 #~ msgstr "Nom de fichier but"
+#
 #
 #
 #~ msgid "Please wait."
 #~ msgstr "Veuillez attendre."
 #
 #
+#
 #~ msgid "Polar"
 #~ msgstr "Polaire"
+#
 #
 #
 #~ msgid "Polar Diagram"
 #~ msgstr "Polaire"
 #
 #
+#
 #~ msgid "Polar Filter"
 #~ msgstr "Filtrer la polaire"
+#
 #
 #
 #~ msgid "Polar PlugIn for OpenCPN\n"
 #~ msgstr "Complément Polaire pour OpenCPN\n"
 #
 #
+#
 #~ msgid "Preferences"
 #~ msgstr "Préférences"
+#
 #
 #
 #~ msgid "Priority"
 #~ msgstr "Priorité"
 #
 #
+#
 #~ msgid "Progress:"
 #~ msgstr "Progression :"
 #
 #
+#
 #~ msgid "Provisions"
 #~ msgstr "Provisions"
+#
 #
 #
 #~ msgid "Quota"
@@ -961,36 +1059,45 @@ msgstr "secondes"
 #~ "nécessaire"
 #
 #
+#
 #~ msgid "ROUTE"
 #~ msgstr "Route"
+#
 #
 #
 #~ msgid "ROUTE replay"
 #~ msgstr "Refaire un route"
 #
 #
+#
 #~ msgid "Range"
 #~ msgstr "Ecart"
+#
 #
 #
 #~ msgid "Range from maximum speed to minus"
 #~ msgstr "Ecart entre vitesse maxi et mini"
 #
 #
+#
 #~ msgid "Record "
 #~ msgstr "Enregistrer"
+#
 #
 #
 #~ msgid "Record Start"
 #~ msgstr "Enregistrement démarré"
 #
 #
+#
 #~ msgid "Reset Last Alarm"
 #~ msgstr "Remettre à zéro l'alarme"
 #
 #
+#
 #~ msgid "Result"
 #~ msgstr "Résultat"
+#
 #
 #
 #~ msgid ""
@@ -1001,6 +1108,7 @@ msgstr "secondes"
 #~ "Longueur"
 #
 #
+#
 #~ msgid ""
 #~ "Rhumb Line     \n"
 #~ "Distance"
@@ -1009,20 +1117,25 @@ msgstr "secondes"
 #~ "Longueur"
 #
 #
+#
 #~ msgid "Rhumb Line (fixed heading) GPX"
 #~ msgstr "Loxodromie (Cap constant) ---> GPX"
+#
 #
 #
 #~ msgid "Rings:"
 #~ msgstr "Cercles :"
 #
 #
+#
 #~ msgid "Route"
 #~ msgstr "Route"
 #
 #
+#
 #~ msgid "Route Plotting plugin for OpenCPN"
 #~ msgstr "Complément \"Créateur de routes pour OpenCPN\""
+#
 #
 #
 #~ msgid ""
@@ -1034,28 +1147,35 @@ msgstr "secondes"
 #~ "limitées en latitude."
 #
 #
+#
 #~ msgid "Route Plugin by SaltyPaws"
 #~ msgstr "Complément \"Routes\" par Salty Paws"
+#
 #
 #
 #~ msgid "Route Preferences"
 #~ msgstr "Préférences"
 #
 #
+#
 #~ msgid "Route preferences"
 #~ msgstr "Préférences de la route"
+#
 #
 #
 #~ msgid "S"
 #~ msgstr "S"
 #
 #
+#
 #~ msgid "SRT"
 #~ msgstr "SRT"
 #
 #
+#
 #~ msgid "SRT AIS class B OEM board configuration plugin for OpenCPN"
 #~ msgstr "SRT classe B AIS OEM configuration de la carte plug-in pour OpenCPN"
+#
 #
 #
 #~ msgid ""
@@ -1066,48 +1186,60 @@ msgstr "secondes"
 #~ "Cette carte OEM est largement utilisé."
 #
 #
+#
 #~ msgid "Sails"
 #~ msgstr "Voiles"
+#
 #
 #
 #~ msgid "Save"
 #~ msgstr "Sauver"
 #
 #
+#
 #~ msgid "Save Polar File"
 #~ msgstr "Sauver le fichier de la polaire"
+#
 #
 #
 #~ msgid "Select a Polar-File"
 #~ msgstr "Sélectionner un fichier de polaire"
 #
 #
+#
 #~ msgid "Separate more than one string with a blank"
 #~ msgstr "Separer chaque mot cherché par un espace"
+#
 #
 #
 #~ msgid "Set diagramm to x knots"
 #~ msgstr "Produire le diagramme pour x noeuds"
 #
 #
+#
 #~ msgid "Show FindIt Icon"
 #~ msgstr "Afficher l'icône du complément FindIt"
+#
 #
 #
 #~ msgid "Show Polar icon"
 #~ msgstr "Montrer l'icône du complément Polaire"
 #
 #
+#
 #~ msgid "Show metres/sec for Wind Speed"
 #~ msgstr "Utiliser mètres/seconde pour la vitesse du vent"
+#
 #
 #
 #~ msgid "Source:"
 #~ msgstr "Source :"
 #
 #
+#
 #~ msgid "Speed over ground >"
 #~ msgstr "Vitesse fond >"
+#
 #
 #
 #~ msgid ""
@@ -1118,24 +1250,30 @@ msgstr "secondes"
 #~ "Le GPS utilise la colonne SOG"
 #
 #
+#
 #~ msgid "Start"
 #~ msgstr "Démarrer"
+#
 #
 #
 #~ msgid "Start Latitude>Limit!"
 #~ msgstr "Latitude de début > Latitude limite"
 #
 #
+#
 #~ msgid "Start of Route"
 #~ msgstr "Début de la route"
+#
 #
 #
 #~ msgid "Stop"
 #~ msgstr "Arrêter"
 #
 #
+#
 #~ msgid "Text"
 #~ msgstr "Texte"
+#
 #
 #
 #~ msgid ""
@@ -1153,96 +1291,120 @@ msgstr "secondes"
 #~ "Le bouton créer est caché et le mode n'est pas utilisable."
 #
 #
+#
 #~ msgid "To Buy"
 #~ msgstr "A acheter"
+#
 #
 #
 #~ msgid "Unit"
 #~ msgstr "Unité"
 #
 #
+#
 #~ msgid "Units"
 #~ msgstr "Unités"
+#
 #
 #
 #~ msgid "Use Average from all speed-data"
 #~ msgstr "Utiliser la moyenne pour toutes les données de vietesse"
 #
 #
+#
 #~ msgid "Use Max-Speed only"
 #~ msgstr "Utiliser la vitesse maxi seulement"
+#
 #
 #
 #~ msgid "Use last row values  as default for new row"
 #~ msgstr "Dupliquer la ligne précédente"
 #
 #
+#
 #~ msgid "W"
 #~ msgstr "O"
+#
 #
 #
 #~ msgid "Watch Man"
 #~ msgstr "Homme de garde"
 #
 #
+#
 #~ msgid "Watchdog Anchor Watch"
 #~ msgstr "Chien de garde de la sécurisation du mouillage"
+#
 #
 #
 #~ msgid "Watchdog Preferences"
 #~ msgstr "Préférences"
 #
 #
+#
 #~ msgid "Wavehight"
 #~ msgstr "Hauteur de vague"
+#
 #
 #
 #~ msgid "Wavehight from"
 #~ msgstr "Hauteur de vague depuis "
 #
 #
+#
 #~ msgid "Yes"
 #~ msgstr "Oui"
+#
 #
 #
 #~ msgid "\\u00b0"
 #~ msgstr "\\u00b0"
 #
 #
+#
 #~ msgid "\\u00b0 ' \""
 #~ msgstr "\\u00b0 ' \""
+#
 #
 #
 #~ msgid "blank"
 #~ msgstr "Blanc"
 #
 #
+#
 #~ msgid "degrees(s) Starboard"
 #~ msgstr "Degrés"
+#
 #
 #
 #~ msgid "error in input range validation"
 #~ msgstr "Erreur de validation de donnée entrée"
 #
 #
+#
 #~ msgid "kts"
 #~ msgstr "kts"
+#
 #
 #
 #~ msgid "less than 3 entries found"
 #~ msgstr "Moins de trois entrées  ont été trouvées"
 #
 #
+#
 #~ msgid "less than 5 entries found"
 #~ msgstr "Moins de 5 entrées ont ete trouvées"
+#
 #
 #
 #~ msgid "more than 10 entries found"
 #~ msgstr "Plus de 10 entrées ont été trouvées"
 #
 #
+#
 #~ msgid "opencpn-route_pi"
 #~ msgstr "opencpn-route_pi"
+#
 #
 #
 #~ msgid "to"

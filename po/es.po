@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: watchdog_pi 1.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-21 07:41+1100\n"
+"POT-Creation-Date: 2016-01-30 09:18+1100\n"
 "PO-Revision-Date: 2014-07-30 19:44+0100\n"
 "Last-Translator: sailoog <info@sailoog.com>\n"
 "Language-Team: sailoog <info@sailoog.com>\n"
@@ -79,7 +79,7 @@ msgid "Automatically syncronize to the boat whenever enabled"
 msgstr ""
 #
 #, fuzzy
-msgid "Boundary"
+msgid "Boundary Alarm"
 msgstr "Sonido"
 #
 #, fuzzy
@@ -534,47 +534,62 @@ msgstr "segundo(s)"
 msgid "seconds"
 msgstr "segundos"
 #
+#
 #~ msgid "Course Error"
 #~ msgstr "Error de rumbo"
+#
 #
 #~ msgid "Deadman activity"
 #~ msgstr "Inactividad"
 #
+#
 #~ msgid "Depth"
 #~ msgstr "Profundidad"
+#
 #
 #~ msgid "Disabled"
 #~ msgstr "Desactivada"
 #
+#
 #~ msgid "Distance to Anchor"
 #~ msgstr "Distancia al fondeo"
+#
 #
 #~ msgid "Graphical Overlay Display"
 #~ msgstr "Representación gráfica en pantalla"
 #
+#
 #~ msgid "LandFall not Detected"
 #~ msgstr "Tierra no detectada"
+#
 #
 #~ msgid "Last NMEA Updates"
 #~ msgstr "Últimas actualizaciones NMEA"
 #
+#
 #~ msgid "No NMEA Messages"
 #~ msgstr "No hay mensajes NMEA"
+#
 #
 #~ msgid "No Updates"
 #~ msgstr "Sin actualización"
 #
+#
 #~ msgid "Not implemented"
 #~ msgstr "Aún no implementado"
+#
 #
 #~ msgid "Off Course Starboard"
 #~ msgstr "Fuera de rumbo estribor"
 #
+#
 #~ msgid "Preferences"
 #~ msgstr "Preferencias"
 #
+#
 #~ msgid "Separate Port and Starboard Alarms"
 #~ msgstr "Alarmas de babor y estribor separadas"
+#
 #
 #~ msgid ""
 #~ "Settings the same as Off Course Port, with different Alarm Actions "
@@ -583,11 +598,14 @@ msgstr "segundos"
 #~ "Configuración igual que fuera de rumbo a babor con diferentes acciones de "
 #~ "alarma posibles."
 #
+#
 #~ msgid "Speed over ground >"
 #~ msgstr "Velocidad verdadera > de"
 #
+#
 #~ msgid "Watchdog Preferences"
 #~ msgstr "Preferencias de Watchdog"
+#
 #
 #~ msgid "degrees(s) Starboard"
 #~ msgstr "grado(s) estribor"

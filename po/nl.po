@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: opencpn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-25 18:12+1100\n"
+"POT-Creation-Date: 2016-01-30 09:18+1100\n"
 "PO-Revision-Date: 2016-01-24 18:41+0100\n"
 "Last-Translator: NAV <rider2@kpnmail.nl>\n"
 "Language-Team: Dutch\n"
@@ -73,8 +73,9 @@ msgstr "Automatisch terugstellen"
 msgid "Automatically syncronize to the boat whenever enabled"
 msgstr "Ankerpositie gelijk aan vaartuigpositie indien ingeschakeld"
 #
-msgid "Boundary"
-msgstr "Gebiedsgrens"
+#, fuzzy
+msgid "Boundary Alarm"
+msgstr "Naam gebiedsgrens"
 #
 msgid "Boundary Distance"
 msgstr "Afstand tot gebiedsgrens"
@@ -509,56 +510,78 @@ msgstr "seconde(n)"
 msgid "seconds"
 msgstr "seconden"
 #
+#
 #~ msgid "12"
 #~ msgstr "12"
+#
+#
+#~ msgid "Boundary"
+#~ msgstr "Gebiedsgrens"
+#
 #
 #~ msgid "Course Error"
 #~ msgstr "Koersafwijking"
 #
+#
 #~ msgid "Deadman activity"
 #~ msgstr "'Deadman' activiteit"
+#
 #
 #~ msgid "Depth"
 #~ msgstr "Diepte"
 #
+#
 #~ msgid "Disabled"
 #~ msgstr "Gedeactiveerd"
+#
 #
 #~ msgid "Distance to Anchor"
 #~ msgstr "Afstand tot ankerpositie"
 #
+#
 #~ msgid "Graphical Overlay Display"
 #~ msgstr "Grafische schermoverlay"
+#
 #
 #~ msgid "LandFall not Detected"
 #~ msgstr "Geen landaanloop gedetecteerd"
 #
+#
 #~ msgid "Last NMEA Updates"
 #~ msgstr "Laatste NMEA-update"
+#
 #
 #~ msgid "No NMEA Messages"
 #~ msgstr "Geen NMEA-berichten"
 #
+#
 #~ msgid "No Updates"
 #~ msgstr "Geen updates"
+#
 #
 #~ msgid "Not implemented"
 #~ msgstr "Niet geïmplementeerd"
 #
+#
 #~ msgid "Off Course Starboard"
 #~ msgstr "Koersafwijking SB"
+#
 #
 #~ msgid "Preferences"
 #~ msgstr "Voorkeuren"
 #
+#
 #~ msgid "Second Deadman"
 #~ msgstr "Tweede 'Deadman'"
+#
 #
 #~ msgid "Second Deadman activity"
 #~ msgstr "Tweede 'Deadman'-activiteit"
 #
+#
 #~ msgid "Separate Port and Starboard Alarms"
 #~ msgstr "Afzonderlijke BB- en SB-alarmen"
+#
 #
 #~ msgid ""
 #~ "Settings the same as Off Course Port, with different Alarm Actions "
@@ -567,11 +590,14 @@ msgstr "seconden"
 #~ "Instellingen hetzelfde als Koersafwijking BB; verschillende alarmacties "
 #~ "mogelijk."
 #
+#
 #~ msgid "Speed over ground >"
 #~ msgstr "Vaart over grond >"
 #
+#
 #~ msgid "Watchdog Preferences"
 #~ msgstr "'Watchdog' voorkeuren"
+#
 #
 #~ msgid "degrees(s) Starboard"
 #~ msgstr "graden SB"
