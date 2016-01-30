@@ -83,8 +83,9 @@ void ConfigurationDialog::OnNewAlarm( wxCommandEvent& event )
     if(dlg.ShowModal() == wxID_CANCEL)
         return;
 
-    Alarm::NewAlarm((AlarmType)dlg.m_lAlarmType->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED));
+    if(Alarm::NewAlarm((AlarmType)dlg.m_lAlarmType->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED)) == NULL) return;
 
+    
     wxListItem item;
     long index = m_lAlarms->InsertItem(m_lAlarms->GetItemCount(), item);
 
