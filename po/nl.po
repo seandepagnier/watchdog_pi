@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: opencpn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-01-30 09:18+1100\n"
-"PO-Revision-Date: 2016-02-02 18:46+0100\n"
+"PO-Revision-Date: 2016-02-05 19:45+0100\n"
 "Last-Translator: NAV <rider2@kpnmail.nl>\n"
 "Language-Team: Dutch\n"
 "Language: nl_NL\n"
@@ -88,7 +88,7 @@ msgstr "Bewakingszone"
 #: src/Alarm.cpp:288 src/Alarm.cpp:528 src/Alarm.cpp:551
 #: src/WatchdogUI.cpp:478
 msgid "Boundary GUID"
-msgstr "GUID gebied/lijn/punt"
+msgstr "GUID gebied"
 
 #: src/Alarm.cpp:291 src/WatchdogUI.cpp:499
 msgid "Guard Zone GUID"
@@ -201,7 +201,7 @@ msgstr "seconde(n)"
 
 #: src/Alarm.cpp:1049 src/NewAlarmDialog.cpp:37
 msgid "Deadman"
-msgstr "'Deadman'"
+msgstr "Wachtalarm"
 
 #: src/Alarm.cpp:1113
 msgid "radius"
@@ -615,7 +615,9 @@ msgstr "oversnelheid"
 
 #: src/WatchdogUI.cpp:791
 msgid "Speed over ground"
-msgstr "Vaart over de grond"
+msgstr ""
+"Vaart over de grond\n"
+"(SOG)"
 
 #: src/WatchdogUI.cpp:795
 msgid "1"
@@ -630,8 +632,8 @@ msgid ""
 "Seconds to Average\n"
 "SOG over"
 msgstr ""
-"Seconden middeling\n"
-"SOG over"
+"Aantal seconden\n"
+"voor middelen SOG"
 
 #: src/WatchdogUI.cpp:821
 msgid "Graphical overlay displays circle with radius of this speed"
