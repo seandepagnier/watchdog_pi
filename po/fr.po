@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: opencpn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-01-30 09:18+1100\n"
-"PO-Revision-Date: 2016-02-06 09:15+0100\n"
+"PO-Revision-Date: 2016-02-12 17:05-0500\n"
 "Last-Translator: nohal <pavel@kalian.cz>\n"
 "Language-Team: French\n"
 "Language: fr_FR\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 1.8.5\n"
+"X-Generator: crowdin.com\n"
 "X-Crowdin-Project: opencpn\n"
 "X-Crowdin-Language: fr\n"
 "X-Crowdin-File: /plugins/watchdog_pi/po/watchdog_pi.pot\n"
@@ -308,21 +308,15 @@ msgid "Action"
 msgstr "Action"
 
 #: src/EditAlarmDialog.cpp:81
-msgid ""
-"Most alarms should be self-explanatory\n"
+msgid "Most alarms should be self-explanatory\n"
 "Normally a sound is played, however you can execute any command you like, eg:  \"aplay /usr/local/share/opencpn/sounds/2bells.wav\"\n"
 "Messagebox may be useful to interrupt other applications (like a movie player)\n"
 "Automatically Reset will reset the alarm once it is no longer triggered, and it may be triggered again later."
-msgstr ""
-"- La plupart des alarmes doivent être explicites. \n"
-"\n"
+msgstr "- La plupart des alarmes doivent être explicites. \n\n"
 "- Normalement, un son est joué, mais vous pouvez exécuter n'importe quelle commande\n"
-"que vous aimez, par exemple : \"aplay / usr/local/share/opencpn/sounds/2bells.wav \"\n"
-"\n"
-"- Une boite de message est nécessaire pour interrompre d'autres applications (telle qu'un movie player)\n"
-"\n"
-"- La RAZ d'une alarme ne fonctionne qu'une fois et doit être réactivée à nouveau ultérieurement.\n"
-"\n"
+"que vous aimez, par exemple : \"aplay / usr/local/share/opencpn/sounds/2bells.wav \"\n\n"
+"- Une boite de message est nécessaire pour interrompre d'autres applications (telle qu'un movie player)\n\n"
+"- La RAZ d'une alarme ne fonctionne qu'une fois et doit être réactivée à nouveau ultérieurement.\n\n"
 "- Un GUID est l'identificateur unique, attribué par OpenCPN, à tout objet créé par OpenCPN ou un de\n"
 "ces compléments. Exemples d'objets : waypoint, marque, route, barrière ou zone créée par le\n"
 "complément \"Traceur OCPN\", etc ... Exemple d'identificateur : 04640000-cbcb-4c77-b087-57e266b3ffff\n"
@@ -453,11 +447,9 @@ msgid "3"
 msgstr "3"
 
 #: src/WatchdogUI.cpp:385
-msgid ""
-"nm from coastline\n"
+msgid "nm from coastline\n"
 "(any direction)"
-msgstr ""
-"Nm jusqu'à la ligne de côte\n"
+msgstr "Nm jusqu'à la ligne de côte\n"
 "(dans toutes les directions)"
 
 #: src/WatchdogUI.cpp:392
@@ -465,11 +457,9 @@ msgid "Graphical overlay for time displays line from boat to location of land cr
 msgstr "Affichage du temps restant à courir avant d'atteindre la ligne de côte"
 
 #: src/WatchdogUI.cpp:396
-msgid ""
-"Landfall detection uses gshhs (global heirarchical high-resolution shoreline data.)\n"
+msgid "Landfall detection uses gshhs (global heirarchical high-resolution shoreline data.)\n"
 "Consider installing the highest resolution database for best accuracy."
-msgstr ""
-"La détection de la terre utilise gshhs (Données \"global shoreline hierarchical high-resolution\").\n"
+msgstr "La détection de la terre utilise gshhs (Données \"global shoreline hierarchical high-resolution\").\n"
 "Envisagez l'installation des données de haute résolution pour une meilleure précision."
 
 #: src/WatchdogUI.cpp:422
@@ -477,11 +467,9 @@ msgid "GPS course crosses boundary in <"
 msgstr "En suivant le cap GPS, on atteint une barrière/zone <"
 
 #: src/WatchdogUI.cpp:446
-msgid ""
-"nm from boundary\n"
+msgid "nm from boundary\n"
 "(any direction)"
-msgstr ""
-"Nm entre la position GPS et la barrière/zone\n"
+msgstr "Nm entre la position GPS et la barrière/zone\n"
 "(dans toutes les directions)"
 
 #: src/WatchdogUI.cpp:458
@@ -509,11 +497,9 @@ msgid "Get Boundary GUID"
 msgstr "Obtenir la GUID de la barrière/zone"
 
 #: src/WatchdogUI.cpp:518
-msgid ""
-"Check Frequency  (Secs)\n"
+msgid "Check Frequency  (Secs)\n"
 "(Note: not Guard Zone)"
-msgstr ""
-"Fréquence de surveillance (Secondes)\n"
+msgstr "Fréquence de surveillance (Secondes)\n"
 "(Nota bene : Pas de zone de garde) "
 
 #: src/WatchdogUI.cpp:528
@@ -617,11 +603,9 @@ msgid "knots"
 msgstr "Noeuds"
 
 #: src/WatchdogUI.cpp:811
-msgid ""
-"Seconds to Average\n"
+msgid "Seconds to Average\n"
 "SOG over"
-msgstr ""
-"Moyenne en secondes\n"
+msgstr "Moyenne en secondes\n"
 "SOG over"
 
 #: src/WatchdogUI.cpp:821
@@ -649,9 +633,8 @@ msgid "Watchdog PlugIn for OpenCPN"
 msgstr "Complément Watchdog pour OpenCPN"
 
 #: src/watchdog_pi.cpp:227
-msgid ""
-"Watchdog PlugIn for OpenCPN\n"
+msgid "Watchdog PlugIn for OpenCPN\n"
 "Alarm user of changing conditions."
-msgstr ""
-"Complément Watchdog (chien de garde) pour OpenCPN\n"
+msgstr "Complément Watchdog (chien de garde) pour OpenCPN\n"
 "Mise en place d'alarmes paramétrables."
+
