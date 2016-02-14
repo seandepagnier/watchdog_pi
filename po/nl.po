@@ -3,15 +3,15 @@ msgstr ""
 "Project-Id-Version: opencpn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-01-30 09:18+1100\n"
-"PO-Revision-Date: 2016-02-05 19:45+0100\n"
-"Last-Translator: NAV <rider2@kpnmail.nl>\n"
+"PO-Revision-Date: 2016-02-12 17:05-0500\n"
+"Last-Translator: nohal <pavel@kalian.cz>\n"
 "Language-Team: Dutch\n"
 "Language: nl_NL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: crowdin.com\n"
 "X-Crowdin-Project: opencpn\n"
 "X-Crowdin-Language: nl\n"
 "X-Crowdin-File: /plugins/watchdog_pi/po/watchdog_pi.pot\n"
@@ -85,8 +85,7 @@ msgstr "Ankerwacht"
 msgid "Guard Zone"
 msgstr "Bewakingszone"
 
-#: src/Alarm.cpp:288 src/Alarm.cpp:528 src/Alarm.cpp:551
-#: src/WatchdogUI.cpp:478
+#: src/Alarm.cpp:288 src/Alarm.cpp:528 src/Alarm.cpp:551 src/WatchdogUI.cpp:478
 msgid "Boundary GUID"
 msgstr "GUID gebied"
 
@@ -309,24 +308,13 @@ msgid "Action"
 msgstr "Alarmactie"
 
 #: src/EditAlarmDialog.cpp:81
-msgid ""
-"Most alarms should be self-explanatory\n"
-"Normally a sound is played, however you can execute any command you like, "
-"eg:  \"aplay /usr/local/share/opencpn/sounds/2bells.wav\"\n"
-"Messagebox may be useful to interrupt other applications (like a movie "
-"player)\n"
-"Automatically Reset will reset the alarm once it is no longer triggered, and "
-"it may be triggered again later."
-msgstr ""
-"De meeste alarmen spreken vanzelf. Standaard wordt een alarmgeluid gegeven, "
-"maar u kunt elke opdracht uitvoeren die u wilt. Een voorbeeld is: \"aplay/"
-"usr/local/share/opencpn/sounds/2bells.wav\".\n"
-"\n"
-"Het berichtenvenster kan handig zijn om andere applicaties te onderbreken "
-"(zoals met een videospeler).\n"
-"\n"
-"Automatisch terugstellen stopt het alarm als de aanleiding wegvalt; het "
-"alarm kan later weer worden gegeven."
+msgid "Most alarms should be self-explanatory\n"
+"Normally a sound is played, however you can execute any command you like, eg:  \"aplay /usr/local/share/opencpn/sounds/2bells.wav\"\n"
+"Messagebox may be useful to interrupt other applications (like a movie player)\n"
+"Automatically Reset will reset the alarm once it is no longer triggered, and it may be triggered again later."
+msgstr "De meeste alarmen spreken vanzelf. Standaard wordt een alarmgeluid gegeven, maar u kunt elke opdracht uitvoeren die u wilt. Een voorbeeld is: \"aplay/usr/local/share/opencpn/sounds/2bells.wav\".\n\n"
+"Het berichtenvenster kan handig zijn om andere applicaties te onderbreken (zoals met een videospeler).\n\n"
+"Automatisch terugstellen stopt het alarm als de aanleiding wegvalt; het alarm kan later weer worden gegeven."
 
 #: src/EditAlarmDialog.cpp:88
 msgid "Watchdog Information"
@@ -453,40 +441,28 @@ msgid "3"
 msgstr "3"
 
 #: src/WatchdogUI.cpp:385
-msgid ""
-"nm from coastline\n"
+msgid "nm from coastline\n"
 "(any direction)"
-msgstr ""
-"zeemijl van kustlijn\n"
+msgstr "zeemijl van kustlijn\n"
 "(alle richtingen)"
 
 #: src/WatchdogUI.cpp:392
-msgid ""
-"Graphical overlay for time displays line from boat to location of land "
-"crossing"
-msgstr ""
-"Grafische overlay toont gegist traject van schip naar kruising met kustlijn"
+msgid "Graphical overlay for time displays line from boat to location of land crossing"
+msgstr "Grafische overlay toont lijn van schip naar kruising met kustlijn"
 
 #: src/WatchdogUI.cpp:396
-msgid ""
-"Landfall detection uses gshhs (global heirarchical high-resolution shoreline "
-"data.)\n"
+msgid "Landfall detection uses gshhs (global heirarchical high-resolution shoreline data.)\n"
 "Consider installing the highest resolution database for best accuracy."
-msgstr ""
-"Detectie landnabijheid gebruikt globale kustlijngegevens (gshhs).\n"
-"Overweeg het installeren van de database met de hoogste resolutie van "
-"kustlijnen voor meer nauwkeurigheid en veiligheid."
+msgstr "Detectie landnabijheid gebruikt globale kustlijngegevens (gshhs).\\Installeer de database met de hoogste resolutie van kustlijnen voor meer nauwkeurigheid en veiligheid."
 
 #: src/WatchdogUI.cpp:422
 msgid "GPS course crosses boundary in <"
 msgstr "Gegist traject kruist gebiedsgrens over <"
 
 #: src/WatchdogUI.cpp:446
-msgid ""
-"nm from boundary\n"
+msgid "nm from boundary\n"
 "(any direction)"
-msgstr ""
-"zeemijl van gebiedsgrens\n"
+msgstr "zeemijl van gebiedsgrens\n"
 "(alle richtingen)"
 
 #: src/WatchdogUI.cpp:458
@@ -514,20 +490,14 @@ msgid "Get Boundary GUID"
 msgstr "Zoek GUID gebied"
 
 #: src/WatchdogUI.cpp:518
-msgid ""
-"Check Frequency  (Secs)\n"
+msgid "Check Frequency  (Secs)\n"
 "(Note: not Guard Zone)"
-msgstr ""
-"Check frequentie (sec)\n"
+msgstr "Check frequentie (sec)\n"
 "(niet voor bewakingszone) "
 
 #: src/WatchdogUI.cpp:528
-msgid ""
-"Graphical overlay for GPS fix displays line from boat to location of the "
-"point in the found boundary"
-msgstr ""
-"Grafische overlay toont gegist traject van vaartuig naar de gevonden "
-"gebiedsgrens"
+msgid "Graphical overlay for GPS fix displays line from boat to location of the point in the found boundary"
+msgstr "Grafische overlay toont gegist traject van vaartuig naar de gevonden gebiedsgrens"
 
 #: src/WatchdogUI.cpp:558
 msgid "Require following NMEA sentences:"
@@ -615,8 +585,8 @@ msgstr "oversnelheid"
 
 #: src/WatchdogUI.cpp:791
 msgid "Speed over ground"
-msgstr ""
-"Vaart over de grond\n"
+msgstr "Vaart over de grond\n"
+"\n"
 "(SOG)"
 
 #: src/WatchdogUI.cpp:795
@@ -628,11 +598,10 @@ msgid "knots"
 msgstr "knopen"
 
 #: src/WatchdogUI.cpp:811
-msgid ""
-"Seconds to Average\n"
+msgid "Seconds to Average\n"
 "SOG over"
-msgstr ""
-"Aantal seconden\n"
+msgstr "Aantal seconden\n"
+"\n"
 "voor middelen SOG"
 
 #: src/WatchdogUI.cpp:821
@@ -660,79 +629,8 @@ msgid "Watchdog PlugIn for OpenCPN"
 msgstr "Watchdog PlugIn voor OpenCPN"
 
 #: src/watchdog_pi.cpp:227
-msgid ""
-"Watchdog PlugIn for OpenCPN\n"
+msgid "Watchdog PlugIn for OpenCPN\n"
 "Alarm user of changing conditions."
-msgstr ""
-"Watchdog PlugIn voor OpenCPN\n"
+msgstr "Watchdog PlugIn voor OpenCPN\n"
 "Geeft alarm bij veranderende omstandigheden."
 
-#~ msgid "Boundary"
-#~ msgstr "Gebiedsgrens"
-
-#~ msgid "LandFall not Detected"
-#~ msgstr "Geen landaanloop gedetecteerd"
-
-#~ msgid "Second Deadman"
-#~ msgstr "Tweede 'Deadman'"
-
-#~ msgid "degrees(s) Starboard"
-#~ msgstr "graden SB"
-
-#~ msgid "Course Error"
-#~ msgstr "Koersafwijking"
-
-#~ msgid "Off Course Starboard"
-#~ msgstr "Koersafwijking SB"
-
-#~ msgid "No NMEA Messages"
-#~ msgstr "Geen NMEA-berichten"
-
-#~ msgid "Last NMEA Updates"
-#~ msgstr "Laatste NMEA-update"
-
-#~ msgid "Deadman activity"
-#~ msgstr "'Deadman' activiteit"
-
-#~ msgid "No Updates"
-#~ msgstr "Geen updates"
-
-#~ msgid "Second Deadman activity"
-#~ msgstr "Tweede 'Deadman'-activiteit"
-
-#~ msgid "Distance to Anchor"
-#~ msgstr "Afstand tot ankerpositie"
-
-#~ msgid "Preferences"
-#~ msgstr "Voorkeuren"
-
-#~ msgid "Separate Port and Starboard Alarms"
-#~ msgstr "Afzonderlijke BB- en SB-alarmen"
-
-#~ msgid ""
-#~ "Settings the same as Off Course Port, with different Alarm Actions "
-#~ "possible."
-#~ msgstr ""
-#~ "Instellingen hetzelfde als Koersafwijking BB; verschillende alarmacties "
-#~ "mogelijk."
-
-#~ msgid "Speed over ground >"
-#~ msgstr "Vaart over grond >"
-
-#~ msgid "12"
-#~ msgstr "12"
-
-#~ msgid "Not implemented"
-#~ msgstr "Niet geïmplementeerd"
-
-#~ msgid "Depth"
-#~ msgstr "Diepte"
-
-#~ msgid "Disabled"
-#~ msgstr "Gedeactiveerd"
-
-#~ msgid "Graphical Overlay Display"
-#~ msgstr "Grafische schermoverlay"
-
-#~ msgid "Watchdog Preferences"
-#~ msgstr "'Watchdog' voorkeuren"
