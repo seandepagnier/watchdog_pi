@@ -253,6 +253,14 @@ enum
     
     ID_BOUNDARY_TYPE_LAST
 };
+enum
+{
+    ID_BOUNDARY_STATE_ANY = 0,
+    ID_BOUNDARY_STATE_ACTIVE,
+    ID_BOUNDARY_STATE_INACTIVE,
+    
+    ID_BOUNDARY_STATE_LAST
+};
 
 class BoundaryAlarm : public Alarm
 {
@@ -262,6 +270,7 @@ public:
                       m_TimeMinutes(20),
                       m_Distance(3),
                       m_BoundaryType(ID_BOUNDARY_ANY),
+                      m_BoundaryState(ID_BOUNDARY_STATE_ANY),
                       m_bAnchorOutside(false),
                       m_bGuardZoneFired(false)
         {
@@ -348,6 +357,17 @@ public:
                             jMsg[wxS("BoundaryType")] = wxT("Any");
                             break;
                     }
+                    switch (m_BoundaryState) {
+                        case ID_BOUNDARY_STATE_ANY:
+                            jMsg[wxS("BoundaryState")] = wxT("Any");
+                            break;
+                        case ID_BOUNDARY_STATE_ACTIVE:
+                            jMsg[wxS("BoundaryState")] = wxT("Active");
+                            break;
+                        case ID_BOUNDARY_STATE_INACTIVE:
+                            jMsg[wxS("BoundaryState")] = wxT("Inactive");
+                            break;
+                    }
                     writer.Write( jMsg, MsgString );
                     SendPluginMessage( wxS("OCPN_DRAW_PI"), MsgString );
                     if(g_ReceivedBoundaryTimeMessage != wxEmptyString &&
@@ -420,6 +440,17 @@ public:
                                 break;
                             default:
                                 jMsg[wxS("BoundaryType")] = wxT("Any");
+                                break;
+                        }
+                        switch (m_BoundaryState) {
+                            case ID_BOUNDARY_STATE_ANY:
+                                jMsg[wxS("BoundaryState")] = wxT("Any");
+                                break;
+                            case ID_BOUNDARY_STATE_ACTIVE:
+                                jMsg[wxS("BoundaryState")] = wxT("Active");
+                                break;
+                            case ID_BOUNDARY_STATE_INACTIVE:
+                                jMsg[wxS("BoundaryState")] = wxT("Inactive");
                                 break;
                         }
                         writer.Write( jMsg, MsgString );
@@ -533,8 +564,19 @@ public:
                         l_s << m_TimeMinutes;
                         l_s += _(" minutes");
                     }
-                    else
-                        l_s.append(_T(" - ") + wxString(_("inside boundary")));
+                    else {
+                        switch (m_BoundaryState) {
+                            case ID_BOUNDARY_STATE_ANY:
+                                l_s.append(_(" - inside any boundary"));
+                                break;
+                            case ID_BOUNDARY_STATE_ACTIVE:
+                                l_s.append(_(" - inside active boundary"));
+                                break;
+                            case ID_BOUNDARY_STATE_INACTIVE:
+                                l_s.append(_(" - inside inactive boundary"));
+                                break;
+                        }
+                    }
                 } else {
                     l_s.append(_(" in ") + TimeBoundaryMsg());
                 }
@@ -556,8 +598,20 @@ public:
                         l_s << m_BoundaryDistance;
                         l_s.append(_T(" nm"));
                     }
-                } else
-                    l_s = wxString::Format(_T(" ") + wxString(_("Distance")) + _T(" >") + _T(" %.2f nm"), m_Distance);
+                } else {
+                    switch (m_BoundaryState) {
+                        case ID_BOUNDARY_STATE_ANY:
+                            l_s = _(" Any Boundary Distance") + _T(" >");
+                            break;
+                        case ID_BOUNDARY_STATE_ACTIVE:
+                            l_s = _("Active Boundary Distance") + _T(" >");
+                            break;
+                        case ID_BOUNDARY_STATE_INACTIVE:
+                            l_s = _(" Inactive Boundary Distance") + _T(" >");
+                            break;
+                    }
+                    l_s.append(wxString::Format(_T(" %.2f nm"), m_Distance));
+                }
                 return l_s;
                 break;
             } 
@@ -626,6 +680,20 @@ public:
                 panel->m_radioBoxBoundaryType->SetSelection(0);
                 break;
         }
+        switch (m_BoundaryState) {
+            case ID_BOUNDARY_STATE_ANY:
+                panel->m_radioBoxBoundaryState->SetSelection(0);
+                break;
+            case ID_BOUNDARY_STATE_ACTIVE:
+                panel->m_radioBoxBoundaryState->SetSelection(1);
+                break;
+            case ID_BOUNDARY_STATE_INACTIVE:
+                panel->m_radioBoxBoundaryState->SetSelection(2);
+                break;
+            default:
+                panel->m_radioBoxBoundaryState->SetSelection(0);
+                break;
+        }
         panel->m_tBoundaryGUID->SetValue(m_BoundaryGUID);
         panel->m_tGuardZoneGUID->SetValue(m_GuardZoneGUID);
         return panel;
@@ -660,6 +728,20 @@ public:
                 m_BoundaryType = ID_BOUNDARY_ANY;
                 break;
         }
+        switch (panel->m_radioBoxBoundaryState->GetSelection()) {
+            case 0:
+                m_BoundaryState = ID_BOUNDARY_STATE_ANY;
+                break;
+            case 1:
+                m_BoundaryState = ID_BOUNDARY_STATE_ACTIVE;
+                break;
+            case 2:
+                m_BoundaryState = ID_BOUNDARY_STATE_INACTIVE;
+                break;
+            default:
+                m_BoundaryState = ID_BOUNDARY_STATE_ANY;
+                break;
+        }
         m_BoundaryGUID = panel->m_tBoundaryGUID->GetValue();
         m_GuardZoneGUID = panel->m_tGuardZoneGUID->GetValue();
         if(g_GuardZoneName != wxEmptyString) {
@@ -681,6 +763,7 @@ public:
         e->Attribute("Distance", &m_Distance);
         e->Attribute("CheckFrequency", &m_iCheckFrequency);
         e->Attribute("BoundaryType", &m_BoundaryType);
+        e->Attribute("BoundaryState", &m_BoundaryState);
         m_BoundaryGUID = wxString::FromUTF8(e->Attribute("BoundaryGUID"));
         m_BoundaryDescription = wxString::FromUTF8(e->Attribute("BoundaryDescription"));
         m_BoundaryName = wxString::FromUTF8(e->Attribute("BoundaryName"));
@@ -692,6 +775,7 @@ public:
     void SaveConfig(TiXmlElement *c) {
         c->SetAttribute("Type", "Boundary");
         c->SetAttribute(("BoundaryType"), m_BoundaryType);
+        c->SetAttribute(("BoundaryState"), m_BoundaryState);
         switch(m_Mode) {
         case TIME: 
             c->SetAttribute("Mode", "Time");
@@ -924,6 +1008,7 @@ private:
     double      m_BoundaryAtLat;
     double      m_BoundaryAtLon;
     int         m_BoundaryType;
+    int         m_BoundaryState;
     bool        m_bAnchorOutside;
     wxString    m_BoundaryGUID;
     wxString    m_BoundaryName;
