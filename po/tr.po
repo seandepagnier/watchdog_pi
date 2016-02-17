@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: opencpn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-30 09:18+1100\n"
+"POT-Creation-Date: 2016-02-17 15:19+1100\n"
 "PO-Revision-Date: 2016-02-07 02:50-0500\n"
 "Last-Translator: nohal <pavel@kalian.cz>\n"
 "Language-Team: Turkish\n"
@@ -16,6 +16,21 @@ msgstr ""
 "X-Crowdin-Project: opencpn\n"
 "X-Crowdin-Language: tr\n"
 "X-Crowdin-File: /plugins/watchdog_pi/po/watchdog_pi.pot\n"
+#
+msgid " - inside active boundary"
+msgstr ""
+#
+msgid " - inside any boundary"
+msgstr ""
+#
+msgid " - inside inactive boundary"
+msgstr ""
+#
+msgid " Any Boundary Distance"
+msgstr ""
+#
+msgid " Inactive Boundary Distance"
+msgstr ""
 #
 msgid " boundary "
 msgstr ""
@@ -50,6 +65,12 @@ msgstr "Yazar Hakkında"
 msgid "Action"
 msgstr ""
 #
+msgid "Active"
+msgstr ""
+#
+msgid "Active Boundary Distance"
+msgstr ""
+#
 msgid "Alarm Action"
 msgstr "Alarm Türü"
 #
@@ -81,6 +102,9 @@ msgid "Boundary Distance"
 msgstr ""
 #
 msgid "Boundary GUID"
+msgstr ""
+#
+msgid "Boundary State"
 msgstr ""
 #
 msgid "Boundary Time"
@@ -221,6 +245,9 @@ msgstr "Saat"
 #
 msgid "Hours"
 msgstr "Saat"
+#
+msgid "Inactive"
+msgstr ""
 #
 msgid "Inclusion"
 msgstr ""

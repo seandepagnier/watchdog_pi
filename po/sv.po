@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: opencpn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-30 09:18+1100\n"
+"POT-Creation-Date: 2016-02-17 15:19+1100\n"
 "PO-Revision-Date: 2016-02-07 02:50-0500\n"
 "Last-Translator: nohal <pavel@kalian.cz>\n"
 "Language-Team: Swedish\n"
@@ -15,6 +15,26 @@ msgstr ""
 "X-Crowdin-Project: opencpn\n"
 "X-Crowdin-Language: sv-SE\n"
 "X-Crowdin-File: /plugins/watchdog_pi/po/watchdog_pi.pot\n"
+#
+#, fuzzy
+msgid " - inside active boundary"
+msgstr "Inre gräns"
+#
+#, fuzzy
+msgid " - inside any boundary"
+msgstr "Inre gräns"
+#
+#, fuzzy
+msgid " - inside inactive boundary"
+msgstr "Inre gräns"
+#
+#, fuzzy
+msgid " Any Boundary Distance"
+msgstr "Avstånd till Gränslinje"
+#
+#, fuzzy
+msgid " Inactive Boundary Distance"
+msgstr "Avstånd till Gränslinje"
 #
 msgid " boundary "
 msgstr " gränsen "
@@ -49,6 +69,14 @@ msgstr "Om utgivaren"
 msgid "Action"
 msgstr "Åtgärd"
 #
+#, fuzzy
+msgid "Active"
+msgstr "Åtgärd"
+#
+#, fuzzy
+msgid "Active Boundary Distance"
+msgstr "Avstånd till Gränslinje"
+#
 msgid "Alarm Action"
 msgstr "Åtgärd vid larm"
 #
@@ -81,6 +109,10 @@ msgstr "Avstånd till Gränslinje"
 #
 msgid "Boundary GUID"
 msgstr "Gränslinjens GUID (Id)"
+#
+#, fuzzy
+msgid "Boundary State"
+msgstr "Gränsens namn"
 #
 msgid "Boundary Time"
 msgstr "Tid till Gränslinje"
@@ -225,6 +257,9 @@ msgstr "Timme"
 #
 msgid "Hours"
 msgstr "Timmar"
+#
+msgid "Inactive"
+msgstr ""
 #
 msgid "Inclusion"
 msgstr "Inre"

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: opencpn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-30 09:18+1100\n"
+"POT-Creation-Date: 2016-02-17 15:19+1100\n"
 "PO-Revision-Date: 2016-02-12 17:06-0500\n"
 "Last-Translator: nohal <pavel@kalian.cz>\n"
 "Language-Team: Portuguese, Brazilian\n"
@@ -15,6 +15,26 @@ msgstr ""
 "X-Crowdin-Project: opencpn\n"
 "X-Crowdin-Language: pt-BR\n"
 "X-Crowdin-File: /plugins/watchdog_pi/po/watchdog_pi.pot\n"
+#
+#, fuzzy
+msgid " - inside active boundary"
+msgstr "dentro do limite"
+#
+#, fuzzy
+msgid " - inside any boundary"
+msgstr "dentro do limite"
+#
+#, fuzzy
+msgid " - inside inactive boundary"
+msgstr "dentro do limite"
+#
+#, fuzzy
+msgid " Any Boundary Distance"
+msgstr "Distância Limite"
+#
+#, fuzzy
+msgid " Inactive Boundary Distance"
+msgstr "Distância Limite"
 #
 msgid " boundary "
 msgstr " limite "
@@ -49,6 +69,14 @@ msgstr "Sobre o autor"
 msgid "Action"
 msgstr "Ação"
 #
+#, fuzzy
+msgid "Active"
+msgstr "Ação"
+#
+#, fuzzy
+msgid "Active Boundary Distance"
+msgstr "Distância Limite"
+#
 msgid "Alarm Action"
 msgstr "Ação do alarme"
 #
@@ -81,6 +109,10 @@ msgstr "Distância Limite"
 #
 msgid "Boundary GUID"
 msgstr "Limite GUID"
+#
+#, fuzzy
+msgid "Boundary State"
+msgstr "Nome do limite"
 #
 msgid "Boundary Time"
 msgstr "Tempo limite"
@@ -225,6 +257,9 @@ msgstr "Hora"
 #
 msgid "Hours"
 msgstr "Horas"
+#
+msgid "Inactive"
+msgstr ""
 #
 msgid "Inclusion"
 msgstr "Inclusão"
