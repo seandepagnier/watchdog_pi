@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: opencpn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-30 09:18+1100\n"
+"POT-Creation-Date: 2016-02-17 15:19+1100\n"
 "PO-Revision-Date: 2016-02-12 17:06-0500\n"
 "Last-Translator: nohal <pavel@kalian.cz>\n"
 "Language-Team: Estonian\n"
@@ -15,6 +15,26 @@ msgstr ""
 "X-Crowdin-Project: opencpn\n"
 "X-Crowdin-Language: et\n"
 "X-Crowdin-File: /plugins/watchdog_pi/po/watchdog_pi.pot\n"
+#
+#, fuzzy
+msgid " - inside active boundary"
+msgstr "piiri sees"
+#
+#, fuzzy
+msgid " - inside any boundary"
+msgstr "piiri sees"
+#
+#, fuzzy
+msgid " - inside inactive boundary"
+msgstr "piiri sees"
+#
+#, fuzzy
+msgid " Any Boundary Distance"
+msgstr "Vehmaa piirini"
+#
+#, fuzzy
+msgid " Inactive Boundary Distance"
+msgstr "Vehmaa piirini"
 #
 msgid " boundary "
 msgstr " piir "
@@ -49,6 +69,14 @@ msgstr "Autorist"
 msgid "Action"
 msgstr "Tegevus"
 #
+#, fuzzy
+msgid "Active"
+msgstr "Tegevus"
+#
+#, fuzzy
+msgid "Active Boundary Distance"
+msgstr "Vehmaa piirini"
+#
 msgid "Alarm Action"
 msgstr "Tegevus häire korral"
 #
@@ -81,6 +109,10 @@ msgstr "Vehmaa piirini"
 #
 msgid "Boundary GUID"
 msgstr "Piiri GUID"
+#
+#, fuzzy
+msgid "Boundary State"
+msgstr "Piiri nimi"
 #
 msgid "Boundary Time"
 msgstr "Aeg piirini"
@@ -222,6 +254,9 @@ msgstr "tund"
 #
 msgid "Hours"
 msgstr "tunnid"
+#
+msgid "Inactive"
+msgstr ""
 #
 msgid "Inclusion"
 msgstr "Kaasamine"

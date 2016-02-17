@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: opencpn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-30 09:18+1100\n"
+"POT-Creation-Date: 2016-02-17 15:19+1100\n"
 "PO-Revision-Date: 2016-02-12 17:05-0500\n"
 "Last-Translator: nohal <pavel@kalian.cz>\n"
 "Language-Team: French\n"
@@ -15,6 +15,26 @@ msgstr ""
 "X-Crowdin-Project: opencpn\n"
 "X-Crowdin-Language: fr\n"
 "X-Crowdin-File: /plugins/watchdog_pi/po/watchdog_pi.pot\n"
+#
+#, fuzzy
+msgid " - inside active boundary"
+msgstr "barrière/zone intérieure"
+#
+#, fuzzy
+msgid " - inside any boundary"
+msgstr "barrière/zone intérieure"
+#
+#, fuzzy
+msgid " - inside inactive boundary"
+msgstr "barrière/zone intérieure"
+#
+#, fuzzy
+msgid " Any Boundary Distance"
+msgstr "Distance jusqu'à la barrière/zone"
+#
+#, fuzzy
+msgid " Inactive Boundary Distance"
+msgstr "Distance jusqu'à la barrière/zone"
 #
 msgid " boundary "
 msgstr "Barrière/Zone "
@@ -49,6 +69,14 @@ msgstr "Au sujet de l'auteur"
 msgid "Action"
 msgstr "Action"
 #
+#, fuzzy
+msgid "Active"
+msgstr "Action"
+#
+#, fuzzy
+msgid "Active Boundary Distance"
+msgstr "Distance jusqu'à la barrière/zone"
+#
 msgid "Alarm Action"
 msgstr "Action d'alarme"
 #
@@ -81,6 +109,10 @@ msgstr "Distance jusqu'à la barrière/zone"
 #
 msgid "Boundary GUID"
 msgstr "GUID de la barrière/zone"
+#
+#, fuzzy
+msgid "Boundary State"
+msgstr "Nom de la barrière/zone"
 #
 msgid "Boundary Time"
 msgstr "Durée jusqu'à la barrière/zone"
@@ -223,6 +255,9 @@ msgstr "Heure"
 #
 msgid "Hours"
 msgstr "Heures"
+#
+msgid "Inactive"
+msgstr ""
 #
 msgid "Inclusion"
 msgstr "Inclusion"

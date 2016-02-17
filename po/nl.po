@@ -2,28 +2,43 @@ msgid ""
 msgstr ""
 "Project-Id-Version: opencpn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-30 09:18+1100\n"
-"PO-Revision-Date: 2016-02-12 17:05-0500\n"
-"Last-Translator: nohal <pavel@kalian.cz>\n"
+"POT-Creation-Date: 2016-02-17 15:19+1100\n"
+"PO-Revision-Date: 2016-02-17 18:54+0100\n"
+"Last-Translator: NAV <rider2@kpnmail.nl>\n"
 "Language-Team: Dutch\n"
 "Language: nl_NL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: crowdin.com\n"
+"X-Generator: Poedit 1.5.4\n"
 "X-Crowdin-Project: opencpn\n"
 "X-Crowdin-Language: nl\n"
 "X-Crowdin-File: /plugins/watchdog_pi/po/watchdog_pi.pot\n"
 #
+msgid " - inside active boundary"
+msgstr " - binnen actieve gebiedsgrens"
+#
+msgid " - inside any boundary"
+msgstr " - binnen elke gebiedsgrens"
+#
+msgid " - inside inactive boundary"
+msgstr " - binnen inactieve gebiedsgrens"
+#
+msgid " Any Boundary Distance"
+msgstr "Grens elk gebied (afstand)"
+#
+msgid " Inactive Boundary Distance"
+msgstr "Grens inactief gebied (afstand)"
+#
 msgid " boundary "
-msgstr "gebiedsgrens"
+msgstr " gebiedsgrens "
 #
 msgid " does not exist"
-msgstr "bestaat niet"
+msgstr " bestaat niet"
 #
 msgid " in "
-msgstr "in "
+msgstr " in "
 #
 msgid " minutes"
 msgstr " minuten"
@@ -48,6 +63,12 @@ msgstr "Over de auteur"
 #
 msgid "Action"
 msgstr "Alarmactie"
+#
+msgid "Active"
+msgstr "Actief"
+#
+msgid "Active Boundary Distance"
+msgstr "Grens actief gebied (afstand)"
 #
 msgid "Alarm Action"
 msgstr "Alarmacties"
@@ -81,6 +102,9 @@ msgstr "Gebiedsgrens (afstand)"
 #
 msgid "Boundary GUID"
 msgstr "GUID gebied"
+#
+msgid "Boundary State"
+msgstr "Status gebied"
 #
 msgid "Boundary Time"
 msgstr "Gebiedsgrens (tijd)"
@@ -207,7 +231,7 @@ msgid ""
 msgstr "Grafische overlay toont lijn van schip naar kruising met kustlijn"
 #
 msgid "Graphics Enabled"
-msgstr "'Graphics' ingeschakeld"
+msgstr "Grafische overlay ingeschakeld"
 #
 msgid "Guard Zone"
 msgstr "Bewakingszone"
@@ -223,6 +247,9 @@ msgstr "uur"
 #
 msgid "Hours"
 msgstr "uren"
+#
+msgid "Inactive"
+msgstr "Inactief"
 #
 msgid "Inclusion"
 msgstr "beperkend"
