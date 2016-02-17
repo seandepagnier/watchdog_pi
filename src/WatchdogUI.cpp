@@ -451,7 +451,7 @@ BoundaryPanel::BoundaryPanel( wxWindow* parent, wxWindowID id, const wxPoint& po
 	fgSizer17->Add( fgSizer10, 1, wxEXPAND, 5 );
 	
 	wxFlexGridSizer* fgSizer29;
-	fgSizer29 = new wxFlexGridSizer( 0, 2, 0, 0 );
+	fgSizer29 = new wxFlexGridSizer( 0, 1, 0, 0 );
 	fgSizer29->SetFlexibleDirection( wxBOTH );
 	fgSizer29->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
@@ -460,6 +460,12 @@ BoundaryPanel::BoundaryPanel( wxWindow* parent, wxWindowID id, const wxPoint& po
 	m_radioBoxBoundaryType = new wxRadioBox( this, wxID_ANY, _("Boundary Type"), wxDefaultPosition, wxDefaultSize, m_radioBoxBoundaryTypeNChoices, m_radioBoxBoundaryTypeChoices, 1, wxRA_SPECIFY_ROWS );
 	m_radioBoxBoundaryType->SetSelection( 0 );
 	fgSizer29->Add( m_radioBoxBoundaryType, 0, wxALL, 5 );
+	
+	wxString m_radioBoxBoundaryStateChoices[] = { _("Any"), _("Active"), _("Inactive") };
+	int m_radioBoxBoundaryStateNChoices = sizeof( m_radioBoxBoundaryStateChoices ) / sizeof( wxString );
+	m_radioBoxBoundaryState = new wxRadioBox( this, wxID_ANY, _("Boundary State"), wxDefaultPosition, wxDefaultSize, m_radioBoxBoundaryStateNChoices, m_radioBoxBoundaryStateChoices, 1, wxRA_SPECIFY_ROWS );
+	m_radioBoxBoundaryState->SetSelection( 0 );
+	fgSizer29->Add( m_radioBoxBoundaryState, 0, wxALL, 5 );
 	
 	
 	fgSizer17->Add( fgSizer29, 1, wxEXPAND, 5 );

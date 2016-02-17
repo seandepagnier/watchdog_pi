@@ -216,6 +216,7 @@ class BoundaryPanel : public wxPanel
 		wxRadioButton* m_rbDistance;
 		wxTextCtrl* m_tDistance;
 		wxRadioBox* m_radioBoxBoundaryType;
+		wxRadioBox* m_radioBoxBoundaryState;
 		wxRadioButton* m_rbAnchor;
 		wxTextCtrl* m_tBoundaryGUID;
 		wxRadioButton* m_rbGuard;
