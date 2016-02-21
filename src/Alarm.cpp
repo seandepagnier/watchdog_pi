@@ -270,7 +270,7 @@ public:
                       m_TimeMinutes(20),
                       m_Distance(3),
                       m_BoundaryType(ID_BOUNDARY_ANY),
-                      m_BoundaryState(ID_BOUNDARY_STATE_ANY),
+                      m_BoundaryState(ID_BOUNDARY_STATE_ACTIVE),
                       m_bAnchorOutside(false),
                       m_bGuardZoneFired(false)
         {
