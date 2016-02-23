@@ -33,6 +33,8 @@
 #include <wx/slider.h>
 #include <wx/choice.h>
 
+#include "wxWTranslateCatalog.h"
+
 ///////////////////////////////////////////////////////////////////////////
 
 
