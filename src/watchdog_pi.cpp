@@ -131,7 +131,7 @@ watchdog_pi::watchdog_pi(void *ppimgr)
 
 int watchdog_pi::Init(void)
 {
-    AddLocaleCatalog( _T("opencpn-watchdog_pi") );
+    AddLocaleCatalog( PLUGIN_CATALOG_NAME );
 
     Alarm::LoadConfigAll();
     
