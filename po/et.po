@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: opencpn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-17 15:19+1100\n"
+"POT-Creation-Date: 2016-02-26 08:56+1100\n"
 "PO-Revision-Date: 2016-02-12 17:06-0500\n"
 "Last-Translator: nohal <pavel@kalian.cz>\n"
 "Language-Team: Estonian\n"
@@ -36,7 +36,8 @@ msgstr "Vehmaa piirini"
 msgid " Inactive Boundary Distance"
 msgstr "Vehmaa piirini"
 #
-msgid " boundary "
+#, fuzzy
+msgid " boundary area "
 msgstr " piir "
 #
 msgid " does not exist"
@@ -100,6 +101,9 @@ msgstr "Auto-algseadistus"
 #
 msgid "Automatically syncronize to the boat whenever enabled"
 msgstr "Automaatselt sünkroniseeri alusega iga kord kui lubatud"
+#
+msgid "Boat"
+msgstr ""
 #
 msgid "Boundary Alarm"
 msgstr "Piiri häire"
@@ -263,9 +267,6 @@ msgstr "Kaasamine"
 #
 msgid "Information"
 msgstr "Info"
-#
-msgid "Inside"
-msgstr "Sees"
 #
 msgid "LandFall"
 msgstr "Randumine"
@@ -483,6 +484,10 @@ msgstr "salvestus nurjus"
 msgid "in"
 msgstr "asukohas"
 #
+#, fuzzy
+msgid "inside"
+msgstr "Sees"
+#
 msgid "inside boundary"
 msgstr "piiri sees"
 #
@@ -529,6 +534,10 @@ msgid ""
 msgstr ""
 "nm rannajoonest\n"
 "(igal suunal)"
+#
+#, fuzzy
+msgid "outside"
+msgstr "Väljas"
 #
 msgid "radius"
 msgstr "raadius"

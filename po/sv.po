@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: opencpn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-17 15:19+1100\n"
+"POT-Creation-Date: 2016-02-26 08:56+1100\n"
 "PO-Revision-Date: 2016-02-07 02:50-0500\n"
 "Last-Translator: nohal <pavel@kalian.cz>\n"
 "Language-Team: Swedish\n"
@@ -36,7 +36,8 @@ msgstr "Avstånd till Gränslinje"
 msgid " Inactive Boundary Distance"
 msgstr "Avstånd till Gränslinje"
 #
-msgid " boundary "
+#, fuzzy
+msgid " boundary area "
 msgstr " gränsen "
 #
 msgid " does not exist"
@@ -100,6 +101,9 @@ msgstr "Återställ automatiskt"
 #
 msgid "Automatically syncronize to the boat whenever enabled"
 msgstr "Synkronisera till båtens position varje gång larmet aktiveras"
+#
+msgid "Boat"
+msgstr ""
 #
 msgid "Boundary Alarm"
 msgstr "Gränslarm"
@@ -266,9 +270,6 @@ msgstr "Inre"
 #
 msgid "Information"
 msgstr "Information"
-#
-msgid "Inside"
-msgstr "Insidan"
 #
 msgid "LandFall"
 msgstr "Landkänning"
@@ -488,6 +489,10 @@ msgstr "det gick inte att spara"
 msgid "in"
 msgstr "om"
 #
+#, fuzzy
+msgid "inside"
+msgstr "Insidan"
+#
 msgid "inside boundary"
 msgstr "Inre gräns"
 #
@@ -534,6 +539,10 @@ msgid ""
 msgstr ""
 "NM från kustlinje\n"
 "(i någon riktning)"
+#
+#, fuzzy
+msgid "outside"
+msgstr "Utsidan"
 #
 msgid "radius"
 msgstr "radie"
