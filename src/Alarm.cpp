@@ -618,13 +618,13 @@ public:
             case ANCHOR:
             {
                 if(m_BoundaryName != wxEmptyString) {
-                    return _T(" ") + wxString(_("Anchor")) + _T(" ") +
-                    (m_bAnchorOutside ? _("Outside") : _("Inside")) +
-                    wxString(_T(" boundary ")) + m_BoundaryName;
+                    return _T(" ") + wxString(_("Boat")) + _T(" ") +
+                    (m_bAnchorOutside ? _("outside") : _("inside")) +
+                    wxString(_T(" boundary area")) + m_BoundaryName;
                 } else {
-                return _T(" ") + wxString(_("Anchor")) + _T(" ") +
-                    (m_bAnchorOutside ? wxString(_("Outside")) : wxString(_("Inside"))) +
-                    wxString(_(" boundary ")) + m_BoundaryGUID;
+                return _T(" ") + wxString(_("Boat")) + _T(" ") +
+                    (m_bAnchorOutside ? wxString(_("outside")) : wxString(_("inside"))) +
+                    wxString(_(" boundary area ")) + m_BoundaryGUID;
                 }
                 break;
             }
