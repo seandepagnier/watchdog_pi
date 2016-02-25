@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: opencpn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-17 15:19+1100\n"
+"POT-Creation-Date: 2016-02-26 08:56+1100\n"
 "PO-Revision-Date: 2016-02-07 02:49-0500\n"
 "Last-Translator: nohal <pavel@kalian.cz>\n"
 "Language-Team: German\n"
@@ -31,7 +31,7 @@ msgstr ""
 msgid " Inactive Boundary Distance"
 msgstr ""
 #
-msgid " boundary "
+msgid " boundary area "
 msgstr ""
 #
 msgid " does not exist"
@@ -92,6 +92,9 @@ msgid "Automatically Reset"
 msgstr ""
 #
 msgid "Automatically syncronize to the boat whenever enabled"
+msgstr ""
+#
+msgid "Boat"
 msgstr ""
 #
 msgid "Boundary Alarm"
@@ -254,9 +257,6 @@ msgstr ""
 #
 msgid "Information"
 msgstr "Information"
-#
-msgid "Inside"
-msgstr ""
 #
 msgid "LandFall"
 msgstr "Landfall"
@@ -474,6 +474,9 @@ msgstr ""
 msgid "in"
 msgstr ""
 #
+msgid "inside"
+msgstr ""
+#
 msgid "inside boundary"
 msgstr ""
 #
@@ -518,6 +521,9 @@ msgid ""
 msgstr ""
 "NM von der Küste\n"
 "(jegliche Richtung)"
+#
+msgid "outside"
+msgstr ""
 #
 msgid "radius"
 msgstr ""
