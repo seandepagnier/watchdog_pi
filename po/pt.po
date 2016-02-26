@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: opencpn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-27 07:46+1100\n"
+"POT-Creation-Date: 2016-02-27 09:02+1100\n"
 "PO-Revision-Date: 2016-02-25 08:05-0500\n"
 "Last-Translator: nohal <pavel@kalian.cz>\n"
 "Language-Team: Portuguese, Brazilian\n"
@@ -29,19 +29,7 @@ msgid " - inside inactive boundary"
 msgstr "dentro do limite"
 #
 #, fuzzy
-msgid " Any Boundary Distance"
-msgstr "Distância Limite"
-#
-#, fuzzy
-msgid " Inactive Boundary Distance"
-msgstr "Distância Limite"
-#
-#, fuzzy
-msgid " boundary area"
-msgstr " limite "
-#
-#, fuzzy
-msgid " boundary area "
+msgid " boundary area: "
 msgstr " limite "
 #
 msgid " does not exist"
@@ -96,6 +84,10 @@ msgstr "Alarme de âncora"
 #
 msgid "Any"
 msgstr "Qualquer"
+#
+#, fuzzy
+msgid "Any Boundary Distance"
+msgstr "Distância Limite"
 #
 msgid "Auto Reset"
 msgstr "Auto Reset"
@@ -272,6 +264,10 @@ msgstr "Horas"
 #
 msgid "Inactive"
 msgstr ""
+#
+#, fuzzy
+msgid "Inactive Boundary Distance"
+msgstr "Distância Limite"
 #
 msgid "Inclusion"
 msgstr "Inclusão"
@@ -561,3 +557,10 @@ msgstr "segundo(s)"
 #
 msgid "seconds"
 msgstr "segundos"
+#
+#
+#
+#
+#, fuzzy
+#~ msgid " boundary area"
+#~ msgstr " limite "

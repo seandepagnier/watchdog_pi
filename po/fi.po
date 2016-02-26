@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: opencpn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-27 07:46+1100\n"
+"POT-Creation-Date: 2016-02-27 09:02+1100\n"
 "PO-Revision-Date: 2016-02-26 09:18-0500\n"
 "Last-Translator: nohal <pavel@kalian.cz>\n"
 "Language-Team: Finnish\n"
@@ -29,19 +29,7 @@ msgid " - inside inactive boundary"
 msgstr "rajan sisällä"
 #
 #, fuzzy
-msgid " Any Boundary Distance"
-msgstr "Raja etäisyys"
-#
-#, fuzzy
-msgid " Inactive Boundary Distance"
-msgstr "Raja etäisyys"
-#
-#, fuzzy
-msgid " boundary area"
-msgstr " raja "
-#
-#, fuzzy
-msgid " boundary area "
+msgid " boundary area: "
 msgstr " raja "
 #
 msgid " does not exist"
@@ -96,6 +84,10 @@ msgstr "Ankkuri vahti"
 #
 msgid "Any"
 msgstr "Mikä tahansa"
+#
+#, fuzzy
+msgid "Any Boundary Distance"
+msgstr "Raja etäisyys"
 #
 msgid "Auto Reset"
 msgstr "Automaattinen kuittaus"
@@ -270,6 +262,10 @@ msgstr "Tunnit"
 #
 msgid "Inactive"
 msgstr ""
+#
+#, fuzzy
+msgid "Inactive Boundary Distance"
+msgstr "Raja etäisyys"
 #
 msgid "Inclusion"
 msgstr "Mukaan ottaminen"
@@ -558,3 +554,10 @@ msgstr "sekunnit"
 #
 msgid "seconds"
 msgstr "sekuntti"
+#
+#
+#
+#
+#, fuzzy
+#~ msgid " boundary area"
+#~ msgstr " raja "
