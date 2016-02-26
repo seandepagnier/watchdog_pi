@@ -2,47 +2,31 @@ msgid ""
 msgstr ""
 "Project-Id-Version: opencpn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-27 07:46+1100\n"
-"PO-Revision-Date: 2016-02-26 09:18-0500\n"
-"Last-Translator: nohal <pavel@kalian.cz>\n"
+"POT-Creation-Date: 2016-02-27 09:02+1100\n"
+"PO-Revision-Date: 2016-02-27 09:01+1000\n"
+"Last-Translator: \n"
 "Language-Team: Dutch\n"
 "Language: nl_NL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: crowdin.com\n"
+"X-Generator: Poedit 1.5.4\n"
 "X-Crowdin-Project: opencpn\n"
 "X-Crowdin-Language: nl\n"
 "X-Crowdin-File: /plugins/watchdog_pi/po/watchdog_pi.pot\n"
 #
-#, fuzzy
 msgid " - inside active boundary"
-msgstr "binnen gebiedsgrens"
+msgstr "- binnen gebiedsgrens"
 #
-#, fuzzy
 msgid " - inside any boundary"
-msgstr "binnen gebiedsgrens"
+msgstr "- binnen gebiedsgrens"
 #
-#, fuzzy
 msgid " - inside inactive boundary"
-msgstr "binnen gebiedsgrens"
+msgstr "- binnen gebiedsgrens"
 #
-#, fuzzy
-msgid " Any Boundary Distance"
-msgstr "Nabijheid gebiedsgrens (afstand)"
-#
-#, fuzzy
-msgid " Inactive Boundary Distance"
-msgstr "Nabijheid gebiedsgrens (afstand)"
-#
-#, fuzzy
-msgid " boundary area"
-msgstr " gebiedsgrens "
-#
-#, fuzzy
-msgid " boundary area "
-msgstr " gebiedsgrens "
+msgid " boundary area: "
+msgstr " gebiedsgrens: "
 #
 msgid " does not exist"
 msgstr " bestaat niet"
@@ -74,11 +58,9 @@ msgstr "Over de auteur"
 msgid "Action"
 msgstr "Alarmactie"
 #
-#, fuzzy
 msgid "Active"
 msgstr "Alarmactie"
 #
-#, fuzzy
 msgid "Active Boundary Distance"
 msgstr "Nabijheid gebiedsgrens (afstand)"
 #
@@ -96,6 +78,10 @@ msgstr "Binnen/Buiten gebied"
 #
 msgid "Any"
 msgstr "elk"
+#
+#, fuzzy
+msgid "Any Boundary Distance"
+msgstr "Nabijheid gebiedsgrens (afstand)"
 #
 msgid "Auto Reset"
 msgstr "Automatisch terugstellen"
@@ -118,7 +104,6 @@ msgstr "Nabijheid gebiedsgrens (afstand)"
 msgid "Boundary GUID"
 msgstr "GUID gebied"
 #
-#, fuzzy
 msgid "Boundary Name"
 msgstr "gebied"
 #
@@ -270,6 +255,10 @@ msgstr "uren"
 #
 msgid "Inactive"
 msgstr ""
+#
+#, fuzzy
+msgid "Inactive Boundary Distance"
+msgstr "Nabijheid gebiedsgrens (afstand)"
 #
 msgid "Inclusion"
 msgstr "beperkend"
@@ -500,7 +489,6 @@ msgstr "kon niet opslaan"
 msgid "in"
 msgstr "in"
 #
-#, fuzzy
 msgid "inside"
 msgstr "Binnen"
 #
@@ -551,7 +539,6 @@ msgstr ""
 "zeemijl van kustlijn\n"
 "(alle richtingen)"
 #
-#, fuzzy
 msgid "outside"
 msgstr "Buiten"
 #
@@ -563,3 +550,10 @@ msgstr "seconde(n)"
 #
 msgid "seconds"
 msgstr "seconden"
+#
+#
+#
+#
+#, fuzzy
+#~ msgid " boundary area"
+#~ msgstr " gebiedsgrens "

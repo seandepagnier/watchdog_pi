@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: opencpn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-27 07:46+1100\n"
+"POT-Creation-Date: 2016-02-27 09:02+1100\n"
 "PO-Revision-Date: 2016-02-18 16:08-0500\n"
 "Last-Translator: nohal <pavel@kalian.cz>\n"
 "Language-Team: Catalan\n"
@@ -25,16 +25,7 @@ msgstr ""
 msgid " - inside inactive boundary"
 msgstr ""
 #
-msgid " Any Boundary Distance"
-msgstr ""
-#
-msgid " Inactive Boundary Distance"
-msgstr ""
-#
-msgid " boundary area"
-msgstr ""
-#
-msgid " boundary area "
+msgid " boundary area: "
 msgstr ""
 #
 msgid " does not exist"
@@ -86,6 +77,9 @@ msgid "Anchor Watch"
 msgstr "Alarma d'ancla"
 #
 msgid "Any"
+msgstr ""
+#
+msgid "Any Boundary Distance"
 msgstr ""
 #
 msgid "Auto Reset"
@@ -257,6 +251,9 @@ msgid "Hours"
 msgstr "Hores"
 #
 msgid "Inactive"
+msgstr ""
+#
+msgid "Inactive Boundary Distance"
 msgstr ""
 #
 msgid "Inclusion"

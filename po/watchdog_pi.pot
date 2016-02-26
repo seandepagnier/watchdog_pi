@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: watchdog_pi 1.9038\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-27 07:46+1100\n"
+"POT-Creation-Date: 2016-02-27 09:02+1100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -135,7 +135,7 @@ msgid "inside boundary"
 msgstr ""
 
 #: src/Alarm.cpp:609
-msgid " Any Boundary Distance"
+msgid "Any Boundary Distance"
 msgstr ""
 
 #: src/Alarm.cpp:612
@@ -143,7 +143,7 @@ msgid "Active Boundary Distance"
 msgstr ""
 
 #: src/Alarm.cpp:615
-msgid " Inactive Boundary Distance"
+msgid "Inactive Boundary Distance"
 msgstr ""
 
 #: src/Alarm.cpp:626 src/Alarm.cpp:630
@@ -158,12 +158,8 @@ msgstr ""
 msgid "inside"
 msgstr ""
 
-#: src/Alarm.cpp:628
-msgid " boundary area"
-msgstr ""
-
-#: src/Alarm.cpp:632
-msgid " boundary area "
+#: src/Alarm.cpp:628 src/Alarm.cpp:632
+msgid " boundary area: "
 msgstr ""
 
 #: src/Alarm.cpp:639

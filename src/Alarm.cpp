@@ -606,13 +606,13 @@ public:
                 } else {
                     switch (m_BoundaryState) {
                         case ID_BOUNDARY_STATE_ANY:
-                            l_s = _(" Any Boundary Distance") + _T(" >");
+                            l_s = _("Any Boundary Distance") + _T(" >");
                             break;
                         case ID_BOUNDARY_STATE_ACTIVE:
                             l_s = _("Active Boundary Distance") + _T(" >");
                             break;
                         case ID_BOUNDARY_STATE_INACTIVE:
-                            l_s = _(" Inactive Boundary Distance") + _T(" >");
+                            l_s = _("Inactive Boundary Distance") + _T(" >");
                             break;
                     }
                     l_s.append(wxString::Format(_T(" %.2f nm"), m_Distance));
@@ -625,11 +625,11 @@ public:
                 if(m_BoundaryName != wxEmptyString) {
                     return _T(" ") + wxString(_("Boat")) + _T(" ") +
                     (m_bAnchorOutside ? _("outside") : _("inside")) +
-                    wxString(_(" boundary area")) + m_BoundaryName;
+                    wxString(_(" boundary area: ")) + m_BoundaryName;
                 } else {
                 return _T(" ") + wxString(_("Boat")) + _T(" ") +
                     (m_bAnchorOutside ? wxString(_("outside")) : wxString(_("inside"))) +
-                    wxString(_(" boundary area ")) + m_BoundaryGUID;
+                    wxString(_(" boundary area: ")) + m_BoundaryGUID;
                 }
                 break;
             }
