@@ -470,6 +470,10 @@ BoundaryPanel::BoundaryPanel( wxWindow* parent, wxWindowID id, const wxPoint& po
 	
 	fgSizer17->Add( fgSizer29, 1, wxEXPAND, 5 );
 	
+	m_staticText322 = new wxStaticText( this, wxID_ANY, _("The above alarms are designed to activate/sound when you approach or enter a boundary. They do NOT indicate if you are about to leave or have left a boundary, this functionality is provided by the Anchor Watch alarm. "), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText322->Wrap( 400 );
+	fgSizer17->Add( m_staticText322, 0, wxALL, 5 );
+	
 	m_staticline1 = new wxStaticLine( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
 	fgSizer17->Add( m_staticline1, 0, wxEXPAND | wxALL, 5 );
 	

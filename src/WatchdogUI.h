@@ -199,6 +199,7 @@ class BoundaryPanel : public wxPanel
 	protected:
 		wxStaticText* m_staticText30;
 		wxStaticText* m_staticText7;
+		wxStaticText* m_staticText322;
 		wxStaticLine* m_staticline1;
 		wxStaticText* m_staticText32;
 		wxButton* m_button12;

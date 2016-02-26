@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: watchdog_pi 1.9038\n"
+"Project-Id-Version: watchdog_pi 1.9040\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-27 09:02+1100\n"
+"POT-Creation-Date: 2016-02-27 10:37+1100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -77,16 +77,16 @@ msgstr ""
 msgid "Boundary Distance"
 msgstr ""
 
-#: src/Alarm.cpp:287 src/WatchdogUI.cpp:481
+#: src/Alarm.cpp:287 src/WatchdogUI.cpp:485
 msgid "Anchor Watch"
 msgstr ""
 
-#: src/Alarm.cpp:288 src/Alarm.cpp:638 src/WatchdogUI.cpp:502
+#: src/Alarm.cpp:288 src/Alarm.cpp:638 src/WatchdogUI.cpp:506
 #: src/watchdog_pi.cpp:526
 msgid "Guard Zone"
 msgstr ""
 
-#: src/Alarm.cpp:299 src/Alarm.cpp:564 src/Alarm.cpp:598 src/WatchdogUI.cpp:484
+#: src/Alarm.cpp:299 src/Alarm.cpp:564 src/Alarm.cpp:598 src/WatchdogUI.cpp:488
 msgid "Boundary GUID"
 msgstr ""
 
@@ -94,7 +94,7 @@ msgstr ""
 msgid "Boundary Name"
 msgstr ""
 
-#: src/Alarm.cpp:305 src/WatchdogUI.cpp:505
+#: src/Alarm.cpp:305 src/WatchdogUI.cpp:509
 msgid "Guard Zone GUID"
 msgstr ""
 
@@ -242,7 +242,7 @@ msgstr ""
 msgid "radius"
 msgstr ""
 
-#: src/Alarm.cpp:1211 src/WatchdogUI.cpp:675
+#: src/Alarm.cpp:1211 src/WatchdogUI.cpp:679
 msgid "meters"
 msgstr ""
 
@@ -258,11 +258,11 @@ msgstr ""
 msgid "Course"
 msgstr ""
 
-#: src/Alarm.cpp:1322 src/Alarm.cpp:1346 src/WatchdogUI.cpp:721
+#: src/Alarm.cpp:1322 src/Alarm.cpp:1346 src/WatchdogUI.cpp:725
 msgid "Port"
 msgstr ""
 
-#: src/Alarm.cpp:1323 src/Alarm.cpp:1344 src/WatchdogUI.cpp:721
+#: src/Alarm.cpp:1323 src/Alarm.cpp:1344 src/WatchdogUI.cpp:725
 msgid "Starboard"
 msgstr ""
 
@@ -331,7 +331,7 @@ msgid "Test"
 msgstr ""
 
 #: src/ConfigurationDialog.cpp:48 src/WatchdogDialog.cpp:108
-#: src/WatchdogUI.cpp:717 src/WatchdogUI.cpp:784
+#: src/WatchdogUI.cpp:721 src/WatchdogUI.cpp:788
 msgid "Type"
 msgstr ""
 
@@ -539,125 +539,132 @@ msgstr ""
 msgid "Boundary State"
 msgstr ""
 
-#: src/WatchdogUI.cpp:491
+#: src/WatchdogUI.cpp:473
+msgid ""
+"The above alarms are designed to activate/sound when you approach or enter a "
+"boundary. They do NOT indicate if you are about to leave or have left a "
+"boundary, this functionality is provided by the Anchor Watch alarm. "
+msgstr ""
+
+#: src/WatchdogUI.cpp:495
 msgid "Get Boundary GUID"
 msgstr ""
 
-#: src/WatchdogUI.cpp:524
+#: src/WatchdogUI.cpp:528
 msgid ""
 "Check Frequency  (Secs)\n"
 "(Note: not Guard Zone)"
 msgstr ""
 
-#: src/WatchdogUI.cpp:534
+#: src/WatchdogUI.cpp:538
 msgid ""
 "Graphical overlay for GPS fix displays line from boat to location of the "
 "point in the found boundary"
 msgstr ""
 
-#: src/WatchdogUI.cpp:564
+#: src/WatchdogUI.cpp:568
 msgid "Require following NMEA sentences:"
 msgstr ""
 
-#: src/WatchdogUI.cpp:568
+#: src/WatchdogUI.cpp:572
 msgid "$GPGGA"
 msgstr ""
 
-#: src/WatchdogUI.cpp:576
+#: src/WatchdogUI.cpp:580
 msgid "at least every"
 msgstr ""
 
-#: src/WatchdogUI.cpp:583
+#: src/WatchdogUI.cpp:587
 msgid "seconds"
 msgstr ""
 
-#: src/WatchdogUI.cpp:612
+#: src/WatchdogUI.cpp:616
 msgid "No User Activity for"
 msgstr ""
 
-#: src/WatchdogUI.cpp:619
+#: src/WatchdogUI.cpp:623
 msgid "minute(s)"
 msgstr ""
 
-#: src/WatchdogUI.cpp:648
+#: src/WatchdogUI.cpp:652
 msgid "Latitude"
 msgstr ""
 
-#: src/WatchdogUI.cpp:658
+#: src/WatchdogUI.cpp:662
 msgid "Longitude"
 msgstr ""
 
-#: src/WatchdogUI.cpp:665
+#: src/WatchdogUI.cpp:669
 msgid "Sync to Boat"
 msgstr ""
 
-#: src/WatchdogUI.cpp:668
+#: src/WatchdogUI.cpp:672
 msgid "Radius"
 msgstr ""
 
-#: src/WatchdogUI.cpp:682
+#: src/WatchdogUI.cpp:686
 msgid "Automatically syncronize to the boat whenever enabled"
 msgstr ""
 
-#: src/WatchdogUI.cpp:685
+#: src/WatchdogUI.cpp:689
 msgid "Graphical overlay displays bounding anchor area"
 msgstr ""
 
-#: src/WatchdogUI.cpp:721
+#: src/WatchdogUI.cpp:725
 msgid "Port or Starboard"
 msgstr ""
 
-#: src/WatchdogUI.cpp:730
+#: src/WatchdogUI.cpp:734
 msgid "Off Course By >"
 msgstr ""
 
-#: src/WatchdogUI.cpp:737
+#: src/WatchdogUI.cpp:741
 msgid "Degrees"
 msgstr ""
 
-#: src/WatchdogUI.cpp:741
+#: src/WatchdogUI.cpp:745
 msgid "With Course Of"
 msgstr ""
 
-#: src/WatchdogUI.cpp:748
+#: src/WatchdogUI.cpp:752
 msgid "Current Course"
 msgstr ""
 
-#: src/WatchdogUI.cpp:754
+#: src/WatchdogUI.cpp:758
 msgid "Graphical overlay displays lines bounding valid courses"
 msgstr ""
 
-#: src/WatchdogUI.cpp:777
+#: src/WatchdogUI.cpp:781
 msgid "Speed Alarm"
 msgstr ""
 
-#: src/WatchdogUI.cpp:788
+#: src/WatchdogUI.cpp:792
 msgid "Under Speed"
 msgstr ""
 
-#: src/WatchdogUI.cpp:788
+#: src/WatchdogUI.cpp:792
 msgid "Over Speed"
 msgstr ""
 
-#: src/WatchdogUI.cpp:797
+#: src/WatchdogUI.cpp:801
 msgid "Speed over ground"
 msgstr ""
 
-#: src/WatchdogUI.cpp:801
+#: src/WatchdogUI.cpp:805
 msgid "1"
 msgstr ""
 
-#: src/WatchdogUI.cpp:804
+#: src/WatchdogUI.cpp:808
 msgid "knots"
 msgstr ""
 
-#: src/WatchdogUI.cpp:817
+#: src/WatchdogUI.cpp:821
 msgid ""
 "Seconds to Average\n"
 "SOG over"
 msgstr ""
 
-#: src/WatchdogUI.cpp:827
+#: src/WatchdogUI.cpp:831
 msgid "Graphical overlay displays circle with radius of this speed"
 msgstr ""
 
