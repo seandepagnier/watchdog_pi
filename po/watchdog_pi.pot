@@ -1,14 +1,14 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the watchdog_pi package.
+# This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: watchdog_pi 1.9037\n"
+"Project-Id-Version: watchdog_pi 1.9038\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-26 11:39-0300\n"
+"POT-Creation-Date: 2016-02-27 07:46+1100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,35 +33,35 @@ msgstr ""
 msgid "LandFall Time Invalid"
 msgstr ""
 
-#: src/Alarm.cpp:125 src/Alarm.cpp:971
+#: src/Alarm.cpp:125 src/Alarm.cpp:984
 msgid "Days"
 msgstr ""
 
-#: src/Alarm.cpp:128 src/Alarm.cpp:974
+#: src/Alarm.cpp:128 src/Alarm.cpp:987
 msgid "Day"
 msgstr ""
 
-#: src/Alarm.cpp:132 src/Alarm.cpp:978
+#: src/Alarm.cpp:132 src/Alarm.cpp:991
 msgid "Hours"
 msgstr ""
 
-#: src/Alarm.cpp:135 src/Alarm.cpp:981
+#: src/Alarm.cpp:135 src/Alarm.cpp:994
 msgid "Hour"
 msgstr ""
 
-#: src/Alarm.cpp:139 src/Alarm.cpp:985
+#: src/Alarm.cpp:139 src/Alarm.cpp:998
 msgid "Minutes"
 msgstr ""
 
-#: src/Alarm.cpp:142 src/Alarm.cpp:988
+#: src/Alarm.cpp:142 src/Alarm.cpp:1001
 msgid "Minute"
 msgstr ""
 
-#: src/Alarm.cpp:146 src/Alarm.cpp:992
+#: src/Alarm.cpp:146 src/Alarm.cpp:1005
 msgid "Seconds"
 msgstr ""
 
-#: src/Alarm.cpp:148 src/Alarm.cpp:994
+#: src/Alarm.cpp:148 src/Alarm.cpp:1007
 msgid "Second"
 msgstr ""
 
@@ -81,244 +81,252 @@ msgstr ""
 msgid "Anchor Watch"
 msgstr ""
 
-#: src/Alarm.cpp:288 src/Alarm.cpp:633 src/WatchdogUI.cpp:502
-#: src/watchdog_pi.cpp:519
+#: src/Alarm.cpp:288 src/Alarm.cpp:638 src/WatchdogUI.cpp:502
+#: src/watchdog_pi.cpp:526
 msgid "Guard Zone"
 msgstr ""
 
-#: src/Alarm.cpp:297 src/Alarm.cpp:559 src/Alarm.cpp:593 src/WatchdogUI.cpp:484
+#: src/Alarm.cpp:299 src/Alarm.cpp:564 src/Alarm.cpp:598 src/WatchdogUI.cpp:484
 msgid "Boundary GUID"
 msgstr ""
 
-#: src/Alarm.cpp:300 src/WatchdogUI.cpp:505
+#: src/Alarm.cpp:301
+msgid "Boundary Name"
+msgstr ""
+
+#: src/Alarm.cpp:305 src/WatchdogUI.cpp:505
 msgid "Guard Zone GUID"
 msgstr ""
 
-#: src/Alarm.cpp:302 src/Alarm.cpp:862
+#: src/Alarm.cpp:307 src/Alarm.cpp:875
 msgid "Guard Zone Name"
 msgstr ""
 
-#: src/Alarm.cpp:557 src/Alarm.cpp:591
+#: src/Alarm.cpp:562 src/Alarm.cpp:596
 msgid "Boundary name"
 msgstr ""
 
-#: src/Alarm.cpp:563
+#: src/Alarm.cpp:568
 msgid "No Boundary within "
 msgstr ""
 
-#: src/Alarm.cpp:565
+#: src/Alarm.cpp:570
 msgid " minutes"
 msgstr ""
 
-#: src/Alarm.cpp:570
+#: src/Alarm.cpp:575
 msgid " - inside any boundary"
 msgstr ""
 
-#: src/Alarm.cpp:573
+#: src/Alarm.cpp:578
 msgid " - inside active boundary"
 msgstr ""
 
-#: src/Alarm.cpp:576
+#: src/Alarm.cpp:581
 msgid " - inside inactive boundary"
 msgstr ""
 
-#: src/Alarm.cpp:581
+#: src/Alarm.cpp:586
 msgid " in "
 msgstr ""
 
-#: src/Alarm.cpp:595 src/Alarm.cpp:827 src/Alarm.cpp:840
+#: src/Alarm.cpp:600 src/Alarm.cpp:840 src/Alarm.cpp:853
 msgid "inside boundary"
 msgstr ""
 
-#: src/Alarm.cpp:604
+#: src/Alarm.cpp:609
 msgid " Any Boundary Distance"
 msgstr ""
 
-#: src/Alarm.cpp:607
+#: src/Alarm.cpp:612
 msgid "Active Boundary Distance"
 msgstr ""
 
-#: src/Alarm.cpp:610
+#: src/Alarm.cpp:615
 msgid " Inactive Boundary Distance"
 msgstr ""
 
-#: src/Alarm.cpp:621 src/Alarm.cpp:625
+#: src/Alarm.cpp:626 src/Alarm.cpp:630
 msgid "Boat"
 msgstr ""
 
-#: src/Alarm.cpp:622 src/Alarm.cpp:626
+#: src/Alarm.cpp:627 src/Alarm.cpp:631
 msgid "outside"
 msgstr ""
 
-#: src/Alarm.cpp:622 src/Alarm.cpp:626
+#: src/Alarm.cpp:627 src/Alarm.cpp:631
 msgid "inside"
 msgstr ""
 
-#: src/Alarm.cpp:627
+#: src/Alarm.cpp:628
+msgid " boundary area"
+msgstr ""
+
+#: src/Alarm.cpp:632
 msgid " boundary area "
 msgstr ""
 
-#: src/Alarm.cpp:634
+#: src/Alarm.cpp:639
 msgid "AIS Target in zone"
 msgstr ""
 
-#: src/Alarm.cpp:634
+#: src/Alarm.cpp:639
 msgid "NO AIS tagets found in zone"
 msgstr ""
 
-#: src/Alarm.cpp:759
+#: src/Alarm.cpp:772
 msgid "invalid Boundary mode"
 msgstr ""
 
-#: src/Alarm.cpp:813 src/Alarm.cpp:1684
+#: src/Alarm.cpp:826 src/Alarm.cpp:1697
 msgid "Failed to execute command: "
 msgstr ""
 
-#: src/Alarm.cpp:814 src/Alarm.cpp:1685 src/watchdog_pi.cpp:140
-#: src/watchdog_pi.cpp:217
+#: src/Alarm.cpp:827 src/Alarm.cpp:1698 src/watchdog_pi.cpp:140
+#: src/watchdog_pi.cpp:224
 msgid "Watchdog"
 msgstr ""
 
-#: src/Alarm.cpp:822 src/Alarm.cpp:835 src/Alarm.cpp:851 src/Alarm.cpp:861
-#: src/Alarm.cpp:1691
+#: src/Alarm.cpp:835 src/Alarm.cpp:848 src/Alarm.cpp:864 src/Alarm.cpp:874
+#: src/Alarm.cpp:1704
 msgid "ALARM!"
 msgstr ""
 
-#: src/Alarm.cpp:823 src/Alarm.cpp:836 src/Alarm.cpp:853
+#: src/Alarm.cpp:836 src/Alarm.cpp:849 src/Alarm.cpp:866
 msgid "Name"
 msgstr ""
 
-#: src/Alarm.cpp:824 src/Alarm.cpp:837 src/Alarm.cpp:854 src/Alarm.cpp:863
+#: src/Alarm.cpp:837 src/Alarm.cpp:850 src/Alarm.cpp:867 src/Alarm.cpp:876
 msgid "Description"
 msgstr ""
 
-#: src/Alarm.cpp:825 src/Alarm.cpp:838 src/Alarm.cpp:855 src/Alarm.cpp:864
+#: src/Alarm.cpp:838 src/Alarm.cpp:851 src/Alarm.cpp:868 src/Alarm.cpp:877
 #: src/EditAlarmDialog.cpp:157
 msgid "GUID"
 msgstr ""
 
-#: src/Alarm.cpp:829 src/Alarm.cpp:842
+#: src/Alarm.cpp:842 src/Alarm.cpp:855
 msgid "in"
 msgstr ""
 
-#: src/Alarm.cpp:830 src/Alarm.cpp:846 src/Alarm.cpp:856 src/Alarm.cpp:867
-#: src/Alarm.cpp:1692 src/EditAlarmDialog.cpp:158
+#: src/Alarm.cpp:843 src/Alarm.cpp:859 src/Alarm.cpp:869 src/Alarm.cpp:880
+#: src/Alarm.cpp:1705 src/EditAlarmDialog.cpp:158
 msgid "Watchman"
 msgstr ""
 
-#: src/Alarm.cpp:852
+#: src/Alarm.cpp:865
 msgid "Outside"
 msgstr ""
 
-#: src/Alarm.cpp:865
+#: src/Alarm.cpp:878
 msgid "Ship Name"
 msgstr ""
 
-#: src/Alarm.cpp:866
+#: src/Alarm.cpp:879
 msgid "Ship MMSI"
 msgstr ""
 
-#: src/Alarm.cpp:1044 src/NewAlarmDialog.cpp:36
+#: src/Alarm.cpp:1057 src/NewAlarmDialog.cpp:36
 msgid "NMEA Data"
 msgstr ""
 
-#: src/Alarm.cpp:1060
+#: src/Alarm.cpp:1073
 msgid "second(s)"
 msgstr ""
 
-#: src/Alarm.cpp:1134 src/NewAlarmDialog.cpp:37
+#: src/Alarm.cpp:1147 src/NewAlarmDialog.cpp:37
 msgid "Deadman"
 msgstr ""
 
-#: src/Alarm.cpp:1196 src/NewAlarmDialog.cpp:38
+#: src/Alarm.cpp:1209 src/NewAlarmDialog.cpp:38
 msgid "Anchor"
 msgstr ""
 
-#: src/Alarm.cpp:1198
+#: src/Alarm.cpp:1211
 msgid "radius"
 msgstr ""
 
-#: src/Alarm.cpp:1198 src/WatchdogUI.cpp:675
+#: src/Alarm.cpp:1211 src/WatchdogUI.cpp:675
 msgid "meters"
 msgstr ""
 
-#: src/Alarm.cpp:1199
+#: src/Alarm.cpp:1212
 msgid "bAutoSync"
 msgstr ""
 
-#: src/Alarm.cpp:1222
+#: src/Alarm.cpp:1235
 msgid "meter(s)"
 msgstr ""
 
-#: src/Alarm.cpp:1305 src/NewAlarmDialog.cpp:39
+#: src/Alarm.cpp:1318 src/NewAlarmDialog.cpp:39
 msgid "Course"
 msgstr ""
 
-#: src/Alarm.cpp:1309 src/Alarm.cpp:1333 src/WatchdogUI.cpp:721
+#: src/Alarm.cpp:1322 src/Alarm.cpp:1346 src/WatchdogUI.cpp:721
 msgid "Port"
 msgstr ""
 
-#: src/Alarm.cpp:1310 src/Alarm.cpp:1331 src/WatchdogUI.cpp:721
+#: src/Alarm.cpp:1323 src/Alarm.cpp:1344 src/WatchdogUI.cpp:721
 msgid "Starboard"
 msgstr ""
 
-#: src/Alarm.cpp:1313
+#: src/Alarm.cpp:1326
 msgid "course"
 msgstr ""
 
-#: src/Alarm.cpp:1327
+#: src/Alarm.cpp:1340
 msgid "degrees(s)"
 msgstr ""
 
-#: src/Alarm.cpp:1385
+#: src/Alarm.cpp:1398
 msgid "invalid Course mode"
 msgstr ""
 
-#: src/Alarm.cpp:1425 src/NewAlarmDialog.cpp:40
+#: src/Alarm.cpp:1438 src/NewAlarmDialog.cpp:40
 msgid "Speed"
 msgstr ""
 
-#: src/Alarm.cpp:1429
+#: src/Alarm.cpp:1442
 msgid "UnderSpeed"
 msgstr ""
 
-#: src/Alarm.cpp:1430
+#: src/Alarm.cpp:1443
 msgid "OverSpeed"
 msgstr ""
 
-#: src/Alarm.cpp:1501
+#: src/Alarm.cpp:1514
 msgid "invalid Speed mode"
 msgstr ""
 
-#: src/Alarm.cpp:1560
+#: src/Alarm.cpp:1573
 msgid "Failed to read"
 msgstr ""
 
-#: src/Alarm.cpp:1577
+#: src/Alarm.cpp:1590
 msgid "invalid alarm type"
 msgstr ""
 
-#: src/Alarm.cpp:1613
+#: src/Alarm.cpp:1626
 msgid "failed to save"
 msgstr ""
 
-#: src/Alarm.cpp:1667 src/WatchdogUI.cpp:269
+#: src/Alarm.cpp:1680 src/WatchdogUI.cpp:269
 msgid "Sound"
 msgstr ""
 
-#: src/Alarm.cpp:1668 src/WatchdogUI.cpp:275
+#: src/Alarm.cpp:1681 src/WatchdogUI.cpp:275
 msgid "Command"
 msgstr ""
 
-#: src/Alarm.cpp:1669
+#: src/Alarm.cpp:1682
 msgid "MessageBox"
 msgstr ""
 
-#: src/Alarm.cpp:1670
+#: src/Alarm.cpp:1683
 msgid "Repeat"
 msgstr ""
 
-#: src/Alarm.cpp:1671
+#: src/Alarm.cpp:1684
 msgid "Auto Reset"
 msgstr ""
 
@@ -673,11 +681,11 @@ msgstr ""
 msgid "Edit Alarm"
 msgstr ""
 
-#: src/watchdog_pi.cpp:222
+#: src/watchdog_pi.cpp:229
 msgid "Watchdog PlugIn for OpenCPN"
 msgstr ""
 
-#: src/watchdog_pi.cpp:227
+#: src/watchdog_pi.cpp:234
 msgid ""
 "Watchdog PlugIn for OpenCPN\n"
 "Alarm user of changing conditions."
