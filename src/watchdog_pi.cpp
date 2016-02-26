@@ -172,16 +172,23 @@ bool watchdog_pi::DeInit(void)
 {
     Alarm::SaveConfigAll();
     Alarm::DeleteAll();
+    Alarm::s_Alarms.clear();
 
     //    Record the dialog position
     if (m_WatchdogDialog)
     {
+        if(m_ConfigurationDialog) {
+            delete m_ConfigurationDialog;
+        }
         m_WatchdogDialog->Close();
         delete m_WatchdogDialog;
         m_WatchdogDialog = NULL;
         m_ConfigurationDialog = NULL;
     }
-
+    
+    m_Timer.Stop();
+    m_Timer.Disconnect(wxEVT_TIMER, wxTimerEventHandler( watchdog_pi::OnTimer ), NULL, this);
+    
     RemovePlugInTool(m_leftclick_tool_id);
 
     return true;
