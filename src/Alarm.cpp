@@ -294,7 +294,12 @@ public:
         switch(m_Mode) {
         case TIME: return _("Time") + wxString::Format(_T(" < %f"), m_TimeMinutes);
         case DISTANCE: return _("Distance") + wxString::Format(_T(" < %f nm"), m_Distance);
-        case ANCHOR: return _("Boundary GUID") + wxString(_T(" ")) + m_BoundaryGUID;
+        case ANCHOR: {
+            if(m_BoundaryName == wxEmptyString)
+                return _("Boundary GUID") + wxString(_T(": ")) + m_BoundaryGUID;
+            else
+                return _("Boundary Name") + wxString(_T(": ")) + m_BoundaryName;
+        }
         case GUARD: {
             if(m_GuardZoneName == wxEmptyString)
                 return _("Guard Zone GUID") + wxString(_T(": ")) + m_GuardZoneGUID;
@@ -620,7 +625,7 @@ public:
                 if(m_BoundaryName != wxEmptyString) {
                     return _T(" ") + wxString(_("Boat")) + _T(" ") +
                     (m_bAnchorOutside ? _("outside") : _("inside")) +
-                    wxString(_T(" boundary area")) + m_BoundaryName;
+                    wxString(_(" boundary area")) + m_BoundaryName;
                 } else {
                 return _T(" ") + wxString(_("Boat")) + _T(" ") +
                     (m_bAnchorOutside ? wxString(_("outside")) : wxString(_("inside"))) +
@@ -743,6 +748,14 @@ public:
                 break;
         }
         m_BoundaryGUID = panel->m_tBoundaryGUID->GetValue();
+        if(g_BoundaryName != wxEmptyString) {
+            m_BoundaryName = g_BoundaryName;
+            g_BoundaryName = wxEmptyString;
+        }
+        if(g_BoundaryDescription != wxEmptyString) {
+            m_BoundaryDescription = g_BoundaryDescription;
+            g_BoundaryDescription = wxEmptyString;
+        }
         m_GuardZoneGUID = panel->m_tGuardZoneGUID->GetValue();
         if(g_GuardZoneName != wxEmptyString) {
             m_GuardZoneName = g_GuardZoneName;
