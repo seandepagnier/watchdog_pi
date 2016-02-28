@@ -23,6 +23,11 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,  USA.         *
  ***************************************************************************
  */
+#include "wx/wxprec.h"
+
+#ifndef  WX_PRECOMP
+#include "wx/wx.h"
+#endif //precompiled headers
 
 #include "wxJSON/jsonreader.h"
 #include "wxJSON/jsonwriter.h"
@@ -100,8 +105,6 @@ void BoundaryPanel::OnGetBoundaryGUID( wxCommandEvent& event )
     wxJSONValue jMsg;
     wxJSONWriter writer;
     wxString    MsgString;
-    wxJSONValue v;
-    v[_T("GUID")] = wxT("GUID");
     jMsg[wxT("Source")] = wxT("WATCHDOG_PI");
     jMsg[wxT("Type")] = wxT("Request");
     jMsg[wxT("Msg")] = wxS("FindPointInAnyBoundary");
@@ -125,6 +128,41 @@ void BoundaryPanel::OnGetBoundaryGUID( wxCommandEvent& event )
     }
 }
 
+void BoundaryPanel::OnBoundaryGUIDKillFocus( wxFocusEvent& event )
+{
+    extern wxString    g_BoundaryName;
+    extern wxString    g_BoundaryDescription;
+    extern wxString    g_BoundaryGUID;
+    extern wxJSONValue g_ReceivedPathGUIDJSONMsg;
+    extern wxString    g_ReceivedPathGUIDMessage;
+    
+    wxJSONValue jMsg;
+    wxJSONWriter writer;
+    wxString    MsgString;
+    jMsg[wxT("Source")] = wxT("WATCHDOG_PI");
+    jMsg[wxT("Type")] = wxT("Request");
+    jMsg[wxT("Msg")] = wxS("FindPathByGUID");
+    jMsg[wxT("MsgId")] = wxS("inclusion");
+    jMsg[wxS("GUID")] = m_tBoundaryGUID->GetValue();
+    writer.Write( jMsg, MsgString );
+    g_ReceivedPathGUIDMessage = wxEmptyString;
+    SendPluginMessage( wxS("OCPN_DRAW_PI"), MsgString );
+    if(g_ReceivedPathGUIDMessage != wxEmptyString && 
+        g_ReceivedPathGUIDJSONMsg[wxT("MsgId")].AsString() == wxS("inclusion") && 
+        g_ReceivedPathGUIDJSONMsg[wxT("Found")].AsBool() == true ) {
+        g_BoundaryName = g_ReceivedPathGUIDJSONMsg[wxS("Name")].AsString();
+        g_BoundaryDescription = g_ReceivedPathGUIDJSONMsg[wxS("Description")].AsString();
+        g_BoundaryGUID = g_ReceivedPathGUIDJSONMsg[wxS("GUID")].AsString();
+    } else {
+        wxString l_s = _T(" ") + wxString(_("Error!")) + _T("\n") 
+        + _("GUID") + _T(": ") + m_tBoundaryGUID->GetValue() + _(" does not exist");
+        wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchman"), wxOK | wxICON_WARNING);
+        mdlg.ShowModal();
+    }
+    m_tBoundaryGUID->SetFocus();
+    event.Skip();
+}
+
 void BoundaryPanel::OnGuardZoneGUIDKillFocus( wxFocusEvent& event )
 {
     extern wxString    g_GuardZoneName;
@@ -136,8 +174,6 @@ void BoundaryPanel::OnGuardZoneGUIDKillFocus( wxFocusEvent& event )
     wxJSONValue jMsg;
     wxJSONWriter writer;
     wxString    MsgString;
-    wxJSONValue v;
-    v[_T("GUID")] = wxT("GUID");
     jMsg[wxT("Source")] = wxT("WATCHDOG_PI");
     jMsg[wxT("Type")] = wxT("Request");
     jMsg[wxT("Msg")] = wxS("FindPathByGUID");
@@ -158,6 +194,8 @@ void BoundaryPanel::OnGuardZoneGUIDKillFocus( wxFocusEvent& event )
         wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchman"), wxOK | wxICON_WARNING);
         mdlg.ShowModal();
     }
+    m_tGuardZoneGUID->SetFocus();
+    event.Skip();
 }
 
 void AnchorPanel::OnSyncToBoat( wxCommandEvent& event )

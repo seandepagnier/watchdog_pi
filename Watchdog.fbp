@@ -5054,7 +5054,7 @@
                                 <event name="OnEraseBackground"></event>
                                 <event name="OnKeyDown"></event>
                                 <event name="OnKeyUp"></event>
-                                <event name="OnKillFocus"></event>
+                                <event name="OnKillFocus">OnBoundaryGUIDKillFocus</event>
                                 <event name="OnLeaveWindow"></event>
                                 <event name="OnLeftDClick"></event>
                                 <event name="OnLeftDown"></event>
@@ -5216,7 +5216,7 @@
                                 <property name="gripper">0</property>
                                 <property name="hidden">0</property>
                                 <property name="id">wxID_ANY</property>
-                                <property name="label">Guard Zone</property>
+                                <property name="label">AIS Guard Zone</property>
                                 <property name="max_size"></property>
                                 <property name="maximize_button">0</property>
                                 <property name="maximum_size"></property>
