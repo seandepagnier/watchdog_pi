@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: opencpn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-28 13:22+1100\n"
+"POT-Creation-Date: 2016-02-29 08:14+1100\n"
 "PO-Revision-Date: 2016-02-25 08:03-0500\n"
 "Last-Translator: nohal <pavel@kalian.cz>\n"
 "Language-Team: French\n"
@@ -49,6 +49,10 @@ msgstr "1"
 #
 msgid "3"
 msgstr "3"
+#
+#, fuzzy
+msgid "AIS Guard Zone"
+msgstr "Zone de garde"
 #
 msgid "AIS Target in zone"
 msgstr "Cible AIS dans la zone"
@@ -577,6 +581,7 @@ msgstr "seconde(s)"
 #
 msgid "seconds"
 msgstr "secondes"
+#
 #
 #
 #
