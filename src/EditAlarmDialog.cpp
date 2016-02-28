@@ -23,6 +23,11 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,  USA.         *
  ***************************************************************************
  */
+#include "wx/wxprec.h"
+
+#ifndef  WX_PRECOMP
+#include "wx/wx.h"
+#endif //precompiled headers
 
 #include "wxJSON/jsonreader.h"
 #include "wxJSON/jsonwriter.h"
@@ -100,8 +105,6 @@ void BoundaryPanel::OnGetBoundaryGUID( wxCommandEvent& event )
     wxJSONValue jMsg;
     wxJSONWriter writer;
     wxString    MsgString;
-    wxJSONValue v;
-    v[_T("GUID")] = wxT("GUID");
     jMsg[wxT("Source")] = wxT("WATCHDOG_PI");
     jMsg[wxT("Type")] = wxT("Request");
     jMsg[wxT("Msg")] = wxS("FindPointInAnyBoundary");
@@ -150,12 +153,13 @@ void BoundaryPanel::OnBoundaryGUIDKillFocus( wxFocusEvent& event )
         g_BoundaryName = g_ReceivedPathGUIDJSONMsg[wxS("Name")].AsString();
         g_BoundaryDescription = g_ReceivedPathGUIDJSONMsg[wxS("Description")].AsString();
         g_BoundaryGUID = g_ReceivedPathGUIDJSONMsg[wxS("GUID")].AsString();
-        } else {
-            wxString l_s = _T(" ") + wxString(_("Error!")) + _T("\n") 
-            + _("GUID") + _T(": ") + m_tBoundaryGUID->GetValue() + _(" does not exist");
-            wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchman"), wxOK | wxICON_WARNING);
-            mdlg.ShowModal();
-        }
+    } else {
+        wxString l_s = _T(" ") + wxString(_("Error!")) + _T("\n") 
+        + _("GUID") + _T(": ") + m_tBoundaryGUID->GetValue() + _(" does not exist");
+        wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchman"), wxOK | wxICON_WARNING);
+        mdlg.ShowModal();
+    }
+    event.Skip();
 }
 
 void BoundaryPanel::OnGuardZoneGUIDKillFocus( wxFocusEvent& event )
@@ -189,6 +193,7 @@ void BoundaryPanel::OnGuardZoneGUIDKillFocus( wxFocusEvent& event )
         wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchman"), wxOK | wxICON_WARNING);
         mdlg.ShowModal();
     }
+    event.Skip();
 }
 
 void AnchorPanel::OnSyncToBoat( wxCommandEvent& event )
