@@ -159,6 +159,7 @@ void BoundaryPanel::OnBoundaryGUIDKillFocus( wxFocusEvent& event )
         wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchman"), wxOK | wxICON_WARNING);
         mdlg.ShowModal();
     }
+    m_tBoundaryGUID->SetFocus();
     event.Skip();
 }
 
@@ -193,6 +194,7 @@ void BoundaryPanel::OnGuardZoneGUIDKillFocus( wxFocusEvent& event )
         wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchman"), wxOK | wxICON_WARNING);
         mdlg.ShowModal();
     }
+    m_tGuardZoneGUID->SetFocus();
     event.Skip();
 }
 

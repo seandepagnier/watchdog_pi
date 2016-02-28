@@ -284,7 +284,7 @@ public:
         switch(m_Mode) {
             case TIME: return _("Boundary Time");
             case DISTANCE: return _("Boundary Distance");
-            case ANCHOR: return _("Anchor Watch");
+            case ANCHOR: return _("Inclusion Alarm");
             case GUARD: return _("Guard Zone");
             default: return _("Boundary Distance");
         }
