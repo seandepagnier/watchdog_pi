@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: opencpn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-27 10:37+1100\n"
+"POT-Creation-Date: 2016-02-28 13:22+1100\n"
 "PO-Revision-Date: 2016-02-18 16:09-0500\n"
 "Last-Translator: nohal <pavel@kalian.cz>\n"
 "Language-Team: Swedish\n"
@@ -199,6 +199,10 @@ msgstr "Fel!"
 msgid "Exclusion"
 msgstr "Yttre"
 #
+#, fuzzy
+msgid "Exclusion Alarms"
+msgstr "Yttre"
+#
 msgid "Failed to execute command: "
 msgstr "Det gick inte att utföra kommandot: "
 #
@@ -270,6 +274,10 @@ msgid "Inactive Boundary Distance"
 msgstr "Avstånd till Gränslinje"
 #
 msgid "Inclusion"
+msgstr "Inre"
+#
+#, fuzzy
+msgid "Inclusion Alarm"
 msgstr "Inre"
 #
 msgid "Information"
@@ -435,12 +443,6 @@ msgstr "Synkronisera med båten"
 msgid "Test"
 msgstr "Testa"
 #
-msgid ""
-"The above alarms are designed to activate/sound when you approach or enter a "
-"boundary. They do NOT indicate if you are about to leave or have left a "
-"boundary, this functionality is provided by the Anchor Watch alarm. "
-msgstr ""
-#
 msgid "Time"
 msgstr "Tid"
 #
@@ -562,6 +564,7 @@ msgstr "Sekund(er)"
 #
 msgid "seconds"
 msgstr "sekunder"
+#
 #
 #
 #

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: opencpn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-27 10:37+1100\n"
+"POT-Creation-Date: 2016-02-28 13:22+1100\n"
 "PO-Revision-Date: 2016-02-25 08:05-0500\n"
 "Last-Translator: nohal <pavel@kalian.cz>\n"
 "Language-Team: Estonian\n"
@@ -197,6 +197,10 @@ msgstr "Viga!"
 msgid "Exclusion"
 msgstr "Väljajätt"
 #
+#, fuzzy
+msgid "Exclusion Alarms"
+msgstr "Väljajätt"
+#
 msgid "Failed to execute command: "
 msgstr "Ei õnnestunud käivitada käsku:"
 #
@@ -267,6 +271,10 @@ msgid "Inactive Boundary Distance"
 msgstr "Vehmaa piirini"
 #
 msgid "Inclusion"
+msgstr "Kaasamine"
+#
+#, fuzzy
+msgid "Inclusion Alarm"
 msgstr "Kaasamine"
 #
 msgid "Information"
@@ -430,12 +438,6 @@ msgstr "Aluse asukoht"
 msgid "Test"
 msgstr "Test"
 #
-msgid ""
-"The above alarms are designed to activate/sound when you approach or enter a "
-"boundary. They do NOT indicate if you are about to leave or have left a "
-"boundary, this functionality is provided by the Anchor Watch alarm. "
-msgstr ""
-#
 msgid "Time"
 msgstr "Aeg"
 #
@@ -557,6 +559,7 @@ msgstr "sekund(it)"
 #
 msgid "seconds"
 msgstr "sekundit"
+#
 #
 #
 #

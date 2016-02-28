@@ -391,7 +391,7 @@ public:
                             m_BoundaryName = g_ReceivedBoundaryTimeJSONMsg[wxS("Name")].AsString();
                             m_BoundaryDescription = g_ReceivedBoundaryTimeJSONMsg[wxS("Description")].AsString();
                             m_BoundaryGUID = g_ReceivedBoundaryTimeJSONMsg[wxS("GUID")].AsString();
-                            g_ReceivedBoundaryDistanceMessage = wxEmptyString;
+                            g_ReceivedBoundaryTimeMessage = wxEmptyString;
                             return true;
                         }
                     }
@@ -596,8 +596,19 @@ public:
                         l_s = _T(" ") + wxString(_("Boundary name")) + _T(": ") + m_BoundaryName;
                     else
                         l_s =  _T(" ") + wxString(_("Boundary GUID")) + _T(": ") + m_BoundaryGUID;
-                    if(m_bCurrentBoatPos)
-                        l_s.append(_T(" - ") + wxString(_("inside boundary")));
+                    if(m_bCurrentBoatPos) {
+                        switch (m_BoundaryState) {
+                            case ID_BOUNDARY_STATE_ANY:
+                                l_s.append(_(" - inside any boundary"));
+                                break;
+                            case ID_BOUNDARY_STATE_ACTIVE:
+                                l_s.append(_(" - inside active boundary"));
+                                break;
+                            case ID_BOUNDARY_STATE_INACTIVE:
+                                l_s.append(_(" - inside inactive boundary"));
+                                break;
+                        }
+                    }
                     else {
                         l_s.append(_T(" <= "));
                         l_s << m_BoundaryDistance;

@@ -28,8 +28,8 @@
 #include <wx/spinctrl.h>
 #include <wx/stattext.h>
 #include <wx/panel.h>
-#include <wx/radiobox.h>
 #include <wx/statline.h>
+#include <wx/radiobox.h>
 #include <wx/slider.h>
 #include <wx/choice.h>
 
@@ -197,9 +197,10 @@ class BoundaryPanel : public wxPanel
 	private:
 	
 	protected:
+		wxStaticText* m_staticText33;
+		wxStaticLine* m_staticline4;
 		wxStaticText* m_staticText30;
 		wxStaticText* m_staticText7;
-		wxStaticText* m_staticText322;
 		wxStaticLine* m_staticline1;
 		wxStaticText* m_staticText32;
 		wxButton* m_button12;
