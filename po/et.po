@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: opencpn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-29 08:14+1100\n"
-"PO-Revision-Date: 2016-02-25 08:05-0500\n"
+"POT-Creation-Date: 2016-02-29 12:11-0300\n"
+"PO-Revision-Date: 2016-02-29 10:14-0500\n"
 "Last-Translator: nohal <pavel@kalian.cz>\n"
 "Language-Team: Estonian\n"
 "Language: et_EE\n"
@@ -15,562 +15,675 @@ msgstr ""
 "X-Crowdin-Project: opencpn\n"
 "X-Crowdin-Language: et\n"
 "X-Crowdin-File: /plugins/watchdog_pi/po/watchdog_pi.pot\n"
-#
-#, fuzzy
-msgid " - inside active boundary"
-msgstr "piiri sees"
-#
-#, fuzzy
-msgid " - inside any boundary"
-msgstr "piiri sees"
-#
-#, fuzzy
-msgid " - inside inactive boundary"
-msgstr "piiri sees"
-#
-#, fuzzy
-msgid " boundary area: "
-msgstr " piir "
-#
-msgid " does not exist"
-msgstr " pole olemas"
-#
-msgid " in "
-msgstr " asukohas "
-#
-msgid " minutes"
-msgstr " minutit"
-#
-msgid "$GPGGA"
-msgstr "$GPGGA"
-#
-msgid "1"
-msgstr "1"
-#
-msgid "3"
-msgstr "3"
-#
-#, fuzzy
-msgid "AIS Guard Zone"
-msgstr "Valvetsoon"
-#
-msgid "AIS Target in zone"
-msgstr "AIS-märk on alas"
-#
-msgid "ALARM!"
-msgstr "HÄIRE!"
-#
-msgid "About Author"
-msgstr "Autorist"
-#
-msgid "Action"
-msgstr "Tegevus"
-#
-#, fuzzy
-msgid "Active"
-msgstr "Tegevus"
-#
-#, fuzzy
-msgid "Active Boundary Distance"
-msgstr "Vehmaa piirini"
-#
-msgid "Alarm Action"
-msgstr "Tegevus häire korral"
-#
-msgid "Alarms"
-msgstr "Häired"
-#
-msgid "Anchor"
-msgstr "Ankur"
-#
-msgid "Anchor Watch"
-msgstr "Ankruvaht"
-#
-msgid "Any"
-msgstr "Iga"
-#
-#, fuzzy
-msgid "Any Boundary Distance"
-msgstr "Vehmaa piirini"
-#
-msgid "Auto Reset"
-msgstr "Autolähestamine"
-#
-msgid "Automatically Reset"
-msgstr "Auto-algseadistus"
-#
-msgid "Automatically syncronize to the boat whenever enabled"
-msgstr "Automaatselt sünkroniseeri alusega iga kord kui lubatud"
-#
-msgid "Boat"
-msgstr ""
-#
-msgid "Boundary Alarm"
-msgstr "Piiri häire"
-#
-msgid "Boundary Distance"
-msgstr "Vehmaa piirini"
-#
-msgid "Boundary GUID"
-msgstr "Piiri GUID"
-#
-#, fuzzy
-msgid "Boundary Name"
-msgstr "Piiri nimi"
-#
-#, fuzzy
-msgid "Boundary State"
-msgstr "Piiri nimi"
-#
-msgid "Boundary Time"
-msgstr "Aeg piirini"
-#
-msgid "Boundary Type"
-msgstr "Piiri laad"
-#
-msgid "Boundary name"
-msgstr "Piiri nimi"
-#
-msgid ""
-"Check Frequency  (Secs)\n"
-"(Note: not Guard Zone)"
-msgstr ""
-"Kontrolli sagedust (sek)\n"
-"(Märkus: mitte valvetsoon)"
-#
-msgid "Close"
-msgstr "Sulge"
-#
-msgid "Command"
-msgstr "käsk"
-#
-msgid "Configuration"
-msgstr "Seadistus"
-#
-msgid "Course"
-msgstr "Kurss"
-#
-msgid "Current Course"
-msgstr "Praegune kurss"
-#
-msgid "Day"
-msgstr "päev"
-#
-msgid "Days"
-msgstr "päeva"
-#
-msgid "Deadman"
-msgstr "Surnu-lüliti"
-#
-msgid "Degrees"
-msgstr "kraadi"
-#
-msgid "Delete"
-msgstr "Kustuta"
-#
-msgid "Delete All"
-msgstr "Kustuta kõik"
-#
-msgid "Description"
-msgstr "Kirjeldus"
-#
-msgid "Disable All Alarms"
-msgstr "Blokeeri kõik häired"
-#
-msgid "Distance"
-msgstr "Vahemaa"
-#
-msgid "Edit"
-msgstr "Muuda"
-#
-msgid "Edit Alarm"
-msgstr "Muuda häiret"
-#
-msgid "Enable All Alarms"
-msgstr "Võimalda kõik häired"
-#
-msgid "Enabled after first time Watchdog Dialog is visible"
-msgstr "Lubatud peale esimest korda kui Watchdog Dialog on nähtav"
-#
-msgid "Enabled only if Watchdog Dialog is visible"
-msgstr "Lubatud ainult kui Watchdog Dialog on nähtav"
-#
-msgid "Error!"
-msgstr "Viga!"
-#
-msgid "Exclusion"
-msgstr "Väljajätt"
-#
-#, fuzzy
-msgid "Exclusion Alarms"
-msgstr "Väljajätt"
-#
-msgid "Failed to execute command: "
-msgstr "Ei õnnestunud käivitada käsku:"
-#
-msgid "Failed to read"
-msgstr "Lugemine nurjus"
-#
-msgid "GPS course crosses boundary in <"
-msgstr "GPS-kurss lõikub piiriga <"
-#
-msgid "GPS course crosses land in <"
-msgstr "GPS'i kurss lõikub maaga <"
-#
-msgid "GPS fix is <"
-msgstr "GPS asokoht on <"
-#
-msgid "GUID"
-msgstr "GUID"
-#
-msgid "General Setup"
-msgstr "Üldine seadistus"
-#
-msgid "Get Boundary GUID"
-msgstr "Saa piir GUID"
-#
-msgid "Graphical overlay displays bounding anchor area"
-msgstr "Graafiline ülekate kuvab ankruala piiri"
-#
-msgid "Graphical overlay displays circle with radius of this speed"
-msgstr "Graafiline ülekate kuvab ringi, mille raadiuseks on valitud kiirus"
-#
-msgid "Graphical overlay displays lines bounding valid courses"
-msgstr "Graafiline ülekate kuvab jooni, mis piiravad korrektseid kursse"
-#
-msgid ""
-"Graphical overlay for GPS fix displays line from boat to location of the "
-"point in the found boundary"
-msgstr ""
-"GPS'i graafiline ülekate näitab joont paadist leitud piiril punkti asukohta"
-#
-msgid ""
-"Graphical overlay for time displays line from boat to location of land "
-"crossing"
-msgstr "Aja graafiline ülekate kuvab joont alusest kuni maaga lõikumise kohani"
-#
-msgid "Graphics Enabled"
-msgstr "Lubatud graafika"
-#
-msgid "Guard Zone"
-msgstr "Valvetsoon"
-#
-msgid "Guard Zone GUID"
-msgstr "Valvetsooni GUID"
-#
-msgid "Guard Zone Name"
-msgstr "Valvetsooni nimi"
-#
-msgid "Hour"
-msgstr "tund"
-#
-msgid "Hours"
-msgstr "tunnid"
-#
-msgid "Inactive"
-msgstr ""
-#
-#, fuzzy
-msgid "Inactive Boundary Distance"
-msgstr "Vehmaa piirini"
-#
-msgid "Inclusion"
-msgstr "Kaasamine"
-#
-#, fuzzy
-msgid "Inclusion Alarm"
-msgstr "Kaasamine"
-#
-msgid "Information"
-msgstr "Info"
-#
+
+#: src/Alarm.cpp:52
 msgid "LandFall"
 msgstr "Randumine"
-#
-msgid "LandFall Time Invalid"
-msgstr "Randumise aeg on kehtetu"
-#
-msgid "Landfall"
-msgstr "Rannik"
-#
-msgid ""
-"Landfall detection uses gshhs (global heirarchical high-resolution shoreline "
-"data.)\n"
-"Consider installing the highest resolution database for best accuracy."
-msgstr ""
-"Ranniku tuvastamine kasutab gshhs'i (global heirarchical high-resolution "
-"shoreline data.)\n"
-"Kaalutle kõrgeima eraldusvõimega andmebaasi paigaldamist parima täpsuse jaoks."
-#
-msgid "Latitude"
-msgstr "Laius"
-#
-msgid "Longitude"
-msgstr "Pikkus"
-#
-msgid "Message Box"
-msgstr "teateboks"
-#
-msgid "MessageBox"
-msgstr "Teateboks"
-#
-msgid "Minute"
-msgstr "minut"
-#
-msgid "Minutes"
-msgstr "minutid"
-#
-msgid ""
-"Most alarms should be self-explanatory\n"
-"Normally a sound is played, however you can execute any command you like, "
-"eg:  \"aplay /usr/local/share/opencpn/sounds/2bells.wav\"\n"
-"Messagebox may be useful to interrupt other applications (like a movie "
-"player)\n"
-"Automatically Reset will reset the alarm once it is no longer triggered, and "
-"it may be triggered again later."
-msgstr ""
-"Enamus häireid peaksid olema iseenesestmõitetavad\n"
-"Harilikult on helisignaal, kuid te saate käivitada iga käsu nagu soovite, "
-"näiteks:  \"aplay /usr/local/share/opencpn/sounds/2bells.wav\"\n"
-"Teatekast võib olla kasulik teiste rakenduste katkestamiseks\n"
-"Automaatne tühistamine algseadistab häire ükskord kui teda enam ei käivitata "
-"ning teda võib hiljem jälle valla päästa."
-#
-msgid "NMEA Data"
-msgstr "NMEA-voog"
-#
-msgid "NO AIS tagets found in zone"
-msgstr "ÜHTEGI AIS-märki pole alas"
-#
-msgid "Name"
-msgstr "Nimi"
-#
-msgid "Neither"
-msgstr "Mitte kumbki"
-#
-msgid "New"
-msgstr "Uus"
-#
-msgid "New Alarm"
-msgstr "Uus häire"
-#
-msgid "No Boundary within "
-msgstr "Puudub piir "
-#
-msgid "No User Activity for"
-msgstr "Kasutaja tegevus puudub"
-#
-msgid "Off Course By >"
-msgstr "Kursi kõrvalekalle >"
-#
-msgid "Options"
-msgstr "Valikud"
-#
-msgid "Outside"
-msgstr "Väljas"
-#
-msgid "Over Speed"
-msgstr "Ülekiirus"
-#
-msgid "OverSpeed"
-msgstr "Ülekiirus"
-#
-msgid "Port"
-msgstr "pakpoordis"
-#
-msgid "Port or Starboard"
-msgstr "Pak- või tüürpoord"
-#
-msgid "Radius"
-msgstr "raadius"
-#
-msgid "Repeat"
-msgstr "Korda"
-#
-msgid "Repeat Alarm after seconds"
-msgstr "korda häiret sekundi järel"
-#
-msgid "Require following NMEA sentences:"
-msgstr "Vajalik on järgmine NMEA pakkumine:"
-#
-msgid "Reset"
-msgstr "Algseadista"
-#
-msgid "Second"
-msgstr "sekund"
-#
-msgid "Seconds"
-msgstr "sekundit"
-#
-msgid ""
-"Seconds to Average\n"
-"SOG over"
-msgstr ""
-"Sekundit keskmine\n"
-"SOG on möödas"
-#
-msgid "Select a file"
-msgstr "Vali fail"
-#
-msgid "Ship MMSI"
-msgstr "Laeva MMSI"
-#
-msgid "Ship Name"
-msgstr "Laeva nimi"
-#
-msgid "Sound"
-msgstr "heli"
-#
-msgid "Speed"
-msgstr "Kiirus"
-#
-msgid "Speed Alarm"
-msgstr "Kiiruse häire"
-#
-msgid "Speed over ground"
-msgstr "Kiirus põhja suhtes"
-#
-msgid "Starboard"
-msgstr "Tüürpoord"
-#
-msgid "Status"
-msgstr "Olek"
-#
-msgid "Sync to Boat"
-msgstr "Aluse asukoht"
-#
-msgid "Test"
-msgstr "Test"
-#
+
+#: src/Alarm.cpp:55 src/Alarm.cpp:295
 msgid "Time"
 msgstr "Aeg"
-#
-msgid "Type"
-msgstr "Tüüp"
-#
-msgid "Under Speed"
-msgstr "Alakiirus"
-#
-msgid "UnderSpeed"
-msgstr "Alakiirus"
-#
-msgid "WatchDog"
-msgstr "Watchdog"
-#
-msgid "Watchdog"
-msgstr "Watchdog"
-#
-msgid "Watchdog Configuration"
-msgstr "Watchdog seadistamine"
-#
-msgid "Watchdog Information"
-msgstr "Watchdog'i info"
-#
-msgid "Watchdog PlugIn for OpenCPN"
-msgstr "Watchdog'i plugin OpenCPN'i jaoks"
-#
-msgid ""
-"Watchdog PlugIn for OpenCPN\n"
-"Alarm user of changing conditions."
-msgstr ""
-"Watchdog'i plugin OpenCPN'i jaoks\n"
-"Hoiatab kasutajat muutuvatest tingimustest."
-#
-msgid "Watchman"
-msgstr "Vahimees"
-#
-msgid "With Course Of"
-msgstr "Aluseks kurss"
-#
-msgid "at least every"
-msgstr "vähemalt iga"
-#
-msgid "bAutoSync"
-msgstr ""
-#
-msgid "course"
-msgstr "kurss"
-#
-msgid "degrees(s)"
-msgstr "kraadi"
-#
-msgid "failed to save"
-msgstr "salvestus nurjus"
-#
-msgid "in"
-msgstr "asukohas"
-#
-#, fuzzy
-msgid "inside"
-msgstr "Sees"
-#
-msgid "inside boundary"
-msgstr "piiri sees"
-#
-msgid "invalid Boundary mode"
-msgstr "kehtetu piiri režiim"
-#
-msgid "invalid Course mode"
-msgstr "kehtetu kursi režiim"
-#
+
+#: src/Alarm.cpp:56 src/Alarm.cpp:156 src/Alarm.cpp:296
+msgid "Distance"
+msgstr "Vahemaa"
+
+#: src/Alarm.cpp:120
+msgid "LandFall Time Invalid"
+msgstr "Randumise aeg on kehtetu"
+
+#: src/Alarm.cpp:125 src/Alarm.cpp:995
+msgid "Days"
+msgstr "päeva"
+
+#: src/Alarm.cpp:128 src/Alarm.cpp:998
+msgid "Day"
+msgstr "päev"
+
+#: src/Alarm.cpp:132 src/Alarm.cpp:1002
+msgid "Hours"
+msgstr "tunnid"
+
+#: src/Alarm.cpp:135 src/Alarm.cpp:1005
+msgid "Hour"
+msgstr "tund"
+
+#: src/Alarm.cpp:139 src/Alarm.cpp:1009
+msgid "Minutes"
+msgstr "minutid"
+
+#: src/Alarm.cpp:142 src/Alarm.cpp:1012
+msgid "Minute"
+msgstr "minut"
+
+#: src/Alarm.cpp:146 src/Alarm.cpp:1016
+msgid "Seconds"
+msgstr "sekundit"
+
+#: src/Alarm.cpp:148 src/Alarm.cpp:1018
+msgid "Second"
+msgstr "sekund"
+
+#: src/Alarm.cpp:206
 msgid "invalid LandFall mode"
 msgstr "kehtetu randumise laad"
-#
-msgid "invalid Speed mode"
-msgstr "kehtetu kiiruse režiim"
-#
-msgid "invalid alarm type"
-msgstr "kehtetu häire tüüp"
-#
-msgid "knots"
-msgstr "sõlme"
-#
-msgid "meter(s)"
-msgstr "meetrit"
-#
-msgid "meters"
-msgstr "meetrit"
-#
-msgid "minute(s)"
-msgstr "minuti(te) jooksul"
-#
-msgid "minutes"
-msgstr "minuti pärast"
-#
-msgid ""
-"nm from boundary\n"
-"(any direction)"
-msgstr ""
-"nm piirist\n"
-"(iga suund)"
-#
-msgid ""
-"nm from coastline\n"
-"(any direction)"
-msgstr ""
-"nm rannajoonest\n"
-"(igal suunal)"
-#
-#, fuzzy
+
+#: src/Alarm.cpp:285
+msgid "Boundary Time"
+msgstr "Aeg piirini"
+
+#: src/Alarm.cpp:286 src/Alarm.cpp:289
+msgid "Boundary Distance"
+msgstr "Vehmaa piirini"
+
+#: src/Alarm.cpp:287 src/WatchdogUI.cpp:488
+msgid "Inclusion Alarm"
+msgstr "Kaasatuse häire"
+
+#: src/Alarm.cpp:288 src/Alarm.cpp:649 src/watchdog_pi.cpp:526
+msgid "Guard Zone"
+msgstr "Valvetsoon"
+
+#: src/Alarm.cpp:299 src/Alarm.cpp:564 src/Alarm.cpp:598 src/WatchdogUI.cpp:491
+msgid "Boundary GUID"
+msgstr "Piiri GUID"
+
+#: src/Alarm.cpp:301
+msgid "Boundary Name"
+msgstr "Piiri nimi"
+
+#: src/Alarm.cpp:305 src/WatchdogUI.cpp:512
+msgid "Guard Zone GUID"
+msgstr "Valvetsooni GUID"
+
+#: src/Alarm.cpp:307 src/Alarm.cpp:886
+msgid "Guard Zone Name"
+msgstr "Valvetsooni nimi"
+
+#: src/Alarm.cpp:562 src/Alarm.cpp:596
+msgid "Boundary name"
+msgstr "Piiri nimi"
+
+#: src/Alarm.cpp:568
+msgid "No Boundary within "
+msgstr "Puudub piir "
+
+#: src/Alarm.cpp:570
+msgid " minutes"
+msgstr " minutit"
+
+#: src/Alarm.cpp:575 src/Alarm.cpp:602
+msgid " - inside any boundary"
+msgstr " -mis tahes piiri sees"
+
+#: src/Alarm.cpp:578 src/Alarm.cpp:605
+msgid " - inside active boundary"
+msgstr " -aktiivse piiri sees"
+
+#: src/Alarm.cpp:581 src/Alarm.cpp:608
+msgid " - inside inactive boundary"
+msgstr " -passiivse piiri sees"
+
+#: src/Alarm.cpp:586
+msgid " in "
+msgstr " asukohas "
+
+#: src/Alarm.cpp:620
+msgid "Any Boundary Distance"
+msgstr "Vahemaa mistahes piirini"
+
+#: src/Alarm.cpp:623
+msgid "Active Boundary Distance"
+msgstr "Aktiivse piiri kaugus"
+
+#: src/Alarm.cpp:626
+msgid "Inactive Boundary Distance"
+msgstr "Passiivse piiri kaugus"
+
+#: src/Alarm.cpp:637 src/Alarm.cpp:641
+msgid "Boat"
+msgstr "Paat"
+
+#: src/Alarm.cpp:638 src/Alarm.cpp:642
 msgid "outside"
+msgstr "väljaspool"
+
+#: src/Alarm.cpp:638 src/Alarm.cpp:642
+msgid "inside"
+msgstr "sees"
+
+#: src/Alarm.cpp:639 src/Alarm.cpp:643
+msgid " boundary area: "
+msgstr " piir ala: "
+
+#: src/Alarm.cpp:650
+msgid "AIS Target in zone"
+msgstr "AIS-märk on alas"
+
+#: src/Alarm.cpp:650
+msgid "NO AIS tagets found in zone"
+msgstr "ÜHTEGI AIS-märki pole alas"
+
+#: src/Alarm.cpp:783
+msgid "invalid Boundary mode"
+msgstr "kehtetu piiri režiim"
+
+#: src/Alarm.cpp:837 src/Alarm.cpp:1708
+msgid "Failed to execute command: "
+msgstr "Ei õnnestunud käivitada käsku:"
+
+#: src/Alarm.cpp:838 src/Alarm.cpp:1709 src/watchdog_pi.cpp:140
+#: src/watchdog_pi.cpp:224
+msgid "Watchdog"
+msgstr "Watchdog"
+
+#: src/Alarm.cpp:846 src/Alarm.cpp:859 src/Alarm.cpp:875 src/Alarm.cpp:885
+#: src/Alarm.cpp:1715
+msgid "ALARM!"
+msgstr "HÄIRE!"
+
+#: src/Alarm.cpp:847 src/Alarm.cpp:860 src/Alarm.cpp:877
+msgid "Name"
+msgstr "Nimi"
+
+#: src/Alarm.cpp:848 src/Alarm.cpp:861 src/Alarm.cpp:878 src/Alarm.cpp:887
+msgid "Description"
+msgstr "Kirjeldus"
+
+#: src/Alarm.cpp:849 src/Alarm.cpp:862 src/Alarm.cpp:879 src/Alarm.cpp:888
+#: src/EditAlarmDialog.cpp:158 src/EditAlarmDialog.cpp:193
+msgid "GUID"
+msgstr "GUID"
+
+#: src/Alarm.cpp:851 src/Alarm.cpp:864
+msgid "inside boundary"
+msgstr "piiri sees"
+
+#: src/Alarm.cpp:853 src/Alarm.cpp:866
+msgid "in"
+msgstr "asukohas"
+
+#: src/Alarm.cpp:854 src/Alarm.cpp:870 src/Alarm.cpp:880 src/Alarm.cpp:891
+#: src/Alarm.cpp:1716 src/EditAlarmDialog.cpp:159 src/EditAlarmDialog.cpp:194
+msgid "Watchman"
+msgstr "Vahimees"
+
+#: src/Alarm.cpp:876
+msgid "Outside"
 msgstr "Väljas"
-#
-msgid "radius"
-msgstr "raadius"
-#
+
+#: src/Alarm.cpp:889
+msgid "Ship Name"
+msgstr "Laeva nimi"
+
+#: src/Alarm.cpp:890
+msgid "Ship MMSI"
+msgstr "Laeva MMSI"
+
+#: src/Alarm.cpp:1068 src/NewAlarmDialog.cpp:36
+msgid "NMEA Data"
+msgstr "NMEA-voog"
+
+#: src/Alarm.cpp:1084
 msgid "second(s)"
 msgstr "sekund(it)"
-#
+
+#: src/Alarm.cpp:1158 src/NewAlarmDialog.cpp:37
+msgid "Deadman"
+msgstr "Surnu-lüliti"
+
+#: src/Alarm.cpp:1220 src/NewAlarmDialog.cpp:38
+msgid "Anchor"
+msgstr "Ankur"
+
+#: src/Alarm.cpp:1222
+msgid "radius"
+msgstr "raadius"
+
+#: src/Alarm.cpp:1222 src/WatchdogUI.cpp:684
+msgid "meters"
+msgstr "meetrit"
+
+#: src/Alarm.cpp:1223
+msgid "bAutoSync"
+msgstr ""
+
+#: src/Alarm.cpp:1246
+msgid "meter(s)"
+msgstr "meetrit"
+
+#: src/Alarm.cpp:1329 src/NewAlarmDialog.cpp:39
+msgid "Course"
+msgstr "Kurss"
+
+#: src/Alarm.cpp:1333 src/Alarm.cpp:1357 src/WatchdogUI.cpp:730
+msgid "Port"
+msgstr "pakpoordis"
+
+#: src/Alarm.cpp:1334 src/Alarm.cpp:1355 src/WatchdogUI.cpp:730
+msgid "Starboard"
+msgstr "Tüürpoord"
+
+#: src/Alarm.cpp:1337
+msgid "course"
+msgstr "kurss"
+
+#: src/Alarm.cpp:1351
+msgid "degrees(s)"
+msgstr "kraadi"
+
+#: src/Alarm.cpp:1409
+msgid "invalid Course mode"
+msgstr "kehtetu kursi režiim"
+
+#: src/Alarm.cpp:1449 src/NewAlarmDialog.cpp:40
+msgid "Speed"
+msgstr "Kiirus"
+
+#: src/Alarm.cpp:1453
+msgid "UnderSpeed"
+msgstr "Alakiirus"
+
+#: src/Alarm.cpp:1454
+msgid "OverSpeed"
+msgstr "Ülekiirus"
+
+#: src/Alarm.cpp:1525
+msgid "invalid Speed mode"
+msgstr "kehtetu kiiruse režiim"
+
+#: src/Alarm.cpp:1584
+msgid "Failed to read"
+msgstr "Lugemine nurjus"
+
+#: src/Alarm.cpp:1601
+msgid "invalid alarm type"
+msgstr "kehtetu häire tüüp"
+
+#: src/Alarm.cpp:1637
+msgid "failed to save"
+msgstr "salvestus nurjus"
+
+#: src/Alarm.cpp:1691 src/WatchdogUI.cpp:269
+msgid "Sound"
+msgstr "heli"
+
+#: src/Alarm.cpp:1692 src/WatchdogUI.cpp:275
+msgid "Command"
+msgstr "käsk"
+
+#: src/Alarm.cpp:1693
+msgid "MessageBox"
+msgstr "Teateboks"
+
+#: src/Alarm.cpp:1694
+msgid "Repeat"
+msgstr "Korda"
+
+#: src/Alarm.cpp:1695
+msgid "Auto Reset"
+msgstr "Autolähestamine"
+
+#: src/Alarm.h:96 src/WatchdogUI.cpp:299
+msgid "Test"
+msgstr "Test"
+
+#: src/ConfigurationDialog.cpp:48 src/WatchdogDialog.cpp:108
+#: src/WatchdogUI.cpp:726 src/WatchdogUI.cpp:793
+msgid "Type"
+msgstr "Tüüp"
+
+#: src/ConfigurationDialog.cpp:49
+msgid "Options"
+msgstr "Valikud"
+
+#: src/ConfigurationDialog.cpp:50
+msgid "Action"
+msgstr "Tegevus"
+
+#: src/EditAlarmDialog.cpp:86
+msgid "Most alarms should be self-explanatory\n"
+"Normally a sound is played, however you can execute any command you like, eg:  \"aplay /usr/local/share/opencpn/sounds/2bells.wav\"\n"
+"Messagebox may be useful to interrupt other applications (like a movie player)\n"
+"Automatically Reset will reset the alarm once it is no longer triggered, and it may be triggered again later."
+msgstr "Enamus häireid peaksid olema iseenesestmõitetavad\n"
+"Harilikult on helisignaal, kuid te saate käivitada iga käsu nagu soovite, näiteks:  \"aplay /usr/local/share/opencpn/sounds/2bells.wav\"\n"
+"Teatekast võib olla kasulik teiste rakenduste katkestamiseks\n"
+"Automaatne tühistamine algseadistab häire ükskord kui teda enam ei käivitata ning teda võib hiljem jälle valla päästa."
+
+#: src/EditAlarmDialog.cpp:93
+msgid "Watchdog Information"
+msgstr "Watchdog'i info"
+
+#: src/EditAlarmDialog.cpp:157 src/EditAlarmDialog.cpp:192
+msgid "Error!"
+msgstr "Viga!"
+
+#: src/EditAlarmDialog.cpp:158 src/EditAlarmDialog.cpp:193
+msgid " does not exist"
+msgstr " pole olemas"
+
+#: src/NewAlarmDialog.cpp:34
+msgid "Landfall"
+msgstr "Rannik"
+
+#: src/NewAlarmDialog.cpp:35
+msgid "Boundary Alarm"
+msgstr "Piiri häire"
+
+#: src/WatchdogDialog.cpp:109
+msgid "Status"
+msgstr "Olek"
+
+#: src/WatchdogUI.cpp:30
+msgid "Configuration"
+msgstr "Seadistus"
+
+#: src/WatchdogUI.cpp:33
+msgid "Reset"
+msgstr "Algseadista"
+
+#: src/WatchdogUI.cpp:36
+msgid "Close"
+msgstr "Sulge"
+
+#: src/WatchdogUI.cpp:78
+msgid "General Setup"
+msgstr "Üldine seadistus"
+
+#: src/WatchdogUI.cpp:85
+msgid "Enable All Alarms"
+msgstr "Võimalda kõik häired"
+
+#: src/WatchdogUI.cpp:88
+msgid "Enabled after first time Watchdog Dialog is visible"
+msgstr "Lubatud peale esimest korda kui Watchdog Dialog on nähtav"
+
+#: src/WatchdogUI.cpp:91
+msgid "Enabled only if Watchdog Dialog is visible"
+msgstr "Lubatud ainult kui Watchdog Dialog on nähtav"
+
+#: src/WatchdogUI.cpp:94
+msgid "Disable All Alarms"
+msgstr "Blokeeri kõik häired"
+
+#: src/WatchdogUI.cpp:111
+msgid "Alarms"
+msgstr "Häired"
+
+#: src/WatchdogUI.cpp:125
+msgid "New"
+msgstr "Uus"
+
+#: src/WatchdogUI.cpp:128
+msgid "Edit"
+msgstr "Muuda"
+
+#: src/WatchdogUI.cpp:131
+msgid "Delete"
+msgstr "Kustuta"
+
+#: src/WatchdogUI.cpp:134
+msgid "Delete All"
+msgstr "Kustuta kõik"
+
+#: src/WatchdogUI.cpp:158
+msgid "About Author"
+msgstr "Autorist"
+
+#: src/WatchdogUI.cpp:261
+msgid "Alarm Action"
+msgstr "Tegevus häire korral"
+
+#: src/WatchdogUI.cpp:272
+msgid "Select a file"
+msgstr "Vali fail"
+
+#: src/WatchdogUI.cpp:281
+msgid "Message Box"
+msgstr "teateboks"
+
+#: src/WatchdogUI.cpp:287
+msgid "Repeat Alarm after seconds"
+msgstr "korda häiret sekundi järel"
+
+#: src/WatchdogUI.cpp:293
+msgid "Automatically Reset"
+msgstr "Auto-algseadistus"
+
+#: src/WatchdogUI.cpp:296
+msgid "Graphics Enabled"
+msgstr "Lubatud graafika"
+
+#: src/WatchdogUI.cpp:314
+msgid "Information"
+msgstr "Info"
+
+#: src/WatchdogUI.cpp:361
+msgid "GPS course crosses land in <"
+msgstr "GPS'i kurss lõikub maaga <"
+
+#: src/WatchdogUI.cpp:367 src/WatchdogUI.cpp:435
+msgid "minutes"
+msgstr "minuti pärast"
+
+#: src/WatchdogUI.cpp:379 src/WatchdogUI.cpp:447
+msgid "GPS fix is <"
+msgstr "GPS asokoht on <"
+
+#: src/WatchdogUI.cpp:382 src/WatchdogUI.cpp:450
+msgid "3"
+msgstr "3"
+
+#: src/WatchdogUI.cpp:385
+msgid "nm from coastline\n"
+"(any direction)"
+msgstr "nm rannajoonest\n"
+"(igal suunal)"
+
+#: src/WatchdogUI.cpp:392
+msgid "Graphical overlay for time displays line from boat to location of land crossing"
+msgstr "Aja graafiline ülekate kuvab joont alusest kuni maaga lõikumise kohani"
+
+#: src/WatchdogUI.cpp:396
+msgid "Landfall detection uses gshhs (global heirarchical high-resolution shoreline data.)\n"
+"Consider installing the highest resolution database for best accuracy."
+msgstr "Ranniku tuvastamine kasutab gshhs'i (global heirarchical high-resolution shoreline data.)\n"
+"Kaalutle kõrgeima eraldusvõimega andmebaasi paigaldamist parima täpsuse jaoks."
+
+#: src/WatchdogUI.cpp:417
+msgid "Exclusion Alarms"
+msgstr "Häirete välistamine"
+
+#: src/WatchdogUI.cpp:429
+msgid "GPS course crosses boundary in <"
+msgstr "GPS-kurss lõikub piiriga <"
+
+#: src/WatchdogUI.cpp:453
+msgid "nm from boundary\n"
+"(any direction)"
+msgstr "nm piirist\n"
+"(iga suund)"
+
+#: src/WatchdogUI.cpp:465 src/WatchdogUI.cpp:471
+msgid "Any"
+msgstr "Iga"
+
+#: src/WatchdogUI.cpp:465
+msgid "Exclusion"
+msgstr "Väljajätt"
+
+#: src/WatchdogUI.cpp:465
+msgid "Inclusion"
+msgstr "Kaasamine"
+
+#: src/WatchdogUI.cpp:465
+msgid "Neither"
+msgstr "Mitte kumbki"
+
+#: src/WatchdogUI.cpp:467
+msgid "Boundary Type"
+msgstr "Piiri laad"
+
+#: src/WatchdogUI.cpp:471
+msgid "Active"
+msgstr "Aktiivne"
+
+#: src/WatchdogUI.cpp:471
+msgid "Inactive"
+msgstr "Passivne"
+
+#: src/WatchdogUI.cpp:473
+msgid "Boundary State"
+msgstr "Piiri olukord"
+
+#: src/WatchdogUI.cpp:498
+msgid "Get Boundary GUID"
+msgstr "Saa piir GUID"
+
+#: src/WatchdogUI.cpp:509
+msgid "AIS Guard Zone"
+msgstr "AIS valvetsoon"
+
+#: src/WatchdogUI.cpp:531
+msgid "Check Frequency  (Secs)\n"
+"(Note: not Guard Zone)"
+msgstr "Kontrolli sagedust (sek)\n"
+"(Märkus: mitte valvetsoon)"
+
+#: src/WatchdogUI.cpp:541
+msgid "Graphical overlay for GPS fix displays line from boat to location of the point in the found boundary"
+msgstr "GPS'i graafiline ülekate näitab joont paadist leitud piiril punkti asukohta"
+
+#: src/WatchdogUI.cpp:573
+msgid "Require following NMEA sentences:"
+msgstr "Vajalik on järgmine NMEA pakkumine:"
+
+#: src/WatchdogUI.cpp:577
+msgid "$GPGGA"
+msgstr "$GPGGA"
+
+#: src/WatchdogUI.cpp:585
+msgid "at least every"
+msgstr "vähemalt iga"
+
+#: src/WatchdogUI.cpp:592
 msgid "seconds"
 msgstr "sekundit"
-#
-#
-#
-#
-#
-#
-#
-#
-#, fuzzy
-#~ msgid " boundary area"
-#~ msgstr " piir "
+
+#: src/WatchdogUI.cpp:621
+msgid "No User Activity for"
+msgstr "Kasutaja tegevus puudub"
+
+#: src/WatchdogUI.cpp:628
+msgid "minute(s)"
+msgstr "minuti(te) jooksul"
+
+#: src/WatchdogUI.cpp:657
+msgid "Latitude"
+msgstr "Laius"
+
+#: src/WatchdogUI.cpp:667
+msgid "Longitude"
+msgstr "Pikkus"
+
+#: src/WatchdogUI.cpp:674
+msgid "Sync to Boat"
+msgstr "Aluse asukoht"
+
+#: src/WatchdogUI.cpp:677
+msgid "Radius"
+msgstr "raadius"
+
+#: src/WatchdogUI.cpp:691
+msgid "Automatically syncronize to the boat whenever enabled"
+msgstr "Automaatselt sünkroniseeri alusega iga kord kui lubatud"
+
+#: src/WatchdogUI.cpp:694
+msgid "Graphical overlay displays bounding anchor area"
+msgstr "Graafiline ülekate kuvab ankruala piiri"
+
+#: src/WatchdogUI.cpp:730
+msgid "Port or Starboard"
+msgstr "Pak- või tüürpoord"
+
+#: src/WatchdogUI.cpp:739
+msgid "Off Course By >"
+msgstr "Kursi kõrvalekalle >"
+
+#: src/WatchdogUI.cpp:746
+msgid "Degrees"
+msgstr "kraadi"
+
+#: src/WatchdogUI.cpp:750
+msgid "With Course Of"
+msgstr "Aluseks kurss"
+
+#: src/WatchdogUI.cpp:757
+msgid "Current Course"
+msgstr "Praegune kurss"
+
+#: src/WatchdogUI.cpp:763
+msgid "Graphical overlay displays lines bounding valid courses"
+msgstr "Graafiline ülekate kuvab jooni, mis piiravad korrektseid kursse"
+
+#: src/WatchdogUI.cpp:786
+msgid "Speed Alarm"
+msgstr "Kiiruse häire"
+
+#: src/WatchdogUI.cpp:797
+msgid "Under Speed"
+msgstr "Alakiirus"
+
+#: src/WatchdogUI.cpp:797
+msgid "Over Speed"
+msgstr "Ülekiirus"
+
+#: src/WatchdogUI.cpp:806
+msgid "Speed over ground"
+msgstr "Kiirus põhja suhtes"
+
+#: src/WatchdogUI.cpp:810
+msgid "1"
+msgstr "1"
+
+#: src/WatchdogUI.cpp:813
+msgid "knots"
+msgstr "sõlme"
+
+#: src/WatchdogUI.cpp:826
+msgid "Seconds to Average\n"
+"SOG over"
+msgstr "Sekundit keskmine\n"
+"SOG on möödas"
+
+#: src/WatchdogUI.cpp:836
+msgid "Graphical overlay displays circle with radius of this speed"
+msgstr "Graafiline ülekate kuvab ringi, mille raadiuseks on valitud kiirus"
+
+#: src/WatchdogUI.h:64
+msgid "WatchDog"
+msgstr "Watchdog"
+
+#: src/WatchdogUI.h:103
+msgid "Watchdog Configuration"
+msgstr "Watchdog seadistamine"
+
+#: src/WatchdogUI.h:127
+msgid "New Alarm"
+msgstr "Uus häire"
+
+#: src/WatchdogUI.h:163
+msgid "Edit Alarm"
+msgstr "Muuda häiret"
+
+#: src/watchdog_pi.cpp:229
+msgid "Watchdog PlugIn for OpenCPN"
+msgstr "Watchdog'i plugin OpenCPN'i jaoks"
+
+#: src/watchdog_pi.cpp:234
+msgid "Watchdog PlugIn for OpenCPN\n"
+"Alarm user of changing conditions."
+msgstr "Watchdog'i plugin OpenCPN'i jaoks\n"
+"Hoiatab kasutajat muutuvatest tingimustest."
+
