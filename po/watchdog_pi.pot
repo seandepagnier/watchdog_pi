@@ -1,14 +1,14 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
+# This file is distributed under the same license as the watchdog_pi package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: watchdog_pi 1.90422\n"
+"Project-Id-Version: watchdog_pi 1.9042\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-29 08:14+1100\n"
+"POT-Creation-Date: 2016-02-29 12:11-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -77,8 +77,8 @@ msgstr ""
 msgid "Boundary Distance"
 msgstr ""
 
-#: src/Alarm.cpp:287
-msgid "Anchor Watch"
+#: src/Alarm.cpp:287 src/WatchdogUI.cpp:488
+msgid "Inclusion Alarm"
 msgstr ""
 
 #: src/Alarm.cpp:288 src/Alarm.cpp:649 src/watchdog_pi.cpp:526
@@ -192,7 +192,7 @@ msgid "Description"
 msgstr ""
 
 #: src/Alarm.cpp:849 src/Alarm.cpp:862 src/Alarm.cpp:879 src/Alarm.cpp:888
-#: src/EditAlarmDialog.cpp:155 src/EditAlarmDialog.cpp:188
+#: src/EditAlarmDialog.cpp:158 src/EditAlarmDialog.cpp:193
 msgid "GUID"
 msgstr ""
 
@@ -205,7 +205,7 @@ msgid "in"
 msgstr ""
 
 #: src/Alarm.cpp:854 src/Alarm.cpp:870 src/Alarm.cpp:880 src/Alarm.cpp:891
-#: src/Alarm.cpp:1716 src/EditAlarmDialog.cpp:156 src/EditAlarmDialog.cpp:189
+#: src/Alarm.cpp:1716 src/EditAlarmDialog.cpp:159 src/EditAlarmDialog.cpp:194
 msgid "Watchman"
 msgstr ""
 
@@ -342,7 +342,7 @@ msgstr ""
 msgid "Action"
 msgstr ""
 
-#: src/EditAlarmDialog.cpp:81
+#: src/EditAlarmDialog.cpp:86
 msgid ""
 "Most alarms should be self-explanatory\n"
 "Normally a sound is played, however you can execute any command you like, "
@@ -353,15 +353,15 @@ msgid ""
 "it may be triggered again later."
 msgstr ""
 
-#: src/EditAlarmDialog.cpp:88
+#: src/EditAlarmDialog.cpp:93
 msgid "Watchdog Information"
 msgstr ""
 
-#: src/EditAlarmDialog.cpp:154 src/EditAlarmDialog.cpp:187
+#: src/EditAlarmDialog.cpp:157 src/EditAlarmDialog.cpp:192
 msgid "Error!"
 msgstr ""
 
-#: src/EditAlarmDialog.cpp:155 src/EditAlarmDialog.cpp:188
+#: src/EditAlarmDialog.cpp:158 src/EditAlarmDialog.cpp:193
 msgid " does not exist"
 msgstr ""
 
@@ -540,10 +540,6 @@ msgstr ""
 
 #: src/WatchdogUI.cpp:473
 msgid "Boundary State"
-msgstr ""
-
-#: src/WatchdogUI.cpp:488
-msgid "Inclusion Alarm"
 msgstr ""
 
 #: src/WatchdogUI.cpp:498
