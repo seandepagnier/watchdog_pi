@@ -433,6 +433,11 @@ void watchdog_pi::SetPluginMessage(wxString &message_id, wxString &message_body)
                         g_ReceivedBoundaryGUIDJSONMsg = root;
                         g_ReceivedBoundaryGUIDMessage = message_body;
                     }
+                } else if(root[wxS("Msg")].AsString() == wxS("FindClosestBoundaryLineCrossing") ) {
+                    if(root[wxS("MsgId")].AsString() == wxS("distance")) {
+                        g_ReceivedBoundaryDistanceJSONMsg = root;
+                        g_ReceivedBoundaryDistanceMessage = message_body;
+                    }
                 } else if(root[wxS("Msg")].AsString() == wxS("FindPointInBoundary") ) {
                     if(root[wxS("MsgId")].AsString() == wxS("anchor")) {
                         g_ReceivedBoundaryAnchorJSONMsg = root;
