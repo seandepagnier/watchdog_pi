@@ -51,6 +51,8 @@ wxJSONValue g_ReceivedGuardZoneJSONMsg;
 wxString    g_ReceivedGuardZoneMessage;
 wxJSONValue g_ReceivedGuardZoneGUIDJSONMsg;
 wxString    g_ReceivedGuardZoneGUIDMessage;
+wxJSONValue g_ReceivedODVersionJSONMsg;
+wxString    g_ReceivedODVersionMessage;
 wxJSONValue g_ReceivedAISJSONMsg;
 wxString    g_ReceivedAISMessage;
 
@@ -108,6 +110,7 @@ watchdog_pi::watchdog_pi(void *ppimgr)
     g_ReceivedBoundaryGUIDMessage = wxEmptyString;
     g_ReceivedGuardZoneMessage = wxEmptyString;
     g_ReceivedGuardZoneGUIDMessage = wxEmptyString;
+    g_ReceivedODVersionMessage = wxEmptyString;
     g_GuardZoneName = wxEmptyString;
     g_GuardZoneDescription = wxEmptyString;
     g_GuardZoneGUID = wxEmptyString;
@@ -437,6 +440,9 @@ void watchdog_pi::SetPluginMessage(wxString &message_id, wxString &message_body)
                     if(root[wxS("MsgId")].AsString() == wxS("distance")) {
                         g_ReceivedBoundaryDistanceJSONMsg = root;
                         g_ReceivedBoundaryDistanceMessage = message_body;
+                    } else if(root[wxS("MsgId")].AsString() == wxS("time")) {
+                        g_ReceivedBoundaryTimeJSONMsg = root;
+                        g_ReceivedBoundaryTimeMessage = message_body;
                     }
                 } else if(root[wxS("Msg")].AsString() == wxS("FindPointInBoundary") ) {
                     if(root[wxS("MsgId")].AsString() == wxS("anchor")) {
@@ -447,6 +453,11 @@ void watchdog_pi::SetPluginMessage(wxString &message_id, wxString &message_body)
                     if(root[wxS("MsgId")].AsString() == wxS("guard")) {
                         g_ReceivedGuardZoneJSONMsg = root;
                         g_ReceivedGuardZoneMessage = message_body;
+                    }
+                } else if(root[wxS("Msg")].AsString() == wxS("Version") ) {
+                    if(root[wxS("MsgId")].AsString() == wxS("version")) {
+                        g_ReceivedODVersionJSONMsg = root;
+                        g_ReceivedODVersionMessage = message_body;
                     }
                 }
             }
