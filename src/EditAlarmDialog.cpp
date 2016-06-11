@@ -163,8 +163,8 @@ void BoundaryPanel::OnBoundaryGUIDKillFocus( wxFocusEvent& event )
         + _("GUID") + _T(": ") + m_tBoundaryGUID->GetValue() + _(" does not exist");
         wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchman"), wxOK | wxICON_WARNING);
         mdlg.ShowModal();
+        m_tBoundaryGUID->SetFocus();
     }
-    m_tBoundaryGUID->SetFocus();
     event.Skip();
 }
 
@@ -203,8 +203,8 @@ void BoundaryPanel::OnGuardZoneGUIDKillFocus( wxFocusEvent& event )
                 + _("GUID") + _T(": ") + m_tGuardZoneGUID->GetValue() + _(" does not exist");
         wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchman"), wxOK | wxICON_WARNING);
         mdlg.ShowModal();
+        m_tGuardZoneGUID->SetFocus();
     }
-    m_tGuardZoneGUID->SetFocus();
     event.Skip();
 }
 
