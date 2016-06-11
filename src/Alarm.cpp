@@ -328,10 +328,7 @@ public:
         switch(m_Mode) {
             case TIME: {
                 if(wxIsNaN(lastfix.Lat) || wxIsNaN(lastfix.Lon) ||wxIsNaN(lastfix.Cog) || wxIsNaN(lastfix.Sog)) break;
-                if(g_ReceivedODVersionMessage != wxEmptyString &&
-                    g_ReceivedODVersionJSONMsg[wxS("Major")].AsInt() >= 1 && 
-                    g_ReceivedODVersionJSONMsg[wxS("Minor")].AsInt() >= 1 && 
-                    g_ReceivedODVersionJSONMsg[wxS("Patch")].AsInt() >= 1) {
+                if(ODVersionNewerThan( 1, 1, 1)) {
                     dist = lastfix.Sog * ( m_TimeMinutes / 60 );
                     PositionBearingDistanceMercator_Plugin(lastfix.Lat, lastfix.Lon, lastfix.Cog, dist, &lat, &lon);
                     
@@ -481,10 +478,7 @@ public:
             case DISTANCE: {
                 if(wxIsNaN(lastfix.Lat) || wxIsNaN(lastfix.Lon)) break;
                 // check OD version to see which lookup to use
-                if(g_ReceivedODVersionMessage != wxEmptyString &&
-                    g_ReceivedODVersionJSONMsg[wxS("Major")].AsInt() >= 1 && 
-                    g_ReceivedODVersionJSONMsg[wxS("Minor")].AsInt() >= 1 && 
-                    g_ReceivedODVersionJSONMsg[wxS("Patch")].AsInt() >= 1) {
+                if( ODVersionNewerThan( 1, 1, 1)) {
                     BoundaryCrossingList.clear();
                     for(double t = 0; t<360; t+=10) {
                         PositionBearingDistanceMercator_Plugin(lastfix.Lat, lastfix.Lon, t, m_Distance , &lat, &lon);
@@ -1208,6 +1202,18 @@ public:
             }
         }
         return s;
+    }
+    
+    bool ODVersionNewerThan(int major, int minor, int patch)
+    {
+        if(g_ReceivedODVersionMessage == wxEmptyString) return false;
+        if(g_ReceivedODVersionJSONMsg[wxS("Major")].AsInt() > major) return true;
+        if(g_ReceivedODVersionJSONMsg[wxS("Major")].AsInt() == major &&
+            g_ReceivedODVersionJSONMsg[wxS("Minor")].AsInt() > minor) return true;
+        if(g_ReceivedODVersionJSONMsg[wxS("Major")].AsInt() == major &&
+            g_ReceivedODVersionJSONMsg[wxS("Minor")].AsInt() == minor &&
+            g_ReceivedODVersionJSONMsg[wxS("Patch")].AsInt() >= patch) return true;
+        return false;
     }
     
     void GetODVersion( void )
