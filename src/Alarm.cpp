@@ -707,7 +707,8 @@ public:
                 SendPluginMessage( wxS("OCPN_DRAW_PI"), MsgString );
                 if(g_ReceivedGuardZoneMessage != wxEmptyString &&
                     g_ReceivedGuardZoneJSONMsg[wxS("MsgId")].AsString() == wxS("guard") &&
-                    g_ReceivedGuardZoneJSONMsg[wxS("Found")].AsBool() == true ) {
+                    g_ReceivedGuardZoneJSONMsg[wxS("Found")].AsBool() == true &&
+                    g_ReceivedGuardZoneJSONMsg[wxS("Active")].AsBool() == true) {
                     // This is our message
                     g_ReceivedGuardZoneMessage = wxEmptyString;
                     m_GuardZoneName = g_ReceivedGuardZoneJSONMsg[wxS("Name")].AsString();
