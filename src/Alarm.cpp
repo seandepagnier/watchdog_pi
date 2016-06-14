@@ -681,6 +681,7 @@ public:
                 if(g_ReceivedBoundaryAnchorMessage != wxEmptyString &&
                     g_ReceivedBoundaryAnchorJSONMsg[wxS("MsgId")].AsString() == wxS("anchor") &&
                     g_ReceivedBoundaryAnchorJSONMsg[wxS("Found")].AsBool() == false ) {
+
                     // This is our message
                     g_ReceivedBoundaryDistanceMessage = wxEmptyString;
                     m_bAnchorOutside = true;
@@ -707,8 +708,10 @@ public:
                 SendPluginMessage( wxS("OCPN_DRAW_PI"), MsgString );
                 if(g_ReceivedGuardZoneMessage != wxEmptyString &&
                     g_ReceivedGuardZoneJSONMsg[wxS("MsgId")].AsString() == wxS("guard") &&
-                    g_ReceivedGuardZoneJSONMsg[wxS("Found")].AsBool() == true ) {
-                    // This is our message
+                    g_ReceivedGuardZoneJSONMsg[wxS("Found")].AsBool() == true ) { 
+
+                    if(g_ReceivedGuardZoneJSONMsg.HasMember( wxS("Active")))
+                        if(g_ReceivedGuardZoneJSONMsg[wxS("Active")].AsBool() != true) return false;
                     g_ReceivedGuardZoneMessage = wxEmptyString;
                     m_GuardZoneName = g_ReceivedGuardZoneJSONMsg[wxS("Name")].AsString();
                     m_GuardZoneDescription = g_ReceivedGuardZoneJSONMsg[wxS("Description")].AsString();
