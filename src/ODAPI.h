@@ -37,18 +37,50 @@
 #endif
 #endif
 
+struct FindPointInAnyBoundary_t {
+    double  dLat;
+    double  dLon;
+    wxString    sBoundaryType;
+    wxString    sBoundaryState;
+    wxString    sName;
+    wxString    sDescription;
+    wxString    sGUID;
+    wxString    sBoundaryObjectType;
+};
+
+struct FindClosestBoundaryLineCrossing_t {
+    double      dStartLat;
+    double      dStartLon;
+    double      dEndLat;
+    double      dEndLon;
+    double      dCrossingLat;
+    double      dCrossingLon;
+    double      dCrossingDistance;
+    wxString    sBoundaryType;
+    wxString    sBoundaryState;
+    wxString    sName;
+    wxString    sDescription;
+    wxString    sGUID;
+    wxString    sBoundaryObjectType;
+};
+
 class ODAPI
 {
-    public:
-        ODAPI();
-        ~ODAPI();
-        static bool OD_FindPathByGUID( wxString sGUID, wxString sName, wxString sDescription );
-    protected:
+public:
+    ODAPI();
+    ~ODAPI();
+    static bool OD_FindPathByGUID( wxString sGUID, wxString sName, wxString sDescription );
+    static bool OD_FindPointInAnyBoundary( FindPointInAnyBoundary_t *pFPIAB );
+    static bool OD_FindClosestBoundaryLineCrossing( FindClosestBoundaryLineCrossing_t *pFCBLC );
     
-    private:
+protected:
+    
+private:
 };
 
 typedef bool (*OD_FindPathByGUID) (wxString, wxString *, wxString *);
+typedef bool (*OD_FindPointInAnyBoundary) (FindPointInAnyBoundary_t *);
+typedef bool (*OD_FindClosestBoundaryLineCrossing) (FindClosestBoundaryLineCrossing_t *);
 
 
 #endif //_ODAPI_H_

@@ -36,8 +36,6 @@
 
 #include "EditAlarmDialog.h"
 #include "ODAPI.h"
-#include "wx/dynlib.h"
-#include "wx/dynarray.h"
 
 extern wxJSONValue g_ReceivedODVersionJSONMsg;
 extern wxString    g_ReceivedODVersionMessage;
@@ -186,7 +184,6 @@ void BoundaryPanel::OnBoundaryGUIDKillFocus( wxFocusEvent& event )
         jMsg[wxT("Type")] = wxT("Request");
         jMsg[wxT("Msg")] = wxS("GetAPIAddresses");
         jMsg[wxT("MsgId")] = wxS("GetAPIAddresses");
-        jMsg[wxS("GUID")] = m_tBoundaryGUID->GetValue();
         writer.Write( jMsg, MsgString );
         SendPluginMessage( wxS("OCPN_DRAW_PI"), MsgString );
         if(g_ReceivedODAPIMessage != wxEmptyString &&  g_ReceivedODAPIJSONMsg[wxT("MsgId")].AsString() == wxS("GetAPIAddresses")) {
