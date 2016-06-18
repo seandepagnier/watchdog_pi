@@ -35,6 +35,12 @@
 #include "watchdog_pi.h"
 
 #include "EditAlarmDialog.h"
+#include "ODAPI.h"
+#include "wx/dynlib.h"
+#include "wx/dynarray.h"
+
+extern wxJSONValue g_ReceivedODVersionJSONMsg;
+extern wxString    g_ReceivedODVersionMessage;
 
 EditAlarmDialog::EditAlarmDialog(wxWindow* parent, Alarm *alarm)
     : EditAlarmDialogBase(parent), m_alarm(alarm)
@@ -94,6 +100,31 @@ be triggered again later."),
     mdlg.ShowModal();
 }
 
+bool ODVersionNewerThan(int major, int minor, int patch)
+{
+    if(g_ReceivedODVersionMessage == wxEmptyString) return false;
+    if(g_ReceivedODVersionJSONMsg[wxS("Major")].AsInt() > major) return true;
+    if(g_ReceivedODVersionJSONMsg[wxS("Major")].AsInt() == major &&
+        g_ReceivedODVersionJSONMsg[wxS("Minor")].AsInt() > minor) return true;
+    if(g_ReceivedODVersionJSONMsg[wxS("Major")].AsInt() == major &&
+        g_ReceivedODVersionJSONMsg[wxS("Minor")].AsInt() == minor &&
+        g_ReceivedODVersionJSONMsg[wxS("Patch")].AsInt() >= patch) return true;
+    return false;
+}
+
+void GetODVersion( void )
+{
+    wxJSONValue jMsg;
+    wxJSONWriter writer;
+    wxString    MsgString;
+    jMsg[wxS("Source")] = wxS("WATCHDOG_PI");
+    jMsg[wxT("Type")] = wxT("Request");
+    jMsg[wxT("Msg")] = wxS("Version");
+    jMsg[wxT("MsgId")] = wxS("version");
+    writer.Write( jMsg, MsgString );
+    SendPluginMessage( wxS("OCPN_DRAW_PI"), MsgString );
+}
+
 void BoundaryPanel::OnGetBoundaryGUID( wxCommandEvent& event )
 {
     extern wxJSONValue g_ReceivedBoundaryGUIDJSONMsg;
@@ -135,35 +166,74 @@ void BoundaryPanel::OnBoundaryGUIDKillFocus( wxFocusEvent& event )
     extern wxString    g_BoundaryGUID;
     extern wxJSONValue g_ReceivedPathGUIDJSONMsg;
     extern wxString    g_ReceivedPathGUIDMessage;
+    extern wxJSONValue g_ReceivedODAPIJSONMsg;
+    extern wxString    g_ReceivedODAPIMessage;
+    
+    wxJSONValue     jMsg;
+    wxJSONWriter    writer;
+    wxString        MsgString;
+    
+    bool            l_bCheckDone = false;
     
     if(m_tBoundaryGUID->GetValue().Len() == 0) {
         event.Skip();
         return;
     }
     
-    wxJSONValue jMsg;
-    wxJSONWriter writer;
-    wxString    MsgString;
-    jMsg[wxT("Source")] = wxT("WATCHDOG_PI");
-    jMsg[wxT("Type")] = wxT("Request");
-    jMsg[wxT("Msg")] = wxS("FindPathByGUID");
-    jMsg[wxT("MsgId")] = wxS("inclusion");
-    jMsg[wxS("GUID")] = m_tBoundaryGUID->GetValue();
-    writer.Write( jMsg, MsgString );
-    g_ReceivedPathGUIDMessage = wxEmptyString;
-    SendPluginMessage( wxS("OCPN_DRAW_PI"), MsgString );
-    if(g_ReceivedPathGUIDMessage != wxEmptyString && 
-        g_ReceivedPathGUIDJSONMsg[wxT("MsgId")].AsString() == wxS("inclusion") && 
-        g_ReceivedPathGUIDJSONMsg[wxT("Found")].AsBool() == true ) {
-        g_BoundaryName = g_ReceivedPathGUIDJSONMsg[wxS("Name")].AsString();
+    GetODVersion();
+    if(ODVersionNewerThan( 1, 1, 15)) {
+        jMsg[wxT("Source")] = wxT("WATCHDOG_PI");
+        jMsg[wxT("Type")] = wxT("Request");
+        jMsg[wxT("Msg")] = wxS("GetAPIAddresses");
+        jMsg[wxT("MsgId")] = wxS("GetAPIAddresses");
+        jMsg[wxS("GUID")] = m_tBoundaryGUID->GetValue();
+        writer.Write( jMsg, MsgString );
+        SendPluginMessage( wxS("OCPN_DRAW_PI"), MsgString );
+        if(g_ReceivedODAPIMessage != wxEmptyString &&  g_ReceivedODAPIJSONMsg[wxT("MsgId")].AsString() == wxS("GetAPIAddresses")) {
+            wxString sptr = g_ReceivedODAPIJSONMsg[_T("OD_FindPathByGUID")].AsString();
+            if(sptr != _T("null")) {
+                l_bCheckDone = true;
+                OD_FindPathByGUID pOD_FindPathByGUID;
+                sscanf(sptr.To8BitData().data(), "%p", &pOD_FindPathByGUID);
+                wxString l_sName;
+                wxString l_sDescription;
+                if((*pOD_FindPathByGUID)(m_tBoundaryGUID->GetValue(), &l_sName, &l_sDescription)) {
+                    g_BoundaryName = l_sName;
+                    g_BoundaryDescription = l_sDescription;
+                    g_BoundaryGUID = m_tBoundaryGUID->GetValue();
+                } else {
+                    wxString l_s = _T(" ") + wxString(_("Error!")) + _T("\n") 
+                    + _("GUID") + _T(": ") + m_tBoundaryGUID->GetValue() + _(" does not exist");
+                    wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchman"), wxOK | wxICON_WARNING);
+                    mdlg.ShowModal();
+                    m_tBoundaryGUID->SetFocus();
+                }
+            }
+        }
+    } 
+    
+    if(!l_bCheckDone) {
+        jMsg[wxT("Source")] = wxT("WATCHDOG_PI");
+        jMsg[wxT("Type")] = wxT("Request");
+        jMsg[wxT("Msg")] = wxS("FindPathByGUID");
+        jMsg[wxT("MsgId")] = wxS("inclusion");
+        jMsg[wxS("GUID")] = m_tBoundaryGUID->GetValue();
+        writer.Write( jMsg, MsgString );
+        g_ReceivedPathGUIDMessage = wxEmptyString;
+        SendPluginMessage( wxS("OCPN_DRAW_PI"), MsgString );
+        if(g_ReceivedPathGUIDMessage != wxEmptyString && 
+            g_ReceivedPathGUIDJSONMsg[wxT("MsgId")].AsString() == wxS("inclusion") && 
+            g_ReceivedPathGUIDJSONMsg[wxT("Found")].AsBool() == true ) {
+            g_BoundaryName = g_ReceivedPathGUIDJSONMsg[wxS("Name")].AsString();
         g_BoundaryDescription = g_ReceivedPathGUIDJSONMsg[wxS("Description")].AsString();
         g_BoundaryGUID = g_ReceivedPathGUIDJSONMsg[wxS("GUID")].AsString();
-    } else {
-        wxString l_s = _T(" ") + wxString(_("Error!")) + _T("\n") 
-        + _("GUID") + _T(": ") + m_tBoundaryGUID->GetValue() + _(" does not exist");
-        wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchman"), wxOK | wxICON_WARNING);
-        mdlg.ShowModal();
-        m_tBoundaryGUID->SetFocus();
+            } else {
+                wxString l_s = _T(" ") + wxString(_("Error!")) + _T("\n") 
+                + _("GUID") + _T(": ") + m_tBoundaryGUID->GetValue() + _(" does not exist");
+                wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchman"), wxOK | wxICON_WARNING);
+                mdlg.ShowModal();
+                m_tBoundaryGUID->SetFocus();
+            }
     }
     event.Skip();
 }
@@ -175,35 +245,73 @@ void BoundaryPanel::OnGuardZoneGUIDKillFocus( wxFocusEvent& event )
     extern wxString    g_GuardZoneGUID;
     extern wxJSONValue g_ReceivedPathGUIDJSONMsg;
     extern wxString    g_ReceivedPathGUIDMessage;
+    extern wxJSONValue g_ReceivedODAPIJSONMsg;
+    extern wxString    g_ReceivedODAPIMessage;
     
+    bool                l_bCheckDone = false;
+    
+    wxJSONValue jMsg;
+    wxJSONWriter writer;
+    wxString    MsgString;
+
     if(m_tGuardZoneGUID->GetValue().Len() == 0) {
         event.Skip();
         return;
     }
     
-    wxJSONValue jMsg;
-    wxJSONWriter writer;
-    wxString    MsgString;
-    jMsg[wxT("Source")] = wxT("WATCHDOG_PI");
-    jMsg[wxT("Type")] = wxT("Request");
-    jMsg[wxT("Msg")] = wxS("FindPathByGUID");
-    jMsg[wxT("MsgId")] = wxS("guard");
-    jMsg[wxS("GUID")] = m_tGuardZoneGUID->GetValue();
-    writer.Write( jMsg, MsgString );
-    g_ReceivedPathGUIDMessage = wxEmptyString;
-    SendPluginMessage( wxS("OCPN_DRAW_PI"), MsgString );
-    if(g_ReceivedPathGUIDMessage != wxEmptyString && 
-        g_ReceivedPathGUIDJSONMsg[wxT("MsgId")].AsString() == wxS("guard") && 
-        g_ReceivedPathGUIDJSONMsg[wxT("Found")].AsBool() == true ) {
-        g_GuardZoneName = g_ReceivedPathGUIDJSONMsg[wxS("Name")].AsString();
-        g_GuardZoneDescription = g_ReceivedPathGUIDJSONMsg[wxS("Description")].AsString();
-        g_GuardZoneGUID = g_ReceivedPathGUIDJSONMsg[wxS("GUID")].AsString();
-    } else {
-        wxString l_s = _T(" ") + wxString(_("Error!")) + _T("\n") 
-                + _("GUID") + _T(": ") + m_tGuardZoneGUID->GetValue() + _(" does not exist");
-        wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchman"), wxOK | wxICON_WARNING);
-        mdlg.ShowModal();
-        m_tGuardZoneGUID->SetFocus();
+    GetODVersion();
+    if(ODVersionNewerThan( 1, 1, 15)) {
+        jMsg[wxT("Source")] = wxT("WATCHDOG_PI");
+        jMsg[wxT("Type")] = wxT("Request");
+        jMsg[wxT("Msg")] = wxS("GetAPIAddresses");
+        jMsg[wxT("MsgId")] = wxS("GetAPIAddresses");
+        jMsg[wxS("GUID")] = m_tBoundaryGUID->GetValue();
+        writer.Write( jMsg, MsgString );
+        SendPluginMessage( wxS("OCPN_DRAW_PI"), MsgString );
+        if(g_ReceivedODAPIMessage != wxEmptyString &&  g_ReceivedODAPIJSONMsg[wxT("MsgId")].AsString() == wxS("GetAPIAddresses")) {
+            wxString sptr = g_ReceivedODAPIJSONMsg[_T("OD_FindPathByGUID")].AsString();
+            if(sptr != _T("null")) {
+                l_bCheckDone = true;
+                OD_FindPathByGUID pOD_FindPathByGUID;
+                sscanf(sptr.To8BitData().data(), "%p", &pOD_FindPathByGUID);
+                wxString l_sName;
+                wxString l_sDescription;
+                if((*pOD_FindPathByGUID)(m_tGuardZoneGUID->GetValue(), &l_sName, &l_sDescription)) {
+                    g_GuardZoneName = l_sName;
+                    g_GuardZoneDescription = l_sDescription;
+                    g_GuardZoneGUID = m_tBoundaryGUID->GetValue();
+                } else {
+                    wxString l_s = _T(" ") + wxString(_("Error!")) + _T("\n") 
+                    + _("GUID") + _T(": ") + m_tGuardZoneGUID->GetValue() + _(" does not exist");
+                    wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchman"), wxOK | wxICON_WARNING);
+                    mdlg.ShowModal();
+                    m_tGuardZoneGUID->SetFocus();
+                }
+            }
+        }
+    } 
+    if(!l_bCheckDone) {
+        jMsg[wxT("Source")] = wxT("WATCHDOG_PI");
+        jMsg[wxT("Type")] = wxT("Request");
+        jMsg[wxT("Msg")] = wxS("FindPathByGUID");
+        jMsg[wxT("MsgId")] = wxS("guard");
+        jMsg[wxS("GUID")] = m_tGuardZoneGUID->GetValue();
+        writer.Write( jMsg, MsgString );
+        g_ReceivedPathGUIDMessage = wxEmptyString;
+        SendPluginMessage( wxS("OCPN_DRAW_PI"), MsgString );
+        if(g_ReceivedPathGUIDMessage != wxEmptyString && 
+            g_ReceivedPathGUIDJSONMsg[wxT("MsgId")].AsString() == wxS("guard") && 
+            g_ReceivedPathGUIDJSONMsg[wxT("Found")].AsBool() == true ) {
+            g_GuardZoneName = g_ReceivedPathGUIDJSONMsg[wxS("Name")].AsString();
+            g_GuardZoneDescription = g_ReceivedPathGUIDJSONMsg[wxS("Description")].AsString();
+            g_GuardZoneGUID = g_ReceivedPathGUIDJSONMsg[wxS("GUID")].AsString();
+        } else {
+            wxString l_s = _T(" ") + wxString(_("Error!")) + _T("\n") 
+                    + _("GUID") + _T(": ") + m_tGuardZoneGUID->GetValue() + _(" does not exist");
+            wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchman"), wxOK | wxICON_WARNING);
+            mdlg.ShowModal();
+            m_tGuardZoneGUID->SetFocus();
+        }
     }
     event.Skip();
 }
@@ -218,3 +326,6 @@ void CoursePanel::OnCurrentCourse( wxCommandEvent& event )
 {
     m_sCourse->SetValue(g_watchdog_pi->m_cog);
 }
+
+
+
