@@ -1427,16 +1427,7 @@ public:
     }
 
     wxString GetStatus() {
-        int seconds = ElapsedSeconds();
-        wxString s;
-        if(isnan(seconds))
-            s = _T("N/A");
-        else {
-            wxString fmt(_T("%d "));
-            s = wxString::Format(fmt + _("second(s)"), seconds);
-        }
-
-        return s;
+        return wxString::Format(_T("%d ") + _("second(s)"), ElapsedSeconds());
     }
 
     wxWindow *OpenPanel(wxWindow *parent) {
