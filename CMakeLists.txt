@@ -35,7 +35,7 @@ SET(SRC_WATCHDOG
             src/Alarm.cpp
             src/WatchdogUI.cpp
             src/icons.cpp
-
+            src/ODAPI.h
             src/wddc.cpp
             src/TexFont.cpp
 	)

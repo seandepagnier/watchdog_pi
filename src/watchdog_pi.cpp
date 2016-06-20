@@ -53,6 +53,8 @@ wxJSONValue g_ReceivedGuardZoneGUIDJSONMsg;
 wxString    g_ReceivedGuardZoneGUIDMessage;
 wxJSONValue g_ReceivedODVersionJSONMsg;
 wxString    g_ReceivedODVersionMessage;
+wxJSONValue g_ReceivedODAPIJSONMsg;
+wxString    g_ReceivedODAPIMessage;
 wxJSONValue g_ReceivedAISJSONMsg;
 wxString    g_ReceivedAISMessage;
 
@@ -458,6 +460,11 @@ void watchdog_pi::SetPluginMessage(wxString &message_id, wxString &message_body)
                     if(root[wxS("MsgId")].AsString() == wxS("version")) {
                         g_ReceivedODVersionJSONMsg = root;
                         g_ReceivedODVersionMessage = message_body;
+                    }
+                } else if(root[wxS("Msg")].AsString() == wxS("GetAPIAddresses") ) {
+                    if(root[wxS("MsgId")].AsString() == wxS("GetAPIAddresses")) {
+                        g_ReceivedODAPIJSONMsg = root;
+                        g_ReceivedODAPIMessage = message_body;
                     }
                 }
             }
