@@ -852,6 +852,7 @@ public:
                     return true;
                 }
                 g_ReceivedGuardZoneMessage = wxEmptyString;
+                if(m_bSpecial) return true;
                 break;
             }
         }
@@ -983,7 +984,6 @@ public:
                     m_bSpecial = false;
                 } else {
                     m_bSpecial = true;
-                    m_bEnabled = false;
                 }
                 if(m_bSpecial)
                     return _T(" ") + wxString(_("Guard Zone")) + _T(": ") + m_GuardZoneName + _T(": Not found");
@@ -1224,17 +1224,36 @@ public:
                         break;
                     }
                     case GUARD: {
-                        wxString l_s = Type() + _T(" ") + _("ALARM!") + _T("\n") 
-                            + _("Guard Zone Name") + _T(": ") + m_GuardZoneName + _T("\n")
-                            + _("Description") + _T(": ") + m_GuardZoneDescription + _T("\n")
-                            + _("GUID") + _T(": ") + m_GuardZoneGUID + _T("\n") 
-                            + _("Ship Name") + _T(": ") + g_AISTarget.m_sShipName + _T("\n")
-                            + _("Ship MMSI") + _T(": ") + wxString::Format(_T("%i"), g_AISTarget.m_iMMSI);
-                            wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchman"), wxOK | wxICON_WARNING);
-                            mdlg.ShowModal();
-                            break;
+                        wxString l_s;
+                        l_s = Type() + _T(" ") + _("ALARM!") + _T("\n") 
+                                + _("Guard Zone Name") + _T(": ") + m_GuardZoneName + _T("\n")
+                                + _("Description") + _T(": ") + m_GuardZoneDescription + _T("\n")
+                                + _("GUID") + _T(": ") + m_GuardZoneGUID + _T("\n") ;
+                        if(m_bSpecial) {
+                            l_s.append("Guard Zone not Found");
+                            m_bFired = false;
+                            m_bEnabled = false;
+                        } else {
+                            l_s.append(_("Ship Name") + _T(": ") + g_AISTarget.m_sShipName + _T("\n")
+                                + _("Ship MMSI") + _T(": ") + wxString::Format(_T("%i"), g_AISTarget.m_iMMSI));
+                        }
+                        wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchman"), wxOK | wxICON_WARNING);
+                        mdlg.ShowModal();
+                        break;
                     }
                 }
+            } else {
+                if(m_bSpecial && m_Mode == GUARD) {
+                    wxString l_s;
+                    l_s = Type() + _T(" ") + _("ALARM!") + _T("\n") 
+                    + _("Guard Zone Name") + _T(": ") + m_GuardZoneName + _T("\n")
+                    + _("Description") + _T(": ") + m_GuardZoneDescription + _T("\n")
+                    + _("GUID") + _T(": ") + m_GuardZoneGUID + _T("\n") + _("Guard Zone not Found");
+                    wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchman"), wxOK | wxICON_WARNING);
+                    mdlg.ShowModal();
+                    m_bFired = false;
+                    m_bEnabled = false;
+                }       
             }
     }
     
@@ -1302,7 +1321,7 @@ public:
                 Alarm::OnTimer( tEvent );
                 break;
             case GUARD:
-                    
+                Alarm::OnTimer( tEvent );
                 if(g_watchdog_pi->m_WatchdogDialog && g_watchdog_pi->m_WatchdogDialog->IsShown())
                     for(unsigned int i=0; i<Alarm::s_Alarms.size(); i++)
                         if(Alarm::s_Alarms[i] == this)
@@ -2140,7 +2159,7 @@ void Alarm::OnTimer( wxTimerEvent & )
     if(enabled == 3 && (!g_watchdog_pi->m_WatchdogDialog || !g_watchdog_pi->m_WatchdogDialog->IsShown()))
        enabled = 0;
 
-    if(enabled && m_bEnabled) {
+    if(enabled && (m_bEnabled)) {
         if(Test()) {        
             wxDateTime now = wxDateTime::Now();
             if(m_bFired) {

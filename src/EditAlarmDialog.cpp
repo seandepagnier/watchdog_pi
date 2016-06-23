@@ -71,6 +71,9 @@ void EditAlarmDialog::Save()
     m_alarm->m_bRepeat = m_cbRepeat->GetValue();
     m_alarm->m_iRepeatSeconds = m_sRepeatSeconds->GetValue();
     m_alarm->m_bgfxEnabled = m_cbgfxEnabled->GetValue();
+    m_alarm->m_bFired = false;
+    m_alarm->m_bSpecial = false;
+    m_alarm->m_bEnabled = true;
 
     m_alarm->SavePanel(m_fgSizer->GetItem((size_t)0)->GetWindow());
 }
