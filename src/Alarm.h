@@ -69,7 +69,7 @@ public:
 
     virtual void OnTimer(wxTimerEvent &);
 
-    bool m_bHasGraphics, m_bEnabled, m_bgfxEnabled, m_bFired;
+    bool m_bHasGraphics, m_bEnabled, m_bgfxEnabled, m_bFired, m_bSpecial;
 
 protected:
     bool m_bSound, m_bCommand, m_bMessageBox, m_bRepeat, m_bAutoReset;
