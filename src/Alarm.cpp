@@ -49,7 +49,13 @@ public:
                       m_Mode(TIME),
                       m_TimeMinutes(20),
                       m_Distance(3)
-        {}
+        {
+            if(!PlugIn_GSHHS_CrossesLand(0, 0, 60, 60)) {
+                wxLogMessage(_T("Watchdog: ") + wxString(_("landfall alarm without gshhs data")));
+                m_bData = false;
+            } else
+                m_bData = true;
+        }
 
     wxString Type() { return _("LandFall"); }
     wxString Options() {
@@ -80,7 +86,7 @@ public:
                     (lastfix.Lat, lastfix.Lon, lastfix.Cog, dist + dist1, &lat2, &lon2);
                 if(!wxIsNaN(lat2) && PlugIn_GSHHS_CrossesLand(lat1, lon1, lat2, lon2)) {
                     if(dist1 < 1) {
-                        m_LandFallTime = wxTimeSpan::Seconds(3600.0 * dist / lastfix.Sog);
+                        m_LandFallTime = wxTimeSpan::Seconds(3600.0 * (dist + dist1) / lastfix.Sog);
                         m_crossinglat1 = lat1, m_crossinglon1 = lon1;
                         m_crossinglat2 = lat2, m_crossinglon2 = lon2;
                         if(m_LandFallTime.GetMinutes() <= m_TimeMinutes)
@@ -96,6 +102,7 @@ public:
                 }
             }
             break;
+
         case DISTANCE:
             for(double t = 0; t<360; t+=9) {
                 double dlat, dlon;
@@ -115,6 +122,9 @@ public:
     }
 
     wxString GetStatus() {
+        if(!m_bData)
+            return _("No GSHHS Data");
+        
         switch(m_Mode) {
         case TIME:
         {
@@ -153,6 +163,7 @@ public:
             }
             return s;
         }
+
         case DISTANCE:
         {
             return wxString::Format(_T(" ") + wxString(_("Distance")) +
@@ -215,8 +226,8 @@ public:
     void SaveConfig(TiXmlElement *c) {
         c->SetAttribute("Type", "LandFall");
         switch(m_Mode) {
-        case TIME: c->SetAttribute("Mode", "Time");
-        case DISTANCE: c->SetAttribute("Mode", "Distance");
+        case TIME: c->SetAttribute("Mode", "Time"); break;
+        case DISTANCE: c->SetAttribute("Mode", "Distance"); break;
         }
 
         c->SetAttribute("TimeMinutes", m_TimeMinutes);
@@ -230,6 +241,8 @@ protected:
 
     enum Mode { TIME, DISTANCE } m_Mode;
     double m_TimeMinutes, m_Distance;
+
+    bool m_bData;
 };
 
 extern wxJSONValue g_ReceivedBoundaryTimeJSONMsg;
