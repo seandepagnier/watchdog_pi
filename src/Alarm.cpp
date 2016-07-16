@@ -262,6 +262,8 @@ extern wxString    g_BoundaryDescription;
 extern wxString    g_BoundaryGUID;
 extern wxJSONValue g_ReceivedODAPIJSONMsg;
 extern wxString    g_ReceivedODAPIMessage;
+extern wxJSONValue g_ReceivedPathGUIDJSONMsg;
+extern wxString    g_ReceivedPathGUIDMessage;
 
 
 enum 
@@ -292,7 +294,8 @@ public:
                       m_BoundaryType(ID_BOUNDARY_ANY),
                       m_BoundaryState(ID_BOUNDARY_STATE_ACTIVE),
                       m_bAnchorOutside(false),
-                      m_bGuardZoneFired(false)
+                      m_bGuardZoneFired(false),
+                      m_bGZFound(false)
         {
             g_GuardZoneName = wxEmptyString;
             m_baTimer.Connect(wxEVT_TIMER, wxTimerEventHandler( BoundaryAlarm::OnFlashTimer ), NULL, this);
@@ -862,6 +865,7 @@ public:
                     return true;
                 }
                 g_ReceivedGuardZoneMessage = wxEmptyString;
+                if(m_bSpecial) return true;
                 break;
             }
         }
@@ -974,8 +978,31 @@ public:
             }
             case GUARD:
             {
-                return _T(" ") + wxString(_("Guard Zone")) + _T(": ") + m_GuardZoneName + _T(": ") +
-                (m_bGuardZoneFired ? wxString(_("AIS Target in zone")) : wxString(_("NO AIS tagets found in zone")));
+                wxJSONValue jMsg;
+                wxJSONWriter writer;
+                wxString    MsgString;
+                
+                jMsg[wxT("Source")] = wxT("WATCHDOG_PI");
+                jMsg[wxT("Type")] = wxT("Request");
+                jMsg[wxT("Msg")] = wxS("FindPathByGUID");
+                jMsg[wxT("MsgId")] = wxS("guard");
+                jMsg[wxS("GUID")] = m_GuardZoneGUID;
+                writer.Write( jMsg, MsgString );
+                g_ReceivedPathGUIDMessage = wxEmptyString;
+                SendPluginMessage( wxS("OCPN_DRAW_PI"), MsgString );
+                if(g_ReceivedPathGUIDMessage != wxEmptyString && 
+                    g_ReceivedPathGUIDJSONMsg[wxT("MsgId")].AsString() == wxS("guard") && 
+                    g_ReceivedPathGUIDJSONMsg[wxT("Found")].AsBool() == true ) {
+                    g_GuardZoneName = g_ReceivedPathGUIDJSONMsg[wxS("Name")].AsString();
+                    m_bSpecial = false;
+                } else {
+                    m_bSpecial = true;
+                }
+                if(m_bSpecial)
+                    return _T(" ") + wxString(_("Guard Zone")) + _T(": ") + m_GuardZoneName + _T(": Not found");
+                else
+                    return _T(" ") + wxString(_("Guard Zone")) + _T(": ") + m_GuardZoneName + _T(": ") +
+                    (m_bGuardZoneFired ? wxString(_("AIS Target in zone")) : wxString(_("NO AIS tagets found in zone")));
                 break;
             }
         }
@@ -1210,17 +1237,36 @@ public:
                         break;
                     }
                     case GUARD: {
-                        wxString l_s = Type() + _T(" ") + _("ALARM!") + _T("\n") 
-                            + _("Guard Zone Name") + _T(": ") + m_GuardZoneName + _T("\n")
-                            + _("Description") + _T(": ") + m_GuardZoneDescription + _T("\n")
-                            + _("GUID") + _T(": ") + m_GuardZoneGUID + _T("\n") 
-                            + _("Ship Name") + _T(": ") + g_AISTarget.m_sShipName + _T("\n")
-                            + _("Ship MMSI") + _T(": ") + wxString::Format(_T("%i"), g_AISTarget.m_iMMSI);
-                            wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchman"), wxOK | wxICON_WARNING);
-                            mdlg.ShowModal();
-                            break;
+                        wxString l_s;
+                        l_s = Type() + _T(" ") + _("ALARM!") + _T("\n") 
+                                + _("Guard Zone Name") + _T(": ") + m_GuardZoneName + _T("\n")
+                                + _("Description") + _T(": ") + m_GuardZoneDescription + _T("\n")
+                                + _("GUID") + _T(": ") + m_GuardZoneGUID + _T("\n") ;
+                        if(m_bSpecial) {
+                            l_s.append("Guard Zone not Found");
+                            m_bFired = false;
+                            m_bEnabled = false;
+                        } else {
+                            l_s.append(_("Ship Name") + _T(": ") + g_AISTarget.m_sShipName + _T("\n")
+                                + _("Ship MMSI") + _T(": ") + wxString::Format(_T("%i"), g_AISTarget.m_iMMSI));
+                        }
+                        wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchman"), wxOK | wxICON_WARNING);
+                        mdlg.ShowModal();
+                        break;
                     }
                 }
+            } else {
+                if(m_bSpecial && m_Mode == GUARD) {
+                    wxString l_s;
+                    l_s = Type() + _T(" ") + _("ALARM!") + _T("\n") 
+                    + _("Guard Zone Name") + _T(": ") + m_GuardZoneName + _T("\n")
+                    + _("Description") + _T(": ") + m_GuardZoneDescription + _T("\n")
+                    + _("GUID") + _T(": ") + m_GuardZoneGUID + _T("\n") + _("Guard Zone not Found");
+                    wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchman"), wxOK | wxICON_WARNING);
+                    mdlg.ShowModal();
+                    m_bFired = false;
+                    m_bEnabled = false;
+                }       
             }
     }
     
@@ -1288,6 +1334,7 @@ public:
                 Alarm::OnTimer( tEvent );
                 break;
             case GUARD:
+                Alarm::OnTimer( tEvent );
                 if(g_watchdog_pi->m_WatchdogDialog && g_watchdog_pi->m_WatchdogDialog->IsShown())
                     for(unsigned int i=0; i<Alarm::s_Alarms.size(); i++)
                         if(Alarm::s_Alarms[i] == this)
@@ -1398,6 +1445,7 @@ private:
     bool        m_bHighlight;
     int         m_iCheckFrequency;
     bool        m_bWasEnabled;
+    bool        m_bGZFound;
     
     struct AISMMSITIME {
         int MMSI;
@@ -2030,7 +2078,7 @@ Alarm *Alarm::NewAlarm(enum AlarmType type)
 }
 
 Alarm::Alarm(bool gfx, int interval)
-    : m_bHasGraphics(gfx), m_bEnabled(true), m_bgfxEnabled(false), m_bFired(false),
+    : m_bHasGraphics(gfx), m_bEnabled(true), m_bgfxEnabled(false), m_bFired(false), m_bSpecial(false),
       m_bSound(true), m_bCommand(false), m_bMessageBox(false), m_bRepeat(false),
       m_bAutoReset(false),
       m_sSound(*GetpSharedDataLocation() + _T("sounds/2bells.wav")),
@@ -2115,7 +2163,7 @@ void Alarm::OnTimer( wxTimerEvent & )
     if(enabled == 3 && (!g_watchdog_pi->m_WatchdogDialog || !g_watchdog_pi->m_WatchdogDialog->IsShown()))
        enabled = 0;
 
-    if(enabled && m_bEnabled) {
+    if(enabled && (m_bEnabled)) {
         if(Test()) {        
             wxDateTime now = wxDateTime::Now();
             if(m_bFired) {
