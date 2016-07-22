@@ -349,8 +349,10 @@ void watchdog_pi::OnTimer( wxTimerEvent & )
 
 void watchdog_pi::SetCursorLatLon(double lat, double lon)
 {
-    m_cursor_lat = lat;
-    m_cursor_lon = lon;
+    wxPoint pos = wxGetMouseState().GetPosition();
+    if(pos == m_cursor_position)
+        return;
+    m_cursor_position = pos;
     m_cursor_time = wxDateTime::Now();
 }
 

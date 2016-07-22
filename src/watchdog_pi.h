@@ -157,7 +157,7 @@ public:
       bool      m_bWatchdogDialogShown;
       
 protected:
-      double m_cursor_lat, m_cursor_lon;
+      wxPoint m_cursor_position;
 
       PlugIn_Position_Fix_Ex m_lastfix, m_lasttimerfix;
 
