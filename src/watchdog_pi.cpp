@@ -425,8 +425,7 @@ void watchdog_pi::SetPluginMessage(wxString &message_id, wxString &message_body)
         if(!bFail) {
             if(root[wxS("Type")].AsString() == wxS("Response") && root[wxS("Source")].AsString() == wxS("OCPN_DRAW_PI")) {
                 if(root[wxS("Msg")].AsString() == wxS("FindPathByGUID") ) {
-                    if(root[wxS("MsgId")].AsString() == wxS("guard") || root[wxS("MsgId")].AsString() == wxS("inclusion")) {
-                        g_ReceivedPathGUIDJSONMsg = root;
+                    if(root[wxS("MsgId")].AsString() == wxS("guard") || root[wxS("MsgId")].AsString() == wxS("inclusion") || root[wxS("MsgId")].AsString() == wxS("general")) {                        g_ReceivedPathGUIDJSONMsg = root;
                         g_ReceivedPathGUIDMessage = message_body;
                     }
                 } else if(root[wxS("Msg")].AsString() == wxS("FindPointInAnyBoundary") ) {
