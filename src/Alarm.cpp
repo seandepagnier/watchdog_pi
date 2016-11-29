@@ -1113,19 +1113,23 @@ public:
                 m_BoundaryState = ID_BOUNDARY_STATE_ANY;
                 break;
         }
+        wxString l_sName;
         m_BoundaryGUID = panel->m_tBoundaryGUID->GetValue();
-        if(g_BoundaryName != wxEmptyString) {
-            m_BoundaryName = g_BoundaryName;
-            g_BoundaryName = wxEmptyString;
+        if(m_BoundaryGUID != wxEmptyString) {
+            l_sName = GetPathNameByGUID(m_BoundaryGUID);
+            if(l_sName != wxEmptyString) {
+                m_BoundaryName = l_sName;
+            }
         }
         if(g_BoundaryDescription != wxEmptyString) {
             m_BoundaryDescription = g_BoundaryDescription;
             g_BoundaryDescription = wxEmptyString;
         }
         m_GuardZoneGUID = panel->m_tGuardZoneGUID->GetValue();
-        if(g_GuardZoneName != wxEmptyString) {
-            m_GuardZoneName = g_GuardZoneName;
-            g_GuardZoneName = wxEmptyString;
+        if(m_GuardZoneGUID != wxEmptyString) {
+            l_sName = GetPathNameByGUID(m_GuardZoneGUID);
+            if(l_sName != wxEmptyString)
+                m_GuardZoneName = l_sName;
         }
     }
 
@@ -1422,6 +1426,29 @@ public:
         SendPluginMessage( wxS("OCPN_DRAW_PI"), MsgString );
     }
     
+    wxString GetPathNameByGUID(wxString GUID)
+    {
+        wxJSONValue jMsg;
+        wxJSONWriter writer;
+        wxString    MsgString;
+        wxString    l_sName = wxEmptyString;
+
+        jMsg[wxT("Source")] = wxT("WATCHDOG_PI");
+        jMsg[wxT("Type")] = wxT("Request");
+        jMsg[wxT("Msg")] = wxS("FindPathByGUID");
+        jMsg[wxT("MsgId")] = wxS("general");
+        jMsg[wxS("GUID")] = GUID;
+        writer.Write( jMsg, MsgString );
+        g_ReceivedPathGUIDMessage = wxEmptyString;
+        SendPluginMessage( wxS("OCPN_DRAW_PI"), MsgString );
+        if(g_ReceivedPathGUIDMessage != wxEmptyString &&
+            g_ReceivedPathGUIDJSONMsg[wxT("MsgId")].AsString() == wxS("general") &&
+            g_ReceivedPathGUIDJSONMsg[wxT("Found")].AsBool() == true ) {
+            l_sName = g_ReceivedPathGUIDJSONMsg[wxS("Name")].AsString();
+            }
+            return l_sName;
+    }
+
 private:
 
     enum Mode { TIME, DISTANCE, ANCHOR, GUARD } m_Mode;
