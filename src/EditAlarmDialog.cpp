@@ -33,6 +33,7 @@
 #include "wxJSON/jsonwriter.h"
 
 #include "watchdog_pi.h"
+#include "WatchdogUI.h"
 
 #include "EditAlarmDialog.h"
 #include "ODAPI.h"
@@ -314,6 +315,24 @@ void BoundaryPanel::OnGuardZoneGUIDKillFocus( wxFocusEvent& event )
         }
     }
     event.Skip();
+}
+
+void BoundaryPanel::OnRadioButton(wxCommandEvent& event)
+{
+    switch(event.GetId()) {
+        case GPSCOURSE: 
+        case GPSFIX: 
+        case AISGUARDZONE:
+            m_radioBoxBoundaryType->Enable();
+            break;
+        case ANCHORALARM:
+            m_radioBoxBoundaryType->Disable();
+            break;
+        default:
+            m_radioBoxBoundaryType->Enable();
+            break;
+    }
+        
 }
 
 void AnchorPanel::OnSyncToBoat( wxCommandEvent& event )
