@@ -1309,7 +1309,12 @@ public:
         if(m_bEnabled) {
             std::list<AISMMSITIME>::iterator it = AISMsgInfoList.begin();
             while(it != AISMsgInfoList.end()) {
-                if((wxDateTime::Now() - it->MsgTime).GetSeconds() > m_iRepeatSeconds) {
+                wxFileConfig *l_pConf = GetOCPNConfigObject();
+                l_pConf->SetPath ( _T( "/Settings/AIS" ) );
+                
+                int l_iLostMins = l_pConf->Read ( _T ( "MarkLost_Minutes" ), 8L );
+                
+                if((wxDateTime::Now() - it->MsgTime).GetSeconds() > (l_iLostMins * 60)) {
                     AISMsgInfoList.erase(it);
                     it = AISMsgInfoList.begin();
                     continue;
@@ -1365,7 +1370,7 @@ public:
                 Alarm::OnTimer( tEvent );
                 break;
             case GUARD:
-                Alarm::OnTimer( tEvent );
+//                Alarm::OnTimer( tEvent );
                 if(g_watchdog_pi->m_WatchdogDialog && g_watchdog_pi->m_WatchdogDialog->IsShown())
                     for(unsigned int i=0; i<Alarm::s_Alarms.size(); i++)
                         if(Alarm::s_Alarms[i] == this)
@@ -2137,6 +2142,7 @@ Alarm::Alarm(bool gfx, int interval)
     : m_bHasGraphics(gfx), m_bEnabled(true), m_bgfxEnabled(false), m_bFired(false), m_bSpecial(false),
       m_bSound(true), m_bCommand(false), m_bMessageBox(false), m_bRepeat(false),
       m_bAutoReset(false),
+      m_LastAlarmTime(wxDateTime::Now()),
       m_sSound(*GetpSharedDataLocation() + _T("sounds/2bells.wav")),
       m_iRepeatSeconds(60),
       m_interval(interval)
