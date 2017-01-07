@@ -34,6 +34,7 @@
 #include "watchdog_pi.h"
 #include "WatchdogDialog.h"
 #include "ConfigurationDialog.h"
+#include "WatchdogPropertiesDialog.h"
 #include "icons.h"
 #include "AIS_Target_Info.h"
 
@@ -146,6 +147,7 @@ int watchdog_pi::Init(void)
     
     m_WatchdogDialog = NULL;
     m_ConfigurationDialog = NULL;
+    m_PropertiesDialog = NULL;
     m_Timer.Connect(wxEVT_TIMER, wxTimerEventHandler
                     ( watchdog_pi::OnTimer ), NULL, this);
     m_Timer.Start(3000);
@@ -170,6 +172,7 @@ int watchdog_pi::Init(void)
             WANTS_NMEA_EVENTS         |
             WANTS_AIS_SENTENCES       |
             WANTS_PLUGIN_MESSAGING    |
+            WANTS_PREFERENCES         |
             WANTS_CONFIG);
 }
 
@@ -243,6 +246,19 @@ Alarm user of changing conditions.");
 int watchdog_pi::GetToolbarToolCount(void)
 {
     return 1;
+}
+
+void watchdog_pi::ShowPreferencesDialog( wxWindow* parent )
+{
+    //dlgShow = false;
+    if( NULL == m_PropertiesDialog )
+        m_PropertiesDialog = new WatchdogPropertiesDialog( parent );
+    
+    m_PropertiesDialog->ShowModal();
+    
+    delete m_PropertiesDialog;
+    m_PropertiesDialog = NULL;
+    
 }
 
 void watchdog_pi::SetColorScheme(PI_ColorScheme cs)
