@@ -40,12 +40,17 @@ WatchdogPropertiesDialogBase( parent )
     m_staticTextNameVal->SetLabel( wxT("Watchdog Plugin") );
     m_staticTextMajorVal->SetLabel(wxString::Format(wxT("%i"), PLUGIN_VERSION_MAJOR ));
     m_staticTextMinorVal->SetLabel(wxString::Format(wxT("%i"), PLUGIN_VERSION_MINOR ));
-    m_staticTextPatchVal->SetLabel( wxString::Format(wxT("%3i"),PLUGIN_VERSION_PATCH) );
+    m_staticTextPatchVal->SetLabel( wxT(TOSTRING(PLUGIN_VERSION_PATCH)) );
     m_staticTextDateVal->SetLabel( wxT(TOSTRING(PLUGIN_VERSION_DATE)) );
 
 }
 
 void WatchdogPropertiesDialog::OnWatchdogPropertiesOKClick( wxCommandEvent& event )
 {
+    Show( false );
+#ifdef __WXOSX__    
+    EndModal(wxID_OK);
+#endif
     event.Skip();
 }
+

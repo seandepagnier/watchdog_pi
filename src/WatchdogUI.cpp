@@ -65,6 +65,101 @@ WatchdogDialogBase::~WatchdogDialogBase()
 	
 }
 
+WatchdogPropertiesDialogBase::WatchdogPropertiesDialogBase( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
+{
+	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+	
+	m_fgSizerProperties = new wxFlexGridSizer( 0, 2, 0, 0 );
+	m_fgSizerProperties->SetFlexibleDirection( wxBOTH );
+	m_fgSizerProperties->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_staticTextName = new wxStaticText( this, wxID_ANY, _("Name:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextName->Wrap( -1 );
+	m_fgSizerProperties->Add( m_staticTextName, 0, wxALL, 5 );
+	
+	m_staticTextNameVal = new wxStaticText( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextNameVal->Wrap( -1 );
+	m_fgSizerProperties->Add( m_staticTextNameVal, 0, wxALL, 5 );
+	
+	m_staticTextVersion = new wxStaticText( this, wxID_ANY, _("Version:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextVersion->Wrap( -1 );
+	m_fgSizerProperties->Add( m_staticTextVersion, 0, wxALL, 5 );
+	
+	wxFlexGridSizer* fgSizer34;
+	fgSizer34 = new wxFlexGridSizer( 0, 6, 0, 0 );
+	fgSizer34->SetFlexibleDirection( wxBOTH );
+	fgSizer34->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_staticTextMajor = new wxStaticText( this, wxID_ANY, _("Major:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextMajor->Wrap( -1 );
+	fgSizer34->Add( m_staticTextMajor, 0, wxALL, 5 );
+	
+	m_staticTextMajorVal = new wxStaticText( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextMajorVal->Wrap( -1 );
+	fgSizer34->Add( m_staticTextMajorVal, 0, wxALL, 5 );
+	
+	m_staticTextMinor = new wxStaticText( this, wxID_ANY, _("Minor:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextMinor->Wrap( -1 );
+	fgSizer34->Add( m_staticTextMinor, 0, wxALL, 5 );
+	
+	m_staticTextMinorVal = new wxStaticText( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextMinorVal->Wrap( -1 );
+	fgSizer34->Add( m_staticTextMinorVal, 0, wxALL, 5 );
+	
+	m_staticTextPatch = new wxStaticText( this, wxID_ANY, _("Patch:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextPatch->Wrap( -1 );
+	fgSizer34->Add( m_staticTextPatch, 0, wxALL, 5 );
+	
+	m_staticTextPatchVal = new wxStaticText( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextPatchVal->Wrap( -1 );
+	fgSizer34->Add( m_staticTextPatchVal, 0, wxALL, 5 );
+	
+	
+	m_fgSizerProperties->Add( fgSizer34, 1, wxEXPAND, 5 );
+	
+	m_staticTextDate = new wxStaticText( this, wxID_ANY, _("Date:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextDate->Wrap( -1 );
+	m_fgSizerProperties->Add( m_staticTextDate, 0, wxALL, 5 );
+	
+	m_staticTextDateVal = new wxStaticText( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextDateVal->Wrap( -1 );
+	m_fgSizerProperties->Add( m_staticTextDateVal, 0, wxALL, 5 );
+	
+	m_staticTextOther = new wxStaticText( this, wxID_ANY, _("Other:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextOther->Wrap( -1 );
+	m_fgSizerProperties->Add( m_staticTextOther, 0, wxALL, 5 );
+	
+	m_staticTextOtherVal = new wxStaticText( this, wxID_ANY, _("Please report problems using FlySpray at:\nhttp://willkamp.com/opencpn/flyspray/index.php?project=0&do=index&switch=1\n\nor\n\nat the OpenCPN forum:\nhttp://www.cruisersforum.com/forums/f134\n\nor\n\nRaise an issue in GIT at:\nhttps://github.com/seandepagnier/watchdog_pi/issues\n"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextOtherVal->Wrap( -1 );
+	m_fgSizerProperties->Add( m_staticTextOtherVal, 0, wxALL, 5 );
+	
+	wxBoxSizer* bSizerOK;
+	bSizerOK = new wxBoxSizer( wxVERTICAL );
+	
+	m_buttonOK = new wxButton( this, wxID_ANY, _("&OK"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizerOK->Add( m_buttonOK, 0, wxALL, 5 );
+	
+	
+	m_fgSizerProperties->Add( bSizerOK, 1, wxEXPAND, 5 );
+	
+	
+	this->SetSizer( m_fgSizerProperties );
+	this->Layout();
+	m_fgSizerProperties->Fit( this );
+	
+	this->Centre( wxBOTH );
+	
+	// Connect Events
+	m_buttonOK->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchdogPropertiesDialogBase::OnWatchdogPropertiesOKClick ), NULL, this );
+}
+
+WatchdogPropertiesDialogBase::~WatchdogPropertiesDialogBase()
+{
+	// Disconnect Events
+	m_buttonOK->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WatchdogPropertiesDialogBase::OnWatchdogPropertiesOKClick ), NULL, this );
+	
+}
+
 ConfigurationDialogBase::ConfigurationDialogBase( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
 	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
