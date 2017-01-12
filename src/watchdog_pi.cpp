@@ -560,10 +560,22 @@ void watchdog_pi::SetPluginMessage(wxString &message_id, wxString &message_body)
                 g_ReceivedAISJSONMsg[wxS("hdg")].AsString().ToDouble( &g_AISTarget.m_dHDG );
                 g_AISTarget.m_iMMSI = g_ReceivedAISJSONMsg[wxS("mmsi")].AsLong();
                 g_AISTarget.m_sShipName = g_ReceivedAISJSONMsg[wxS("shipname")].AsString().Trim();
-                g_AISTarget.m_sCallSign = g_ReceivedAISJSONMsg[wxS("callsign")].AsString().Trim();
-                g_AISTarget.m_bActive = g_ReceivedAISJSONMsg[wxS("active")].AsBool();
-                g_AISTarget.m_bLost = g_ReceivedAISJSONMsg[wxS("lost")].AsBool();
-                g_AISTarget.m_bOwnship = g_ReceivedAISJSONMsg[wxS("ownship")].AsBool();
+                if(root.HasMember( wxS("callsign") ))
+                    g_AISTarget.m_sCallSign = g_ReceivedAISJSONMsg[wxS("callsign")].AsString().Trim();
+                else
+                    g_AISTarget.m_sCallSign = wxEmptyString;
+                if(root.HasMember( wxS("active") ))
+                    g_AISTarget.m_bActive = g_ReceivedAISJSONMsg[wxS("active")].AsBool();
+                else
+                    g_AISTarget.m_bActive = true;
+                if(root.HasMember( wxS("lost") ))
+                    g_AISTarget.m_bLost = g_ReceivedAISJSONMsg[wxS("lost")].AsBool();
+                else
+                    g_AISTarget.m_bLost = false;
+                if(root.HasMember( wxS("ownship") ))
+                    g_AISTarget.m_bOwnship = g_ReceivedAISJSONMsg[wxS("ownship")].AsBool();
+                else
+                    g_AISTarget.m_bOwnship = false;
             }
             for(unsigned int i=0; i<Alarm::s_Alarms.size(); i++) {
                 Alarm *p_Alarm = Alarm::s_Alarms[i];
