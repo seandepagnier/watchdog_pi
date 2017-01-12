@@ -559,7 +559,11 @@ void watchdog_pi::SetPluginMessage(wxString &message_id, wxString &message_body)
                 g_ReceivedAISJSONMsg[wxS("cog")].AsString().ToDouble( &g_AISTarget.m_dCOG );
                 g_ReceivedAISJSONMsg[wxS("hdg")].AsString().ToDouble( &g_AISTarget.m_dHDG );
                 g_AISTarget.m_iMMSI = g_ReceivedAISJSONMsg[wxS("mmsi")].AsLong();
-                g_AISTarget.m_sShipName = g_ReceivedAISJSONMsg[wxS("shipname")].AsString();
+                g_AISTarget.m_sShipName = g_ReceivedAISJSONMsg[wxS("shipname")].AsString().Trim();
+                g_AISTarget.m_sCallSign = g_ReceivedAISJSONMsg[wxS("callsign")].AsString().Trim();
+                g_AISTarget.m_bActive = g_ReceivedAISJSONMsg[wxS("active")].AsBool();
+                g_AISTarget.m_bLost = g_ReceivedAISJSONMsg[wxS("lost")].AsBool();
+                g_AISTarget.m_bOwnship = g_ReceivedAISJSONMsg[wxS("ownship")].AsBool();
             }
             for(unsigned int i=0; i<Alarm::s_Alarms.size(); i++) {
                 Alarm *p_Alarm = Alarm::s_Alarms[i];
