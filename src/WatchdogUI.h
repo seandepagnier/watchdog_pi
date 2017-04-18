@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Jun 17 2015)
+// C++ code generated with wxFormBuilder (version Jul 15 2016)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
@@ -353,6 +353,52 @@ class SpeedPanel : public wxPanel
 		
 		SpeedPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL ); 
 		~SpeedPanel();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class WindPanel
+///////////////////////////////////////////////////////////////////////////////
+class WindPanel : public wxPanel 
+{
+	private:
+	
+	protected:
+		wxStaticText* m_staticText51;
+		wxStaticText* m_staticText44;
+		wxStaticText* m_staticText24;
+		wxStaticText* m_staticText391;
+	
+	public:
+		wxChoice* m_cMode;
+		wxSpinCtrl* m_sValue;
+		
+		WindPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL ); 
+		~WindPanel();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class WeatherPanel
+///////////////////////////////////////////////////////////////////////////////
+class WeatherPanel : public wxPanel 
+{
+	private:
+	
+	protected:
+		wxStaticText* m_staticText51;
+		wxStaticText* m_staticText50;
+		wxStaticText* m_staticText511;
+		wxStaticText* m_staticText24;
+		wxStaticText* m_staticText391;
+	
+	public:
+		wxChoice* m_cMode;
+		wxChoice* m_cVariable;
+		wxTextCtrl* m_tValue;
+		
+		WeatherPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL ); 
+		~WeatherPanel();
 	
 };
 

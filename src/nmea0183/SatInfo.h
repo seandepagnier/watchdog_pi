@@ -1,15 +1,15 @@
-/******************************************************************************
+/***************************************************************************
  *
  * Project:  OpenCPN
- * Purpose:  watchdog Plugin
- * Author:   Sean D'Epagnier
+ * Purpose:  NMEA0183 Support Classes
+ * Author:   Samuel R. Blackburn, David S. Register, Jean-Eudes Onfray
  *
  ***************************************************************************
- *   Copyright (C) 2015 by Sean D'Epagnier                                 *
+ *   Copyright (C) 2010 by Samuel R. Blackburn, David S Register           *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 3 of the License, or     *
+ *   the Free Software Foundation; either version 2 of the License, or     *
  *   (at your option) any later version.                                   *
  *                                                                         *
  *   This program is distributed in the hope that it will be useful,       *
@@ -20,25 +20,25 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,  USA.         *
+ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,  USA.             *
  ***************************************************************************
+ *
+ *   S Blackburn's original source license:                                *
+ *         "You can use it any way you like."                              *
+ *   More recent (2010) license statement:                                 *
+ *         "It is BSD license, do with it what you will"                   *
  */
 
-#include "watchdog_pi.h"
-#include "NewAlarmDialog.h"
 
-NewAlarmDialog::NewAlarmDialog(wxWindow* parent)
-    : NewAlarmDialogBase(parent)
+#if ! defined( SAT_INFO_HEADER )
+#define SAT_INFO_HEADER
+
+typedef struct
 {
-    m_lAlarmType->InsertColumn(0, _T(""));
-    m_lAlarmType->InsertItem(LANDFALL, _("Landfall"));
-    m_lAlarmType->InsertItem(BOUNDARY, _("Boundary Alarm"));
-    m_lAlarmType->InsertItem(NMEADATA, _("NMEA Data"));
-    m_lAlarmType->InsertItem(DEADMAN,  _("Deadman"));
-    m_lAlarmType->InsertItem(ANCHOR,   _("Anchor"));
-    m_lAlarmType->InsertItem(COURSE,   _("Course"));
-    m_lAlarmType->InsertItem(SPEED,    _("Speed"));
-    m_lAlarmType->InsertItem(WIND,     _("Wind"));
-    m_lAlarmType->InsertItem(WEATHER,  _("Weather"));
-    m_lAlarmType->SetColumnWidth(0, wxLIST_AUTOSIZE);
-}
+   int SatNumber;
+   int ElevationDegrees;
+   int AzimuthDegreesTrue;
+   int SignalToNoiseRatio;
+} SAT_INFO;
+
+#endif // SAT_INFO_HEADER

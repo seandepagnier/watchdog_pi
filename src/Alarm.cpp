@@ -5,7 +5,7 @@
  * Author:   Sean D'Epagnier
  *
  ***************************************************************************
- *   Copyright (C) 2015 by Sean D'Epagnier                                 *
+ *   Copyright (C) 2017 by Sean D'Epagnier                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -38,6 +38,7 @@
 #include "watchdog_pi.h"
 #include "WatchdogDialog.h"
 #include "AIS_Target_Info.h"
+#include "nmea0183/nmea0183.h"
 
 #include "ODAPI.h"
 
@@ -1969,6 +1970,295 @@ private:
     std::list<double> m_SOGqueue;
 };
 
+class WindAlarm : public Alarm
+{
+public:
+    WindAlarm() : Alarm(true), m_Mode(UNDERSPEED), m_dVal(5), m_speed(NAN), m_apparent_direction(NAN) {}
+
+    wxString Type() { return _("Wind"); }
+    wxString Options() {
+        wxString s;
+        switch(m_Mode) {
+        case UNDERSPEED: s += _("Under Speed") + wxString(_T(" ")); break;
+        case OVERSPEED:  s += _("Over Speed")  + wxString(_T(" ")); break;
+        case APPARENT_DIRECTION_ABOVE: s += _("Direction Above") + wxString(_T(" ")); break;
+        case APPARENT_DIRECTION_BELOW: s += _("Direction Below") + wxString(_T(" ")); break;
+        case APPARENT_DIRECTION_PORT_ABOVE: s += _("Port Direction Above") + wxString(_T(" ")); break;
+        case APPARENT_DIRECTION_PORT_BELOW: s += _("Port Direction Below") + wxString(_T(" ")); break;
+        case APPARENT_DIRECTION_STARBOARD_ABOVE: s += _("Starboard Direction Above") + wxString(_T(" ")); break;
+        case APPARENT_DIRECTION_STARBOARD_BELOW: s += _("Starboard Direction Below") + wxString(_T(" ")); break;
+        }
+        return s + wxString::Format(_T(" %.2f"), m_dVal);
+    }
+
+    wxString GetStatus() {
+        wxString s;
+        double val = NAN;
+        if(m_Mode == UNDERSPEED || m_Mode == OVERSPEED)
+            val = m_speed;
+        else {
+            val = m_apparent_direction;
+            if(val > 180)
+                val = 360 - val;
+        }
+
+        if(isnan(val))
+            s = _T("N/A");
+        else {
+            wxString fmt(_T("%.1f"));
+            s = wxString::Format(fmt + (val < m_dVal ?
+                                        _T(" < ") : _T(" > "))
+                                 + fmt, val, m_dVal);
+        }
+
+        return s;
+    }
+
+    void Render(wdDC &dc, PlugIn_ViewPort &vp) {
+        //PlugIn_Position_Fix_Ex lastfix = g_watchdog_pi->LastFix();
+    }
+
+    bool Test() {
+        switch(m_Mode) {
+        case UNDERSPEED: return m_dVal > m_speed;
+        case OVERSPEED:  return m_dVal < m_speed;
+        default: break;
+        }
+
+        double dir = m_apparent_direction;
+        double app = dir;
+        if(app > 180)
+            app = 360 - app;
+
+        switch(m_Mode) {
+        case APPARENT_DIRECTION_ABOVE: return m_dVal < app;
+        case APPARENT_DIRECTION_BELOW: return m_dVal > app;
+        case APPARENT_DIRECTION_PORT_ABOVE: return dir > 180 && m_dVal < app;
+        case APPARENT_DIRECTION_PORT_BELOW: return dir > 180 && m_dVal > app;
+        case APPARENT_DIRECTION_STARBOARD_ABOVE: return dir < 180 && m_dVal < app;
+        case APPARENT_DIRECTION_STARBOARD_BELOW: return dir < 180 && m_dVal > app;
+        default: break;
+        }
+        return 0;
+    }
+
+    wxWindow *OpenPanel(wxWindow *parent) {
+        WindPanel *panel = new WindPanel(parent);
+        panel->m_cMode->SetSelection((int)m_Mode);
+        panel->m_sValue->SetValue(m_dVal);
+        return panel;
+    }
+
+    void SavePanel(wxWindow *p) {
+        WindPanel *panel = (WindPanel*)p;
+        m_Mode = (Mode)panel->m_cMode->GetSelection();
+        m_dVal = panel->m_sValue->GetValue();
+    }
+
+    void LoadConfig(TiXmlElement *e) {
+        const char *mode = e->Attribute("Mode");
+        if(!strcasecmp(mode, "Underspeed")) m_Mode = UNDERSPEED;
+        else if(!strcasecmp(mode, "Overspeed")) m_Mode = OVERSPEED;
+        else if(!strcasecmp(mode, "ApparentDirectionAbove")) m_Mode = APPARENT_DIRECTION_ABOVE;
+        else if(!strcasecmp(mode, "ApparentDirectionBelow")) m_Mode = APPARENT_DIRECTION_BELOW;
+        else if(!strcasecmp(mode, "ApparentDirectionPortAbove")) m_Mode = APPARENT_DIRECTION_PORT_ABOVE;
+        else if(!strcasecmp(mode, "ApparentDirectionStarboardBelow")) m_Mode = APPARENT_DIRECTION_STARBOARD_BELOW;
+        else wxLogMessage(_T("Watchdog: ") + wxString(_("invalid Wind mode")) + _T(": ")
+                         + wxString::FromUTF8(mode));
+
+        e->Attribute("Value", &m_dVal);
+    }
+
+    void SaveConfig(TiXmlElement *c) {
+        c->SetAttribute("Type", "Wind");
+        switch(m_Mode) {
+        case UNDERSPEED: c->SetAttribute("Mode", "Underspeed"); break;
+        case OVERSPEED:  c->SetAttribute("Mode", "Overspeed");  break;
+        case APPARENT_DIRECTION_ABOVE:  c->SetAttribute("Mode", "ApparentDirectionAbove");  break;
+        case APPARENT_DIRECTION_BELOW:  c->SetAttribute("Mode", "ApparentDirectionBelow");  break;
+        case APPARENT_DIRECTION_PORT_ABOVE:  c->SetAttribute("Mode", "ApparentDirectionPortAbove");  break;
+        case APPARENT_DIRECTION_PORT_BELOW:  c->SetAttribute("Mode", "ApparentDirectionPortBelow");  break;
+        case APPARENT_DIRECTION_STARBOARD_ABOVE:  c->SetAttribute("Mode", "ApparentDirectionStarboardAbove");  break;
+        case APPARENT_DIRECTION_STARBOARD_BELOW:  c->SetAttribute("Mode", "ApparentDirectionStarboardBelow");  break;            
+        }
+
+        c->SetDoubleAttribute("Value", m_dVal);
+    }
+    
+private:
+    void NMEAString(const wxString &string) {
+        wxString str = string;
+        NMEA0183 nmea;
+        wxString LastSentenceIDReceived;
+        nmea << str;
+        if(nmea.PreParse() &&
+           nmea.LastSentenceIDReceived == _T("MWV") &&
+           nmea.Parse() &&
+           nmea.Mwv.IsDataValid == NTrue ) {
+            double m_wSpeedFactor = 1.0; //knots ("N")
+            if (nmea.Mwv.WindSpeedUnits == _T("K") ) m_wSpeedFactor = 0.53995 ; //km/h > knots
+            if (nmea.Mwv.WindSpeedUnits == _T("M") ) m_wSpeedFactor = 1.94384;
+
+            m_speed = nmea.Mwv.WindSpeed * m_wSpeedFactor;
+            m_apparent_direction = nmea.Mwv.WindAngle;
+        }
+    }
+
+    enum Mode { UNDERSPEED, OVERSPEED, APPARENT_DIRECTION_ABOVE, APPARENT_DIRECTION_BELOW, APPARENT_DIRECTION_PORT_ABOVE, APPARENT_DIRECTION_PORT_BELOW, APPARENT_DIRECTION_STARBOARD_ABOVE, APPARENT_DIRECTION_STARBOARD_BELOW } m_Mode;
+    double  m_dVal;
+
+    double m_speed, m_apparent_direction;
+};
+
+class WeatherAlarm : public Alarm
+{
+public:
+    WeatherAlarm() : Alarm(true), m_Mode(BELOW), m_Variable(PRESSURE), m_dVal(1),
+                     m_pressure(NAN), m_air_temperature(NAN),
+                     m_sea_temperature(NAN), m_relative_humidity(NAN) {}
+
+    wxString Type() { return _("Weather"); }
+    wxString Options() {
+        wxString s = StrVariable();
+        s += _T(" ");
+        switch(m_Mode) {
+        case BELOW: s += _("Below"); break;
+        case ABOVE:  s += _("Above"); break;
+        }
+        s += _T(" ");
+        return s + wxString::Format(_T(" %.2f"), m_dVal);
+    }
+
+    wxString GetStatus() {
+        wxString s = StrVariable();
+        s += _T(" ");
+        
+        double val = Value();
+        if(isnan(val))
+            s += _T("N/A");
+        else {
+            wxString fmt(_T("%.1f"));
+            s += wxString::Format(fmt + (val < m_dVal ?
+                                        _T(" < ") : _T(" > "))
+                                 + fmt, val, m_dVal);
+        }
+
+        return s;
+    }
+
+    void Render(wdDC &dc, PlugIn_ViewPort &vp) {
+        //PlugIn_Position_Fix_Ex lastfix = g_watchdog_pi->LastFix();
+    }
+
+    bool Test() {
+        switch(m_Mode) {
+        case ABOVE: return m_dVal < Value();
+        case BELOW: return m_dVal > Value();
+        }
+        return 0;
+    }
+
+    wxWindow *OpenPanel(wxWindow *parent) {
+        WeatherPanel *panel = new WeatherPanel(parent);
+        panel->m_cMode->SetSelection((int)m_Mode);
+        panel->m_cVariable->SetSelection((int)m_Variable);
+        panel->m_tValue->SetValue(wxString::Format(_T("%f"), m_dVal));
+        return panel;
+    }
+
+    void SavePanel(wxWindow *p) {
+        WeatherPanel *panel = (WeatherPanel*)p;
+        m_Mode = (Mode)panel->m_cMode->GetSelection();
+        m_Variable = (Variable)panel->m_cVariable->GetSelection();
+        panel->m_tValue->GetValue().ToDouble(&m_dVal);
+    }
+
+    void LoadConfig(TiXmlElement *e) {
+        const char *mode = e->Attribute("Mode");
+        if(!strcasecmp(mode, "Above")) m_Mode = ABOVE;
+        else if(!strcasecmp(mode, "Below")) m_Mode = BELOW;
+        else wxLogMessage(_T("Watchdog: ") + wxString(_("invalid Weather mode")) + _T(": ") + wxString::FromUTF8(mode));
+
+        const char *variable = e->Attribute("Variable");
+        if(!strcasecmp(variable, "Pressure")) m_Variable = PRESSURE;
+        else if(!strcasecmp(variable, "AirTemperature")) m_Variable = AIR_TEMPERATURE;
+        else if(!strcasecmp(variable, "SeaTemperature")) m_Variable = SEA_TEMPERATURE;
+        else if(!strcasecmp(variable, "RelativeHumidity")) m_Variable = RELATIVE_HUMIDITY;
+        else wxLogMessage(_T("Watchdog: ") + wxString(_("invalid Weather variable")) + _T(": ") + wxString::FromUTF8(variable));
+
+        e->Attribute("Value", &m_dVal);
+    }
+
+    void SaveConfig(TiXmlElement *c) {
+        c->SetAttribute("Type", "Weather");
+        switch(m_Mode) {
+        case ABOVE: c->SetAttribute("Mode", "Above"); break;
+        case BELOW: c->SetAttribute("Mode", "Below"); break;
+        }
+
+        const char *variable;
+        switch(m_Variable) {
+        case PRESSURE: variable = "Pressure"; break;
+        case AIR_TEMPERATURE: variable = "AirTemperature"; break;
+        case SEA_TEMPERATURE: variable = "SeaTemperature"; break;
+        case RELATIVE_HUMIDITY: variable = "RelativeHumidity"; break;
+        }
+        c->SetAttribute("Variable", variable);
+
+        c->SetDoubleAttribute("Value", m_dVal);
+    }
+    
+private:
+    wxString StrVariable() {
+        switch(m_Variable) {
+        case PRESSURE: return _("Pressure"); break;
+        case AIR_TEMPERATURE: return _("Air Temperature"); break;
+        case SEA_TEMPERATURE: return _("Sea Temperature"); break;
+        case RELATIVE_HUMIDITY: return _("Humidity"); break;
+        }
+        return _T("");
+    }
+
+    double Value() {
+        switch(m_Variable) {
+        case PRESSURE: return m_pressure;
+        case AIR_TEMPERATURE: return m_air_temperature;
+        case SEA_TEMPERATURE: return m_sea_temperature;
+        case RELATIVE_HUMIDITY: return m_relative_humidity;
+        }
+        return NAN;
+    }
+
+    void NMEAString(const wxString &string) {
+        wxString str = string;
+        NMEA0183 nmea;
+        nmea << str;
+        if(!nmea.PreParse())
+            return;
+
+        if((m_Variable == PRESSURE || m_Variable == RELATIVE_HUMIDITY) &&
+           nmea.LastSentenceIDReceived == _T("MDA")) {
+            if(nmea.Parse()) {
+                m_pressure = nmea.Mda.Pressure * 1000;
+                m_relative_humidity = nmea.Mda.RelativeHumidity;
+            }
+        } else if(m_Variable == AIR_TEMPERATURE &&
+                  nmea.LastSentenceIDReceived == _T("MTA")) {
+            if(nmea.Parse())
+                m_air_temperature = nmea.Mta.Temperature;
+        } else if(m_Variable == SEA_TEMPERATURE &&
+                  nmea.LastSentenceIDReceived == _T("MTW")) {
+            if(nmea.Parse())
+                m_sea_temperature = nmea.Mtw.Temperature;
+        }
+    }
+
+    enum Mode { ABOVE, BELOW } m_Mode;
+    enum Variable {PRESSURE, AIR_TEMPERATURE, SEA_TEMPERATURE, RELATIVE_HUMIDITY} m_Variable;
+    double m_dVal;
+    double m_pressure, m_air_temperature, m_sea_temperature, m_relative_humidity;
+};
+
 ////////// Alarm Base Class /////////////////
 std::vector<Alarm*> Alarm::s_Alarms;
 
@@ -2001,6 +2291,8 @@ void Alarm::LoadConfigAll()
             else if(!strcasecmp(type, "Anchor")) alarm = Alarm::NewAlarm(ANCHOR);
             else if(!strcasecmp(type, "Course")) alarm = Alarm::NewAlarm(COURSE);
             else if(!strcasecmp(type, "Speed")) alarm = Alarm::NewAlarm(SPEED);
+            else if(!strcasecmp(type, "Wind")) alarm = Alarm::NewAlarm(WIND);
+            else if(!strcasecmp(type, "Weather")) alarm = Alarm::NewAlarm(WEATHER);
             else {
                 wxLogMessage(_T("Watchdog: ") + wxString(_("invalid alarm type")) + _T(": ") + wxString::FromUTF8(type));
                 continue;
@@ -2070,6 +2362,8 @@ Alarm *Alarm::NewAlarm(enum AlarmType type)
     case ANCHOR:   alarm = new AnchorAlarm;   break;
     case COURSE:   alarm = new CourseAlarm;   break;
     case SPEED:    alarm = new SpeedAlarm;    break;
+    case WIND:     alarm = new WindAlarm;     break;
+    case WEATHER:  alarm = new WeatherAlarm; break;
     default:  wxLogMessage(_T("Invalid Alarm Type")); return NULL;
     }
 

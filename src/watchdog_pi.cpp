@@ -5,7 +5,7 @@
  * Author:   Sean D'Epagnier
  *
  ***************************************************************************
- *   Copyright (C) 2015 by Sean D'Epagnier                                 *
+ *   Copyright (C) 2017 by Sean D'Epagnier                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -161,6 +161,7 @@ int watchdog_pi::Init(void)
         m_ConfigurationDialog->SetIcon(icon);
     }
     m_bWatchdogDialogShown = false;
+    m_cursor_time = wxDateTime::Now();
 
     return (WANTS_OVERLAY_CALLBACK |
             WANTS_OPENGL_OVERLAY_CALLBACK |
@@ -567,13 +568,11 @@ wxString watchdog_pi::StandardPath()
     wxStandardPathsBase& std_path = wxStandardPathsBase::Get();
     wxString s = wxFileName::GetPathSeparator();
 
-#ifdef __WXMSW__
+#if defined(__WXMSW__)
     wxString stdPath  = std_path.GetConfigDir();
-#endif
-#ifdef __WXGTK__
+#elif defined(__WXGTK__) || defined(__WXQT__)
     wxString stdPath  = std_path.GetUserDataDir();
-#endif
-#ifdef __WXOSX__
+#elif defined(__WXOSX__)
     wxString stdPath  = (std_path.GetUserConfigDir() + s + _T("opencpn"));
 #endif
 
