@@ -40,7 +40,12 @@ public:
     double      m_dCOG;
     double      m_dHDG;
     int         m_iMMSI;
+    int         m_iClass;
+    bool        m_bOwnship;
+    bool        m_bActive;
+    bool        m_bLost;
     wxString    m_sShipName;
+    wxString    m_sCallSign;
 };
 
 #endif

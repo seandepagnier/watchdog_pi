@@ -850,6 +850,34 @@ public:
                 jMsg[wxS("GUID")] = m_GuardZoneGUID;
                 jMsg[wxS("lat")] = g_AISTarget.m_dLat;
                 jMsg[wxS("lon")] = g_AISTarget.m_dLon;
+                switch (m_BoundaryType) {
+                    case ID_BOUNDARY_ANY:
+                        jMsg[wxS("BoundaryType")] = wxT("Any");
+                        break;
+                    case ID_BOUNDARY_EXCLUSION:
+                        jMsg[wxS("BoundaryType")] = wxT("Exclusion");
+                        break;
+                    case ID_BOUNDARY_INCLUSION:
+                        jMsg[wxS("BoundaryType")] = wxT("Inclusion");
+                        break;
+                    case ID_BOUNDARY_NEITHER:
+                        jMsg[wxS("BoundaryType")] = wxT("Neither");
+                        break;
+                    default:
+                        jMsg[wxS("BoundaryType")] = wxT("Any");
+                        break;
+                }
+                switch (m_BoundaryState) {
+                    case ID_BOUNDARY_STATE_ANY:
+                        jMsg[wxS("BoundaryState")] = wxT("Any");
+                        break;
+                    case ID_BOUNDARY_STATE_ACTIVE:
+                        jMsg[wxS("BoundaryState")] = wxT("Active");
+                        break;
+                    case ID_BOUNDARY_STATE_INACTIVE:
+                        jMsg[wxS("BoundaryState")] = wxT("Inactive");
+                        break;
+                }
                 
                 writer.Write( jMsg, MsgString );
                 SendPluginMessage( wxS("OCPN_DRAW_PI"), MsgString );
@@ -857,8 +885,6 @@ public:
                     g_ReceivedGuardZoneJSONMsg[wxS("MsgId")].AsString() == wxS("guard") &&
                     g_ReceivedGuardZoneJSONMsg[wxS("Found")].AsBool() == true ) { 
 
-                    if(g_ReceivedGuardZoneJSONMsg.HasMember( wxS("Active")))
-                        if(g_ReceivedGuardZoneJSONMsg[wxS("Active")].AsBool() != true) return false;
                     g_ReceivedGuardZoneMessage = wxEmptyString;
                     m_GuardZoneName = g_ReceivedGuardZoneJSONMsg[wxS("Name")].AsString();
                     m_GuardZoneDescription = g_ReceivedGuardZoneJSONMsg[wxS("Description")].AsString();
@@ -1114,19 +1140,23 @@ public:
                 m_BoundaryState = ID_BOUNDARY_STATE_ANY;
                 break;
         }
+        wxString l_sName;
         m_BoundaryGUID = panel->m_tBoundaryGUID->GetValue();
-        if(g_BoundaryName != wxEmptyString) {
-            m_BoundaryName = g_BoundaryName;
-            g_BoundaryName = wxEmptyString;
+        if(m_BoundaryGUID != wxEmptyString) {
+            l_sName = GetPathNameByGUID(m_BoundaryGUID);
+            if(l_sName != wxEmptyString) {
+                m_BoundaryName = l_sName;
+            }
         }
         if(g_BoundaryDescription != wxEmptyString) {
             m_BoundaryDescription = g_BoundaryDescription;
             g_BoundaryDescription = wxEmptyString;
         }
         m_GuardZoneGUID = panel->m_tGuardZoneGUID->GetValue();
-        if(g_GuardZoneName != wxEmptyString) {
-            m_GuardZoneName = g_GuardZoneName;
-            g_GuardZoneName = wxEmptyString;
+        if(m_GuardZoneGUID != wxEmptyString) {
+            l_sName = GetPathNameByGUID(m_GuardZoneGUID);
+            if(l_sName != wxEmptyString)
+                m_GuardZoneName = l_sName;
         }
     }
 
@@ -1242,7 +1272,8 @@ public:
                         l_s = Type() + _T(" ") + _("ALARM!") + _T("\n") 
                                 + _("Guard Zone Name") + _T(": ") + m_GuardZoneName + _T("\n")
                                 + _("Description") + _T(": ") + m_GuardZoneDescription + _T("\n")
-                                + _("GUID") + _T(": ") + m_GuardZoneGUID + _T("\n") ;
+                                + _("GUID") + _T(": ") + m_GuardZoneGUID + _T("\n") 
+                                + _("Time") + _T(": ") + wxDateTime::Now().FormatISOCombined(' ') + _T("\n");
                         if(m_bSpecial) {
                             l_s.append("Guard Zone not Found");
                             m_bFired = false;
@@ -1279,7 +1310,12 @@ public:
         if(m_bEnabled) {
             std::list<AISMMSITIME>::iterator it = AISMsgInfoList.begin();
             while(it != AISMsgInfoList.end()) {
-                if((wxDateTime::Now() - it->MsgTime).GetSeconds() > m_iRepeatSeconds) {
+                wxFileConfig *l_pConf = GetOCPNConfigObject();
+                l_pConf->SetPath ( _T( "/Settings/AIS" ) );
+                
+                int l_iLostMins = l_pConf->Read ( _T ( "MarkLost_Minutes" ), 8L );
+                
+                if((wxDateTime::Now() - it->MsgTime).GetSeconds() > (l_iLostMins * 60)) {
                     AISMsgInfoList.erase(it);
                     it = AISMsgInfoList.begin();
                     continue;
@@ -1335,7 +1371,7 @@ public:
                 Alarm::OnTimer( tEvent );
                 break;
             case GUARD:
-                Alarm::OnTimer( tEvent );
+//                Alarm::OnTimer( tEvent );
                 if(g_watchdog_pi->m_WatchdogDialog && g_watchdog_pi->m_WatchdogDialog->IsShown())
                     for(unsigned int i=0; i<Alarm::s_Alarms.size(); i++)
                         if(Alarm::s_Alarms[i] == this)
@@ -1423,6 +1459,29 @@ public:
         SendPluginMessage( wxS("OCPN_DRAW_PI"), MsgString );
     }
     
+    wxString GetPathNameByGUID(wxString GUID)
+    {
+        wxJSONValue jMsg;
+        wxJSONWriter writer;
+        wxString    MsgString;
+        wxString    l_sName = wxEmptyString;
+
+        jMsg[wxT("Source")] = wxT("WATCHDOG_PI");
+        jMsg[wxT("Type")] = wxT("Request");
+        jMsg[wxT("Msg")] = wxS("FindPathByGUID");
+        jMsg[wxT("MsgId")] = wxS("general");
+        jMsg[wxS("GUID")] = GUID;
+        writer.Write( jMsg, MsgString );
+        g_ReceivedPathGUIDMessage = wxEmptyString;
+        SendPluginMessage( wxS("OCPN_DRAW_PI"), MsgString );
+        if(g_ReceivedPathGUIDMessage != wxEmptyString &&
+            g_ReceivedPathGUIDJSONMsg[wxT("MsgId")].AsString() == wxS("general") &&
+            g_ReceivedPathGUIDJSONMsg[wxT("Found")].AsBool() == true ) {
+            l_sName = g_ReceivedPathGUIDJSONMsg[wxS("Name")].AsString();
+            }
+            return l_sName;
+    }
+
 private:
 
     enum Mode { TIME, DISTANCE, ANCHOR, GUARD } m_Mode;
@@ -1434,6 +1493,8 @@ private:
     double      m_BoundaryAtLon;
     int         m_BoundaryType;
     int         m_BoundaryState;
+    bool        m_AISMoving;
+    bool        m_AISStationary;
     bool        m_bAnchorOutside;
     wxString    m_BoundaryGUID;
     wxString    m_BoundaryName;
@@ -2375,6 +2436,7 @@ Alarm::Alarm(bool gfx, int interval)
     : m_bHasGraphics(gfx), m_bEnabled(true), m_bgfxEnabled(false), m_bFired(false), m_bSpecial(false),
       m_bSound(true), m_bCommand(false), m_bMessageBox(false), m_bRepeat(false),
       m_bAutoReset(false),
+      m_LastAlarmTime(wxDateTime::Now()),
       m_sSound(*GetpSharedDataLocation() + _T("sounds/2bells.wav")),
       m_iRepeatSeconds(60),
       m_interval(interval)

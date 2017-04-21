@@ -98,6 +98,7 @@ double heading_resolve(double degrees);
 class wdDC;
 class WatchdogDialog;
 class ConfigurationDialog;
+class WatchdogPropertiesDialog;
 
 enum {
     ID_ALARM_NEVER = 0,
@@ -125,7 +126,7 @@ public:
       wxString GetLongDescription();
 
       int GetToolbarToolCount(void);
-
+      void ShowPreferencesDialog( wxWindow* parent );
       void OnToolbarToolCallback(int id);
       void OnContextMenuItemCallback(int id);
 
@@ -168,6 +169,7 @@ private:
       void SetPluginMessage(wxString &message_id, wxString &message_body);
 
       ConfigurationDialog *m_ConfigurationDialog;
+      WatchdogPropertiesDialog *m_PropertiesDialog;
       int               m_leftclick_tool_id;
 
       void              RearrangeWindow();

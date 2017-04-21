@@ -20,23 +20,27 @@
 #include <wx/button.h>
 #include <wx/sizer.h>
 #include <wx/dialog.h>
+#include <wx/stattext.h>
 #include <wx/radiobut.h>
 #include <wx/statbox.h>
 #include <wx/checkbox.h>
 #include <wx/filepicker.h>
 #include <wx/textctrl.h>
 #include <wx/spinctrl.h>
-#include <wx/stattext.h>
 #include <wx/panel.h>
-#include <wx/statline.h>
 #include <wx/radiobox.h>
 #include <wx/slider.h>
+#include <wx/statline.h>
 #include <wx/choice.h>
 
 #include "wxWTranslateCatalog.h"
 
 ///////////////////////////////////////////////////////////////////////////
 
+#define GPSCOURSE 1000
+#define GPSFIX 1001
+#define AISGUARDZONE 1002
+#define ANCHORALARM 1003
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Class WatchdogDialogBase
@@ -63,6 +67,41 @@ class WatchdogDialogBase : public wxDialog
 		
 		WatchdogDialogBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("WatchDog"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxCAPTION|wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxTAB_TRAVERSAL ); 
 		~WatchdogDialogBase();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class WatchdogPropertiesDialogBase
+///////////////////////////////////////////////////////////////////////////////
+class WatchdogPropertiesDialogBase : public wxDialog 
+{
+	private:
+	
+	protected:
+		wxFlexGridSizer* m_fgSizerProperties;
+		wxStaticText* m_staticTextName;
+		wxStaticText* m_staticTextNameVal;
+		wxStaticText* m_staticTextVersion;
+		wxStaticText* m_staticTextMajor;
+		wxStaticText* m_staticTextMajorVal;
+		wxStaticText* m_staticTextMinor;
+		wxStaticText* m_staticTextMinorVal;
+		wxStaticText* m_staticTextPatch;
+		wxStaticText* m_staticTextPatchVal;
+		wxStaticText* m_staticTextDate;
+		wxStaticText* m_staticTextDateVal;
+		wxStaticText* m_staticTextOther;
+		wxStaticText* m_staticTextOtherVal;
+		wxButton* m_buttonOK;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnWatchdogPropertiesOKClick( wxCommandEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		
+		WatchdogPropertiesDialogBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("About Watchdog Properties"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxCLOSE_BOX|wxDEFAULT_DIALOG_STYLE|wxSTAY_ON_TOP ); 
+		~WatchdogPropertiesDialogBase();
 	
 };
 
@@ -197,22 +236,20 @@ class BoundaryPanel : public wxPanel
 	private:
 	
 	protected:
-		wxStaticText* m_staticText33;
-		wxStaticLine* m_staticline4;
 		wxStaticText* m_staticText30;
 		wxStaticText* m_staticText7;
-		wxStaticLine* m_staticline1;
+		wxStaticText* m_staticText321;
 		wxStaticText* m_staticText32;
 		wxButton* m_button12;
-		wxStaticText* m_staticText321;
-		wxStaticLine* m_staticline2;
 		wxStaticText* m_staticTextCheckFrequency;
 		wxStaticText* m_staticText39122;
+		wxStaticLine* m_staticline1;
 		
 		// Virtual event handlers, overide them in your derived class
+		void OnRadioButton( wxCommandEvent& event );
+		void OnGuardZoneGUIDKillFocus( wxFocusEvent& event );
 		void OnBoundaryGUIDKillFocus( wxFocusEvent& event );
 		void OnGetBoundaryGUID( wxCommandEvent& event );
-		void OnGuardZoneGUIDKillFocus( wxFocusEvent& event );
 		
 	
 	public:
@@ -220,12 +257,12 @@ class BoundaryPanel : public wxPanel
 		wxSpinCtrl* m_sTimeMinutes;
 		wxRadioButton* m_rbDistance;
 		wxTextCtrl* m_tDistance;
-		wxRadioBox* m_radioBoxBoundaryType;
-		wxRadioBox* m_radioBoxBoundaryState;
-		wxRadioButton* m_rbAnchor;
-		wxTextCtrl* m_tBoundaryGUID;
 		wxRadioButton* m_rbGuard;
 		wxTextCtrl* m_tGuardZoneGUID;
+		wxRadioButton* m_rbAnchor;
+		wxTextCtrl* m_tBoundaryGUID;
+		wxRadioBox* m_radioBoxBoundaryType;
+		wxRadioBox* m_radioBoxBoundaryState;
 		wxSlider* m_sliderCheckFrequency;
 		
 		BoundaryPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL ); 
