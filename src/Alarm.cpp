@@ -2174,7 +2174,7 @@ private:
 class WeatherAlarm : public Alarm
 {
 public:
-    WeatherAlarm() : Alarm(true), m_Mode(BELOW), m_Variable(PRESSURE), m_dVal(1),
+    WeatherAlarm() : Alarm(false), m_Mode(BELOW), m_Variable(PRESSURE), m_dVal(1),
                      m_pressure(NAN), m_air_temperature(NAN),
                      m_sea_temperature(NAN), m_relative_humidity(NAN) {}
 
