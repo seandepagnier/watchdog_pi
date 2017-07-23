@@ -5,7 +5,7 @@
  * Author:   Sean D'Epagnier
  *
  ***************************************************************************
- *   Copyright (C) 2015 by Sean D'Epagnier                                 *
+ *   Copyright (C) 2017 by Sean D'Epagnier                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -34,6 +34,7 @@
 #include "watchdog_pi.h"
 #include "WatchdogDialog.h"
 #include "ConfigurationDialog.h"
+#include "WatchdogPropertiesDialog.h"
 #include "icons.h"
 #include "AIS_Target_Info.h"
 
@@ -53,6 +54,8 @@ wxJSONValue g_ReceivedGuardZoneGUIDJSONMsg;
 wxString    g_ReceivedGuardZoneGUIDMessage;
 wxJSONValue g_ReceivedODVersionJSONMsg;
 wxString    g_ReceivedODVersionMessage;
+wxJSONValue g_ReceivedODAPIJSONMsg;
+wxString    g_ReceivedODAPIMessage;
 wxJSONValue g_ReceivedAISJSONMsg;
 wxString    g_ReceivedAISMessage;
 
@@ -144,6 +147,7 @@ int watchdog_pi::Init(void)
     
     m_WatchdogDialog = NULL;
     m_ConfigurationDialog = NULL;
+    m_PropertiesDialog = NULL;
     m_Timer.Connect(wxEVT_TIMER, wxTimerEventHandler
                     ( watchdog_pi::OnTimer ), NULL, this);
     m_Timer.Start(3000);
@@ -159,6 +163,7 @@ int watchdog_pi::Init(void)
         m_ConfigurationDialog->SetIcon(icon);
     }
     m_bWatchdogDialogShown = false;
+    m_cursor_time = wxDateTime::Now();
 
     return (WANTS_OVERLAY_CALLBACK |
             WANTS_OPENGL_OVERLAY_CALLBACK |
@@ -168,6 +173,7 @@ int watchdog_pi::Init(void)
             WANTS_NMEA_EVENTS         |
             WANTS_AIS_SENTENCES       |
             WANTS_PLUGIN_MESSAGING    |
+            WANTS_PREFERENCES         |
             WANTS_CONFIG);
 }
 
@@ -241,6 +247,19 @@ Alarm user of changing conditions.");
 int watchdog_pi::GetToolbarToolCount(void)
 {
     return 1;
+}
+
+void watchdog_pi::ShowPreferencesDialog( wxWindow* parent )
+{
+    //dlgShow = false;
+    if( NULL == m_PropertiesDialog )
+        m_PropertiesDialog = new WatchdogPropertiesDialog( parent );
+    
+    m_PropertiesDialog->ShowModal();
+    
+    delete m_PropertiesDialog;
+    m_PropertiesDialog = NULL;
+    
 }
 
 void watchdog_pi::SetColorScheme(PI_ColorScheme cs)
@@ -347,8 +366,10 @@ void watchdog_pi::OnTimer( wxTimerEvent & )
 
 void watchdog_pi::SetCursorLatLon(double lat, double lon)
 {
-    m_cursor_lat = lat;
-    m_cursor_lon = lon;
+    wxPoint pos = wxGetMouseState().GetPosition();
+    if(pos == m_cursor_position)
+        return;
+    m_cursor_position = pos;
     m_cursor_time = wxDateTime::Now();
 }
 
@@ -421,8 +442,7 @@ void watchdog_pi::SetPluginMessage(wxString &message_id, wxString &message_body)
         if(!bFail) {
             if(root[wxS("Type")].AsString() == wxS("Response") && root[wxS("Source")].AsString() == wxS("OCPN_DRAW_PI")) {
                 if(root[wxS("Msg")].AsString() == wxS("FindPathByGUID") ) {
-                    if(root[wxS("MsgId")].AsString() == wxS("guard") || root[wxS("MsgId")].AsString() == wxS("inclusion")) {
-                        g_ReceivedPathGUIDJSONMsg = root;
+                    if(root[wxS("MsgId")].AsString() == wxS("guard") || root[wxS("MsgId")].AsString() == wxS("inclusion") || root[wxS("MsgId")].AsString() == wxS("general")) {                        g_ReceivedPathGUIDJSONMsg = root;
                         g_ReceivedPathGUIDMessage = message_body;
                     }
                 } else if(root[wxS("Msg")].AsString() == wxS("FindPointInAnyBoundary") ) {
@@ -458,6 +478,11 @@ void watchdog_pi::SetPluginMessage(wxString &message_id, wxString &message_body)
                     if(root[wxS("MsgId")].AsString() == wxS("version")) {
                         g_ReceivedODVersionJSONMsg = root;
                         g_ReceivedODVersionMessage = message_body;
+                    }
+                } else if(root[wxS("Msg")].AsString() == wxS("GetAPIAddresses") ) {
+                    if(root[wxS("MsgId")].AsString() == wxS("GetAPIAddresses")) {
+                        g_ReceivedODAPIJSONMsg = root;
+                        g_ReceivedODAPIMessage = message_body;
                     }
                 }
             }
@@ -535,7 +560,23 @@ void watchdog_pi::SetPluginMessage(wxString &message_id, wxString &message_body)
                 g_ReceivedAISJSONMsg[wxS("cog")].AsString().ToDouble( &g_AISTarget.m_dCOG );
                 g_ReceivedAISJSONMsg[wxS("hdg")].AsString().ToDouble( &g_AISTarget.m_dHDG );
                 g_AISTarget.m_iMMSI = g_ReceivedAISJSONMsg[wxS("mmsi")].AsLong();
-                g_AISTarget.m_sShipName = g_ReceivedAISJSONMsg[wxS("shipname")].AsString();
+                g_AISTarget.m_sShipName = g_ReceivedAISJSONMsg[wxS("shipname")].AsString().Trim();
+                if(root.HasMember( wxS("callsign") ))
+                    g_AISTarget.m_sCallSign = g_ReceivedAISJSONMsg[wxS("callsign")].AsString().Trim();
+                else
+                    g_AISTarget.m_sCallSign = wxEmptyString;
+                if(root.HasMember( wxS("active") ))
+                    g_AISTarget.m_bActive = g_ReceivedAISJSONMsg[wxS("active")].AsBool();
+                else
+                    g_AISTarget.m_bActive = true;
+                if(root.HasMember( wxS("lost") ))
+                    g_AISTarget.m_bLost = g_ReceivedAISJSONMsg[wxS("lost")].AsBool();
+                else
+                    g_AISTarget.m_bLost = false;
+                if(root.HasMember( wxS("ownship") ))
+                    g_AISTarget.m_bOwnship = g_ReceivedAISJSONMsg[wxS("ownship")].AsBool();
+                else
+                    g_AISTarget.m_bOwnship = false;
             }
             for(unsigned int i=0; i<Alarm::s_Alarms.size(); i++) {
                 Alarm *p_Alarm = Alarm::s_Alarms[i];
@@ -558,13 +599,11 @@ wxString watchdog_pi::StandardPath()
     wxStandardPathsBase& std_path = wxStandardPathsBase::Get();
     wxString s = wxFileName::GetPathSeparator();
 
-#ifdef __WXMSW__
+#if defined(__WXMSW__)
     wxString stdPath  = std_path.GetConfigDir();
-#endif
-#ifdef __WXGTK__
+#elif defined(__WXGTK__) || defined(__WXQT__)
     wxString stdPath  = std_path.GetUserDataDir();
-#endif
-#ifdef __WXOSX__
+#elif defined(__WXOSX__)
     wxString stdPath  = (std_path.GetUserConfigDir() + s + _T("opencpn"));
 #endif
 

@@ -30,7 +30,7 @@
 class wdDC;
 class TiXmlElement;
 
-enum AlarmType {LANDFALL, BOUNDARY, NMEADATA, DEADMAN, ANCHOR, COURSE, SPEED};
+enum AlarmType {LANDFALL, BOUNDARY, NMEADATA, DEADMAN, ANCHOR, COURSE, SPEED, WIND, WEATHER};
 
 class Alarm : public wxEvtHandler {
 public:
@@ -69,7 +69,7 @@ public:
 
     virtual void OnTimer(wxTimerEvent &);
 
-    bool m_bHasGraphics, m_bEnabled, m_bgfxEnabled, m_bFired;
+    bool m_bHasGraphics, m_bEnabled, m_bgfxEnabled, m_bFired, m_bSpecial;
 
 protected:
     bool m_bSound, m_bCommand, m_bMessageBox, m_bRepeat, m_bAutoReset;

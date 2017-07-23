@@ -152,7 +152,10 @@ void WatchdogDialog::UpdateStatus(int index)
     m_lStatus->SetItem(index, ALARM_TYPE, alarm->Type());
     m_lStatus->SetColumnWidth(ALARM_TYPE, wxLIST_AUTOSIZE);
     m_lStatus->SetItem(index, ALARM_STATUS, alarm->GetStatus());
-    m_lStatus->SetItemTextColour(index, alarm->m_bFired ? *wxRED: *wxBLACK);
+    if(alarm->m_bSpecial)
+        m_lStatus->SetItemTextColour(index, *wxBLUE);
+    else
+        m_lStatus->SetItemTextColour(index, alarm->m_bFired ? *wxRED: *wxBLACK);
     m_lStatus->SetColumnWidth(ALARM_STATUS, wxLIST_AUTOSIZE);
 
 }

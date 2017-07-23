@@ -29,23 +29,20 @@ SET(SRC_WATCHDOG
             src/watchdog_pi.cpp
             src/watchdog_pi.cpp
             src/WatchdogDialog.cpp
+            src/WatchdogPropertiesDialog.cpp
             src/ConfigurationDialog.cpp
             src/NewAlarmDialog.cpp
             src/EditAlarmDialog.cpp
             src/Alarm.cpp
             src/WatchdogUI.cpp
             src/icons.cpp
-
+            src/ODAPI.h
             src/wddc.cpp
             src/TexFont.cpp
 	)
 
-IF(WIN32)
-SET(SRC_JSON
-            src/wxJSON/jsonval.cpp
-            src/wxJSON/jsonreader.cpp
-            src/wxJSON/jsonwriter.cpp)
-ENDIF(WIN32)
+INCLUDE("cmake/PluginNMEA.cmake")
+INCLUDE("cmake/PluginJSON.cmake")
 
 IF(UNIX)
  INCLUDE("cmake/FindTinyXML.cmake")
@@ -55,7 +52,7 @@ ENDIF(UNIX)
 IF(TINYXML_FOUND)
  message (STATUS "Building with system tinyxml")
  INCLUDE_DIRECTORIES(${TINYXML_INCLUDE_DIR})
- ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRC_WATCHDOG} ${SRC_JSON})
+ ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRC_WATCHDOG} ${SRC_JSON} ${SRC_NMEA0183})
  TARGET_LINK_LIBRARIES(${PACKAGE_NAME} ${TINYXML_LIBRARIES})
 ELSE(TINYXML_FOUND)
  message (STATUS "Building with embedded tinyxml")
@@ -65,7 +62,7 @@ ELSE(TINYXML_FOUND)
             src/tinyxml/tinyxmlparser.cpp
             src/tinyxml/tinyxmlerror.cpp
  )
- ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRC_WATCHDOG} ${SRC_JSON} ${SRC_LTINYXML})
+ ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRC_WATCHDOG} ${SRC_JSON} ${SRC_NMEA0183} ${SRC_LTINYXML})
 ENDIF(TINYXML_FOUND)
 ADD_DEFINITIONS(-DTIXML_USE_STL)
 
