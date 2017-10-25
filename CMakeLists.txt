@@ -61,7 +61,7 @@ IF(TINYXML_FOUND)
  TARGET_LINK_LIBRARIES(${PACKAGE_NAME} ${TINYXML_LIBRARIES})
 ELSE(TINYXML_FOUND)
  message (STATUS "Building with embedded tinyxml")
- INCLUDE_DIRECTORIES(src/tinyxml/)
+ INCLUDE_DIRECTORIES(BEFORE ${PROJECT_SOURCE_DIR}/src/tinyxml/)
  SET(SRC_LTINYXML
             src/tinyxml/tinyxml.cpp
             src/tinyxml/tinyxmlparser.cpp
