@@ -1905,9 +1905,9 @@ public:
     void SaveConfig(TiXmlElement *c) {
         c->SetAttribute("Type", "Course");
         switch(m_Mode) {
-        case PORT: c->SetAttribute("Mode", "Port");
-        case STARBOARD: c->SetAttribute("Mode", "Starboard");
-        case BOTH: c->SetAttribute("Mode", "Both");
+        case PORT: c->SetAttribute("Mode", "Port"); break;
+        case STARBOARD: c->SetAttribute("Mode", "Starboard"); break;
+        case BOTH: c->SetAttribute("Mode", "Both");break;
         }
 
         c->SetDoubleAttribute("Tolerance", m_Tolerance);
