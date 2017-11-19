@@ -58,6 +58,7 @@ class LandFallAlarm : public Alarm
 {
 public:
     LandFallAlarm() : Alarm(true, 5 /* seconds */),
+                      m_crossinglat1(NAN),
                       m_Mode(TIME),
                       m_TimeMinutes(20),
                       m_Distance(3)
