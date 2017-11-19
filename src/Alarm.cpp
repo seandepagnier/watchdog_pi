@@ -80,6 +80,9 @@ public:
     }
 
     bool Test() {
+        if(!m_bData)
+            return false;
+
         PlugIn_Position_Fix_Ex lastfix = g_watchdog_pi->LastFix();
 
         if(isnan(lastfix.Lat))
@@ -188,6 +191,10 @@ public:
     }
 
     void Render(wdDC &dc, PlugIn_ViewPort &vp) {
+
+        if(!m_bData)
+            return;
+
         PlugIn_Position_Fix_Ex lastfix = g_watchdog_pi->LastFix();
         if(isnan(m_crossinglat1))
             return;
