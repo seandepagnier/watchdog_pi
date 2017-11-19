@@ -1048,7 +1048,7 @@ public:
                     return _T(" ") + wxString(_("Guard Zone")) + _T(": ") + m_GuardZoneName + _T(": Not found");
                 else
                     return _T(" ") + wxString(_("Guard Zone")) + _T(": ") + m_GuardZoneName + _T(": ") +
-                    (m_bGuardZoneFired ? wxString(_("AIS Target in zone")) : wxString(_("NO AIS tagets found in zone")));
+                    (m_bGuardZoneFired ? wxString(_("AIS Target in zone")) : wxString(_("NO AIS targets found in zone")));
                 break;
             }
         }
