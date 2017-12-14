@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Jul 15 2016)
+// C++ code generated with wxFormBuilder (version Dec  3 2017)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
@@ -371,6 +371,7 @@ EditAlarmDialogBase::EditAlarmDialogBase( wxWindow* parent, wxWindowID id, const
 	fgSizer6->Add( m_cbCommand, 0, wxALL, 5 );
 	
 	m_tCommand = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_tCommand->SetMaxLength( 255 ); 
 	fgSizer6->Add( m_tCommand, 0, wxALL|wxEXPAND, 5 );
 	
 	m_cbMessageBox = new wxCheckBox( this, wxID_ANY, _("Message Box"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -475,14 +476,7 @@ LandFallPanel::LandFallPanel( wxWindow* parent, wxWindowID id, const wxPoint& po
 	fgSizer10->Add( m_rbDistance, 0, wxALL, 5 );
 	
 	m_tDistance = new wxTextCtrl( this, wxID_ANY, _("3"), wxDefaultPosition, wxDefaultSize, 0 );
-	#ifdef __WXGTK__
-	if ( !m_tDistance->HasFlag( wxTE_MULTILINE ) )
-	{
-	m_tDistance->SetMaxLength( 10 );
-	}
-	#else
-	m_tDistance->SetMaxLength( 10 );
-	#endif
+	m_tDistance->SetMaxLength( 10 ); 
 	fgSizer10->Add( m_tDistance, 0, wxALL, 5 );
 	
 	m_staticText7 = new wxStaticText( this, wxID_ANY, _("nm from coastline\n(any direction)"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -544,14 +538,7 @@ BoundaryPanel::BoundaryPanel( wxWindow* parent, wxWindowID id, const wxPoint& po
 	fgSizer10->Add( m_rbDistance, 0, wxALL, 5 );
 	
 	m_tDistance = new wxTextCtrl( this, wxID_ANY, _("3"), wxDefaultPosition, wxDefaultSize, 0 );
-	#ifdef __WXGTK__
-	if ( !m_tDistance->HasFlag( wxTE_MULTILINE ) )
-	{
-	m_tDistance->SetMaxLength( 10 );
-	}
-	#else
-	m_tDistance->SetMaxLength( 10 );
-	#endif
+	m_tDistance->SetMaxLength( 10 ); 
 	fgSizer10->Add( m_tDistance, 0, wxALL, 5 );
 	
 	m_staticText7 = new wxStaticText( this, wxID_ANY, _("nm from boundary\n(any direction)"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -574,14 +561,7 @@ BoundaryPanel::BoundaryPanel( wxWindow* parent, wxWindowID id, const wxPoint& po
 	fgSizer30->Add( m_staticText321, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 	
 	m_tGuardZoneGUID = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	#ifdef __WXGTK__
-	if ( !m_tGuardZoneGUID->HasFlag( wxTE_MULTILINE ) )
-	{
-	m_tGuardZoneGUID->SetMaxLength( 40 );
-	}
-	#else
-	m_tGuardZoneGUID->SetMaxLength( 40 );
-	#endif
+	m_tGuardZoneGUID->SetMaxLength( 40 ); 
 	fgSizer30->Add( m_tGuardZoneGUID, 0, wxALL, 5 );
 	
 	
@@ -600,14 +580,7 @@ BoundaryPanel::BoundaryPanel( wxWindow* parent, wxWindowID id, const wxPoint& po
 	fgSizer28->Add( m_staticText32, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 	
 	m_tBoundaryGUID = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	#ifdef __WXGTK__
-	if ( !m_tBoundaryGUID->HasFlag( wxTE_MULTILINE ) )
-	{
-	m_tBoundaryGUID->SetMaxLength( 40 );
-	}
-	#else
-	m_tBoundaryGUID->SetMaxLength( 40 );
-	#endif
+	m_tBoundaryGUID->SetMaxLength( 40 ); 
 	fgSizer28->Add( m_tBoundaryGUID, 0, wxALL, 5 );
 	
 	m_button12 = new wxButton( this, wxID_ANY, _("Get Boundary GUID"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -700,14 +673,7 @@ NMEADataPanel::NMEADataPanel( wxWindow* parent, wxWindowID id, const wxPoint& po
 	fgSizer91->Add( m_staticText34, 0, wxALL, 5 );
 	
 	m_tSentences = new wxTextCtrl( this, wxID_ANY, _("$GPGGA"), wxDefaultPosition, wxSize( -1,60 ), wxTE_MULTILINE );
-	#ifdef __WXGTK__
-	if ( !m_tSentences->HasFlag( wxTE_MULTILINE ) )
-	{
-	m_tSentences->SetMaxLength( 255 );
-	}
-	#else
-	m_tSentences->SetMaxLength( 255 );
-	#endif
+	m_tSentences->SetMaxLength( 255 ); 
 	fgSizer91->Add( m_tSentences, 0, wxALL|wxEXPAND, 5 );
 	
 	wxFlexGridSizer* fgSizer19;
@@ -792,14 +758,7 @@ AnchorPanel::AnchorPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, c
 	fgSizer9->Add( m_staticText71, 0, wxALL, 5 );
 	
 	m_tLatitude = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	#ifdef __WXGTK__
-	if ( !m_tLatitude->HasFlag( wxTE_MULTILINE ) )
-	{
-	m_tLatitude->SetMaxLength( 20 );
-	}
-	#else
-	m_tLatitude->SetMaxLength( 20 );
-	#endif
+	m_tLatitude->SetMaxLength( 20 ); 
 	fgSizer9->Add( m_tLatitude, 0, wxALL, 5 );
 	
 	
@@ -810,14 +769,7 @@ AnchorPanel::AnchorPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, c
 	fgSizer9->Add( m_staticText8, 0, wxALL, 5 );
 	
 	m_tLongitude = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	#ifdef __WXGTK__
-	if ( !m_tLongitude->HasFlag( wxTE_MULTILINE ) )
-	{
-	m_tLongitude->SetMaxLength( 20 );
-	}
-	#else
-	m_tLongitude->SetMaxLength( 20 );
-	#endif
+	m_tLongitude->SetMaxLength( 20 ); 
 	fgSizer9->Add( m_tLongitude, 0, wxALL, 5 );
 	
 	m_bSyncToBoat = new wxButton( this, wxID_ANY, _("Sync to Boat"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -957,6 +909,7 @@ SpeedPanel::SpeedPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, con
 	fgSizer14->Add( m_staticText44, 0, wxALL, 5 );
 	
 	m_tSpeed = new wxTextCtrl( this, wxID_ANY, _("1"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_tSpeed->SetMaxLength( 10 ); 
 	fgSizer14->Add( m_tSpeed, 0, wxALL, 5 );
 	
 	m_staticText24 = new wxStaticText( this, wxID_ANY, _("knots"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -1010,7 +963,7 @@ WindPanel::WindPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, const
 	m_staticText51->Wrap( -1 );
 	fgSizer14->Add( m_staticText51, 0, wxALL, 5 );
 	
-	wxString m_cModeChoices[] = { _("Under Speed"), _("Over Speed"), _("Apparent Direction Above"), _("Apparent Direction Below"), _("Apparent Direction Port Above"), _("Apparent Direction Port Below"), _("Apparent Direction Starboard Above"), _("Apparent Direction Starboard Below"), _("Apparent Direction Above"), _("Apparent Direction Above"), wxEmptyString };
+	wxString m_cModeChoices[] = { _("Under Speed"), _("Over Speed"), _("Apparent Direction Above"), _("Apparent Direction Below"), _("Apparent Direction Port Above"), _("Apparent Direction Port Below"), _("Apparent Direction Starboard Above"), _("Apparent Direction Starboard Below"), wxEmptyString };
 	int m_cModeNChoices = sizeof( m_cModeChoices ) / sizeof( wxString );
 	m_cMode = new wxChoice( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_cModeNChoices, m_cModeChoices, 0 );
 	m_cMode->SetSelection( 0 );

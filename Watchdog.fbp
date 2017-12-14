@@ -1845,7 +1845,6 @@
                         <property name="minimum_size"></property>
                         <property name="name">sbSizer41</property>
                         <property name="orient">wxVERTICAL</property>
-                        <property name="parent">1</property>
                         <property name="permission">none</property>
                         <event name="OnUpdateUI"></event>
                         <object class="sizeritem" expanded="0">
@@ -2246,7 +2245,6 @@
                                 <property name="minimum_size"></property>
                                 <property name="name">sbSizer7</property>
                                 <property name="orient">wxVERTICAL</property>
-                                <property name="parent">1</property>
                                 <property name="permission">none</property>
                                 <event name="OnUpdateUI"></event>
                                 <object class="sizeritem" expanded="0">
@@ -3171,7 +3169,6 @@
                         <property name="minimum_size"></property>
                         <property name="name">sbSizer4</property>
                         <property name="orient">wxVERTICAL</property>
-                        <property name="parent">1</property>
                         <property name="permission">none</property>
                         <event name="OnUpdateUI"></event>
                         <object class="sizeritem" expanded="0">
@@ -9577,7 +9574,6 @@
                 <property name="minimum_size"></property>
                 <property name="name">sbSizer7</property>
                 <property name="orient">wxVERTICAL</property>
-                <property name="parent">1</property>
                 <property name="permission">none</property>
                 <event name="OnUpdateUI"></event>
                 <object class="sizeritem" expanded="0">
@@ -10507,7 +10503,7 @@
                                 <property name="caption"></property>
                                 <property name="caption_visible">1</property>
                                 <property name="center_pane">0</property>
-                                <property name="choices">&quot;Under Speed&quot; &quot;Over Speed&quot; &quot;Apparent Direction Above&quot; &quot;Apparent Direction Below&quot; &quot;Apparent Direction Port Above&quot; &quot;Apparent Direction Port Below&quot; &quot;Apparent Direction Starboard Above&quot; &quot;Apparent Direction Starboard Below&quot; &quot;Apparent Direction Above&quot; &quot;Apparent Direction Above&quot; &quot;&quot;</property>
+                                <property name="choices">&quot;Under Speed&quot; &quot;Over Speed&quot; &quot;Apparent Direction Above&quot; &quot;Apparent Direction Below&quot; &quot;Apparent Direction Port Above&quot; &quot;Apparent Direction Port Below&quot; &quot;Apparent Direction Starboard Above&quot; &quot;Apparent Direction Starboard Below&quot; &quot;&quot;</property>
                                 <property name="close_button">1</property>
                                 <property name="context_help"></property>
                                 <property name="context_menu">1</property>
