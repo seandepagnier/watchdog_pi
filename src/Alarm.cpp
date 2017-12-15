@@ -2174,9 +2174,8 @@ private:
 class WeatherAlarm : public Alarm
 {
 public:
-    WeatherAlarm() : Alarm(false), m_Mode(BELOW), m_Variable(PRESSURE), m_dVal(1),
-                     m_pressure(NAN), m_air_temperature(NAN),
-                     m_sea_temperature(NAN), m_relative_humidity(NAN) {}
+    WeatherAlarm() : Alarm(false), m_Variable(BAROMETER), m_Mode(BELOW), m_dVal(1004),
+                     m_curvalue(NAN), m_currate(NAN) {}
 
     wxString Type() { return _("Weather"); }
     wxString Options() {
@@ -2185,6 +2184,8 @@ public:
         switch(m_Mode) {
         case BELOW: s += _("Below"); break;
         case ABOVE:  s += _("Above"); break;
+        case INCREASING: s += _("Increasing"); break;
+        case DECREASING:  s += _("Decreasing"); break;
         }
         s += _T(" ");
         return s + wxString::Format(_T(" %.2f"), m_dVal);
@@ -2198,68 +2199,85 @@ public:
         if(isnan(val))
             s += _T("N/A");
         else {
-            wxString fmt(_T("%.1f"));
-            s += wxString::Format(fmt + (val < m_dVal ?
+            wxString fmt(_T("%.2f"));
+            double aval = m_Mode == DECREASING ? -val : val;
+            s += wxString::Format(fmt + (aval < m_dVal ?
                                         _T(" < ") : _T(" > "))
-                                 + fmt, val, m_dVal);
+                                 + fmt, aval, m_dVal);
+            if(m_Mode == INCREASING || m_Mode == DECREASING)
+                s += _T(" ") + _("In") + wxString::Format(_T(" %d "), m_iRatePeriod) + _("Seconds");
         }
 
         return s;
     }
 
-    void Render(wdDC &dc, PlugIn_ViewPort &vp) {
-        //PlugIn_Position_Fix_Ex lastfix = g_watchdog_pi->LastFix();
-    }
-
     bool Test() {
         switch(m_Mode) {
-        case ABOVE: return m_dVal < Value();
+        case ABOVE: case INCREASING: return m_dVal < Value();
         case BELOW: return m_dVal > Value();
+        case DECREASING: return m_dVal < -Value();
         }
         return 0;
     }
 
     wxWindow *OpenPanel(wxWindow *parent) {
         WeatherPanel *panel = new WeatherPanel(parent);
-        panel->m_cMode->SetSelection((int)m_Mode);
         panel->m_cVariable->SetSelection((int)m_Variable);
+        panel->m_rbRate->SetValue((int)m_Mode / 2);
+        panel->m_cType->SetSelection((int)m_Mode % 2);
         panel->m_tValue->SetValue(wxString::Format(_T("%f"), m_dVal));
+        panel->m_sRatePeriod->SetValue(m_iRatePeriod);
+        panel->m_sRatePeriod->Enable(panel->m_rbRate->GetValue());
         return panel;
     }
 
     void SavePanel(wxWindow *p) {
         WeatherPanel *panel = (WeatherPanel*)p;
-        m_Mode = (Mode)panel->m_cMode->GetSelection();
-        m_Variable = (Variable)panel->m_cVariable->GetSelection();
+        m_Variable = (WeatherAlarmVariable)panel->m_cVariable->GetSelection();
+        m_Mode = (Mode)(panel->m_cType->GetSelection() + 2*panel->m_rbRate->GetValue());
         panel->m_tValue->GetValue().ToDouble(&m_dVal);
+        m_iRatePeriod = panel->m_sRatePeriod->GetValue();
     }
 
     void LoadConfig(TiXmlElement *e) {
-        const char *mode = e->Attribute("Mode");
-        if(!strcasecmp(mode, "Above")) m_Mode = ABOVE;
-        else if(!strcasecmp(mode, "Below")) m_Mode = BELOW;
-        else wxLogMessage(_T("Watchdog: ") + wxString(_("invalid Weather mode")) + _T(": ") + wxString::FromUTF8(mode));
-
         const char *variable = e->Attribute("Variable");
-        if(!strcasecmp(variable, "Pressure")) m_Variable = PRESSURE;
+        if(!strcasecmp(variable, "Barometer")) m_Variable = BAROMETER;
         else if(!strcasecmp(variable, "AirTemperature")) m_Variable = AIR_TEMPERATURE;
         else if(!strcasecmp(variable, "SeaTemperature")) m_Variable = SEA_TEMPERATURE;
         else if(!strcasecmp(variable, "RelativeHumidity")) m_Variable = RELATIVE_HUMIDITY;
-        else wxLogMessage(_T("Watchdog: ") + wxString(_("invalid Weather variable")) + _T(": ") + wxString::FromUTF8(variable));
+        else {
+            wxLogMessage(_T("Watchdog: ") + wxString(_("invalid Weather variable")) +
+                         _T(": ") + wxString::FromUTF8(variable));
+            m_Variable = BAROMETER;
+        }
+
+        const char *mode = e->Attribute("Mode");
+        if(!strcasecmp(mode, "Above")) m_Mode = ABOVE;
+        else if(!strcasecmp(mode, "Below")) m_Mode = BELOW;
+        else if(!strcasecmp(mode, "Increasing")) m_Mode = INCREASING;
+        else if(!strcasecmp(mode, "Decreasing")) m_Mode = DECREASING;
+        else {
+            wxLogMessage(_T("Watchdog: ") + wxString(_("invalid Weather mode")) +
+                         _T(": ") + wxString::FromUTF8(mode));
+            m_Mode = ABOVE;
+        }
 
         e->Attribute("Value", &m_dVal);
+        e->Attribute("RatePeriod", &m_iRatePeriod);
     }
 
     void SaveConfig(TiXmlElement *c) {
         c->SetAttribute("Type", "Weather");
         switch(m_Mode) {
-        case ABOVE: c->SetAttribute("Mode", "Above"); break;
-        case BELOW: c->SetAttribute("Mode", "Below"); break;
+            case ABOVE: c->SetAttribute("Mode", "Above"); break;
+            case BELOW: c->SetAttribute("Mode", "Below"); break;
+            case INCREASING: c->SetAttribute("Mode", "Increasing"); break;
+            case DECREASING: c->SetAttribute("Mode", "Decreasing"); break;
         }
 
         const char *variable;
         switch(m_Variable) {
-        case PRESSURE: variable = "Pressure"; break;
+        case BAROMETER: variable = "Barometer"; break;
         case AIR_TEMPERATURE: variable = "AirTemperature"; break;
         case SEA_TEMPERATURE: variable = "SeaTemperature"; break;
         case RELATIVE_HUMIDITY: variable = "RelativeHumidity"; break;
@@ -2267,27 +2285,24 @@ public:
         c->SetAttribute("Variable", variable);
 
         c->SetDoubleAttribute("Value", m_dVal);
+        c->SetAttribute("RatePeriod", m_iRatePeriod);
     }
     
 private:
+    double Value() {
+        if(m_Mode == INCREASING || m_Mode == DECREASING)
+            return m_currate;
+        return m_curvalue;
+    }
+
     wxString StrVariable() {
         switch(m_Variable) {
-        case PRESSURE: return _("Pressure"); break;
+        case BAROMETER: return _("Barometer"); break;
         case AIR_TEMPERATURE: return _("Air Temperature"); break;
         case SEA_TEMPERATURE: return _("Sea Temperature"); break;
         case RELATIVE_HUMIDITY: return _("Humidity"); break;
         }
         return _T("");
-    }
-
-    double Value() {
-        switch(m_Variable) {
-        case PRESSURE: return m_pressure;
-        case AIR_TEMPERATURE: return m_air_temperature;
-        case SEA_TEMPERATURE: return m_sea_temperature;
-        case RELATIVE_HUMIDITY: return m_relative_humidity;
-        }
-        return NAN;
     }
 
     void NMEAString(const wxString &string) {
@@ -2297,27 +2312,49 @@ private:
         if(!nmea.PreParse())
             return;
 
-        if((m_Variable == PRESSURE || m_Variable == RELATIVE_HUMIDITY) &&
-           nmea.LastSentenceIDReceived == _T("MDA")) {
-            if(nmea.Parse()) {
-                m_pressure = nmea.Mda.Pressure * 1000;
-                m_relative_humidity = nmea.Mda.RelativeHumidity;
-            }
-        } else if(m_Variable == AIR_TEMPERATURE &&
-                  nmea.LastSentenceIDReceived == _T("MTA")) {
-            if(nmea.Parse())
-                m_air_temperature = nmea.Mta.Temperature;
-        } else if(m_Variable == SEA_TEMPERATURE &&
-                  nmea.LastSentenceIDReceived == _T("MTW")) {
-            if(nmea.Parse())
-                m_sea_temperature = nmea.Mtw.Temperature;
+        double value = NAN;
+        switch(m_Variable) {
+        case BAROMETER:
+            if(nmea.LastSentenceIDReceived == _T("MDA") && nmea.Parse())
+                value = nmea.Mda.Pressure * 1000;
+            break;
+        case RELATIVE_HUMIDITY:
+            if(nmea.LastSentenceIDReceived == _T("MDA") && nmea.Parse())
+                value = nmea.Mda.RelativeHumidity;
+            break;
+        case AIR_TEMPERATURE:
+            if(nmea.LastSentenceIDReceived == _T("MTA") && nmea.Parse())
+                value = nmea.Mta.Temperature;
+            break;
+        case SEA_TEMPERATURE:
+            if(nmea.LastSentenceIDReceived == _T("MTW") && nmea.Parse())
+                value = nmea.Mtw.Temperature;
+            break;
         }
+        if(isnan(value))
+            return;
+
+        if(m_Mode == INCREASING || m_Mode == DECREASING) {
+            wxDateTime now = wxDateTime::Now();
+            if(!valuetime.IsValid()) {
+                m_curvalue = value;
+                valuetime = now;
+            } else
+            if((now - valuetime).GetSeconds() >= m_iRatePeriod) {
+                m_currate = value - m_curvalue;
+                m_curvalue = value;
+                valuetime = now;
+            }
+        } else
+            m_curvalue = value;
     }
 
-    enum Mode { ABOVE, BELOW } m_Mode;
-    enum Variable {PRESSURE, AIR_TEMPERATURE, SEA_TEMPERATURE, RELATIVE_HUMIDITY} m_Variable;
+    WeatherAlarmVariable m_Variable;
+    enum Mode { ABOVE, BELOW, INCREASING, DECREASING } m_Mode;
     double m_dVal;
-    double m_pressure, m_air_temperature, m_sea_temperature, m_relative_humidity;
+    int m_iRatePeriod;
+    double m_curvalue, m_currate;
+    wxDateTime valuetime;
 };
 
 ////////// Alarm Base Class /////////////////
@@ -2434,10 +2471,9 @@ Alarm *Alarm::NewAlarm(enum AlarmType type)
 
 Alarm::Alarm(bool gfx, int interval)
     : m_bHasGraphics(gfx), m_bEnabled(true), m_bgfxEnabled(false), m_bFired(false), m_bSpecial(false),
-      m_bSound(true), m_bCommand(false), m_bMessageBox(false), m_bRepeat(false),
-      m_bAutoReset(false),
-      m_LastAlarmTime(wxDateTime::Now()),
+      m_bSound(true), m_bCommand(false), m_bMessageBox(false), m_bRepeat(false), m_bAutoReset(false),
       m_sSound(*GetpSharedDataLocation() + _T("sounds/2bells.wav")),
+      m_LastAlarmTime(wxDateTime::Now()),
       m_iRepeatSeconds(60),
       m_interval(interval)
 {

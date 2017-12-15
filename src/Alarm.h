@@ -102,3 +102,5 @@ public:
     void LoadConfig(TiXmlElement *e) {}
     void SaveConfig(TiXmlElement *c) {}
 };
+
+enum WeatherAlarmVariable {BAROMETER, AIR_TEMPERATURE, SEA_TEMPERATURE, RELATIVE_HUMIDITY};

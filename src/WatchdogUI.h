@@ -423,16 +423,25 @@ class WeatherPanel : public wxPanel
 	private:
 	
 	protected:
-		wxStaticText* m_staticText51;
 		wxStaticText* m_staticText50;
+		wxStaticText* m_staticText51;
 		wxStaticText* m_staticText511;
-		wxStaticText* m_staticText24;
+		wxStaticText* m_stUnits;
+		wxStaticText* m_staticText53;
+		wxStaticText* m_staticText54;
 		wxStaticText* m_staticText391;
+		
+		// Virtual event handlers, overide them in your derived class
+		void OnVariable( wxCommandEvent& event );
+		
 	
 	public:
-		wxChoice* m_cMode;
 		wxChoice* m_cVariable;
+		wxRadioButton* m_rbValue;
+		wxRadioButton* m_rbRate;
+		wxChoice* m_cType;
 		wxTextCtrl* m_tValue;
+		wxSpinCtrl* m_sRatePeriod;
 		
 		WeatherPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL ); 
 		~WeatherPanel();

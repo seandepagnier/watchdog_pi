@@ -79,7 +79,7 @@ void EditAlarmDialog::Save()
     m_alarm->SavePanel(m_fgSizer->GetItem((size_t)0)->GetWindow());
 }
 
-void EditAlarmDialog::OnTestAlarm( wxCommandEvent& event )
+void EditAlarmDialog::OnTestAlarm( wxCommandEvent& )
 {
     TestAlarm testalarm;
     Alarm *alarm = m_alarm;
@@ -89,7 +89,7 @@ void EditAlarmDialog::OnTestAlarm( wxCommandEvent& event )
     m_alarm = alarm;
 }
 
-void EditAlarmDialog::OnInformation( wxCommandEvent& event )
+void EditAlarmDialog::OnInformation( wxCommandEvent& )
 {
     wxMessageDialog mdlg(this, _("\
 Most alarms should be self-explanatory\n\
@@ -127,7 +127,7 @@ void GetODVersion( void )
     SendPluginMessage( wxS("OCPN_DRAW_PI"), MsgString );
 }
 
-void BoundaryPanel::OnGetBoundaryGUID( wxCommandEvent& event )
+void BoundaryPanel::OnGetBoundaryGUID( wxCommandEvent& )
 {
     extern wxJSONValue g_ReceivedBoundaryGUIDJSONMsg;
     extern wxString    g_ReceivedBoundaryGUIDMessage;
@@ -317,7 +317,7 @@ void BoundaryPanel::OnGuardZoneGUIDKillFocus( wxFocusEvent& event )
     event.Skip();
 }
 
-void BoundaryPanel::OnRadioButton(wxCommandEvent& event)
+void BoundaryPanel::OnRadioButton(wxCommandEvent& event )
 {
     switch(event.GetId()) {
         case GPSCOURSE: 
@@ -335,16 +335,41 @@ void BoundaryPanel::OnRadioButton(wxCommandEvent& event)
         
 }
 
-void AnchorPanel::OnSyncToBoat( wxCommandEvent& event )
+void AnchorPanel::OnSyncToBoat( wxCommandEvent& )
 {
     m_tLatitude->SetValue(wxString::Format(_T("%f"), g_watchdog_pi->LastFix().Lat));
     m_tLongitude->SetValue(wxString::Format(_T("%f"), g_watchdog_pi->LastFix().Lon));
 }
 
-void CoursePanel::OnCurrentCourse( wxCommandEvent& event )
+void CoursePanel::OnCurrentCourse( wxCommandEvent& )
 {
     m_sCourse->SetValue(g_watchdog_pi->m_cog);
 }
 
 
+void WeatherPanel::OnVariable( wxCommandEvent& )
+{
+    switch(m_cVariable->GetSelection()) {
+    case BAROMETER: // Barometer
+        m_stUnits->SetLabel(_("mBar"));
+        break;
+    case AIR_TEMPERATURE: case SEA_TEMPERATURE:
+        m_stUnits->SetLabel(_("Deg C"));
+        break;
+    case RELATIVE_HUMIDITY:
+        m_stUnits->SetLabel(_("Deg C"));
+        break;
+    }
 
+    int selection = m_cType->GetSelection();
+    m_cType->Clear();
+    if(m_rbRate->GetValue()) {
+        m_cType->Append(_("Increasing"));
+        m_cType->Append(_("Decreasing"));
+    } else {
+        m_cType->Append(_("Above"));
+        m_cType->Append(_("Below"));
+    }
+    m_cType->SetSelection(selection);
+    m_sRatePeriod->Enable(m_rbRate->GetValue());
+}
