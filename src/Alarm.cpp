@@ -37,10 +37,21 @@
 
 #include "watchdog_pi.h"
 #include "WatchdogDialog.h"
+#include "WeatherPanel.h"
+
 #include "AIS_Target_Info.h"
 #include "nmea0183/nmea0183.h"
-
 #include "ODAPI.h"
+
+static double deg2rad(double deg)
+{
+    return (deg * M_PI / 180.0);
+}
+
+static double rad2deg(double rad)
+{
+    return (rad * 180.0 / M_PI);
+}
 
 ///////// The Alarm classes /////////
 class LandFallAlarm : public Alarm
@@ -2034,21 +2045,28 @@ private:
 class WindAlarm : public Alarm
 {
 public:
-    WindAlarm() : Alarm(true), m_Mode(UNDERSPEED), m_dVal(5), m_speed(NAN), m_apparent_direction(NAN) {}
+    WindAlarm() : Alarm(true), m_Mode(UNDERSPEED), m_dVal(5), m_speed(NAN), m_direction(NAN), m_gps_speed(0), m_bearing(NAN) {}
 
     wxString Type() { return _("Wind"); }
     wxString Options() {
         wxString s;
         switch(m_Mode) {
-        case UNDERSPEED: s += _("Under Speed") + wxString(_T(" ")); break;
-        case OVERSPEED:  s += _("Over Speed")  + wxString(_T(" ")); break;
-        case APPARENT_DIRECTION_ABOVE: s += _("Direction Above") + wxString(_T(" ")); break;
-        case APPARENT_DIRECTION_BELOW: s += _("Direction Below") + wxString(_T(" ")); break;
-        case APPARENT_DIRECTION_PORT_ABOVE: s += _("Port Direction Above") + wxString(_T(" ")); break;
-        case APPARENT_DIRECTION_PORT_BELOW: s += _("Port Direction Below") + wxString(_T(" ")); break;
-        case APPARENT_DIRECTION_STARBOARD_ABOVE: s += _("Starboard Direction Above") + wxString(_T(" ")); break;
-        case APPARENT_DIRECTION_STARBOARD_BELOW: s += _("Starboard Direction Below") + wxString(_T(" ")); break;
+        case UNDERSPEED: s += _("Under Speed"); break;
+        case OVERSPEED:  s += _("Over Speed"); break;
+        case DIRECTION_ABOVE: s += _("Direction Above"); break;
+        case DIRECTION_BELOW: s += _("Direction Below"); break;
+        case DIRECTION_PORT_ABOVE: s += _("Port Direction Above"); break;
+        case DIRECTION_PORT_BELOW: s += _("Port Direction Below"); break;
+        case DIRECTION_STARBOARD_ABOVE: s += _("Starboard Direction Above"); break;
+        case DIRECTION_STARBOARD_BELOW: s += _("Starboard Direction Below"); break;
         }
+        s += wxString(_T(" "));
+        switch(m_Type) {
+        case APPARENT: s += _("Apparent"); break;
+        case TRUE_RELATIVE: s += _("True Relative"); break;
+        case TRUE_ABSOLUTE: s += _("True Absolute"); break;
+        }            
+        s += wxString(_T(" "));
         return s + wxString::Format(_T(" %.2f"), m_dVal);
     }
 
@@ -2058,7 +2076,7 @@ public:
         if(m_Mode == UNDERSPEED || m_Mode == OVERSPEED)
             val = m_speed;
         else {
-            val = m_apparent_direction;
+            val = m_direction;
             if(val > 180)
                 val = 360 - val;
         }
@@ -2086,26 +2104,30 @@ public:
         default: break;
         }
 
-        double dir = m_apparent_direction;
-        double app = dir;
-        if(app > 180)
-            app = 360 - app;
+        double dir = m_direction;
+        if(m_Type == APPARENT || m_Type == TRUE_RELATIVE) {
+            if(dir > 180)
+                dir = 360 - dir;
+        }
 
         switch(m_Mode) {
-        case APPARENT_DIRECTION_ABOVE: return m_dVal < app;
-        case APPARENT_DIRECTION_BELOW: return m_dVal > app;
-        case APPARENT_DIRECTION_PORT_ABOVE: return dir > 180 && m_dVal < app;
-        case APPARENT_DIRECTION_PORT_BELOW: return dir > 180 && m_dVal > app;
-        case APPARENT_DIRECTION_STARBOARD_ABOVE: return dir < 180 && m_dVal < app;
-        case APPARENT_DIRECTION_STARBOARD_BELOW: return dir < 180 && m_dVal > app;
+        case DIRECTION_ABOVE: return m_dVal < dir;
+        case DIRECTION_BELOW: return m_dVal > dir;
+        case DIRECTION_PORT_ABOVE: return dir > 180 && m_dVal < dir;
+        case DIRECTION_PORT_BELOW: return dir > 180 && m_dVal > dir;
+        case DIRECTION_STARBOARD_ABOVE: return dir < 180 && m_dVal < dir;
+        case DIRECTION_STARBOARD_BELOW: return dir < 180 && m_dVal > dir;
         default: break;
         }
+
+        m_gps_speed = g_watchdog_pi->LastFix().Sog * .1 + m_gps_speed * .9;
         return 0;
     }
 
     wxWindow *OpenPanel(wxWindow *parent) {
         WindPanel *panel = new WindPanel(parent);
         panel->m_cMode->SetSelection((int)m_Mode);
+        panel->m_cType->SetSelection((int)m_Type);
         panel->m_sValue->SetValue(m_dVal);
         return panel;
     }
@@ -2113,6 +2135,7 @@ public:
     void SavePanel(wxWindow *p) {
         WindPanel *panel = (WindPanel*)p;
         m_Mode = (Mode)panel->m_cMode->GetSelection();
+        m_Type = (WindType)panel->m_cType->GetSelection();
         m_dVal = panel->m_sValue->GetValue();
     }
 
@@ -2120,12 +2143,19 @@ public:
         const char *mode = e->Attribute("Mode");
         if(!strcasecmp(mode, "Underspeed")) m_Mode = UNDERSPEED;
         else if(!strcasecmp(mode, "Overspeed")) m_Mode = OVERSPEED;
-        else if(!strcasecmp(mode, "ApparentDirectionAbove")) m_Mode = APPARENT_DIRECTION_ABOVE;
-        else if(!strcasecmp(mode, "ApparentDirectionBelow")) m_Mode = APPARENT_DIRECTION_BELOW;
-        else if(!strcasecmp(mode, "ApparentDirectionPortAbove")) m_Mode = APPARENT_DIRECTION_PORT_ABOVE;
-        else if(!strcasecmp(mode, "ApparentDirectionStarboardBelow")) m_Mode = APPARENT_DIRECTION_STARBOARD_BELOW;
+        else if(!strcasecmp(mode, "DirectionAbove")) m_Mode = DIRECTION_ABOVE;
+        else if(!strcasecmp(mode, "DirectionBelow")) m_Mode = DIRECTION_BELOW;
+        else if(!strcasecmp(mode, "DirectionPortAbove")) m_Mode = DIRECTION_PORT_ABOVE;
+        else if(!strcasecmp(mode, "DirectionStarboardBelow")) m_Mode = DIRECTION_STARBOARD_BELOW;
         else wxLogMessage(_T("Watchdog: ") + wxString(_("invalid Wind mode")) + _T(": ")
                          + wxString::FromUTF8(mode));
+
+        const char *type = e->Attribute("Type");
+        if(!strcasecmp(mode, "Apparent")) m_Type = APPARENT;
+        else if(!strcasecmp(mode, "True Relative")) m_Type = TRUE_RELATIVE;
+        else if(!strcasecmp(mode, "True Absolute")) m_Type = TRUE_ABSOLUTE;
+        else wxLogMessage(_T("Watchdog: ") + wxString(_("invalid Wind type")) + _T(": ")
+                         + wxString::FromUTF8(type));
 
         e->Attribute("Value", &m_dVal);
     }
@@ -2135,12 +2165,12 @@ public:
         switch(m_Mode) {
         case UNDERSPEED: c->SetAttribute("Mode", "Underspeed"); break;
         case OVERSPEED:  c->SetAttribute("Mode", "Overspeed");  break;
-        case APPARENT_DIRECTION_ABOVE:  c->SetAttribute("Mode", "ApparentDirectionAbove");  break;
-        case APPARENT_DIRECTION_BELOW:  c->SetAttribute("Mode", "ApparentDirectionBelow");  break;
-        case APPARENT_DIRECTION_PORT_ABOVE:  c->SetAttribute("Mode", "ApparentDirectionPortAbove");  break;
-        case APPARENT_DIRECTION_PORT_BELOW:  c->SetAttribute("Mode", "ApparentDirectionPortBelow");  break;
-        case APPARENT_DIRECTION_STARBOARD_ABOVE:  c->SetAttribute("Mode", "ApparentDirectionStarboardAbove");  break;
-        case APPARENT_DIRECTION_STARBOARD_BELOW:  c->SetAttribute("Mode", "ApparentDirectionStarboardBelow");  break;            
+        case DIRECTION_ABOVE:  c->SetAttribute("Mode", "DirectionAbove");  break;
+        case DIRECTION_BELOW:  c->SetAttribute("Mode", "DirectionBelow");  break;
+        case DIRECTION_PORT_ABOVE:  c->SetAttribute("Mode", "DirectionPortAbove");  break;
+        case DIRECTION_PORT_BELOW:  c->SetAttribute("Mode", "DirectionPortBelow");  break;
+        case DIRECTION_STARBOARD_ABOVE:  c->SetAttribute("Mode", "DirectionStarboardAbove");  break;
+        case DIRECTION_STARBOARD_BELOW:  c->SetAttribute("Mode", "DirectionStarboardBelow");  break;            
         }
 
         c->SetDoubleAttribute("Value", m_dVal);
@@ -2152,23 +2182,70 @@ private:
         NMEA0183 nmea;
         wxString LastSentenceIDReceived;
         nmea << str;
-        if(nmea.PreParse() &&
-           nmea.LastSentenceIDReceived == _T("MWV") &&
-           nmea.Parse() &&
-           nmea.Mwv.IsDataValid == NTrue ) {
+        if(!nmea.PreParse())
+            return;
+        if(nmea.LastSentenceIDReceived == _T("HDM") && nmea.Parse()) {
+            m_bearing = nmea.Hdm.DegreesMagnetic + g_watchdog_pi->Declination();
+        } else
+        if(nmea.LastSentenceIDReceived == _T("MWV") &&
+           nmea.Parse() && nmea.Mwv.IsDataValid == NTrue ) {
             double m_wSpeedFactor = 1.0; //knots ("N")
             if (nmea.Mwv.WindSpeedUnits == _T("K") ) m_wSpeedFactor = 0.53995 ; //km/h > knots
             if (nmea.Mwv.WindSpeedUnits == _T("M") ) m_wSpeedFactor = 1.94384;
+            if(nmea.Mwv.Reference == _T("R") && m_Type == APPARENT) {
+                ProcessWind(nmea.Mwv.WindSpeed * m_wSpeedFactor, nmea.Mwv.WindAngle);
+            } else if(nmea.Mwv.Reference == _T("T") && m_Type == TRUE_RELATIVE) {
+                // should we accept true wind nmea sentences rather than calculate ourself??
+            }
 
-            m_speed = nmea.Mwv.WindSpeed * m_wSpeedFactor;
-            m_apparent_direction = nmea.Mwv.WindAngle;
         }
     }
 
-    enum Mode { UNDERSPEED, OVERSPEED, APPARENT_DIRECTION_ABOVE, APPARENT_DIRECTION_BELOW, APPARENT_DIRECTION_PORT_ABOVE, APPARENT_DIRECTION_PORT_BELOW, APPARENT_DIRECTION_STARBOARD_ABOVE, APPARENT_DIRECTION_STARBOARD_BELOW } m_Mode;
+    void ProcessWind(double apparent_speed, double apparent_direction)
+    {
+        if(m_Type == APPARENT) {
+            m_speed = apparent_speed;
+            m_direction = apparent_direction;
+        } else {
+/* law of cosine:
+           ________________________
+          /  2    2
+   VW =  / VA + VB - 2 VA VB cos(A)
+       \/
+
+    2    2    2
+  VA = VW + VB + 2 VW VB cos(W)
+                
+    2    2    2
+  VW + VB - VA  = 2 VW VB cos(W)
+
+          /   2    2    2\
+W = acos |  VW + VB - VA  |
+         |  ------------  |
+          \   2 VW VB    /
+*/
+            double A = deg2rad(apparent_direction);
+            double VA = apparent_speed;
+            double VB = m_gps_speed;
+            double VW = sqrt(VA*VA + VB*VB - 2*VA*VB*cos(A));
+            double W = acos((VW*VW + VB*VB - VA*VA) / (2*VW*VB));
+            m_speed = VW;
+            m_direction = rad2deg(W);
+
+            if(m_Type == TRUE_ABSOLUTE) {
+                m_direction += m_bearing;
+                if(m_direction > 360)
+                    m_direction -= 360;
+            }
+        }
+    }
+
+    enum Mode { UNDERSPEED, OVERSPEED, DIRECTION_ABOVE, DIRECTION_BELOW, DIRECTION_PORT_ABOVE, DIRECTION_PORT_BELOW, DIRECTION_STARBOARD_ABOVE, DIRECTION_STARBOARD_BELOW } m_Mode;
+    enum WindType { APPARENT, TRUE_RELATIVE, TRUE_ABSOLUTE } m_Type;
     double  m_dVal;
 
-    double m_speed, m_apparent_direction;
+    double m_speed, m_direction;
+    double m_gps_speed, m_bearing;
 };
 
 class WeatherAlarm : public Alarm
@@ -2227,7 +2304,7 @@ public:
         panel->m_cType->SetSelection((int)m_Mode % 2);
         panel->m_tValue->SetValue(wxString::Format(_T("%f"), m_dVal));
         panel->m_sRatePeriod->SetValue(m_iRatePeriod);
-        panel->m_sRatePeriod->Enable(panel->m_rbRate->GetValue());
+        panel->SetupControls();
         return panel;
     }
 

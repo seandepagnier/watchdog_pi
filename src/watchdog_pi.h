@@ -147,6 +147,7 @@ public:
       void UpdateConfiguration();
 
       PlugIn_Position_Fix_Ex &LastFix() { return m_lastfix; }
+      double Declination();
 
       double m_sog, m_cog;
 
@@ -175,7 +176,9 @@ private:
       void              RearrangeWindow();
 
       wxTimer m_Timer;
-      
+
+      double m_declination;
+      wxDateTime m_declinationTime;
 };
 
 extern watchdog_pi *g_watchdog_pi;

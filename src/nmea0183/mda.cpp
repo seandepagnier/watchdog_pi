@@ -84,6 +84,7 @@ bool MDA::Parse( const SENTENCE& sentence )
 */
 
 
+
    /*
    ** First we check the checksum...
    */

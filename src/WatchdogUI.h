@@ -402,12 +402,19 @@ class WindPanel : public wxPanel
 	
 	protected:
 		wxStaticText* m_staticText51;
+		wxStaticText* m_staticText55;
+		wxButton* m_bAboutWind;
 		wxStaticText* m_staticText44;
 		wxStaticText* m_staticText24;
 		wxStaticText* m_staticText391;
+		
+		// Virtual event handlers, overide them in your derived class
+		void OnAboutWind( wxCommandEvent& event );
+		
 	
 	public:
 		wxChoice* m_cMode;
+		wxChoice* m_cType;
 		wxSpinCtrl* m_sValue;
 		
 		WindPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL ); 
@@ -416,9 +423,9 @@ class WindPanel : public wxPanel
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-/// Class WeatherPanel
+/// Class WeatherPanelBase
 ///////////////////////////////////////////////////////////////////////////////
-class WeatherPanel : public wxPanel 
+class WeatherPanelBase : public wxPanel 
 {
 	private:
 	
@@ -432,7 +439,7 @@ class WeatherPanel : public wxPanel
 		wxStaticText* m_staticText391;
 		
 		// Virtual event handlers, overide them in your derived class
-		void OnVariable( wxCommandEvent& event );
+		virtual void OnVariable( wxCommandEvent& event ) = 0;
 		
 	
 	public:
@@ -443,8 +450,8 @@ class WeatherPanel : public wxPanel
 		wxTextCtrl* m_tValue;
 		wxSpinCtrl* m_sRatePeriod;
 		
-		WeatherPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL ); 
-		~WeatherPanel();
+		WeatherPanelBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL ); 
+		~WeatherPanelBase();
 	
 };
 

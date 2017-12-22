@@ -959,11 +959,11 @@ WindPanel::WindPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, const
 	fgSizer14->SetFlexibleDirection( wxBOTH );
 	fgSizer14->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
-	m_staticText51 = new wxStaticText( this, wxID_ANY, _("Type"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText51 = new wxStaticText( this, wxID_ANY, _("Mode"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText51->Wrap( -1 );
 	fgSizer14->Add( m_staticText51, 0, wxALL, 5 );
 	
-	wxString m_cModeChoices[] = { _("Under Speed"), _("Over Speed"), _("Apparent Direction Above"), _("Apparent Direction Below"), _("Apparent Direction Port Above"), _("Apparent Direction Port Below"), _("Apparent Direction Starboard Above"), _("Apparent Direction Starboard Below"), wxEmptyString };
+	wxString m_cModeChoices[] = { _("Under Speed"), _("Over Speed"), _("Apparent Direction Above"), _("Apparent Direction Below"), _("Apparent Direction Port Above"), _("Apparent Direction Port Below"), _("Apparent Direction Starboard Above"), _("Apparent Direction Starboard Below"), wxEmptyString, _("Direction Starboard Below"), _("Direction Starboard Above"), wxEmptyString, _("Direction Port Below"), _("Direction Port Above"), _("Direction Below"), _("Direction Above"), wxEmptyString };
 	int m_cModeNChoices = sizeof( m_cModeChoices ) / sizeof( wxString );
 	m_cMode = new wxChoice( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_cModeNChoices, m_cModeChoices, 0 );
 	m_cMode->SetSelection( 0 );
@@ -972,11 +972,24 @@ WindPanel::WindPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, const
 	
 	fgSizer14->Add( 0, 0, 1, wxEXPAND, 5 );
 	
+	m_staticText55 = new wxStaticText( this, wxID_ANY, _("Type"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText55->Wrap( -1 );
+	fgSizer14->Add( m_staticText55, 0, wxALL, 5 );
+	
+	wxString m_cTypeChoices[] = { _("Apparent"), _("True Relative"), _("True Absolute") };
+	int m_cTypeNChoices = sizeof( m_cTypeChoices ) / sizeof( wxString );
+	m_cType = new wxChoice( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_cTypeNChoices, m_cTypeChoices, 0 );
+	m_cType->SetSelection( 0 );
+	fgSizer14->Add( m_cType, 0, wxALL, 5 );
+	
+	m_bAboutWind = new wxButton( this, wxID_ANY, _("?"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer14->Add( m_bAboutWind, 0, wxALL, 5 );
+	
 	m_staticText44 = new wxStaticText( this, wxID_ANY, _("Value"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText44->Wrap( -1 );
 	fgSizer14->Add( m_staticText44, 0, wxALL, 5 );
 	
-	m_sValue = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 180, 5 );
+	m_sValue = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 360, 5 );
 	fgSizer14->Add( m_sValue, 0, wxALL, 5 );
 	
 	m_staticText24 = new wxStaticText( this, wxID_ANY, _("knots/degrees"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -994,13 +1007,19 @@ WindPanel::WindPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, const
 	this->SetSizer( sbSizer7 );
 	this->Layout();
 	sbSizer7->Fit( this );
+	
+	// Connect Events
+	m_bAboutWind->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WindPanel::OnAboutWind ), NULL, this );
 }
 
 WindPanel::~WindPanel()
 {
+	// Disconnect Events
+	m_bAboutWind->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( WindPanel::OnAboutWind ), NULL, this );
+	
 }
 
-WeatherPanel::WeatherPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style ) : wxPanel( parent, id, pos, size, style )
+WeatherPanelBase::WeatherPanelBase( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style ) : wxPanel( parent, id, pos, size, style )
 {
 	wxStaticBoxSizer* sbSizer7;
 	sbSizer7 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Weather Alarm") ), wxVERTICAL );
@@ -1036,9 +1055,8 @@ WeatherPanel::WeatherPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos,
 	m_staticText51->Wrap( -1 );
 	fgSizer14->Add( m_staticText51, 0, wxALL, 5 );
 	
-	wxString m_cTypeChoices[] = { _("Above"), _("Below") };
-	int m_cTypeNChoices = sizeof( m_cTypeChoices ) / sizeof( wxString );
-	m_cType = new wxChoice( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_cTypeNChoices, m_cTypeChoices, 0 );
+	wxArrayString m_cTypeChoices;
+	m_cType = new wxChoice( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_cTypeChoices, 0 );
 	m_cType->SetSelection( 0 );
 	fgSizer14->Add( m_cType, 0, wxALL, 5 );
 	
@@ -1080,16 +1098,16 @@ WeatherPanel::WeatherPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos,
 	sbSizer7->Fit( this );
 	
 	// Connect Events
-	m_cVariable->Connect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( WeatherPanel::OnVariable ), NULL, this );
-	m_rbValue->Connect( wxEVT_COMMAND_RADIOBUTTON_SELECTED, wxCommandEventHandler( WeatherPanel::OnVariable ), NULL, this );
-	m_rbRate->Connect( wxEVT_COMMAND_RADIOBUTTON_SELECTED, wxCommandEventHandler( WeatherPanel::OnVariable ), NULL, this );
+	m_cVariable->Connect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( WeatherPanelBase::OnVariable ), NULL, this );
+	m_rbValue->Connect( wxEVT_COMMAND_RADIOBUTTON_SELECTED, wxCommandEventHandler( WeatherPanelBase::OnVariable ), NULL, this );
+	m_rbRate->Connect( wxEVT_COMMAND_RADIOBUTTON_SELECTED, wxCommandEventHandler( WeatherPanelBase::OnVariable ), NULL, this );
 }
 
-WeatherPanel::~WeatherPanel()
+WeatherPanelBase::~WeatherPanelBase()
 {
 	// Disconnect Events
-	m_cVariable->Disconnect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( WeatherPanel::OnVariable ), NULL, this );
-	m_rbValue->Disconnect( wxEVT_COMMAND_RADIOBUTTON_SELECTED, wxCommandEventHandler( WeatherPanel::OnVariable ), NULL, this );
-	m_rbRate->Disconnect( wxEVT_COMMAND_RADIOBUTTON_SELECTED, wxCommandEventHandler( WeatherPanel::OnVariable ), NULL, this );
+	m_cVariable->Disconnect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( WeatherPanelBase::OnVariable ), NULL, this );
+	m_rbValue->Disconnect( wxEVT_COMMAND_RADIOBUTTON_SELECTED, wxCommandEventHandler( WeatherPanelBase::OnVariable ), NULL, this );
+	m_rbRate->Disconnect( wxEVT_COMMAND_RADIOBUTTON_SELECTED, wxCommandEventHandler( WeatherPanelBase::OnVariable ), NULL, this );
 	
 }

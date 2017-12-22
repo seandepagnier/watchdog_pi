@@ -36,6 +36,7 @@
 #include "WatchdogUI.h"
 
 #include "EditAlarmDialog.h"
+#include "WeatherPanel.h"
 #include "ODAPI.h"
 
 extern wxJSONValue g_ReceivedODVersionJSONMsg;
@@ -205,7 +206,7 @@ void BoundaryPanel::OnBoundaryGUIDKillFocus( wxFocusEvent& event )
                 } else {
                     wxString l_s = _T(" ") + wxString(_("Error!")) + _T("\n") 
                     + _("GUID") + _T(": ") + m_tBoundaryGUID->GetValue() + _(" does not exist");
-                    wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchman"), wxOK | wxICON_WARNING);
+                    wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchdog"), wxOK | wxICON_WARNING);
                     mdlg.ShowModal();
                     m_tBoundaryGUID->SetFocus();
                 }
@@ -231,7 +232,7 @@ void BoundaryPanel::OnBoundaryGUIDKillFocus( wxFocusEvent& event )
             } else {
                 wxString l_s = _T(" ") + wxString(_("Error!")) + _T("\n") 
                 + _("GUID") + _T(": ") + m_tBoundaryGUID->GetValue() + _(" does not exist");
-                wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchman"), wxOK | wxICON_WARNING);
+                wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchdog"), wxOK | wxICON_WARNING);
                 mdlg.ShowModal();
                 m_tBoundaryGUID->SetFocus();
             }
@@ -284,7 +285,7 @@ void BoundaryPanel::OnGuardZoneGUIDKillFocus( wxFocusEvent& event )
                 } else {
                     wxString l_s = _T(" ") + wxString(_("Error!")) + _T("\n") 
                     + _("GUID") + _T(": ") + m_tGuardZoneGUID->GetValue() + _(" does not exist");
-                    wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchman"), wxOK | wxICON_WARNING);
+                    wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchdog"), wxOK | wxICON_WARNING);
                     mdlg.ShowModal();
                     m_tGuardZoneGUID->SetFocus();
                 }
@@ -309,7 +310,7 @@ void BoundaryPanel::OnGuardZoneGUIDKillFocus( wxFocusEvent& event )
         } else {
             wxString l_s = _T(" ") + wxString(_("Error!")) + _T("\n") 
                     + _("GUID") + _T(": ") + m_tGuardZoneGUID->GetValue() + _(" does not exist");
-            wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchman"), wxOK | wxICON_WARNING);
+            wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchdog"), wxOK | wxICON_WARNING);
             mdlg.ShowModal();
             m_tGuardZoneGUID->SetFocus();
         }
@@ -346,8 +347,17 @@ void CoursePanel::OnCurrentCourse( wxCommandEvent& )
     m_sCourse->SetValue(g_watchdog_pi->m_cog);
 }
 
+void WindPanel::OnAboutWind( wxCommandEvent& )
+{
+    wxString l_s = _("Wind Alarms can be from:\
+1) Apparent - measured from moving boat (requires only wind sensors)\
+2) True Relative - wind would feel like if boat stopped (requires wind sensors + gps)\
+3) True Absolute - wind would feel if boat stopped and faced north (requires wind sensors + gps + compass)");
+    wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchdog"), wxOK | wxICON_WARNING);
+    mdlg.ShowModal();
+}
 
-void WeatherPanel::OnVariable( wxCommandEvent& )
+void WeatherPanel::SetupControls()
 {
     switch(m_cVariable->GetSelection()) {
     case BAROMETER: // Barometer
@@ -372,4 +382,9 @@ void WeatherPanel::OnVariable( wxCommandEvent& )
     }
     m_cType->SetSelection(selection);
     m_sRatePeriod->Enable(m_rbRate->GetValue());
+}
+
+void WeatherPanel::OnVariable( wxCommandEvent& )
+{
+    SetupControls();
 }
