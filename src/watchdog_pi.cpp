@@ -147,23 +147,19 @@ int watchdog_pi::Init(void)
         (_T(""), _img_watchdog, _img_watchdog, wxITEM_NORMAL,
          _("Watchdog"), _T(""), NULL, WATCHDOG_TOOL_POSITION, 0, this);
     
-    m_WatchdogDialog = NULL;
-    m_ConfigurationDialog = NULL;
     m_PropertiesDialog = NULL;
     m_Timer.Connect(wxEVT_TIMER, wxTimerEventHandler
                     ( watchdog_pi::OnTimer ), NULL, this);
     m_Timer.Start(3000);
     
-    if(!m_WatchdogDialog)
-    {
-        m_WatchdogDialog = new WatchdogDialog(*this, GetOCPNCanvasWindow());
-        m_ConfigurationDialog = new ConfigurationDialog(*this, m_WatchdogDialog);
+    m_WatchdogDialog = new WatchdogDialog(*this, GetOCPNCanvasWindow());
+    m_ConfigurationDialog = new ConfigurationDialog(*this, m_WatchdogDialog);
         
-        wxIcon icon;
-        icon.CopyFromBitmap(*_img_watchdog);
-        m_WatchdogDialog->SetIcon(icon);
-        m_ConfigurationDialog->SetIcon(icon);
-    }
+    wxIcon icon;
+    icon.CopyFromBitmap(*_img_watchdog);
+    m_WatchdogDialog->SetIcon(icon);
+    m_ConfigurationDialog->SetIcon(icon);
+
     m_bWatchdogDialogShown = false;
     m_cursor_time = wxDateTime::Now();
 
