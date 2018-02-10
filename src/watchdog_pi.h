@@ -140,7 +140,6 @@ public:
       void SetColorScheme(PI_ColorScheme cs);
 
 //    Other public methods
-      void OnWatchdogDialogClose();
       void ShowConfigurationDialog( wxWindow* );
       static wxString StandardPath();
 
