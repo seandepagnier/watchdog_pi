@@ -99,7 +99,7 @@ extern "C" DECL_EXP void destroy_pi(opencpn_plugin* p)
 watchdog_pi *g_watchdog_pi = NULL;
 
 watchdog_pi::watchdog_pi(void *ppimgr)
-    : opencpn_plugin_110(ppimgr)
+    : opencpn_plugin_113(ppimgr)
 {
     // Create the PlugIn icons
     initialize_images();
@@ -142,10 +142,15 @@ int watchdog_pi::Init(void)
     AddLocaleCatalog( PLUGIN_CATALOG_NAME );
 
     Alarm::LoadConfigAll();
-    
+
+#ifdef WATCHDOG_USE_SVG
+    m_leftclick_tool_id = InsertPlugInToolSVG( _T( "Watchdog" ), _svg_watchdog, _svg_watchdog_rollover,
+        _svg_watchdog_toggled, wxITEM_CHECK, _( "Watchdog" ), _T( "" ), NULL, WATCHDOG_TOOL_POSITION, 0, this);
+#else
     m_leftclick_tool_id  = InsertPlugInTool
         (_T(""), _img_watchdog, _img_watchdog, wxITEM_NORMAL,
          _("Watchdog"), _T(""), NULL, WATCHDOG_TOOL_POSITION, 0, this);
+#endif
     
     m_PropertiesDialog = NULL;
     m_Timer.Connect(wxEVT_TIMER, wxTimerEventHandler
