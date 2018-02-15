@@ -1248,7 +1248,7 @@ public:
                             l_s.append(wxString(_("inside boundary")));
                         else
                             l_s.append(wxString(_("in")) + _T(": ") + TimeBoundaryMsg());
-                        wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchman"), wxOK | wxICON_WARNING);
+                        wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchdog"), wxOK | wxICON_WARNING);
                         mdlg.ShowModal();
                         break;
                     }
@@ -1264,7 +1264,7 @@ public:
                             l_s << m_BoundaryDistance;
                             l_s += _T(" nm");
                         }
-                        wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchman"), wxOK | wxICON_WARNING);
+                        wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchdog"), wxOK | wxICON_WARNING);
                         mdlg.ShowModal();
                         break;
                     }
@@ -1274,7 +1274,7 @@ public:
                             + _("Name") + _T(": ") + m_BoundaryName + _T("\n")
                             + _("Description") + _T(": ") + m_BoundaryDescription + _T("\n")
                             + _("GUID") + _T(": ") + m_BoundaryGUID;
-                        wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchman"), wxOK | wxICON_WARNING);
+                        wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchdog"), wxOK | wxICON_WARNING);
                         mdlg.ShowModal();
                         break;
                     }
@@ -1293,7 +1293,7 @@ public:
                             l_s.append(_("Ship Name") + _T(": ") + g_AISTarget.m_sShipName + _T("\n")
                                 + _("Ship MMSI") + _T(": ") + wxString::Format(_T("%i"), g_AISTarget.m_iMMSI));
                         }
-                        wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchman"), wxOK | wxICON_WARNING);
+                        wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchdog"), wxOK | wxICON_WARNING);
                         mdlg.ShowModal();
                         break;
                     }
@@ -1305,7 +1305,7 @@ public:
                     + _("Guard Zone Name") + _T(": ") + m_GuardZoneName + _T("\n")
                     + _("Description") + _T(": ") + m_GuardZoneDescription + _T("\n")
                     + _("GUID") + _T(": ") + m_GuardZoneGUID + _T("\n") + _("Guard Zone not Found");
-                    wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchman"), wxOK | wxICON_WARNING);
+                    wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchdog"), wxOK | wxICON_WARNING);
                     mdlg.ShowModal();
                     m_bFired = false;
                     m_bEnabled = false;
@@ -2586,7 +2586,7 @@ void Alarm::Run()
 
     if(m_bMessageBox) {
         wxMessageDialog mdlg(GetOCPNCanvasWindow(), Type() + _T(" ") + _("ALARM!"),
-                             _("Watchman"), wxOK | wxICON_WARNING);
+                             _("Watchdog"), wxOK | wxICON_WARNING);
         mdlg.ShowModal();
     }
 }
