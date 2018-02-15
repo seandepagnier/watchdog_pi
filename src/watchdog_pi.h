@@ -61,7 +61,7 @@ std::cout << x << std::endl; } while (0)
 #include "wxWTranslateCatalog.h"
 
 #define     MY_API_VERSION_MAJOR    1
-#define     MY_API_VERSION_MINOR    10
+#define     MY_API_VERSION_MINOR    13
 
 #define ABOUT_AUTHOR_URL "http://seandepagnier.users.sourceforge.net"
 
@@ -107,7 +107,7 @@ enum {
     ID_ALARM_VISIBLE
 };
 
-class watchdog_pi : public wxEvtHandler, public opencpn_plugin_110
+class watchdog_pi : public wxEvtHandler, public opencpn_plugin_113
 {
 public:
 
