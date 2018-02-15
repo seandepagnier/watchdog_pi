@@ -1,0 +1,758 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: opencpn\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-02-07 06:39+1100\n"
+"PO-Revision-Date: 2018-01-29 21:28-0500\n"
+"Last-Translator: nohal <pavel@kalian.cz>\n"
+"Language-Team: Portuguese\n"
+"Language: pt_PT\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: crowdin.com\n"
+"X-Crowdin-Project: opencpn\n"
+"X-Crowdin-Language: pt-PT\n"
+"X-Crowdin-File: /plugins/watchdog_pi/po/watchdog_pi.pot\n"
+
+#: src/Alarm.cpp:54
+msgid "landfall alarm without gshhs data"
+msgstr "alarme de Aterragem sem dados gshhs"
+
+#: src/Alarm.cpp:60
+msgid "LandFall"
+msgstr "Aterragem"
+
+#: src/Alarm.cpp:63 src/Alarm.cpp:320 src/Alarm.cpp:1275
+msgid "Time"
+msgstr "Hora"
+
+#: src/Alarm.cpp:64 src/Alarm.cpp:169 src/Alarm.cpp:321
+msgid "Distance"
+msgstr "Distância"
+
+#: src/Alarm.cpp:126
+msgid "No GSHHS Data"
+msgstr "Sem dados GSHHS"
+
+#: src/Alarm.cpp:132
+msgid "LandFall Time Invalid"
+msgstr "Hora de aterragem inválida"
+
+#: src/Alarm.cpp:137 src/Alarm.cpp:1406
+msgid "Days"
+msgstr "Dias"
+
+#: src/Alarm.cpp:140 src/Alarm.cpp:1409
+msgid "Day"
+msgstr "Dia"
+
+#: src/Alarm.cpp:144 src/Alarm.cpp:1413
+msgid "Hours"
+msgstr "Horas"
+
+#: src/Alarm.cpp:147 src/Alarm.cpp:1416
+msgid "Hour"
+msgstr "Hora"
+
+#: src/Alarm.cpp:151 src/Alarm.cpp:1420
+msgid "Minutes"
+msgstr "Minutos"
+
+#: src/Alarm.cpp:154 src/Alarm.cpp:1423
+msgid "Minute"
+msgstr "Minuto"
+
+#: src/Alarm.cpp:158 src/Alarm.cpp:1427
+msgid "Seconds"
+msgstr "Segundos"
+
+#: src/Alarm.cpp:160 src/Alarm.cpp:1429
+msgid "Second"
+msgstr "Segundo"
+
+#: src/Alarm.cpp:219
+msgid "invalid LandFall mode"
+msgstr "modo de aterragem inválido"
+
+#: src/Alarm.cpp:310
+msgid "Boundary Time"
+msgstr "Tempo até limite"
+
+#: src/Alarm.cpp:311 src/Alarm.cpp:314
+msgid "Boundary Distance"
+msgstr "Distância até limite"
+
+#: src/Alarm.cpp:312 src/WatchdogUI.cpp:603
+msgid "Inclusion Alarm"
+msgstr "Alarme de inclusão"
+
+#: src/Alarm.cpp:313 src/Alarm.cpp:1028 src/Alarm.cpp:1030
+#: src/watchdog_pi.cpp:582
+msgid "Guard Zone"
+msgstr "Zona de Resguardo"
+
+#: src/Alarm.cpp:324 src/Alarm.cpp:916 src/Alarm.cpp:956 src/WatchdogUI.cpp:606
+msgid "Boundary GUID"
+msgstr "GUID do limite"
+
+#: src/Alarm.cpp:326
+msgid "Boundary Name"
+msgstr "Nome da zona"
+
+#: src/Alarm.cpp:330 src/WatchdogUI.cpp:580
+msgid "Guard Zone GUID"
+msgstr "GUID da Zona de Resguardo"
+
+#: src/Alarm.cpp:332 src/Alarm.cpp:1272 src/Alarm.cpp:1293
+msgid "Guard Zone Name"
+msgstr "Nome da Zona de Resguardo"
+
+#: src/Alarm.cpp:914 src/Alarm.cpp:954
+msgid "Boundary name"
+msgstr "Nome do limite"
+
+#: src/Alarm.cpp:920
+msgid "No Boundary within "
+msgstr "Sem limite dentro "
+
+#: src/Alarm.cpp:922
+msgid " minutes"
+msgstr " minutos"
+
+#: src/Alarm.cpp:927 src/Alarm.cpp:960
+msgid " - inside any boundary"
+msgstr " - dentro de qualquer zona"
+
+#: src/Alarm.cpp:930 src/Alarm.cpp:963
+msgid " - inside active boundary"
+msgstr " - dentro de zona ativa"
+
+#: src/Alarm.cpp:933 src/Alarm.cpp:966
+msgid " - inside inactive boundary"
+msgstr " - dentro de zona inativa"
+
+#: src/Alarm.cpp:938
+msgid " in "
+msgstr " em "
+
+#: src/Alarm.cpp:978
+msgid "Any Boundary Distance"
+msgstr "Distancia a qualquer zona"
+
+#: src/Alarm.cpp:981
+msgid "Active Boundary Distance"
+msgstr "Distancia à Zona Ativa"
+
+#: src/Alarm.cpp:984
+msgid "Inactive Boundary Distance"
+msgstr "Distancia à Zona Inativa"
+
+#: src/Alarm.cpp:995 src/Alarm.cpp:999
+msgid "Boat"
+msgstr "Barco"
+
+#: src/Alarm.cpp:996 src/Alarm.cpp:1000
+msgid "outside"
+msgstr "exterior"
+
+#: src/Alarm.cpp:996 src/Alarm.cpp:1000
+msgid "inside"
+msgstr "interior"
+
+#: src/Alarm.cpp:997 src/Alarm.cpp:1001
+msgid " boundary area: "
+msgstr " zona limite: "
+
+#: src/Alarm.cpp:1031
+msgid "AIS Target in zone"
+msgstr "Alvo AIS na zona"
+
+#: src/Alarm.cpp:1031
+msgid "NO AIS tagets found in zone"
+msgstr "Nenhum alvo AIS encontrado na zona"
+
+#: src/Alarm.cpp:1168
+msgid "invalid Boundary mode"
+msgstr "modo de limite inválido"
+
+#: src/Alarm.cpp:1222 src/Alarm.cpp:2174
+msgid "Failed to execute command: "
+msgstr "Falha a executar o comando: "
+
+#: src/Alarm.cpp:1223 src/Alarm.cpp:2175 src/watchdog_pi.cpp:146
+#: src/watchdog_pi.cpp:232
+msgid "Watchdog"
+msgstr "Watchdog"
+
+#: src/Alarm.cpp:1231 src/Alarm.cpp:1244 src/Alarm.cpp:1260 src/Alarm.cpp:1271
+#: src/Alarm.cpp:1292 src/Alarm.cpp:2181
+msgid "ALARM!"
+msgstr "ALARME!"
+
+#: src/Alarm.cpp:1232 src/Alarm.cpp:1245 src/Alarm.cpp:1262
+msgid "Name"
+msgstr "Nome"
+
+#: src/Alarm.cpp:1233 src/Alarm.cpp:1246 src/Alarm.cpp:1263 src/Alarm.cpp:1273
+#: src/Alarm.cpp:1294
+msgid "Description"
+msgstr "Descrição"
+
+#: src/Alarm.cpp:1234 src/Alarm.cpp:1247 src/Alarm.cpp:1264 src/Alarm.cpp:1274
+#: src/Alarm.cpp:1295 src/EditAlarmDialog.cpp:207 src/EditAlarmDialog.cpp:233
+#: src/EditAlarmDialog.cpp:286 src/EditAlarmDialog.cpp:311
+msgid "GUID"
+msgstr "GUID"
+
+#: src/Alarm.cpp:1236 src/Alarm.cpp:1249
+msgid "inside boundary"
+msgstr "dentro do limite"
+
+#: src/Alarm.cpp:1238 src/Alarm.cpp:1251
+msgid "in"
+msgstr "em"
+
+#: src/Alarm.cpp:1239 src/Alarm.cpp:1255 src/Alarm.cpp:1265 src/Alarm.cpp:1284
+#: src/Alarm.cpp:1296 src/Alarm.cpp:2182 src/EditAlarmDialog.cpp:208
+#: src/EditAlarmDialog.cpp:234 src/EditAlarmDialog.cpp:287
+#: src/EditAlarmDialog.cpp:312
+msgid "Watchman"
+msgstr "Vigia"
+
+#: src/Alarm.cpp:1261
+msgid "Outside"
+msgstr "Fora"
+
+#: src/Alarm.cpp:1281
+msgid "Ship Name"
+msgstr "Nome do navio"
+
+#: src/Alarm.cpp:1282
+msgid "Ship MMSI"
+msgstr "MMSI do navio"
+
+#: src/Alarm.cpp:1295
+msgid "Guard Zone not Found"
+msgstr "Zona de Resguardo não encontrada"
+
+#: src/Alarm.cpp:1542 src/NewAlarmDialog.cpp:36
+msgid "NMEA Data"
+msgstr "Datos NMEA"
+
+#: src/Alarm.cpp:1552
+msgid "second(s)"
+msgstr "segundo(s)"
+
+#: src/Alarm.cpp:1623 src/NewAlarmDialog.cpp:37
+msgid "Deadman"
+msgstr "Homem Morto"
+
+#: src/Alarm.cpp:1685 src/NewAlarmDialog.cpp:38
+msgid "Anchor"
+msgstr "Âncora"
+
+#: src/Alarm.cpp:1687
+msgid "radius"
+msgstr "raio"
+
+#: src/Alarm.cpp:1687 src/WatchdogUI.cpp:841
+msgid "meters"
+msgstr "metros"
+
+#: src/Alarm.cpp:1688
+msgid "bAutoSync"
+msgstr "bAutoSync"
+
+#: src/Alarm.cpp:1711
+msgid "meter(s)"
+msgstr "metro(s)"
+
+#: src/Alarm.cpp:1794 src/NewAlarmDialog.cpp:39
+msgid "Course"
+msgstr "Rumo"
+
+#: src/Alarm.cpp:1798 src/Alarm.cpp:1822 src/WatchdogUI.cpp:887
+msgid "Port"
+msgstr "Bombordo"
+
+#: src/Alarm.cpp:1799 src/Alarm.cpp:1820 src/WatchdogUI.cpp:887
+msgid "Starboard"
+msgstr "Estibordo"
+
+#: src/Alarm.cpp:1802
+msgid "course"
+msgstr "rumo"
+
+#: src/Alarm.cpp:1816
+msgid "degrees(s)"
+msgstr "graus(s)"
+
+#: src/Alarm.cpp:1874
+msgid "invalid Course mode"
+msgstr "modo de Rumo inválido"
+
+#: src/Alarm.cpp:1914 src/NewAlarmDialog.cpp:40
+msgid "Speed"
+msgstr "Velocidade"
+
+#: src/Alarm.cpp:1918
+msgid "UnderSpeed"
+msgstr "Velocidade baixa"
+
+#: src/Alarm.cpp:1919
+msgid "OverSpeed"
+msgstr "Velocidade Alta"
+
+#: src/Alarm.cpp:1990
+msgid "invalid Speed mode"
+msgstr "modo de Velocidade inválido"
+
+#: src/Alarm.cpp:2049
+msgid "Failed to read"
+msgstr "Falha de leitura"
+
+#: src/Alarm.cpp:2066
+msgid "invalid alarm type"
+msgstr "tipo de alarme inválido"
+
+#: src/Alarm.cpp:2102
+msgid "failed to save"
+msgstr "falha a salvar"
+
+#: src/Alarm.cpp:2157 src/WatchdogUI.cpp:364
+msgid "Sound"
+msgstr "Som"
+
+#: src/Alarm.cpp:2158 src/WatchdogUI.cpp:370
+msgid "Command"
+msgstr "Comando"
+
+#: src/Alarm.cpp:2159
+msgid "MessageBox"
+msgstr "Caixa de mensagens"
+
+#: src/Alarm.cpp:2160
+msgid "Repeat"
+msgstr "Repetir"
+
+#: src/Alarm.cpp:2161
+msgid "Auto Reset"
+msgstr "Reset Automático"
+
+#: src/Alarm.h:96 src/WatchdogUI.cpp:402
+msgid "Test"
+msgstr "Teste"
+
+#: src/ConfigurationDialog.cpp:48 src/WatchdogDialog.cpp:108
+#: src/WatchdogUI.cpp:883 src/WatchdogUI.cpp:950
+msgid "Type"
+msgstr "Tipo"
+
+#: src/ConfigurationDialog.cpp:49
+msgid "Options"
+msgstr "Opções"
+
+#: src/ConfigurationDialog.cpp:50
+msgid "Action"
+msgstr "Ação"
+
+#: src/EditAlarmDialog.cpp:94
+msgid "Most alarms should be self-explanatory\n"
+"Normally a sound is played, however you can execute any command you like, eg:  \"aplay /usr/local/share/opencpn/sounds/2bells.wav\"\n"
+"Messagebox may be useful to interrupt other applications (like a movie player)\n"
+"Automatically Reset will reset the alarm once it is no longer triggered, and it may be triggered again later."
+msgstr "A maioria dos alarmes deve ser auto-explicativo\n"
+"Normalmente um som é tocado, mas pode executar qualquer comando que prefira, ex:  \"aplay /usr/local/share/opencpn/sounds/2bells.wav\"\n"
+"Messagebox pode ser usado para interromper outras aplicações (como um reprodutor de vídeo)\n"
+"Reiniciar automaticamente irá desactivar o alarme assim que deixar de estar activo, e terá que ser ligado novamente mais tarde."
+
+#: src/EditAlarmDialog.cpp:101
+msgid "Watchdog Information"
+msgstr "Informação do Watchdog"
+
+#: src/EditAlarmDialog.cpp:206 src/EditAlarmDialog.cpp:232
+#: src/EditAlarmDialog.cpp:285 src/EditAlarmDialog.cpp:310
+msgid "Error!"
+msgstr "Erro!"
+
+#: src/EditAlarmDialog.cpp:207 src/EditAlarmDialog.cpp:233
+#: src/EditAlarmDialog.cpp:286 src/EditAlarmDialog.cpp:311
+msgid " does not exist"
+msgstr " não existe"
+
+#: src/NewAlarmDialog.cpp:34
+msgid "Landfall"
+msgstr "Aterragem"
+
+#: src/NewAlarmDialog.cpp:35
+msgid "Boundary Alarm"
+msgstr "Alarme de Limite"
+
+#: src/WatchdogDialog.cpp:109
+msgid "Status"
+msgstr "Estado"
+
+#: src/WatchdogUI.cpp:30
+msgid "Configuration"
+msgstr "Configuração"
+
+#: src/WatchdogUI.cpp:33
+msgid "Reset"
+msgstr "Reiniciar"
+
+#: src/WatchdogUI.cpp:36
+msgid "Close"
+msgstr "Fechar"
+
+#: src/WatchdogUI.cpp:76
+msgid "Name:"
+msgstr "Nome:"
+
+#: src/WatchdogUI.cpp:84
+msgid "Version:"
+msgstr "Versão:"
+
+#: src/WatchdogUI.cpp:93
+msgid "Major:"
+msgstr "Maior:"
+
+#: src/WatchdogUI.cpp:101
+msgid "Minor:"
+msgstr "Menor:"
+
+#: src/WatchdogUI.cpp:109
+msgid "Patch:"
+msgstr "Correcção:"
+
+#: src/WatchdogUI.cpp:120
+msgid "Date:"
+msgstr "Data:"
+
+#: src/WatchdogUI.cpp:128
+msgid "Other:"
+msgstr "Outro:"
+
+#: src/WatchdogUI.cpp:132
+msgid "Please report problems using FlySpray at:\n"
+"https://www.opencpn.org/flyspray/index.php?project=34&do=index&switch=1\n\n"
+"or\n\n"
+"at the OpenCPN forum:\n"
+"http://www.cruisersforum.com/forums/f134\n\n"
+"or\n\n"
+"Raise an issue in GIT at:\n"
+"https://github.com/seandepagnier/watchdog_pi/issues\n"
+msgstr "Por favor comunique problemas usando FlySpray em:\n"
+"https://www.opencpn.org/flyspray/index.php?project=34&do=index&switch=1\n\n"
+"ou\n\n"
+"no forum OpenCPN:\n"
+"http://www.cruisersforum.com/forums/f134\n\n"
+"ou\n\n"
+"Registe um incidente no GIT em:\n"
+"https://github.com/seandepagnier/watchdog_pi/issues\n"
+
+#: src/WatchdogUI.cpp:139
+msgid "&OK"
+msgstr "&OK"
+
+#: src/WatchdogUI.cpp:173
+msgid "General Setup"
+msgstr "Configuração Geral"
+
+#: src/WatchdogUI.cpp:180
+msgid "Enable All Alarms"
+msgstr "Ativar todos os alarmes"
+
+#: src/WatchdogUI.cpp:183
+msgid "Enabled after first time Watchdog Dialog is visible"
+msgstr "Ativar após a primeira vez que diálogo Watchdog for visível"
+
+#: src/WatchdogUI.cpp:186
+msgid "Enabled only if Watchdog Dialog is visible"
+msgstr "Ativar apenas se a caixa de diálogo Watchdog for visível"
+
+#: src/WatchdogUI.cpp:189
+msgid "Disable All Alarms"
+msgstr "Desativar todos os alarmes"
+
+#: src/WatchdogUI.cpp:206
+msgid "Alarms"
+msgstr "Alarmes"
+
+#: src/WatchdogUI.cpp:220
+msgid "New"
+msgstr "Novo"
+
+#: src/WatchdogUI.cpp:223
+msgid "Edit"
+msgstr "Editar"
+
+#: src/WatchdogUI.cpp:226
+msgid "Delete"
+msgstr "Apagar"
+
+#: src/WatchdogUI.cpp:229
+msgid "Delete All"
+msgstr "Apagar tudo"
+
+#: src/WatchdogUI.cpp:253
+msgid "About Author"
+msgstr "Sobre o autor"
+
+#: src/WatchdogUI.cpp:356
+msgid "Alarm Action"
+msgstr "Ação do alarme"
+
+#: src/WatchdogUI.cpp:367
+msgid "Select a file"
+msgstr "Seleccione um ficheiro"
+
+#: src/WatchdogUI.cpp:384
+msgid "Message Box"
+msgstr "Caixa de mensagem"
+
+#: src/WatchdogUI.cpp:390
+msgid "Repeat Alarm after seconds"
+msgstr "Repetir alarme após segundos"
+
+#: src/WatchdogUI.cpp:396
+msgid "Automatically Reset"
+msgstr "Reiniciar automaticamente"
+
+#: src/WatchdogUI.cpp:399
+msgid "Graphics Enabled"
+msgstr "Gráficos ativados"
+
+#: src/WatchdogUI.cpp:417
+msgid "Information"
+msgstr "Informação"
+
+#: src/WatchdogUI.cpp:464
+msgid "GPS course crosses land in <"
+msgstr "Curso GPS cruza terra em <"
+
+#: src/WatchdogUI.cpp:470 src/WatchdogUI.cpp:539
+msgid "minutes"
+msgstr "minutos"
+
+#: src/WatchdogUI.cpp:482 src/WatchdogUI.cpp:551
+msgid "GPS fix is <"
+msgstr "Posição do GPS é <"
+
+#: src/WatchdogUI.cpp:485 src/WatchdogUI.cpp:554
+msgid "3"
+msgstr "3"
+
+#: src/WatchdogUI.cpp:496
+msgid "nm from coastline\n"
+"(any direction)"
+msgstr "nm da linha da costa\n"
+"(qualquer direcção)"
+
+#: src/WatchdogUI.cpp:503
+msgid "Graphical overlay for time displays line from boat to location of land crossing"
+msgstr "Sobreposição gráfica de tempo apresenta a linha do barco ao ponto de cruzamento com  terra"
+
+#: src/WatchdogUI.cpp:507
+msgid "Landfall detection uses gshhs (global heirarchical high-resolution shoreline data.)\n"
+"Consider installing the highest resolution database for best accuracy."
+msgstr "Deteção de aterragem usa gshhs (dados hierárquicos global de alta resolução do litoral) \n"
+"Considere a instalação da base de dados de resolução mais alta para maior precisão."
+
+#: src/WatchdogUI.cpp:533
+msgid "GPS course crosses boundary in <"
+msgstr "Curso GPS cruza o limite em <"
+
+#: src/WatchdogUI.cpp:565
+msgid "nm from boundary\n"
+"(any direction)"
+msgstr "nm do limite\n"
+" (qualquer direção)"
+
+#: src/WatchdogUI.cpp:577
+msgid "AIS Guard Zone"
+msgstr "Zona de Resguardo AIS"
+
+#: src/WatchdogUI.cpp:621
+msgid "Get Boundary GUID"
+msgstr "Obter GUID do limite"
+
+#: src/WatchdogUI.cpp:632 src/WatchdogUI.cpp:638
+msgid "Any"
+msgstr "Qualquer"
+
+#: src/WatchdogUI.cpp:632
+msgid "Exclusion"
+msgstr "Exclusão"
+
+#: src/WatchdogUI.cpp:632
+msgid "Inclusion"
+msgstr "Inclusão"
+
+#: src/WatchdogUI.cpp:632
+msgid "Neither"
+msgstr "Nenhum"
+
+#: src/WatchdogUI.cpp:634
+msgid "Boundary Type"
+msgstr "Tipo de limite"
+
+#: src/WatchdogUI.cpp:638
+msgid "Active"
+msgstr "Ativo"
+
+#: src/WatchdogUI.cpp:638
+msgid "Inactive"
+msgstr "Inativo"
+
+#: src/WatchdogUI.cpp:640
+msgid "Boundary State"
+msgstr "Estado da zona"
+
+#: src/WatchdogUI.cpp:653
+msgid "Check Frequency  (Secs)\n"
+"(Note: not Guard Zone)"
+msgstr "Verificar a frequência (Secs) \n"
+" (Nota: não Zona de Resguardo)"
+
+#: src/WatchdogUI.cpp:663
+msgid "Graphical overlay for GPS fix displays line from boat to location of the point in the found boundary"
+msgstr "Sobreposição gráfica para GPS fixo, mostra linha do barco para o local do ponto no limite encontrado"
+
+#: src/WatchdogUI.cpp:706
+msgid "Require following NMEA sentences:"
+msgstr "Necessita das seguintes frases NMEA:"
+
+#: src/WatchdogUI.cpp:710
+msgid "$GPGGA"
+msgstr "$GPGGA"
+
+#: src/WatchdogUI.cpp:726
+msgid "at least every"
+msgstr "pelo menos a cada"
+
+#: src/WatchdogUI.cpp:733
+msgid "seconds"
+msgstr "segundos"
+
+#: src/WatchdogUI.cpp:762
+msgid "No User Activity for"
+msgstr "Nenhuma actividade do utilizador durante"
+
+#: src/WatchdogUI.cpp:769
+msgid "minute(s)"
+msgstr "minuto(s)"
+
+#: src/WatchdogUI.cpp:798
+msgid "Latitude"
+msgstr "Latitude"
+
+#: src/WatchdogUI.cpp:816
+msgid "Longitude"
+msgstr "Longitude"
+
+#: src/WatchdogUI.cpp:831
+msgid "Sync to Boat"
+msgstr "Posição atual"
+
+#: src/WatchdogUI.cpp:834
+msgid "Radius"
+msgstr "Raio"
+
+#: src/WatchdogUI.cpp:848
+msgid "Automatically syncronize to the boat whenever enabled"
+msgstr "Sincronizar automaticamente com o barco sempre que ativado"
+
+#: src/WatchdogUI.cpp:851
+msgid "Graphical overlay displays bounding anchor area"
+msgstr "Sobreposição gráfica apresenta a área delimitadora de fundeio"
+
+#: src/WatchdogUI.cpp:887
+msgid "Port or Starboard"
+msgstr "Bombordo ou Estibordo"
+
+#: src/WatchdogUI.cpp:896
+msgid "Off Course By >"
+msgstr "Fora do rumo >"
+
+#: src/WatchdogUI.cpp:903
+msgid "Degrees"
+msgstr "Graus"
+
+#: src/WatchdogUI.cpp:907
+msgid "With Course Of"
+msgstr "Com o rumo de"
+
+#: src/WatchdogUI.cpp:914
+msgid "Current Course"
+msgstr "Rumo atual"
+
+#: src/WatchdogUI.cpp:920
+msgid "Graphical overlay displays lines bounding valid courses"
+msgstr "Sobreposição gráfica apresenta linhas limitadoras de rumos válidos"
+
+#: src/WatchdogUI.cpp:943
+msgid "Speed Alarm"
+msgstr "Alarme de Velocidade"
+
+#: src/WatchdogUI.cpp:954
+msgid "Under Speed"
+msgstr "Velocidade Reduzida"
+
+#: src/WatchdogUI.cpp:954
+msgid "Over Speed"
+msgstr "Excesso de velocidade"
+
+#: src/WatchdogUI.cpp:963
+msgid "Speed over ground"
+msgstr "Velocidade verdadeira"
+
+#: src/WatchdogUI.cpp:967
+msgid "1"
+msgstr "1"
+
+#: src/WatchdogUI.cpp:978
+msgid "knots"
+msgstr "nós"
+
+#: src/WatchdogUI.cpp:991
+msgid "Seconds to Average\n"
+"SOG over"
+msgstr "Segundos para Média\n"
+"SOG acima"
+
+#: src/WatchdogUI.cpp:1001
+msgid "Graphical overlay displays circle with radius of this speed"
+msgstr "Sobreposição gráfica apresenta círculo com raio desta velocidade"
+
+#: src/WatchdogUI.h:68
+msgid "WatchDog"
+msgstr "WatchDog"
+
+#: src/WatchdogUI.h:103
+msgid "About Watchdog Properties"
+msgstr "Acerca das propriedades Watchdog"
+
+#: src/WatchdogUI.h:142
+msgid "Watchdog Configuration"
+msgstr "Configuração Watchdog"
+
+#: src/WatchdogUI.h:166
+msgid "New Alarm"
+msgstr "Novo alarme"
+
+#: src/WatchdogUI.h:202
+msgid "Edit Alarm"
+msgstr "Editar alarme"
+
+#: src/watchdog_pi.cpp:237
+msgid "Watchdog PlugIn for OpenCPN"
+msgstr "Watchdog PlugIn para OpenCPN"
+
+#: src/watchdog_pi.cpp:242
+msgid "Watchdog PlugIn for OpenCPN\n"
+"Alarm user of changing conditions."
+msgstr "Watchdog PlugIn para  OpenCPN\n"
+"Alarme de mudança de condições."
+
