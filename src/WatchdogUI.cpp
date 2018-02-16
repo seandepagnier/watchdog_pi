@@ -377,14 +377,33 @@ EditAlarmDialogBase::EditAlarmDialogBase( wxWindow* parent, wxWindowID id, const
 	m_cbMessageBox = new wxCheckBox( this, wxID_ANY, _("Message Box"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer6->Add( m_cbMessageBox, 0, wxALL, 5 );
 	
-	
-	fgSizer6->Add( 0, 0, 1, wxEXPAND, 5 );
+	m_cbNoData = new wxCheckBox( this, wxID_ANY, _("Alarm if no Data"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer6->Add( m_cbNoData, 0, wxALL, 5 );
 	
 	m_cbRepeat = new wxCheckBox( this, wxID_ANY, _("Repeat Alarm after seconds"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer6->Add( m_cbRepeat, 0, wxALL, 5 );
 	
 	m_sRepeatSeconds = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 10000, 60 );
 	fgSizer6->Add( m_sRepeatSeconds, 0, wxALL, 5 );
+	
+	m_staticText56 = new wxStaticText( this, wxID_ANY, _("Condition triggered for"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText56->Wrap( -1 );
+	fgSizer6->Add( m_staticText56, 0, wxALL, 5 );
+	
+	wxFlexGridSizer* fgSizer37;
+	fgSizer37 = new wxFlexGridSizer( 0, 2, 0, 0 );
+	fgSizer37->SetFlexibleDirection( wxBOTH );
+	fgSizer37->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_sDelay = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 60,-1 ), wxSP_ARROW_KEYS, 0, 3600, 0 );
+	fgSizer37->Add( m_sDelay, 0, wxALL, 5 );
+	
+	m_staticText57 = new wxStaticText( this, wxID_ANY, _("Seconds"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText57->Wrap( -1 );
+	fgSizer37->Add( m_staticText57, 0, wxALL, 5 );
+	
+	
+	fgSizer6->Add( fgSizer37, 1, wxEXPAND, 5 );
 	
 	m_cbAutoReset = new wxCheckBox( this, wxID_ANY, _("Automatically Reset"), wxDefaultPosition, wxDefaultSize, 0 );
 	fgSizer6->Add( m_cbAutoReset, 0, wxALL, 5 );
@@ -864,6 +883,20 @@ CoursePanel::CoursePanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, c
 	m_staticText3912 = new wxStaticText( this, wxID_ANY, _("Graphical overlay displays lines bounding valid courses"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText3912->Wrap( -1 );
 	fgSizer22->Add( m_staticText3912, 0, wxALL, 5 );
+	
+	wxFlexGridSizer* fgSizer38;
+	fgSizer38 = new wxFlexGridSizer( 0, 2, 0, 0 );
+	fgSizer38->SetFlexibleDirection( wxBOTH );
+	fgSizer38->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_rbGPSCourse = new wxRadioButton( this, wxID_ANY, _("GPS Course"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer38->Add( m_rbGPSCourse, 0, wxALL, 5 );
+	
+	m_rbHeading = new wxRadioButton( this, wxID_ANY, _("Heading Sensor"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer38->Add( m_rbHeading, 0, wxALL, 5 );
+	
+	
+	fgSizer22->Add( fgSizer38, 1, wxEXPAND, 5 );
 	
 	
 	this->SetSizer( fgSizer22 );

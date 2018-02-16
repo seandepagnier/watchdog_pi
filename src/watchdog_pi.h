@@ -65,20 +65,6 @@ std::cout << x << std::endl; } while (0)
 
 #define ABOUT_AUTHOR_URL "http://seandepagnier.users.sourceforge.net"
 
-#define OPC wxS("opencpn-watchdog_pi")
-
-#ifndef WXINTL_NO_GETTEXT_MACRO
-#ifdef OPC
-#ifdef _
-#undef _
-#endif // _
-#define _(s) wxGetTranslation((s),OPC)
-#endif // OPC
-#else 
-#define _(s) wxGetTranslation((s))
-#endif // WXINTL_NO_GETTEXT_MACRO
-
-
 #include "ocpn_plugin.h"
 
 #ifdef __MSVC__
@@ -148,7 +134,7 @@ public:
       PlugIn_Position_Fix_Ex &LastFix() { return m_lastfix; }
       double Declination();
 
-      double m_sog, m_cog;
+      double m_sog, m_cog, m_hdm;
 
       wxDateTime m_LastFixTime;
       wxDateTime m_cursor_time;

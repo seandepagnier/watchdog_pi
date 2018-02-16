@@ -26,6 +26,7 @@
 
 #include "WatchdogUI.h"
 
+class Alarm;
 class EditAlarmDialog : public EditAlarmDialogBase
 {
 public:

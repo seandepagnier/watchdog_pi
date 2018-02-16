@@ -105,7 +105,7 @@ watchdog_pi::watchdog_pi(void *ppimgr)
     initialize_images();
     m_lastfix.Lat = NAN;
     m_lasttimerfix.Lat = NAN;
-    m_sog = m_cog = NAN;
+    m_sog = m_cog = m_hdm = NAN;
     m_declination = NAN;
     
     g_ReceivedPathGUIDMessage = wxEmptyString;
@@ -363,6 +363,8 @@ void watchdog_pi::OnTimer( wxTimerEvent & )
         }
     } else
         m_sog = m_cog = NAN;
+
+    m_hdm = m_lastfix.Hdm;
     
     m_lasttimerfix = m_lastfix;
 }

@@ -23,19 +23,16 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,  USA.         *
  ***************************************************************************
  */
-#include "wx/wxprec.h"
-
-#ifndef  WX_PRECOMP
-#include "wx/wx.h"
-#endif //precompiled headers
+#include <wx/wx.h>
+#include "wx28compat.h"
 
 #include "wxJSON/jsonreader.h"
 #include "wxJSON/jsonwriter.h"
 
-#include "watchdog_pi.h"
-#include "WatchdogUI.h"
-
 #include "EditAlarmDialog.h"
+#include "WatchdogUI.h"
+#include "watchdog_pi.h"
+
 #include "WeatherPanel.h"
 #include "ODAPI.h"
 
@@ -51,11 +48,17 @@ EditAlarmDialog::EditAlarmDialog(wxWindow* parent, Alarm *alarm)
     m_tCommand->SetValue(m_alarm->m_sCommand);
     m_cbCommand->SetValue(m_alarm->m_bCommand);
     m_cbMessageBox->SetValue(m_alarm->m_bMessageBox);
+    m_cbNoData->SetValue(m_alarm->m_bNoData);
     m_cbAutoReset->SetValue(m_alarm->m_bAutoReset);
     m_cbRepeat->SetValue(m_alarm->m_bRepeat);
     m_sRepeatSeconds->SetValue(m_alarm->m_iRepeatSeconds);
+    m_sDelay->SetValue(m_alarm->m_iDelay);
     m_cbgfxEnabled->Enable(m_alarm->m_bHasGraphics);
     m_cbgfxEnabled->SetValue(m_alarm->m_bgfxEnabled);
+
+    //  setting does nothing for these alarms
+    if(alarm->Type() == _("NMEA Data") || alarm->Type() == _("Deadman"))
+        m_cbNoData->Disable();
 
     m_fgSizer->Insert( 0, m_alarm->OpenPanel(this), 1, wxEXPAND, 5 );
 
@@ -69,9 +72,11 @@ void EditAlarmDialog::Save()
     m_alarm->m_bCommand = m_cbCommand->GetValue();
     m_alarm->m_sCommand = m_tCommand->GetValue();
     m_alarm->m_bMessageBox = m_cbMessageBox->GetValue();
+    m_alarm->m_bNoData = m_cbNoData->GetValue();
     m_alarm->m_bAutoReset = m_cbAutoReset->GetValue();
     m_alarm->m_bRepeat = m_cbRepeat->GetValue();
     m_alarm->m_iRepeatSeconds = m_sRepeatSeconds->GetValue();
+    m_alarm->m_iDelay = m_sDelay->GetValue();
     m_alarm->m_bgfxEnabled = m_cbgfxEnabled->GetValue();
     m_alarm->m_bFired = false;
     m_alarm->m_bSpecial = false;

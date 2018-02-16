@@ -72,12 +72,14 @@ public:
     bool m_bHasGraphics, m_bEnabled, m_bgfxEnabled, m_bFired, m_bSpecial;
 
 protected:
-    bool m_bSound, m_bCommand, m_bMessageBox, m_bRepeat, m_bAutoReset;
+    bool m_bSound, m_bCommand, m_bMessageBox, m_bNoData, m_bRepeat, m_bAutoReset;
     wxString m_sSound, m_sCommand;
     wxDateTime m_LastAlarmTime;
     int m_iRepeatSeconds;
+    int m_iDelay;
     
     wxTimer    m_Timer;
+    wxDateTime m_DelayTime;
 
 private:
     friend class EditAlarmDialog;

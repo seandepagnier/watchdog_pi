@@ -82,7 +82,7 @@ public:
         PlugIn_Position_Fix_Ex lastfix = g_watchdog_pi->LastFix();
 
         if(isnan(lastfix.Lat))
-            return false;
+            return m_bNoData;
 
         double lat1 = lastfix.Lat, lon1 = lastfix.Lon, lat2, lon2;
         double dist = 0, dist1 = 1000;
@@ -351,7 +351,7 @@ public:
         PlugIn_Position_Fix_Ex lastfix = g_watchdog_pi->LastFix();
 
         if(isnan(lastfix.Lat))
-            return false;
+            return m_bNoData;
 
         double lat, lon;
         double dist = 0;
@@ -1701,6 +1701,8 @@ public:
     }
 
     bool Test() {
+        if(isnan(g_watchdog_pi->m_sog))
+            return m_bNoData;
         return Distance() > m_Radius;
     }
 
@@ -1780,6 +1782,8 @@ public:
 
 private:
     double Distance() {
+        if(isnan(g_watchdog_pi->m_cog))
+            return NAN;
         PlugIn_Position_Fix_Ex lastfix = g_watchdog_pi->LastFix();
 
         double anchordist;
@@ -1799,7 +1803,7 @@ private:
 class CourseAlarm : public Alarm
 {
 public:
-    CourseAlarm() : Alarm(true), m_Mode(BOTH), m_Tolerance(20) {
+    CourseAlarm() : Alarm(true), m_Mode(BOTH), m_Tolerance(20), m_bGPSCourse(true) {
         m_Course = g_watchdog_pi->m_cog;
     }
 
@@ -1815,7 +1819,11 @@ public:
     }
 
     bool Test() {
-        return CourseError() > m_Tolerance;
+        double error = CourseError();
+        if(isnan(error))
+            return m_bNoData;
+            
+        return error > m_Tolerance;
     }
 
     wxString GetStatus() {
@@ -1868,6 +1876,8 @@ public:
         panel->m_cMode->SetSelection((int)m_Mode);
         panel->m_sCourse->SetValue(m_Course);
         panel->m_sTolerance->SetValue(m_Tolerance);
+        panel->m_rbGPSCourse->SetValue(m_bGPSCourse);
+        panel->m_rbHeading->SetValue(!m_bGPSCourse);
         return panel;
     }
 
@@ -1876,6 +1886,7 @@ public:
         m_Mode = (Mode)panel->m_cMode->GetSelection();
         m_Course = panel->m_sCourse->GetValue();
         m_Tolerance = panel->m_sTolerance->GetValue();
+        m_bGPSCourse = panel->m_rbGPSCourse->GetValue();
     }
 
     void LoadConfig(TiXmlElement *e) {
@@ -1888,6 +1899,7 @@ public:
 
         e->Attribute("Tolerance", &m_Tolerance);
         e->Attribute("Course", &m_Course);
+        e->QueryBoolAttribute("GPSCourse", &m_bGPSCourse);
     }
 
     void SaveConfig(TiXmlElement *c) {
@@ -1900,12 +1912,14 @@ public:
 
         c->SetDoubleAttribute("Tolerance", m_Tolerance);
         c->SetDoubleAttribute("Course", m_Course);
+        c->SetAttribute("GPSCourse", m_bGPSCourse);
     }
 
 private:
     double CourseError() {
-        double error = heading_resolve(g_watchdog_pi->m_cog - m_Course);
-
+        double error = heading_resolve((m_bGPSCourse ?
+                                        g_watchdog_pi->m_cog :
+                                        g_watchdog_pi->m_hdm) - m_Course);
         switch(m_Mode) {
         case PORT:      return -error;
         case STARBOARD: return  error;
@@ -1915,7 +1929,7 @@ private:
     
     enum Mode { PORT, STARBOARD, BOTH } m_Mode;
     double m_Tolerance, m_Course;
-
+    bool m_bGPSCourse;
 };
 
 class SpeedAlarm : public Alarm
@@ -1939,15 +1953,9 @@ public:
             s = _T("N/A");
         else {
             wxString fmt(_T("%.1f"));
-            // average speed in list
-            double l_avSpeed = 0.0;
-            for(std::list<double>::iterator it = m_SOGqueue.begin(); it != m_SOGqueue.end(); it++) {
-                l_avSpeed += *it;
-            }
-            l_avSpeed /= m_SOGqueue.size();
-            s = wxString::Format(fmt + (l_avSpeed < m_dSpeed ?
+            s = wxString::Format(fmt + (Knots() < m_dSpeed ?
                                         _T(" < ") : _T(" > "))
-                                 + fmt, l_avSpeed, m_dSpeed);
+                                 + fmt, Knots(), m_dSpeed);
         }
 
         return s;
@@ -1974,10 +1982,14 @@ public:
     }
 
     bool Test() {
+        double knots = Knots();
+        if(isnan(knots))
+            return m_bNoData;
+
         if(m_Mode == UNDERSPEED)
-            return m_dSpeed > Knots();
-        else
-            return m_dSpeed < Knots();
+            return m_dSpeed > knots;
+
+        return m_dSpeed < knots;
     }
 
     wxWindow *OpenPanel(wxWindow *parent) {
@@ -2025,15 +2037,23 @@ public:
     void OnTimer( wxTimerEvent &tEvent )
     {
         Alarm::OnTimer( tEvent );
-        if(!isnan(g_watchdog_pi->LastFix().Sog)) m_SOGqueue.push_front(Knots()) ;
-        while((int)m_SOGqueue.size() > m_iAverageTime) m_SOGqueue.pop_back();
+        double sog = g_watchdog_pi->LastFix().Sog;
+        if(!isnan(sog))
+            m_SOGqueue.push_front(sog) ;
         return;
     }
     
 private:
     double Knots() {
-        if(isnan(g_watchdog_pi->LastFix().Sog)) return 0.;
-        else return g_watchdog_pi->LastFix().Sog;
+        if(m_SOGqueue.size() == 0)
+            return g_watchdog_pi->LastFix().Sog;
+        // average speed in list
+        double l_avSpeed = 0.0;
+        for(std::list<double>::iterator it = m_SOGqueue.begin(); it != m_SOGqueue.end(); it++)
+            l_avSpeed += *it;
+
+        l_avSpeed /= m_SOGqueue.size();
+        return l_avSpeed;
     }
 
     enum Mode { UNDERSPEED, OVERSPEED } m_Mode;
@@ -2045,7 +2065,7 @@ private:
 class WindAlarm : public Alarm
 {
 public:
-    WindAlarm() : Alarm(true), m_Mode(UNDERSPEED), m_dVal(5), m_speed(NAN), m_direction(NAN), m_gps_speed(0), m_bearing(NAN) {}
+    WindAlarm() : Alarm(true), m_Mode(UNDERSPEED), m_dVal(5), m_speed(NAN), m_direction(NAN), m_gps_speed(0), m_bearing(NAN), m_WindDataTime(wxDateTime::Now()) {}
 
     wxString Type() { return _("Wind"); }
     wxString Options() {
@@ -2098,6 +2118,10 @@ public:
     }
 
     bool Test() {
+        // no data for 3 seconds..  Is this correct?
+        if((wxDateTime::Now() - m_WindDataTime).GetSeconds() > 3)
+            return m_bNoData;
+        
         switch(m_Mode) {
         case UNDERSPEED: return m_dVal > m_speed;
         case OVERSPEED:  return m_dVal < m_speed;
@@ -2203,6 +2227,7 @@ private:
 
     void ProcessWind(double apparent_speed, double apparent_direction)
     {
+        m_WindDataTime = wxDateTime::Now();
         if(m_Type == APPARENT) {
             m_speed = apparent_speed;
             m_direction = apparent_direction;
@@ -2246,13 +2271,15 @@ W = acos |  VW + VB - VA  |
 
     double m_speed, m_direction;
     double m_gps_speed, m_bearing;
+
+    wxDateTime m_WindDataTime;
 };
 
 class WeatherAlarm : public Alarm
 {
 public:
     WeatherAlarm() : Alarm(false), m_Variable(BAROMETER), m_Mode(BELOW), m_dVal(1004),
-                     m_curvalue(NAN), m_currate(NAN) {}
+                     m_curvalue(NAN), m_currate(NAN), m_WeatherDataTime(wxDateTime::Now()) {}
 
     wxString Type() { return _("Weather"); }
     wxString Options() {
@@ -2289,6 +2316,10 @@ public:
     }
 
     bool Test() {
+        // no data for 10 seconds..  Is this correct?
+        if((wxDateTime::Now() - m_WeatherDataTime).GetSeconds() > 3)
+            return m_bNoData;
+
         switch(m_Mode) {
         case ABOVE: case INCREASING: return m_dVal < Value();
         case BELOW: return m_dVal > Value();
@@ -2352,7 +2383,7 @@ public:
             case DECREASING: c->SetAttribute("Mode", "Decreasing"); break;
         }
 
-        const char *variable;
+        const char *variable = "";
         switch(m_Variable) {
         case BAROMETER: variable = "Barometer"; break;
         case AIR_TEMPERATURE: variable = "AirTemperature"; break;
@@ -2411,6 +2442,7 @@ private:
         if(isnan(value))
             return;
 
+        m_WeatherDataTime = wxDateTime::Now();
         if(m_Mode == INCREASING || m_Mode == DECREASING) {
             wxDateTime now = wxDateTime::Now();
             if(!valuetime.IsValid()) {
@@ -2432,6 +2464,7 @@ private:
     int m_iRatePeriod;
     double m_curvalue, m_currate;
     wxDateTime valuetime;
+    wxDateTime m_WeatherDataTime;
 };
 
 ////////// Alarm Base Class /////////////////
@@ -2548,10 +2581,10 @@ Alarm *Alarm::NewAlarm(enum AlarmType type)
 
 Alarm::Alarm(bool gfx, int interval)
     : m_bHasGraphics(gfx), m_bEnabled(true), m_bgfxEnabled(false), m_bFired(false), m_bSpecial(false),
-      m_bSound(true), m_bCommand(false), m_bMessageBox(false), m_bRepeat(false), m_bAutoReset(false),
+      m_bSound(true), m_bCommand(false), m_bMessageBox(false), m_bNoData(true), m_bRepeat(false), m_bAutoReset(false),
       m_sSound(*GetpSharedDataLocation() + _T("sounds/2bells.wav")),
       m_LastAlarmTime(wxDateTime::Now()),
-      m_iRepeatSeconds(60),
+      m_iRepeatSeconds(60), m_iDelay(0),
       m_interval(interval)
 {
     m_Timer.Connect(wxEVT_TIMER, wxTimerEventHandler( Alarm::OnTimer ), NULL, this);
@@ -2600,8 +2633,10 @@ void Alarm::LoadConfigBase(TiXmlElement *e)
     e->QueryBoolAttribute("Command", &m_bCommand);
     m_sCommand = wxString::FromUTF8(e->Attribute("CommandFile"));
     e->QueryBoolAttribute("MessageBox", &m_bMessageBox);
+    e->QueryBoolAttribute("NoData", &m_bNoData);
     e->QueryBoolAttribute("Repeat", &m_bRepeat);
     e->Attribute("RepeatSeconds", &m_iRepeatSeconds);
+    e->Attribute("Delay", &m_iDelay);
     e->QueryBoolAttribute("AutoReset", &m_bAutoReset);
 }
 
@@ -2614,8 +2649,10 @@ void Alarm::SaveConfigBase(TiXmlElement *c)
     c->SetAttribute("Command", m_bCommand);
     c->SetAttribute("CommandFile", m_sCommand.mb_str());
     c->SetAttribute("MessageBox", m_bMessageBox);
+    c->SetAttribute("NoData", m_bNoData);
     c->SetAttribute("Repeat", m_bRepeat);
     c->SetAttribute("RepeatSeconds", m_iRepeatSeconds);
+    c->SetAttribute("Delay", m_iDelay);
     c->SetAttribute("AutoReset", m_bAutoReset);
 }
 
@@ -2633,23 +2670,29 @@ void Alarm::OnTimer( wxTimerEvent & )
        enabled = 0;
 
     if(enabled && (m_bEnabled)) {
-        if(Test()) {        
+        if(Test()) {
             wxDateTime now = wxDateTime::Now();
-            if(m_bFired) {
-                if((now - m_LastAlarmTime).GetSeconds() > m_iRepeatSeconds && m_bRepeat) {
+            if(!m_DelayTime.IsValid())
+                m_DelayTime = now;
+            if((now - m_DelayTime).GetSeconds() >= m_iDelay) {
+                if(m_bFired) {
+                    if((now - m_LastAlarmTime).GetSeconds() > m_iRepeatSeconds && m_bRepeat) {
+                        Run();
+                        m_LastAlarmTime = now;
+                    }
+                } else {
+                    m_bFired = true;
                     Run();
                     m_LastAlarmTime = now;
                 }
-            } else {
-                m_bFired = true;
-                Run();
-                m_LastAlarmTime = now;
             }
-        } else if(m_bAutoReset)
-            if(m_bFired) {
+        } else {
+            if(m_bAutoReset && m_bFired) {
                 m_bFired = false;
                 RequestRefresh(GetOCPNCanvasWindow());
             }
+            m_DelayTime = wxDateTime(); // invalid
+        }
     }
 
     if(g_watchdog_pi->m_WatchdogDialog && g_watchdog_pi->m_WatchdogDialog->IsShown())

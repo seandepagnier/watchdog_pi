@@ -177,6 +177,10 @@ class EditAlarmDialogBase : public wxDialog
 	
 	protected:
 		wxFlexGridSizer* m_fgSizer;
+		wxCheckBox* m_cbNoData;
+		wxStaticText* m_staticText56;
+		wxSpinCtrl* m_sDelay;
+		wxStaticText* m_staticText57;
 		wxCheckBox* m_cbAutoReset;
 		wxCheckBox* m_cbgfxEnabled;
 		wxButton* m_bTest;
@@ -363,6 +367,8 @@ class CoursePanel : public wxPanel
 		wxChoice* m_cMode;
 		wxSpinCtrl* m_sTolerance;
 		wxSpinCtrl* m_sCourse;
+		wxRadioButton* m_rbGPSCourse;
+		wxRadioButton* m_rbHeading;
 		
 		CoursePanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL ); 
 		~CoursePanel();
