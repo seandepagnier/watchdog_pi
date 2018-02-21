@@ -105,6 +105,7 @@ watchdog_pi::watchdog_pi(void *ppimgr)
     initialize_images();
     m_lastfix.Lat = NAN;
     m_lasttimerfix.Lat = NAN;
+    m_lasttimerfix.FixTime = m_lastfix.FixTime = 0;
     m_sog = m_cog = m_hdm = 0;
     m_declination = NAN;
     
@@ -127,7 +128,7 @@ watchdog_pi::watchdog_pi(void *ppimgr)
     g_AISTarget.m_dHDG = 0.;
     g_AISTarget.m_iMMSI = 0;
     g_AISTarget.m_sShipName = wxEmptyString;
-    
+
     g_watchdog_pi = this;
 }
 
@@ -167,6 +168,7 @@ int watchdog_pi::Init(void)
 
     m_bWatchdogDialogShown = false;
     m_cursor_time = wxDateTime::Now();
+    m_ValidFixTime = wxDateTime::Now();
 
     return (WANTS_OVERLAY_CALLBACK |
             WANTS_OPENGL_OVERLAY_CALLBACK |
@@ -342,11 +344,6 @@ void watchdog_pi::Render(wdDC &dc, PlugIn_ViewPort &vp)
 void watchdog_pi::OnTimer( wxTimerEvent & )
 {
     /* calculate course and speed over ground from gps */
-    if(m_lasttimerfix.FixTime == 0) {
-        m_lasttimerfix = m_lastfix;
-        return;
-    }
-    
     double dt = m_lastfix.FixTime - m_lasttimerfix.FixTime;
     if(!isnan(m_lastfix.Lat) && !isnan(m_lasttimerfix.Lat) && dt > 0) {
         /* this way helps avoid surge speed from gps from surfing waves etc... */
@@ -361,10 +358,15 @@ void watchdog_pi::OnTimer( wxTimerEvent & )
             m_cog = .25*cog + .75*m_cog;
             m_sog = .25*sog + .75*m_sog;
         }
-    } else if(isnan(m_lastfix.Lat))
-        m_sog = m_cog = NAN;
-
-    m_hdm = m_lastfix.Hdm;
+        m_hdm = m_lastfix.Hdm;
+        m_ValidFixTime = wxDateTime::Now();
+    } else {
+        wxLongLong dt = (wxDateTime::Now() - m_ValidFixTime).GetSeconds();
+        //printf("wddt %ld\n", dt.ToLong());
+        if(dt > 60 || (dt > 11 && m_lastfix.FixTime > 0))
+            // wait 60 seconds from startup because of slowness to receive first nmea message
+            m_sog = m_cog = m_hdm = NAN;
+    }
     
     m_lasttimerfix = m_lastfix;
 }
@@ -385,9 +387,6 @@ void watchdog_pi::SetNMEASentence(wxString &sentence)
 
 void watchdog_pi::SetPositionFixEx(PlugIn_Position_Fix_Ex &pfix)
 {
-    if(pfix.FixTime && pfix.nSats)
-        m_LastFixTime = wxDateTime::Now();
-
     m_lastfix = pfix;
 }
 

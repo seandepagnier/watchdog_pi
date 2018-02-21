@@ -136,7 +136,7 @@ public:
 
       double m_sog, m_cog, m_hdm;
 
-      wxDateTime m_LastFixTime;
+      wxDateTime m_ValidFixTime;
       wxDateTime m_cursor_time;
       WatchdogDialog   *m_WatchdogDialog;
       
