@@ -26,7 +26,7 @@ IF(NOT MSVC)
   ADD_DEFINITIONS( "-Wall -g -fprofile-arcs -ftest-coverage -fexceptions" )
  ELSE(PROFILING)
 #  ADD_DEFINITIONS( "-Wall -g -fexceptions" )
-  ADD_DEFINITIONS( "-Wall -Wno-unused-result -g -O2 -fexceptions -fPIC" )
+  ADD_DEFINITIONS( "-Wall -Wno-unused-result -g -fexceptions -fPIC" )
  ENDIF(PROFILING)
 
  IF(NOT APPLE)
