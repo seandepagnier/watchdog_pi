@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: opencpn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-02-07 06:39+1100\n"
-"PO-Revision-Date: 2018-01-29 21:26-0500\n"
+"PO-Revision-Date: 2018-03-03 08:25-0500\n"
 "Last-Translator: nohal <pavel@kalian.cz>\n"
 "Language-Team: Spanish\n"
 "Language: es_ES\n"
@@ -18,7 +18,7 @@ msgstr ""
 
 #: src/Alarm.cpp:54
 msgid "landfall alarm without gshhs data"
-msgstr ""
+msgstr "alarma de derrumbe sin datos gshhs"
 
 #: src/Alarm.cpp:60
 msgid "LandFall"
@@ -34,7 +34,7 @@ msgstr "Distancia"
 
 #: src/Alarm.cpp:126
 msgid "No GSHHS Data"
-msgstr ""
+msgstr "No hay datos de GSHHS"
 
 #: src/Alarm.cpp:132
 msgid "LandFall Time Invalid"
@@ -235,7 +235,7 @@ msgstr "MMSI del barco"
 
 #: src/Alarm.cpp:1295
 msgid "Guard Zone not Found"
-msgstr ""
+msgstr "Zona de Guardia no encontrada"
 
 #: src/Alarm.cpp:1542 src/NewAlarmDialog.cpp:36
 msgid "NMEA Data"
@@ -408,31 +408,31 @@ msgstr "Cerrar"
 
 #: src/WatchdogUI.cpp:76
 msgid "Name:"
-msgstr ""
+msgstr "Nombre:"
 
 #: src/WatchdogUI.cpp:84
 msgid "Version:"
-msgstr ""
+msgstr "Versión:"
 
 #: src/WatchdogUI.cpp:93
 msgid "Major:"
-msgstr ""
+msgstr "Mayor:"
 
 #: src/WatchdogUI.cpp:101
 msgid "Minor:"
-msgstr ""
+msgstr "Menor:"
 
 #: src/WatchdogUI.cpp:109
 msgid "Patch:"
-msgstr ""
+msgstr "Insignia:"
 
 #: src/WatchdogUI.cpp:120
 msgid "Date:"
-msgstr ""
+msgstr "Fecha:"
 
 #: src/WatchdogUI.cpp:128
 msgid "Other:"
-msgstr ""
+msgstr "Otro:"
 
 #: src/WatchdogUI.cpp:132
 msgid "Please report problems using FlySpray at:\n"
@@ -443,11 +443,18 @@ msgid "Please report problems using FlySpray at:\n"
 "or\n\n"
 "Raise an issue in GIT at:\n"
 "https://github.com/seandepagnier/watchdog_pi/issues\n"
-msgstr ""
+msgstr "Por favor reporte los problemas al usar FlySpray en: \n"
+"https://www.opencpn.org/flyspray/index.php?project=34&do=index&switch=1\n\n"
+" ó \n\n"
+" en el foro de OpenCPN: \n"
+"http://www.cruisersforum.com/forums/f134\n\n"
+" ó \n\n"
+" Plantea un problema en GIT en:\n"
+"https://github.com/seandepagnier/watchdog_pi/issues\n"
 
 #: src/WatchdogUI.cpp:139
 msgid "&OK"
-msgstr ""
+msgstr "&Aceptar"
 
 #: src/WatchdogUI.cpp:173
 msgid "General Setup"
@@ -725,7 +732,7 @@ msgstr "WatchDog"
 
 #: src/WatchdogUI.h:103
 msgid "About Watchdog Properties"
-msgstr ""
+msgstr "Acerca de las propiedades de Watchdog"
 
 #: src/WatchdogUI.h:142
 msgid "Watchdog Configuration"

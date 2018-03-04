@@ -3,183 +3,183 @@ msgstr ""
 "Project-Id-Version: opencpn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-02-07 06:39+1100\n"
-"PO-Revision-Date: 2018-03-03 08:24-0500\n"
+"PO-Revision-Date: 2018-03-03 08:23-0500\n"
 "Last-Translator: nohal <pavel@kalian.cz>\n"
-"Language-Team: Greek\n"
-"Language: el_GR\n"
+"Language-Team: Filipino\n"
+"Language: fil_PH\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: crowdin.com\n"
 "X-Crowdin-Project: opencpn\n"
-"X-Crowdin-Language: el\n"
+"X-Crowdin-Language: fil\n"
 "X-Crowdin-File: /plugins/watchdog_pi/po/watchdog_pi.pot\n"
 
 #: src/Alarm.cpp:54
 msgid "landfall alarm without gshhs data"
-msgstr "συναγερμός προσέγγισης σε ξηρά χωρίς δεδομένα gshhs"
+msgstr "alarma sa landfall na walang gshhs na datos"
 
 #: src/Alarm.cpp:60
 msgid "LandFall"
-msgstr "Προσέγγιση σε ξηρά"
+msgstr "LandFall"
 
 #: src/Alarm.cpp:63 src/Alarm.cpp:320 src/Alarm.cpp:1275
 msgid "Time"
-msgstr "Χρόνος"
+msgstr "Oras"
 
 #: src/Alarm.cpp:64 src/Alarm.cpp:169 src/Alarm.cpp:321
 msgid "Distance"
-msgstr "Απόσταση"
+msgstr "Distansya"
 
 #: src/Alarm.cpp:126
 msgid "No GSHHS Data"
-msgstr "Δεν υπάρχουν δεδομένα GSHHS"
+msgstr "Walang datos ang GSHHS"
 
 #: src/Alarm.cpp:132
 msgid "LandFall Time Invalid"
-msgstr "Μη έγκυρος χρόνος προσάραξης"
+msgstr "Imbalido ang oras ng LandFall"
 
 #: src/Alarm.cpp:137 src/Alarm.cpp:1406
 msgid "Days"
-msgstr "Μέρες"
+msgstr "Mga araw"
 
 #: src/Alarm.cpp:140 src/Alarm.cpp:1409
 msgid "Day"
-msgstr "Ημέρα"
+msgstr "Araw"
 
 #: src/Alarm.cpp:144 src/Alarm.cpp:1413
 msgid "Hours"
-msgstr "Ώρες"
+msgstr "Mga Oras"
 
 #: src/Alarm.cpp:147 src/Alarm.cpp:1416
 msgid "Hour"
-msgstr "Ώρα"
+msgstr "Oras"
 
 #: src/Alarm.cpp:151 src/Alarm.cpp:1420
 msgid "Minutes"
-msgstr "Λεπτά"
+msgstr "Mga Minuto"
 
 #: src/Alarm.cpp:154 src/Alarm.cpp:1423
 msgid "Minute"
-msgstr "Λεπτό"
+msgstr "Minuto"
 
 #: src/Alarm.cpp:158 src/Alarm.cpp:1427
 msgid "Seconds"
-msgstr "Δευτερόλεπτα"
+msgstr "Segundos"
 
 #: src/Alarm.cpp:160 src/Alarm.cpp:1429
 msgid "Second"
-msgstr "Δευτερόλεπτο"
+msgstr "Segundo"
 
 #: src/Alarm.cpp:219
 msgid "invalid LandFall mode"
-msgstr "μη έγκυρο είδος προσάραξης"
+msgstr "imbalidong mode ng LandFall"
 
 #: src/Alarm.cpp:310
 msgid "Boundary Time"
-msgstr "Χρόνος μέχρι το όριο"
+msgstr "Oras ng hangganan"
 
 #: src/Alarm.cpp:311 src/Alarm.cpp:314
 msgid "Boundary Distance"
-msgstr "Απόσταση ορίου"
+msgstr "Layo ng Hangganan"
 
 #: src/Alarm.cpp:312 src/WatchdogUI.cpp:603
 msgid "Inclusion Alarm"
-msgstr "Συναγερμός περιορισμού"
+msgstr "Alarma ng pagsasama"
 
 #: src/Alarm.cpp:313 src/Alarm.cpp:1028 src/Alarm.cpp:1030
 #: src/watchdog_pi.cpp:582
 msgid "Guard Zone"
-msgstr "Φυλασσόμενη ζώνη"
+msgstr "Bantay sa lugar"
 
 #: src/Alarm.cpp:324 src/Alarm.cpp:916 src/Alarm.cpp:956 src/WatchdogUI.cpp:606
 msgid "Boundary GUID"
-msgstr "GUID ορίου"
+msgstr "Hangganan ng GUID"
 
 #: src/Alarm.cpp:326
 msgid "Boundary Name"
-msgstr "Όνομα ορίου"
+msgstr "Pangalan ng Hangganan"
 
 #: src/Alarm.cpp:330 src/WatchdogUI.cpp:580
 msgid "Guard Zone GUID"
-msgstr "GUID φυλασσόμενης ζώνης"
+msgstr "Lugar na babantayan ng GUID"
 
 #: src/Alarm.cpp:332 src/Alarm.cpp:1272 src/Alarm.cpp:1293
 msgid "Guard Zone Name"
-msgstr "Όνομα φυλασσόμενης ζώνης"
+msgstr "Pangalan ng lugar na babantayan"
 
 #: src/Alarm.cpp:914 src/Alarm.cpp:954
 msgid "Boundary name"
-msgstr "Όνομα ορίου"
+msgstr "Pangalan ng hangganan"
 
 #: src/Alarm.cpp:920
 msgid "No Boundary within "
-msgstr "Κανένα όριο εντός "
+msgstr "Walang hangganan sa loob "
 
 #: src/Alarm.cpp:922
 msgid " minutes"
-msgstr " λεπτά"
+msgstr " mga Minuto"
 
 #: src/Alarm.cpp:927 src/Alarm.cpp:960
 msgid " - inside any boundary"
-msgstr " - στο εσωτερικό κάθε ορίου"
+msgstr " - sa loob ng hangganan"
 
 #: src/Alarm.cpp:930 src/Alarm.cpp:963
 msgid " - inside active boundary"
-msgstr " - στο εσωτερικό του ενεργού ορίου"
+msgstr " - sa loob ng aktibong hangganan"
 
 #: src/Alarm.cpp:933 src/Alarm.cpp:966
 msgid " - inside inactive boundary"
-msgstr " - στο εσωτερικό του ανενεργού ορίου"
+msgstr " - sa loob ng hindi aktibong hangganan"
 
 #: src/Alarm.cpp:938
 msgid " in "
-msgstr " σε "
+msgstr " sa "
 
 #: src/Alarm.cpp:978
 msgid "Any Boundary Distance"
-msgstr "Απόσταση από οποιοδήποτε όριο"
+msgstr "Kahit anong layo ng hangganan"
 
 #: src/Alarm.cpp:981
 msgid "Active Boundary Distance"
-msgstr "Απόσταση από ενεργό όριο"
+msgstr "Aktibong layo ng hangganan"
 
 #: src/Alarm.cpp:984
 msgid "Inactive Boundary Distance"
-msgstr "Απόσταση από ανενεργό όριο"
+msgstr "Hindi aktibong layo ng hangganan"
 
 #: src/Alarm.cpp:995 src/Alarm.cpp:999
 msgid "Boat"
-msgstr "Πλοίο"
+msgstr "Bangka"
 
 #: src/Alarm.cpp:996 src/Alarm.cpp:1000
 msgid "outside"
-msgstr "εκτός"
+msgstr "sa labas"
 
 #: src/Alarm.cpp:996 src/Alarm.cpp:1000
 msgid "inside"
-msgstr "μέσα"
+msgstr "loob"
 
 #: src/Alarm.cpp:997 src/Alarm.cpp:1001
 msgid " boundary area: "
-msgstr " οριοθετημένη περιοχή: "
+msgstr " lugar ng hangganan: "
 
 #: src/Alarm.cpp:1031
 msgid "AIS Target in zone"
-msgstr "Στόχος AIS στη ζώνη"
+msgstr "Gustong lugar ng AIS"
 
 #: src/Alarm.cpp:1031
 msgid "NO AIS tagets found in zone"
-msgstr "Δεν βρέθηκαν στόχοι AIS στη ζώνη"
+msgstr "Walang lugar ng AIS ang nakita"
 
 #: src/Alarm.cpp:1168
 msgid "invalid Boundary mode"
-msgstr "μη έγκυρο είδος ορίου"
+msgstr "imbalidong mode ng hangganan"
 
 #: src/Alarm.cpp:1222 src/Alarm.cpp:2174
 msgid "Failed to execute command: "
-msgstr "Απέτυχε η εκτέλεση της εντολής: "
+msgstr "Nabigo sa pagandar ang utos: "
 
 #: src/Alarm.cpp:1223 src/Alarm.cpp:2175 src/watchdog_pi.cpp:146
 #: src/watchdog_pi.cpp:232
@@ -189,16 +189,16 @@ msgstr "Watchdog"
 #: src/Alarm.cpp:1231 src/Alarm.cpp:1244 src/Alarm.cpp:1260 src/Alarm.cpp:1271
 #: src/Alarm.cpp:1292 src/Alarm.cpp:2181
 msgid "ALARM!"
-msgstr "ΣΥΝΑΓΕΡΜOΣ!"
+msgstr "ALARMA!"
 
 #: src/Alarm.cpp:1232 src/Alarm.cpp:1245 src/Alarm.cpp:1262
 msgid "Name"
-msgstr "Όνομα"
+msgstr "Pangngalan"
 
 #: src/Alarm.cpp:1233 src/Alarm.cpp:1246 src/Alarm.cpp:1263 src/Alarm.cpp:1273
 #: src/Alarm.cpp:1294
 msgid "Description"
-msgstr "Περιγραφή"
+msgstr "Paglalarawan"
 
 #: src/Alarm.cpp:1234 src/Alarm.cpp:1247 src/Alarm.cpp:1264 src/Alarm.cpp:1274
 #: src/Alarm.cpp:1295 src/EditAlarmDialog.cpp:207 src/EditAlarmDialog.cpp:233
@@ -208,42 +208,42 @@ msgstr "GUID"
 
 #: src/Alarm.cpp:1236 src/Alarm.cpp:1249
 msgid "inside boundary"
-msgstr "εσωτερικό όριο"
+msgstr "nasa loob ng hangganan"
 
 #: src/Alarm.cpp:1238 src/Alarm.cpp:1251
 msgid "in"
-msgstr "σε"
+msgstr "sa"
 
 #: src/Alarm.cpp:1239 src/Alarm.cpp:1255 src/Alarm.cpp:1265 src/Alarm.cpp:1284
 #: src/Alarm.cpp:1296 src/Alarm.cpp:2182 src/EditAlarmDialog.cpp:208
 #: src/EditAlarmDialog.cpp:234 src/EditAlarmDialog.cpp:287
 #: src/EditAlarmDialog.cpp:312
 msgid "Watchman"
-msgstr "Φύλακας"
+msgstr "Bantay"
 
 #: src/Alarm.cpp:1261
 msgid "Outside"
-msgstr "Εξωτερικό"
+msgstr "Labas"
 
 #: src/Alarm.cpp:1281
 msgid "Ship Name"
-msgstr "Όνομα πλοίου"
+msgstr "Pangalan ng barko"
 
 #: src/Alarm.cpp:1282
 msgid "Ship MMSI"
-msgstr "MMSI Πλοίου"
+msgstr "Barkong MMSI"
 
 #: src/Alarm.cpp:1295
 msgid "Guard Zone not Found"
-msgstr "Δεν βρέθηκε η ζώνη επιφυλακής"
+msgstr "Hindi nakita ang babantayan na lugar"
 
 #: src/Alarm.cpp:1542 src/NewAlarmDialog.cpp:36
 msgid "NMEA Data"
-msgstr "Δεδομένα NMEA"
+msgstr "Datos sa NMEA"
 
 #: src/Alarm.cpp:1552
 msgid "second(s)"
-msgstr "δευτερόλεπτα"
+msgstr "segundo(s)"
 
 #: src/Alarm.cpp:1623 src/NewAlarmDialog.cpp:37
 msgid "Deadman"
@@ -251,15 +251,15 @@ msgstr "Deadman"
 
 #: src/Alarm.cpp:1685 src/NewAlarmDialog.cpp:38
 msgid "Anchor"
-msgstr "Αγκυροβολίας"
+msgstr "Angkla"
 
 #: src/Alarm.cpp:1687
 msgid "radius"
-msgstr "ακτίνα"
+msgstr "radius"
 
 #: src/Alarm.cpp:1687 src/WatchdogUI.cpp:841
 msgid "meters"
-msgstr "μέτρα"
+msgstr "metros"
 
 #: src/Alarm.cpp:1688
 msgid "bAutoSync"
@@ -267,172 +267,172 @@ msgstr "bAutoSync"
 
 #: src/Alarm.cpp:1711
 msgid "meter(s)"
-msgstr "μέτρα"
+msgstr "metro(s)"
 
 #: src/Alarm.cpp:1794 src/NewAlarmDialog.cpp:39
 msgid "Course"
-msgstr "Πορεία"
+msgstr "Ruta"
 
 #: src/Alarm.cpp:1798 src/Alarm.cpp:1822 src/WatchdogUI.cpp:887
 msgid "Port"
-msgstr "Αριστερά"
+msgstr "Daungan"
 
 #: src/Alarm.cpp:1799 src/Alarm.cpp:1820 src/WatchdogUI.cpp:887
 msgid "Starboard"
-msgstr "Δεξιά"
+msgstr "Starboard"
 
 #: src/Alarm.cpp:1802
 msgid "course"
-msgstr "πορεία"
+msgstr "ruta"
 
 #: src/Alarm.cpp:1816
 msgid "degrees(s)"
-msgstr "μοίρες"
+msgstr "mga digri(s)"
 
 #: src/Alarm.cpp:1874
 msgid "invalid Course mode"
-msgstr "μη έγκυρο είδος Πορείας"
+msgstr "imbalidong mode ng ruta"
 
 #: src/Alarm.cpp:1914 src/NewAlarmDialog.cpp:40
 msgid "Speed"
-msgstr "ταχύτητα"
+msgstr "Bilis"
 
 #: src/Alarm.cpp:1918
 msgid "UnderSpeed"
-msgstr "ΧαμηλήΤαχύτητα"
+msgstr "WalaSaBilis"
 
 #: src/Alarm.cpp:1919
 msgid "OverSpeed"
-msgstr "ΥψηλήΤαχύτητα"
+msgstr "SobraSaBilis"
 
 #: src/Alarm.cpp:1990
 msgid "invalid Speed mode"
-msgstr "μη έγκυρο είδος Ταχύτητας"
+msgstr "imbalidong mode ng bilis"
 
 #: src/Alarm.cpp:2049
 msgid "Failed to read"
-msgstr "Απέτυχε η ανάγνωση"
+msgstr "Hindi mabasa"
 
 #: src/Alarm.cpp:2066
 msgid "invalid alarm type"
-msgstr "μη έγκυρο είδος συναγερμού"
+msgstr "imbalidong uri ng alarma"
 
 #: src/Alarm.cpp:2102
 msgid "failed to save"
-msgstr "Η αποθήκευση απέτυχε"
+msgstr "nabigo sa pag save"
 
 #: src/Alarm.cpp:2157 src/WatchdogUI.cpp:364
 msgid "Sound"
-msgstr "Ήχος"
+msgstr "Tunog"
 
 #: src/Alarm.cpp:2158 src/WatchdogUI.cpp:370
 msgid "Command"
-msgstr "Εντολή"
+msgstr "Utos"
 
 #: src/Alarm.cpp:2159
 msgid "MessageBox"
-msgstr "Πλαίσιο μηνύματος"
+msgstr "KahonParaSaMensahe"
 
 #: src/Alarm.cpp:2160
 msgid "Repeat"
-msgstr "Επανάληψη"
+msgstr "Ulitin"
 
 #: src/Alarm.cpp:2161
 msgid "Auto Reset"
-msgstr "Αυτοεπαναφορά"
+msgstr "Awtomatikong pag Reset"
 
 #: src/Alarm.h:96 src/WatchdogUI.cpp:402
 msgid "Test"
-msgstr "Δοκιμή"
+msgstr "Pagsusuri"
 
 #: src/ConfigurationDialog.cpp:48 src/WatchdogDialog.cpp:108
 #: src/WatchdogUI.cpp:883 src/WatchdogUI.cpp:950
 msgid "Type"
-msgstr "Είδος"
+msgstr "Uri"
 
 #: src/ConfigurationDialog.cpp:49
 msgid "Options"
-msgstr "Επιλογές"
+msgstr "Pagpipilian"
 
 #: src/ConfigurationDialog.cpp:50
 msgid "Action"
-msgstr "Ενέργεια"
+msgstr "Aksyon"
 
 #: src/EditAlarmDialog.cpp:94
 msgid "Most alarms should be self-explanatory\n"
 "Normally a sound is played, however you can execute any command you like, eg:  \"aplay /usr/local/share/opencpn/sounds/2bells.wav\"\n"
 "Messagebox may be useful to interrupt other applications (like a movie player)\n"
 "Automatically Reset will reset the alarm once it is no longer triggered, and it may be triggered again later."
-msgstr "Οι περισσότεροι συναγερμοί είναι αυτονόητοι\n"
-"Κανονικά ακούγεται ένας ήχος, αλλά μπορείτε να εκτελέσετε οποιαδήποτε εντολή θέλετε, π.χ.: «aplay /usr/local/share/opencpn/sounds/2bells.wav\"\n"
-"Το Πλαίσιο Μηνύματος είναι χρήσιμο για να διακόψει άλλες εφαρμογές (π.χ. την προβολή μιας ταινίας)\n"
-"Η Αυτοεπαναφορά θα επαναφέρει τον συναγερμό, όταν παύσει η ενεργοποίησή του, και μπορεί να ενεργοποιηθεί ξανά αργότερα."
+msgstr "Kalimitan ng mga alarma ay mauunawaan na agad\n"
+"Kung ang isang tunog ay nai-play, ngunit pwede kang magpagana ng kahit anong command tulad ng, eg:  \"aplay /usr/local/share/opencpn/sounds/2bells.wav\"\n"
+"AngkahonparasamgaMensahe ay magagamit ng husto upang hindi matigil ang ibang aplikasyon (tulad ng player ng mga pelikula)\n"
+"Awtomatikong marereset ang alarma kung sakaling ito ay di na kaylangang paganahin, at ito ay pwede namang paganahin ulit maya-maya."
 
 #: src/EditAlarmDialog.cpp:101
 msgid "Watchdog Information"
-msgstr "Πληροφορίες για το Watchdog"
+msgstr "Impormasyon tungkol sa WatchDog"
 
 #: src/EditAlarmDialog.cpp:206 src/EditAlarmDialog.cpp:232
 #: src/EditAlarmDialog.cpp:285 src/EditAlarmDialog.cpp:310
 msgid "Error!"
-msgstr "Σφάλμα!"
+msgstr "Mali!"
 
 #: src/EditAlarmDialog.cpp:207 src/EditAlarmDialog.cpp:233
 #: src/EditAlarmDialog.cpp:286 src/EditAlarmDialog.cpp:311
 msgid " does not exist"
-msgstr " δεν υπάρχει"
+msgstr " hindi umiiral"
 
 #: src/NewAlarmDialog.cpp:34
 msgid "Landfall"
-msgstr "Προσέγγιση σε ξηρά"
+msgstr "LandFall"
 
 #: src/NewAlarmDialog.cpp:35
 msgid "Boundary Alarm"
-msgstr "Συναγερμός ορίου"
+msgstr "Hangganang alarma"
 
 #: src/WatchdogDialog.cpp:109
 msgid "Status"
-msgstr "Κατάσταση"
+msgstr "Estado"
 
 #: src/WatchdogUI.cpp:30
 msgid "Configuration"
-msgstr "Ρυθμίσεις παραμέτρων"
+msgstr "Configurasyon"
 
 #: src/WatchdogUI.cpp:33
 msgid "Reset"
-msgstr "Επαναφορά"
+msgstr "I-reset"
 
 #: src/WatchdogUI.cpp:36
 msgid "Close"
-msgstr "Κλείσιμο"
+msgstr "Isara"
 
 #: src/WatchdogUI.cpp:76
 msgid "Name:"
-msgstr "Όνομα:"
+msgstr "Pangngalan:"
 
 #: src/WatchdogUI.cpp:84
 msgid "Version:"
-msgstr "Έκδοση:"
+msgstr "Bersyon:"
 
 #: src/WatchdogUI.cpp:93
 msgid "Major:"
-msgstr "Κύρια:"
+msgstr "Major:"
 
 #: src/WatchdogUI.cpp:101
 msgid "Minor:"
-msgstr "Ελάσσονα:"
+msgstr "Minor:"
 
 #: src/WatchdogUI.cpp:109
 msgid "Patch:"
-msgstr "Διόρθωση:"
+msgstr "Patch:"
 
 #: src/WatchdogUI.cpp:120
 msgid "Date:"
-msgstr "Ημερομηνία:"
+msgstr "Petsa:"
 
 #: src/WatchdogUI.cpp:128
 msgid "Other:"
-msgstr "Άλλο:"
+msgstr "Iba:"
 
 #: src/WatchdogUI.cpp:132
 msgid "Please report problems using FlySpray at:\n"
@@ -443,102 +443,102 @@ msgid "Please report problems using FlySpray at:\n"
 "or\n\n"
 "Raise an issue in GIT at:\n"
 "https://github.com/seandepagnier/watchdog_pi/issues\n"
-msgstr "Αναφέρετε προβλήματα για τη χρήση FlySpray στο: \n"
-"http://willkamp.com/opencpn/flyspray/index.php?project=34&do=index&switch=1\n\n"
-"ή\n\n"
-"στο φόρουμ του OpenCPN: \n"
-"http://www.cruisersforum.com/forums/f134 \n\n"
-"ή\n\n"
-"δηλώστε το στο GIT: \n"
+msgstr "I report ang problema gamit ang FlySpray sa:\n"
+"https://www.opencpn.org/flyspray/index.php?project=34&do=index&switch=1\n\n"
+"or\n\n"
+"at the OpenCPN forum:\n"
+"http://www.cruisersforum.com/forums/f134\n\n"
+"or\n\n"
+"Raise an issue in GIT at:\n"
 "https://github.com/seandepagnier/watchdog_pi/issues\n"
 
 #: src/WatchdogUI.cpp:139
 msgid "&OK"
-msgstr "&Εντάξει"
+msgstr "&OK"
 
 #: src/WatchdogUI.cpp:173
 msgid "General Setup"
-msgstr "Γενικές ρυθμίσεις"
+msgstr "Setup para sa kabuuan"
 
 #: src/WatchdogUI.cpp:180
 msgid "Enable All Alarms"
-msgstr "Ενεργοποίηση όλων των συναγερμών"
+msgstr "I-enable ang mga alarma"
 
 #: src/WatchdogUI.cpp:183
 msgid "Enabled after first time Watchdog Dialog is visible"
-msgstr "Ενεργοί όταν πρωτο-ανοίξει ο διάλογος του Watchdog"
+msgstr "Mai-enable pagkatapos ang unang oras na ang dayalogo ni Watchdog ay makikita"
 
 #: src/WatchdogUI.cpp:186
 msgid "Enabled only if Watchdog Dialog is visible"
-msgstr "Ενεργοί όταν είναι ορατός ο διάλογος του Watchdog"
+msgstr "Mai-enable lamang kung ang dayalogo ni Watchdog ay makikita"
 
 #: src/WatchdogUI.cpp:189
 msgid "Disable All Alarms"
-msgstr "Απενεργοποίηση όλων των συναγερμών"
+msgstr "I-disable ang lahat ng alarma"
 
 #: src/WatchdogUI.cpp:206
 msgid "Alarms"
-msgstr "Συναγερμοί"
+msgstr "Mga Alarma"
 
 #: src/WatchdogUI.cpp:220
 msgid "New"
-msgstr "Νέο"
+msgstr "Bago"
 
 #: src/WatchdogUI.cpp:223
 msgid "Edit"
-msgstr "Επεξεργασία"
+msgstr "I-edit"
 
 #: src/WatchdogUI.cpp:226
 msgid "Delete"
-msgstr "Διαγραφή"
+msgstr "Tanggalin"
 
 #: src/WatchdogUI.cpp:229
 msgid "Delete All"
-msgstr "Διαγραφή όλων"
+msgstr "Tanggalin ang Lahat"
 
 #: src/WatchdogUI.cpp:253
 msgid "About Author"
-msgstr "Σχετικά με το συγγραφέα"
+msgstr "Tungkol sa May-akda"
 
 #: src/WatchdogUI.cpp:356
 msgid "Alarm Action"
-msgstr "Δράσεις του συναγερμού"
+msgstr "Aksyon ng Alarma"
 
 #: src/WatchdogUI.cpp:367
 msgid "Select a file"
-msgstr "Επιλέξτε αρχείο"
+msgstr "Pumili ng File"
 
 #: src/WatchdogUI.cpp:384
 msgid "Message Box"
-msgstr "Πλαίσιο μηνύματος"
+msgstr "Kahon para sa mensahe"
 
 #: src/WatchdogUI.cpp:390
 msgid "Repeat Alarm after seconds"
-msgstr "Επανάληψη συναγερμού μετά από : (sec)"
+msgstr "Ulitin ang alarma matapos ang ilang segundo"
 
 #: src/WatchdogUI.cpp:396
 msgid "Automatically Reset"
-msgstr "Αυτόματη επαναφορά"
+msgstr "Awtomatikong I-reset"
 
 #: src/WatchdogUI.cpp:399
 msgid "Graphics Enabled"
-msgstr "Ενεργά γραφικά"
+msgstr "Paganahin ang graphics"
 
 #: src/WatchdogUI.cpp:417
 msgid "Information"
-msgstr "Πληροφορίες"
+msgstr "Impormasyon"
 
 #: src/WatchdogUI.cpp:464
 msgid "GPS course crosses land in <"
-msgstr "Η πορεία συναντά ξηρά σε <"
+msgstr "Ang daraanan ng GPS ay nasa lupa <"
 
 #: src/WatchdogUI.cpp:470 src/WatchdogUI.cpp:539
 msgid "minutes"
-msgstr "λεπτά"
+msgstr "mga minuto"
 
 #: src/WatchdogUI.cpp:482 src/WatchdogUI.cpp:551
 msgid "GPS fix is <"
-msgstr "Το στίγμα είναι <"
+msgstr "Naayos na ang GPS <"
 
 #: src/WatchdogUI.cpp:485 src/WatchdogUI.cpp:554
 msgid "3"
@@ -547,82 +547,83 @@ msgstr "3"
 #: src/WatchdogUI.cpp:496
 msgid "nm from coastline\n"
 "(any direction)"
-msgstr "ν.μ. από την ακτή\n"
-"(οποιαδήποτε κατεύθυνση)"
+msgstr "nm mula sa baybayin\n"
+"(sa anumang direksyon)"
 
 #: src/WatchdogUI.cpp:503
 msgid "Graphical overlay for time displays line from boat to location of land crossing"
-msgstr "Εμφανίζεται γραμμή από το πλοίο μέχρι το σημείο προσάραξης"
+msgstr "Graphical Overlay para sa oras ng pagpapakita ng linya mula sa bangka hanggang sa lupa na tatawirin"
 
 #: src/WatchdogUI.cpp:507
 msgid "Landfall detection uses gshhs (global heirarchical high-resolution shoreline data.)\n"
 "Consider installing the highest resolution database for best accuracy."
-msgstr "Για την ανίχνευση της ακτής χρησιμοποιείται GSHHS (δεδομένα ακτών υψηλής ανάλυσης).\n"
-"Για μεγαλύτερη ακρίβεια χρησιμοποιήστε δεδομένα υψηλής ανάλυσης."
+msgstr "Ginagamit ng LandFall ang gshhs (global heirarchical high-resolution shoreline data.)\n"
+"\n"
+"Isaalang-alang ang pag instal ng pinaka mataas na resolusyon para sa pinakamahusay na katumpakan."
 
 #: src/WatchdogUI.cpp:533
 msgid "GPS course crosses boundary in <"
-msgstr "Η πορεία συναντά το όριο σε <"
+msgstr "Ang pagtawid ng GPS sa daraanan patungong hangganan <"
 
 #: src/WatchdogUI.cpp:565
 msgid "nm from boundary\n"
 "(any direction)"
-msgstr "ν. μ. από το όριο\n"
-"(οποιαδήποτε κατεύθυνση)"
+msgstr "nm mula sa hangganan\n"
+"(anumang direksyon)"
 
 #: src/WatchdogUI.cpp:577
 msgid "AIS Guard Zone"
-msgstr "Ζώνη παρακολούθησης AIS"
+msgstr "Bantay sa lugar sa AIS"
 
 #: src/WatchdogUI.cpp:621
 msgid "Get Boundary GUID"
-msgstr "Διάβασε το ID του ορίου"
+msgstr "Kunin ang hangganang GUID"
 
 #: src/WatchdogUI.cpp:632 src/WatchdogUI.cpp:638
 msgid "Any"
-msgstr "Όλα"
+msgstr "Anuman"
 
 #: src/WatchdogUI.cpp:632
 msgid "Exclusion"
-msgstr "Προς αποφυγήν"
+msgstr "Pagbubukod"
 
 #: src/WatchdogUI.cpp:632
 msgid "Inclusion"
-msgstr "Περιορισμός"
+msgstr "Pagsasama"
 
 #: src/WatchdogUI.cpp:632
 msgid "Neither"
-msgstr "Κανένα"
+msgstr "Wala sa anuman"
 
 #: src/WatchdogUI.cpp:634
 msgid "Boundary Type"
-msgstr "Τύπος ορίου"
+msgstr "Uri ng Hangganan"
 
 #: src/WatchdogUI.cpp:638
 msgid "Active"
-msgstr "Ενεργή"
+msgstr "Aktibo"
 
 #: src/WatchdogUI.cpp:638
 msgid "Inactive"
-msgstr "Ανενεργή"
+msgstr "Hindi aktibo"
 
 #: src/WatchdogUI.cpp:640
 msgid "Boundary State"
-msgstr "Κατάσταση ορίου"
+msgstr "Lugar ng Hangganan"
 
 #: src/WatchdogUI.cpp:653
 msgid "Check Frequency  (Secs)\n"
 "(Note: not Guard Zone)"
-msgstr "Συχνότητα ελέγχου (sec)\n"
-"(Όχι για ζώνη παρακολούθησης)"
+msgstr "Suriin ang dalas (Secs)\n"
+"(Paalala: wala sa lugar ng babantayan)"
 
 #: src/WatchdogUI.cpp:663
 msgid "Graphical overlay for GPS fix displays line from boat to location of the point in the found boundary"
-msgstr "Παρουσιάζει μια γραμμή από το πλοίο μέχρι το όριο της περιοχής"
+msgstr "Graphical overlay para sa GPS upang maayos ang pagpapakita ng linya mula sa bangka hanggang sa kung saan makikita ang hangganan"
 
 #: src/WatchdogUI.cpp:706
 msgid "Require following NMEA sentences:"
-msgstr "Απαιτεί τις ακόλουθες προτάσεις NMEA:"
+msgstr "Nangangailangang sundun ang NMEA na mga pangungusap:"
 
 #: src/WatchdogUI.cpp:710
 msgid "$GPGGA"
@@ -630,83 +631,83 @@ msgstr "$GPGGA"
 
 #: src/WatchdogUI.cpp:726
 msgid "at least every"
-msgstr "τουλάχιστον κάθε"
+msgstr "hindi bababa sa bawat"
 
 #: src/WatchdogUI.cpp:733
 msgid "seconds"
-msgstr "δευτερόλεπτα"
+msgstr "segundos"
 
 #: src/WatchdogUI.cpp:762
 msgid "No User Activity for"
-msgstr "Καμία δραστηριότητα του χρήστη για"
+msgstr "Walang gawain ng gumagamit para sa"
 
 #: src/WatchdogUI.cpp:769
 msgid "minute(s)"
-msgstr "λεπτό(ά)"
+msgstr "minuto(s)"
 
 #: src/WatchdogUI.cpp:798
 msgid "Latitude"
-msgstr "Γεωγρ. πλάτος"
+msgstr "Latitud"
 
 #: src/WatchdogUI.cpp:816
 msgid "Longitude"
-msgstr "Γεωγρ. μήκος"
+msgstr "Longghitud"
 
 #: src/WatchdogUI.cpp:831
 msgid "Sync to Boat"
-msgstr "Τωρινή θέση πλοίου"
+msgstr "I-sync sa bangka"
 
 #: src/WatchdogUI.cpp:834
 msgid "Radius"
-msgstr "Ακτίνα"
+msgstr "Radius"
 
 #: src/WatchdogUI.cpp:848
 msgid "Automatically syncronize to the boat whenever enabled"
-msgstr "Αυτόματος συγχρονισμός με τη θέση του πλοίου"
+msgstr "Awtomatikong pagsyncronize sa bangka tuwing pinagana"
 
 #: src/WatchdogUI.cpp:851
 msgid "Graphical overlay displays bounding anchor area"
-msgstr "Δείχνει έναν κύκλο γύρω από την περιοχή αγκυροβολίας"
+msgstr "Pagdisplay ng Graphical overlay bounding sa anchor area"
 
 #: src/WatchdogUI.cpp:887
 msgid "Port or Starboard"
-msgstr "Αριστερά ή δεξιά"
+msgstr "Port o Starboard"
 
 #: src/WatchdogUI.cpp:896
 msgid "Off Course By >"
-msgstr "Εκτός πορείας κατά >"
+msgstr "Wala sa ruta ni >"
 
 #: src/WatchdogUI.cpp:903
 msgid "Degrees"
-msgstr "Μοίρες"
+msgstr "Mga Digri"
 
 #: src/WatchdogUI.cpp:907
 msgid "With Course Of"
-msgstr "Με πορεία"
+msgstr "Sa ruta ng"
 
 #: src/WatchdogUI.cpp:914
 msgid "Current Course"
-msgstr "Τωρινή πορεία"
+msgstr "Kasalukuyang ruta"
 
 #: src/WatchdogUI.cpp:920
 msgid "Graphical overlay displays lines bounding valid courses"
-msgstr "Δείχνει γραμμές που περιορίζουν τις έγκυρες πορείες"
+msgstr "Pagdisplay ng linya ng Graphical overlay sa hangganan kung saan balido ang ruta"
 
 #: src/WatchdogUI.cpp:943
 msgid "Speed Alarm"
-msgstr "Συναγερμός ταχύτητας"
+msgstr "Bilis ng alarma"
 
 #: src/WatchdogUI.cpp:954
 msgid "Under Speed"
-msgstr "Χαμηλή ταχύτητα"
+msgstr "Hindi masyadong mabilis"
 
 #: src/WatchdogUI.cpp:954
 msgid "Over Speed"
-msgstr "Υψηλή ταχύτητα"
+msgstr "Sobra sa bilis"
 
 #: src/WatchdogUI.cpp:963
 msgid "Speed over ground"
-msgstr "Tαχύτητα GPS"
+msgstr "Bilis sa ibabaw ng lupa"
 
 #: src/WatchdogUI.cpp:967
 msgid "1"
@@ -714,17 +715,17 @@ msgstr "1"
 
 #: src/WatchdogUI.cpp:978
 msgid "knots"
-msgstr "κόμβοι"
+msgstr "knots"
 
 #: src/WatchdogUI.cpp:991
 msgid "Seconds to Average\n"
 "SOG over"
-msgstr "Δευτερόλεπτα μέχρι το μέσο\n"
-"SOG πάνω από"
+msgstr "Segundos na average\n"
+"SOG sa"
 
 #: src/WatchdogUI.cpp:1001
 msgid "Graphical overlay displays circle with radius of this speed"
-msgstr "Δείχνει έναν κύκλο με ακτίνα ίση με αυτή την ταχύτητα"
+msgstr "Graphical overlay na nagpapakita ng bilog na may radius ng nasabing bilis"
 
 #: src/WatchdogUI.h:68
 msgid "WatchDog"
@@ -732,27 +733,27 @@ msgstr "WatchDog"
 
 #: src/WatchdogUI.h:103
 msgid "About Watchdog Properties"
-msgstr "Σχετικά με τις ιδιότητες του Watchdog"
+msgstr "Tungkol sa katangian ng WatchDog"
 
 #: src/WatchdogUI.h:142
 msgid "Watchdog Configuration"
-msgstr "Ρύθμιση παραμέτρων του WatchDog"
+msgstr "Configurasyon ng Watchdog"
 
 #: src/WatchdogUI.h:166
 msgid "New Alarm"
-msgstr "Νέος Συναγερμός"
+msgstr "Bagong alarma"
 
 #: src/WatchdogUI.h:202
 msgid "Edit Alarm"
-msgstr "Επεξεργασία συναγερμού"
+msgstr "I-edit ang alarma"
 
 #: src/watchdog_pi.cpp:237
 msgid "Watchdog PlugIn for OpenCPN"
-msgstr "Πρόσθετο Watchdog για το OpenCPN"
+msgstr "Watchdog plugin para sa OpenCPN"
 
 #: src/watchdog_pi.cpp:242
 msgid "Watchdog PlugIn for OpenCPN\n"
 "Alarm user of changing conditions."
-msgstr "Πρόσθετο Watchdog για το OpenCPN\n"
-"Συναγερμός για μεταβλητές συνθήκες."
+msgstr "Watchdog plugin para sa OpenCPN\n"
+"I-alarma ang gumagamit sa mga kondisyon sa pagbabago."
 

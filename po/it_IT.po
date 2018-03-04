@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: opencpn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-02-07 06:39+1100\n"
-"PO-Revision-Date: 2017-12-08 15:24-0500\n"
+"PO-Revision-Date: 2018-03-03 08:24-0500\n"
 "Last-Translator: nohal <pavel@kalian.cz>\n"
 "Language-Team: Italian\n"
 "Language: it_IT\n"
@@ -119,7 +119,7 @@ msgstr ""
 
 #: src/Alarm.cpp:922
 msgid " minutes"
-msgstr ""
+msgstr " minuti"
 
 #: src/Alarm.cpp:927 src/Alarm.cpp:960
 msgid " - inside any boundary"
@@ -295,7 +295,7 @@ msgstr ""
 
 #: src/Alarm.cpp:1914 src/NewAlarmDialog.cpp:40
 msgid "Speed"
-msgstr ""
+msgstr "Velocità"
 
 #: src/Alarm.cpp:1918
 msgid "UnderSpeed"
@@ -319,7 +319,7 @@ msgstr ""
 
 #: src/Alarm.cpp:2102
 msgid "failed to save"
-msgstr ""
+msgstr "impossibile salvare"
 
 #: src/Alarm.cpp:2157 src/WatchdogUI.cpp:364
 msgid "Sound"
@@ -372,12 +372,12 @@ msgstr ""
 #: src/EditAlarmDialog.cpp:206 src/EditAlarmDialog.cpp:232
 #: src/EditAlarmDialog.cpp:285 src/EditAlarmDialog.cpp:310
 msgid "Error!"
-msgstr ""
+msgstr "Errore!"
 
 #: src/EditAlarmDialog.cpp:207 src/EditAlarmDialog.cpp:233
 #: src/EditAlarmDialog.cpp:286 src/EditAlarmDialog.cpp:311
 msgid " does not exist"
-msgstr ""
+msgstr " non esiste"
 
 #: src/NewAlarmDialog.cpp:34
 msgid "Landfall"
@@ -405,11 +405,11 @@ msgstr "Chiudi"
 
 #: src/WatchdogUI.cpp:76
 msgid "Name:"
-msgstr ""
+msgstr "Nome:"
 
 #: src/WatchdogUI.cpp:84
 msgid "Version:"
-msgstr ""
+msgstr "Versione:"
 
 #: src/WatchdogUI.cpp:93
 msgid "Major:"
@@ -448,7 +448,7 @@ msgstr ""
 
 #: src/WatchdogUI.cpp:173
 msgid "General Setup"
-msgstr ""
+msgstr "Impostazioni Generali"
 
 #: src/WatchdogUI.cpp:180
 msgid "Enable All Alarms"
@@ -472,11 +472,11 @@ msgstr ""
 
 #: src/WatchdogUI.cpp:220
 msgid "New"
-msgstr ""
+msgstr "Nuovo"
 
 #: src/WatchdogUI.cpp:223
 msgid "Edit"
-msgstr ""
+msgstr "Modifica"
 
 #: src/WatchdogUI.cpp:226
 msgid "Delete"
