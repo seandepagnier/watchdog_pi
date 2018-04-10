@@ -315,6 +315,7 @@ public:
                       m_BoundaryState(ID_BOUNDARY_STATE_ACTIVE),
                       m_bAnchorOutside(false),
                       m_bGuardZoneFired(false),
+                      m_bCurrentBoatPos(false),
                       m_bGZFound(false)
         {
             g_GuardZoneName = wxEmptyString;
