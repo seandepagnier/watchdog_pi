@@ -7,7 +7,6 @@ Compiling
 
 * git clone git://github.com/seandepagnier/watchdog_pi.git
 
-Do NOT attempt to build this plugin from within the OpenCPN source tree.
 
 Under windows, you must find the file "opencpn.lib" (Visual Studio) or "libopencpn.dll.a" (mingw) which is built in the build directory after compiling opencpn.  This file must be copied to the plugin directory.
 
