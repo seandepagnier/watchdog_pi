@@ -70,11 +70,11 @@ wxString    g_GuardZoneGUID;
 AIS_Target_Info g_AISTarget;
 
 
-double heading_resolve(double degrees)
+double heading_resolve(double degrees, double offset)
 {
-    while(degrees < -180)
+    while(degrees < offset-180)
         degrees += 360;
-    while(degrees >= 180)
+    while(degrees >= offset+180)
         degrees -= 360;
     return degrees;
 }
@@ -145,8 +145,8 @@ int watchdog_pi::Init(void)
     Alarm::LoadConfigAll();
 
 #ifdef WATCHDOG_USE_SVG
-    m_leftclick_tool_id = InsertPlugInToolSVG( _T( "Watchdog" ), _svg_watchdog, _svg_watchdog_rollover,
-        _svg_watchdog_toggled, wxITEM_CHECK, _( "Watchdog" ), _T( "" ), NULL, WATCHDOG_TOOL_POSITION, 0, this);
+    m_leftclick_tool_id = InsertPlugInToolSVG( _T( "Watchdog" ), _svg_watchdog, _svg_watchdog,
+        _svg_watchdog, wxITEM_CHECK, _( "Watchdog" ), _T( "" ), NULL, WATCHDOG_TOOL_POSITION, 0, this);
 #else
     m_leftclick_tool_id  = InsertPlugInTool
         (_T(""), _img_watchdog, _img_watchdog, wxITEM_NORMAL,

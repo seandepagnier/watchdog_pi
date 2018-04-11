@@ -37,6 +37,7 @@
 
 #include "watchdog_pi.h"
 #include "WatchdogDialog.h"
+#include "WindPanel.h"
 #include "WeatherPanel.h"
 
 #include "AIS_Target_Info.h"
@@ -54,6 +55,950 @@ static double rad2deg(double rad)
 }
 
 ///////// The Alarm classes /////////
+class AnchorAlarm : public Alarm
+{
+public:
+    AnchorAlarm() : Alarm(true),
+                    m_Radius(50)
+        {
+            minoldfix.FixTime = 0;
+            m_Latitude = g_watchdog_pi->LastFix().Lat;
+            m_Longitude = g_watchdog_pi->LastFix().Lon;
+            m_bWasEnabled = false;
+        }
+
+    wxString Type() { return _("Anchor"); }
+    wxString Options() {
+        return _("radius") + wxString::Format(_T(" %f "), m_Radius) + _("meters")
+            + (m_bAutoSync ? _T(" ") + wxString(_("bAutoSync")) : _T(""));
+    }
+
+    bool Test() {
+        if(isnan(g_watchdog_pi->m_sog))
+            return m_bNoData;
+        return Distance() > m_Radius;
+    }
+
+    wxString GetStatus() {
+        if(!m_bWasEnabled && m_bEnabled && m_bAutoSync) {
+            PlugIn_Position_Fix_Ex lastfix = g_watchdog_pi->LastFix();
+            m_Latitude = lastfix.Lat;
+            m_Longitude = lastfix.Lon;
+            RequestRefresh(GetOCPNCanvasWindow());
+        }
+
+        m_bWasEnabled = m_bEnabled;
+
+        double anchordist = Distance();
+        wxString s;
+        if(isnan(anchordist))
+            s = _T("N/A");
+        else {
+            wxString fmt(_T("%.0f "));
+            s = wxString::Format(fmt + _("meter(s)"), anchordist);
+        }
+
+        return s;
+    }
+
+    void Render(wdDC &dc, PlugIn_ViewPort &vp) {
+        wxPoint r1, r2;
+        
+        GetCanvasPixLL(&vp, &r1, m_Latitude, m_Longitude);
+        GetCanvasPixLL(&vp, &r2, m_Latitude +
+                       m_Radius/1853.0/60.0,
+                       m_Longitude);
+        
+        if(m_bEnabled) {
+            if(m_bFired)
+                dc.SetPen(wxPen(*wxRED, 2));
+            else
+                dc.SetPen(wxPen(*wxGREEN, 2));
+        } else
+            dc.SetPen(wxPen(wxColour(128, 192, 0, 128), 2, wxPENSTYLE_LONG_DASH));
+         
+        dc.DrawCircle( r1.x, r1.y, hypot(r1.x-r2.x, r1.y-r2.y) );
+    }
+
+    wxWindow *OpenPanel(wxWindow *parent) {
+        AnchorPanel *panel = new AnchorPanel(parent);
+        panel->m_tLatitude->SetValue(wxString::Format(_T("%f"), m_Latitude));
+        panel->m_tLongitude->SetValue(wxString::Format(_T("%f"), m_Longitude));
+        panel->m_sRadius->SetValue(m_Radius);
+        panel->m_cbAutoSync->SetValue(m_bAutoSync);
+        return panel;
+    }
+
+    void SavePanel(wxWindow *p) {
+        AnchorPanel *panel = (AnchorPanel*)p;
+        panel->m_tLatitude->GetValue().ToDouble(&m_Latitude);
+        panel->m_tLongitude->GetValue().ToDouble(&m_Longitude);
+        m_Radius = panel->m_sRadius->GetValue();
+        m_bAutoSync = panel->m_cbAutoSync->GetValue();
+    }
+
+    void LoadConfig(TiXmlElement *e) {
+        e->Attribute("Latitude", &m_Latitude);
+        e->Attribute("Longitude", &m_Longitude);
+        e->Attribute("Radius", &m_Radius);
+        if(e->QueryBoolAttribute("AutoSync", &m_bAutoSync) != TIXML_SUCCESS)
+            m_bAutoSync = false;
+    }
+
+    void SaveConfig(TiXmlElement *c) {
+        c->SetAttribute("Type", "Anchor");
+        c->SetDoubleAttribute("Latitude", m_Latitude);
+        c->SetDoubleAttribute("Longitude", m_Longitude);
+        c->SetAttribute("Radius", m_Radius);
+        c->SetAttribute("AutoSync", m_bAutoSync);
+    }
+
+private:
+    double Distance() {
+        if(isnan(g_watchdog_pi->m_cog))
+            return NAN;
+        PlugIn_Position_Fix_Ex lastfix = g_watchdog_pi->LastFix();
+
+        double anchordist;
+        DistanceBearingMercator_Plugin(lastfix.Lat, lastfix.Lon,
+                                       m_Latitude, m_Longitude,
+                                       0, &anchordist);
+        anchordist *= 1853.248; /* in meters */
+        return anchordist;
+    }
+
+    PlugIn_Position_Fix_Ex minoldfix;
+
+    double m_Latitude, m_Longitude, m_Radius;
+    bool m_bWasEnabled, m_bAutoSync;
+};
+
+class CourseAlarm : public Alarm
+{
+public:
+    CourseAlarm() : Alarm(true), m_Mode(BOTH), m_Tolerance(20), m_bGPSCourse(true) {
+        m_Course = g_watchdog_pi->m_cog;
+    }
+
+    wxString Type() { return _("Course"); }
+    wxString Options() {
+        wxString s;
+        switch(m_Mode) {
+        case PORT: s += _("Port") + wxString(_T(" ")); break;
+        case STARBOARD: s += _("Starboard") + wxString(_T(" ")); break;
+        default: break;
+        }
+        return s + _("course") + wxString::Format(_T(" %f"), m_Course);
+    }
+
+    bool Test() {
+        double error = CourseError();
+        if(isnan(error))
+            return m_bNoData;
+            
+        return error > m_Tolerance;
+    }
+
+    wxString GetStatus() {
+        double courseerror = CourseError();
+        wxString s;
+        if(isnan(courseerror))
+            s = _T("N/A");
+        else {
+            wxString fmt(_T("%.0f "));
+            s = wxString::Format(fmt + _("degrees(s)"), courseerror);
+        }
+
+        if(m_Mode == STARBOARD)
+            s += wxString(_T(" ")) + _("Starboard");
+        else if(m_Mode == PORT)
+            s += wxString(_T(" ")) + _("Port");
+
+        return s;
+    }
+
+    void Render(wdDC &dc, PlugIn_ViewPort &vp) {
+        PlugIn_Position_Fix_Ex lastfix = g_watchdog_pi->LastFix();
+
+        double lat1 = lastfix.Lat, lon1 = lastfix.Lon, lat2, lon2, lat3, lon3;
+        double dist = lastfix.Sog;
+
+        if(isnan(dist))
+            return;
+
+        PositionBearingDistanceMercator_Plugin(lat1, lon1, m_Course+m_Tolerance,
+                                               dist, &lat2, &lon2);
+        PositionBearingDistanceMercator_Plugin(lat1, lon1, m_Course-m_Tolerance,
+                                               dist, &lat3, &lon3);
+        wxPoint r1, r2, r3;
+        GetCanvasPixLL(&vp, &r1, lat1, lon1);
+        GetCanvasPixLL(&vp, &r2, lat2, lon2);
+        GetCanvasPixLL(&vp, &r3, lat3, lon3);
+
+        if(m_bFired)
+            dc.SetPen(wxPen(*wxRED, 2));
+        else
+            dc.SetPen(wxPen(*wxGREEN, 2));
+
+        dc.DrawLine( r1.x, r1.y, r2.x, r2.y );
+        dc.DrawLine( r1.x, r1.y, r3.x, r3.y );
+    }
+
+    wxWindow *OpenPanel(wxWindow *parent) {
+        CoursePanel *panel = new CoursePanel(parent);
+        panel->m_cMode->SetSelection((int)m_Mode);
+        panel->m_sCourse->SetValue(m_Course);
+        panel->m_sTolerance->SetValue(m_Tolerance);
+        panel->m_rbGPSCourse->SetValue(m_bGPSCourse);
+        panel->m_rbHeading->SetValue(!m_bGPSCourse);
+        return panel;
+    }
+
+    void SavePanel(wxWindow *p) {
+        CoursePanel *panel = (CoursePanel*)p;
+        m_Mode = (Mode)panel->m_cMode->GetSelection();
+        m_Course = panel->m_sCourse->GetValue();
+        m_Tolerance = panel->m_sTolerance->GetValue();
+        m_bGPSCourse = panel->m_rbGPSCourse->GetValue();
+    }
+
+    void LoadConfig(TiXmlElement *e) {
+        const char *mode = e->Attribute("Mode");
+        if(!strcasecmp(mode, "Port")) m_Mode = PORT;
+        else if(!strcasecmp(mode, "Starboard")) m_Mode = STARBOARD;
+        else if(!strcasecmp(mode, "Starboard")) m_Mode = BOTH;
+        else wxLogMessage(_T("Watchdog: ") + wxString(_("invalid Course mode")) + _T(": ")
+                         + wxString::FromUTF8(mode));
+
+        e->Attribute("Tolerance", &m_Tolerance);
+        e->Attribute("Course", &m_Course);
+        e->QueryBoolAttribute("GPSCourse", &m_bGPSCourse);
+    }
+
+    void SaveConfig(TiXmlElement *c) {
+        c->SetAttribute("Type", "Course");
+        switch(m_Mode) {
+        case PORT: c->SetAttribute("Mode", "Port");
+        case STARBOARD: c->SetAttribute("Mode", "Starboard");
+        case BOTH: c->SetAttribute("Mode", "Both");
+        }
+
+        c->SetDoubleAttribute("Tolerance", m_Tolerance);
+        c->SetDoubleAttribute("Course", m_Course);
+        c->SetAttribute("GPSCourse", m_bGPSCourse);
+    }
+
+private:
+    double CourseError() {
+        double error = heading_resolve((m_bGPSCourse ?
+                                        g_watchdog_pi->m_cog :
+                                        g_watchdog_pi->m_hdm) - m_Course);
+        switch(m_Mode) {
+        case PORT:      return -error;
+        case STARBOARD: return  error;
+        default:        return fabs(error);
+        }
+    }
+    
+    enum Mode { PORT, STARBOARD, BOTH } m_Mode;
+    double m_Tolerance, m_Course;
+    bool m_bGPSCourse;
+};
+
+class SpeedAlarm : public Alarm
+{
+public:
+    SpeedAlarm() : Alarm(true), m_Mode(UNDERSPEED), m_dSpeed(1) {}
+
+    wxString Type() { return _("Speed"); }
+    wxString Options() {
+        wxString s;
+        switch(m_Mode) {
+        case UNDERSPEED: s += _("UnderSpeed") + wxString(_T(" ")); break;
+        case OVERSPEED: s += _("OverSpeed") + wxString(_T(" ")); break;
+        }
+        return s + wxString::Format(_T(" %f"), m_dSpeed);
+    }
+
+    wxString GetStatus() {
+        wxString s;
+        if(isnan(g_watchdog_pi->m_sog))
+            s = _T("N/A");
+        else {
+            wxString fmt(_T("%.1f"));
+            s = wxString::Format(fmt + (Knots() < m_dSpeed ?
+                                        _T(" < ") : _T(" > "))
+                                 + fmt, Knots(), m_dSpeed);
+        }
+
+        return s;
+    }
+
+    void Render(wdDC &dc, PlugIn_ViewPort &vp) {
+        PlugIn_Position_Fix_Ex lastfix = g_watchdog_pi->LastFix();
+
+        double knots = Knots();
+
+        double lat1 = lastfix.Lat, lon1 = lastfix.Lon, lat2, lon2;
+        PositionBearingDistanceMercator_Plugin(lat1, lon1, 0, knots, &lat2, &lon2);
+
+        wxPoint r1, r2;
+        GetCanvasPixLL(&vp, &r1, lat1, lon1);
+        GetCanvasPixLL(&vp, &r2, lat2, lon2);
+
+        if(m_bFired)
+            dc.SetPen(wxPen(*wxRED, 2));
+        else
+            dc.SetPen(wxPen(*wxBLUE, 2));
+        dc.SetBrush(*wxTRANSPARENT_BRUSH);
+        dc.DrawCircle( r1.x, r1.y, hypot(r1.x-r2.x, r1.y-r2.y) );
+    }
+
+    bool Test() {
+        double knots = Knots();
+        if(isnan(knots))
+            return m_bNoData;
+
+        if(m_Mode == UNDERSPEED)
+            return m_dSpeed > knots;
+
+        return m_dSpeed < knots;
+    }
+
+    wxWindow *OpenPanel(wxWindow *parent) {
+        SpeedPanel *panel = new SpeedPanel(parent);
+        panel->m_cMode->SetSelection((int)m_Mode);
+        panel->m_tSpeed->SetValue(wxString::Format(_T("%f"), m_dSpeed));
+        panel->m_sliderSOGAverageNumber->SetValue(m_iAverageTime);
+        return panel;
+    }
+
+    void SavePanel(wxWindow *p) {
+        SpeedPanel *panel = (SpeedPanel*)p;
+        m_Mode = (Mode)panel->m_cMode->GetSelection();
+        panel->m_tSpeed->GetValue().ToDouble(&m_dSpeed);
+        m_iAverageTime = panel->m_sliderSOGAverageNumber->GetValue();
+    }
+
+    void LoadConfig(TiXmlElement *e) {
+        const char *mode = e->Attribute("Mode");
+        if(!strcasecmp(mode, "Underspeed")) m_Mode = UNDERSPEED;
+        else if(!strcasecmp(mode, "Overspeed")) m_Mode = OVERSPEED;
+        else wxLogMessage(_T("Watchdog: ") + wxString(_("invalid Speed mode")) + _T(": ")
+                         + wxString::FromUTF8(mode));
+
+        e->Attribute("Speed", &m_dSpeed);
+        m_iAverageTime = 10;
+        e->Attribute("AverageTime", &m_iAverageTime);
+    }
+
+    void SaveConfig(TiXmlElement *c) {
+        c->SetAttribute("Type", "Speed");
+        switch(m_Mode) {
+        case UNDERSPEED: 
+            c->SetAttribute("Mode", "Underspeed");
+            break;
+        case OVERSPEED: 
+            c->SetAttribute("Mode", "Overspeed");
+            break;
+        }
+
+        c->SetDoubleAttribute("Speed", m_dSpeed);
+        c->SetAttribute("AverageTime", m_iAverageTime);
+    }
+
+    void OnTimer( wxTimerEvent &tEvent )
+    {
+        Alarm::OnTimer( tEvent );
+        double sog = g_watchdog_pi->LastFix().Sog;
+        if(!isnan(sog))
+            m_SOGqueue.push_front(sog) ;
+        return;
+    }
+    
+private:
+    double Knots() {
+        if(m_SOGqueue.size() == 0)
+            return g_watchdog_pi->LastFix().Sog;
+        // average speed in list
+        double l_avSpeed = 0.0;
+        for(std::list<double>::iterator it = m_SOGqueue.begin(); it != m_SOGqueue.end(); it++)
+            l_avSpeed += *it;
+
+        l_avSpeed /= m_SOGqueue.size();
+        return l_avSpeed;
+    }
+
+    enum Mode { UNDERSPEED, OVERSPEED } m_Mode;
+    double  m_dSpeed;
+    int     m_iAverageTime;
+    std::list<double> m_SOGqueue;
+};
+
+void TrueWind(double VA, double A, double VB, double &VW, double &W)
+{
+/* law of cosine:
+           ________________________
+          /  2    2
+   VW =  / VA + VB - 2 VA VB cos(A)
+       \/
+
+    2    2    2
+  VA = VW + VB + 2 VW VB cos(W)
+                
+    2    2    2
+  VW + VB - VA  = 2 VW VB cos(W)
+
+          /   2    2    2\
+W = acos |  VW + VB - VA  |
+         |  ------------  |
+          \   2 VW VB    /
+*/
+    A = deg2rad(A);
+    VW = sqrt(VA*VA + VB*VB - 2*VA*VB*cos(A));
+    W = rad2deg(acos((VW*VW + VB*VB - VA*VA) / (2*VW*VB)));
+}    
+
+class WindAlarm : public Alarm
+{
+public:
+    WindAlarm() : Alarm(true), m_Mode(UNDERSPEED), m_Type(APPARENT), m_dVal(5), m_dRange(15), m_speed(NAN), m_direction(NAN), m_gps_speed(0), m_bearing(NAN), m_WindDataTime(wxDateTime::Now()) {}
+
+    wxString Type() { return _("Wind"); }
+    wxString Options() {
+        wxString s;
+        switch(m_Mode) {
+        case UNDERSPEED: s += _("Under Speed"); break;
+        case OVERSPEED:  s += _("Over Speed"); break;
+        case DIRECTION: s += _("Direction"); break;
+        }
+        s += wxString(_T(" "));
+        switch(m_Type) {
+        case APPARENT: s += _("Apparent"); break;
+        case TRUE_RELATIVE: s += _("True Relative"); break;
+        case TRUE_ABSOLUTE: s += _("True Absolute"); break;
+        }            
+        s += wxString::Format(" %.2f", m_dVal);
+        if(m_Mode == DIRECTION)
+            s += wxString::Format(" +-%.2f", m_dRange);
+        return s;
+    }
+
+    wxString GetStatus() {
+        wxString s;
+        wxString fmt("%.1f");
+        switch(m_Mode) {
+        case UNDERSPEED:
+        case OVERSPEED:
+            if(isnan(m_speed))
+                return "N/A";
+            else
+                return wxString::Format(fmt + (m_Mode == UNDERSPEED ? " < " : " > ") + fmt, m_speed, m_dVal);
+        case DIRECTION:
+            if(isnan(m_direction))
+                return "N/A";
+            else
+                return wxString::Format(fmt + _T(" < ") + fmt + _T(" < ") + fmt,
+                                        heading_resolve(m_dVal - m_dRange), m_direction,
+                                        heading_resolve(m_dVal + m_dRange));
+        }
+        return "";
+    }
+
+    void Render(wdDC &dc, PlugIn_ViewPort &vp) {
+        if(m_Mode != DIRECTION)
+            return;
+        if(isnan(m_direction))
+            return;
+        PlugIn_Position_Fix_Ex lastfix = g_watchdog_pi->LastFix();
+
+        double lat[4] = {lastfix.Lat}, lon[4] = {lastfix.Lon};
+        double dist = lastfix.Sog;
+        double bearing = m_bearing, direction = m_direction, speed;
+        switch(m_Type) {
+        case TRUE_ABSOLUTE:
+            bearing = 0;
+        case TRUE_RELATIVE:
+            TrueWind(m_speed, m_direction, m_gps_speed, speed, direction);
+        }
+        PositionBearingDistanceMercator_Plugin(lat[0], lon[0], bearing + direction,
+                                               dist, &lat[1], &lon[1]);
+        PositionBearingDistanceMercator_Plugin(lat[0], lon[0], bearing + m_dVal - m_dRange,
+                                               dist, &lat[2], &lon[2]);
+        PositionBearingDistanceMercator_Plugin(lat[0], lon[0], bearing + m_dVal + m_dRange,
+                                               dist, &lat[2], &lon[2]);
+
+        wxPoint r[4];
+        for(int i=0; i<4; i++)
+            GetCanvasPixLL(&vp, &r[i], lat[i], lon[i]);
+
+        if(m_bFired)
+            dc.SetPen(wxPen(*wxRED, 2));
+        else
+            dc.SetPen(wxPen(*wxGREEN, 2));
+
+        for(int i=1; i<4; i++) {
+            dc.DrawLine( r[0].x, r[0].y, r[i].x, r[i].y );
+            dc.SetPen(wxPen(*wxBLUE, 2));
+        }
+    }
+
+    bool Test() {
+        // no data for 3 seconds..  Is this correct?
+        if((wxDateTime::Now() - m_WindDataTime).GetSeconds() > 3)
+            return m_bNoData;
+        
+        switch(m_Mode) {
+        case UNDERSPEED: return m_dVal > m_speed;
+        case OVERSPEED:  return m_dVal < m_speed;
+        default: break;
+        }
+
+        double dir = heading_resolve(m_direction, m_dVal);
+        switch(m_Mode) {
+        case DIRECTION: return  dir < m_dVal - m_dRange || dir > m_dVal + m_dRange;
+        default: break;
+        }
+
+        m_gps_speed = g_watchdog_pi->LastFix().Sog * .1 + m_gps_speed * .9;
+        return 0;
+    }
+
+    wxWindow *OpenPanel(wxWindow *parent) {
+        WindPanel *panel = new WindPanel(parent, m_direction);
+        panel->m_cMode->SetSelection((int)m_Mode);
+        panel->m_cType->SetSelection((int)m_Type);
+        panel->m_sRange->Enable(m_Mode == DIRECTION);
+        panel->m_sValue->SetValue(m_dVal);
+        panel->m_sRange->SetValue(m_dRange);
+        return panel;
+    }
+
+    void SavePanel(wxWindow *p) {
+        WindPanel *panel = (WindPanel*)p;
+        m_Mode = (Mode)panel->m_cMode->GetSelection();
+        m_Type = (WindType)panel->m_cType->GetSelection();
+        m_dVal = panel->m_sValue->GetValue();
+        m_dRange = panel->m_sRange->GetValue();
+    }
+
+    void LoadConfig(TiXmlElement *e) {
+        const char *mode = e->Attribute("Mode");
+        if(!strcasecmp(mode, "Underspeed")) m_Mode = UNDERSPEED;
+        else if(!strcasecmp(mode, "Overspeed")) m_Mode = OVERSPEED;
+        else if(!strcasecmp(mode, "Direction")) {
+            m_Mode = DIRECTION;
+            e->Attribute("Range", &m_dRange);
+        } else wxLogMessage(_T("Watchdog: ") + wxString(_("invalid Wind mode")) + _T(": ")
+                         + wxString::FromUTF8(mode));
+
+        const char *type = e->Attribute("Type");
+        if(!strcasecmp(mode, "Apparent")) m_Type = APPARENT;
+        else if(!strcasecmp(mode, "True Relative")) m_Type = TRUE_RELATIVE;
+        else if(!strcasecmp(mode, "True Absolute")) m_Type = TRUE_ABSOLUTE;
+        else wxLogMessage(_T("Watchdog: ") + wxString(_("invalid Wind type")) + _T(": ")
+                         + wxString::FromUTF8(type));
+
+        e->Attribute("Value", &m_dVal);
+    }
+
+    void SaveConfig(TiXmlElement *c) {
+        c->SetAttribute("Type", "Wind");
+        switch(m_Mode) {
+        case UNDERSPEED: c->SetAttribute("Mode", "Underspeed"); break;
+        case OVERSPEED:  c->SetAttribute("Mode", "Overspeed");  break;
+        case DIRECTION:
+            c->SetAttribute("Mode", "Direction");
+            c->SetDoubleAttribute("Range", m_dRange);
+            break;
+        }
+
+        c->SetDoubleAttribute("Value", m_dVal);
+    }
+    
+private:
+    void NMEAString(const wxString &string) {
+        wxString str = string;
+        NMEA0183 nmea;
+        wxString LastSentenceIDReceived;
+        nmea << str;
+        if(!nmea.PreParse())
+            return;
+        if(nmea.LastSentenceIDReceived == _T("HDM") && nmea.Parse()) {
+            m_bearing = nmea.Hdm.DegreesMagnetic + g_watchdog_pi->Declination();
+        } else
+        if(nmea.LastSentenceIDReceived == _T("MWV") &&
+           nmea.Parse() && nmea.Mwv.IsDataValid == NTrue ) {
+            double m_wSpeedFactor = 1.0; //knots ("N")
+            if (nmea.Mwv.WindSpeedUnits == _T("K") ) m_wSpeedFactor = 0.53995 ; //km/h > knots
+            if (nmea.Mwv.WindSpeedUnits == _T("M") ) m_wSpeedFactor = 1.94384;
+            if(nmea.Mwv.Reference == _T("R") && m_Type == APPARENT) {
+                ProcessWind(nmea.Mwv.WindSpeed * m_wSpeedFactor, nmea.Mwv.WindAngle);
+            } else if(nmea.Mwv.Reference == _T("T") && m_Type == TRUE_RELATIVE) {
+                // should we accept true wind nmea sentences rather than calculate ourself??
+            }
+        }
+    }
+
+    void ProcessWind(double apparent_speed, double apparent_direction)
+    {
+        m_WindDataTime = wxDateTime::Now();
+        if(m_Type == APPARENT) {
+            m_speed = apparent_speed;
+            m_direction = apparent_direction;
+        } else {
+            TrueWind(m_speed, m_direction, m_gps_speed, m_speed, m_direction);
+            if(m_Type == TRUE_ABSOLUTE) {
+                m_direction += m_bearing;
+                if(m_direction > 360)
+                    m_direction -= 360;
+            }
+        }
+        
+    }
+
+    enum Mode { UNDERSPEED, OVERSPEED, DIRECTION } m_Mode;
+    enum WindType { APPARENT, TRUE_RELATIVE, TRUE_ABSOLUTE } m_Type;
+    double  m_dVal, m_dRange;
+
+    double m_speed, m_direction;
+    double m_gps_speed, m_bearing;
+
+    wxDateTime m_WindDataTime;
+};
+
+class WeatherAlarm : public Alarm
+{
+public:
+    WeatherAlarm() : Alarm(false), m_Variable(BAROMETER), m_Mode(BELOW), m_dVal(1004),
+                     m_curvalue(NAN), m_currate(NAN), m_WeatherDataTime(wxDateTime::Now()) {}
+
+    wxString Type() { return _("Weather"); }
+    wxString Options() {
+        wxString s = StrVariable();
+        s += _T(" ");
+        switch(m_Mode) {
+        case BELOW: s += _("Below"); break;
+        case ABOVE:  s += _("Above"); break;
+        case INCREASING: s += _("Increasing"); break;
+        case DECREASING:  s += _("Decreasing"); break;
+        }
+        s += _T(" ");
+        return s + wxString::Format(_T(" %.2f"), m_dVal);
+    }
+
+    wxString GetStatus() {
+        wxString s = StrVariable();
+        s += _T(" ");
+        
+        double val = Value();
+        if(isnan(val))
+            s += _T("N/A");
+        else {
+            wxString fmt(_T("%.2f"));
+            double aval = m_Mode == DECREASING ? -val : val;
+            s += wxString::Format(fmt + (aval < m_dVal ?
+                                        _T(" < ") : _T(" > "))
+                                 + fmt, aval, m_dVal);
+            if(m_Mode == INCREASING || m_Mode == DECREASING)
+                s += _T(" ") + _("In") + wxString::Format(_T(" %d "), m_iRatePeriod) + _("Seconds");
+        }
+
+        return s;
+    }
+
+    bool Test() {
+        // no data for 10 seconds..  Is this correct?
+        if((wxDateTime::Now() - m_WeatherDataTime).GetSeconds() > 3)
+            return m_bNoData;
+
+        switch(m_Mode) {
+        case ABOVE: case INCREASING: return m_dVal < Value();
+        case BELOW: return m_dVal > Value();
+        case DECREASING: return m_dVal < -Value();
+        }
+        return 0;
+    }
+
+    wxWindow *OpenPanel(wxWindow *parent) {
+        WeatherPanel *panel = new WeatherPanel(parent);
+        panel->m_cVariable->SetSelection((int)m_Variable);
+        panel->m_rbRate->SetValue((int)m_Mode / 2);
+        panel->m_cType->SetSelection((int)m_Mode % 2);
+        panel->m_tValue->SetValue(wxString::Format(_T("%f"), m_dVal));
+        panel->m_sRatePeriod->SetValue(m_iRatePeriod);
+        panel->SetupControls();
+        return panel;
+    }
+
+    void SavePanel(wxWindow *p) {
+        WeatherPanel *panel = (WeatherPanel*)p;
+        m_Variable = (WeatherAlarmVariable)panel->m_cVariable->GetSelection();
+        m_Mode = (Mode)(panel->m_cType->GetSelection() + 2*panel->m_rbRate->GetValue());
+        panel->m_tValue->GetValue().ToDouble(&m_dVal);
+        m_iRatePeriod = panel->m_sRatePeriod->GetValue();
+    }
+
+    void LoadConfig(TiXmlElement *e) {
+        const char *variable = e->Attribute("Variable");
+        if(!strcasecmp(variable, "Barometer")) m_Variable = BAROMETER;
+        else if(!strcasecmp(variable, "AirTemperature")) m_Variable = AIR_TEMPERATURE;
+        else if(!strcasecmp(variable, "SeaTemperature")) m_Variable = SEA_TEMPERATURE;
+        else if(!strcasecmp(variable, "RelativeHumidity")) m_Variable = RELATIVE_HUMIDITY;
+        else {
+            wxLogMessage(_T("Watchdog: ") + wxString(_("invalid Weather variable")) +
+                         _T(": ") + wxString::FromUTF8(variable));
+            m_Variable = BAROMETER;
+        }
+
+        const char *mode = e->Attribute("Mode");
+        if(!strcasecmp(mode, "Above")) m_Mode = ABOVE;
+        else if(!strcasecmp(mode, "Below")) m_Mode = BELOW;
+        else if(!strcasecmp(mode, "Increasing")) m_Mode = INCREASING;
+        else if(!strcasecmp(mode, "Decreasing")) m_Mode = DECREASING;
+        else {
+            wxLogMessage(_T("Watchdog: ") + wxString(_("invalid Weather mode")) +
+                         _T(": ") + wxString::FromUTF8(mode));
+            m_Mode = ABOVE;
+        }
+
+        e->Attribute("Value", &m_dVal);
+        e->Attribute("RatePeriod", &m_iRatePeriod);
+    }
+
+    void SaveConfig(TiXmlElement *c) {
+        c->SetAttribute("Type", "Weather");
+        switch(m_Mode) {
+            case ABOVE: c->SetAttribute("Mode", "Above"); break;
+            case BELOW: c->SetAttribute("Mode", "Below"); break;
+            case INCREASING: c->SetAttribute("Mode", "Increasing"); break;
+            case DECREASING: c->SetAttribute("Mode", "Decreasing"); break;
+        }
+
+        const char *variable = "";
+        switch(m_Variable) {
+        case BAROMETER: variable = "Barometer"; break;
+        case AIR_TEMPERATURE: variable = "AirTemperature"; break;
+        case SEA_TEMPERATURE: variable = "SeaTemperature"; break;
+        case RELATIVE_HUMIDITY: variable = "RelativeHumidity"; break;
+        }
+        c->SetAttribute("Variable", variable);
+
+        c->SetDoubleAttribute("Value", m_dVal);
+        c->SetAttribute("RatePeriod", m_iRatePeriod);
+    }
+    
+private:
+    double Value() {
+        if(m_Mode == INCREASING || m_Mode == DECREASING)
+            return m_currate;
+        return m_curvalue;
+    }
+
+    wxString StrVariable() {
+        switch(m_Variable) {
+        case BAROMETER: return _("Barometer"); break;
+        case AIR_TEMPERATURE: return _("Air Temperature"); break;
+        case SEA_TEMPERATURE: return _("Sea Temperature"); break;
+        case RELATIVE_HUMIDITY: return _("Humidity"); break;
+        }
+        return _T("");
+    }
+
+    void NMEAString(const wxString &string) {
+        wxString str = string;
+        NMEA0183 nmea;
+        nmea << str;
+        if(!nmea.PreParse())
+            return;
+
+        double value = NAN;
+        switch(m_Variable) {
+        case BAROMETER:
+            if(nmea.LastSentenceIDReceived == _T("MDA") && nmea.Parse())
+                value = nmea.Mda.Pressure * 1000;
+            break;
+        case RELATIVE_HUMIDITY:
+            if(nmea.LastSentenceIDReceived == _T("MDA") && nmea.Parse())
+                value = nmea.Mda.RelativeHumidity;
+            break;
+        case AIR_TEMPERATURE:
+            if(nmea.LastSentenceIDReceived == _T("MTA") && nmea.Parse())
+                value = nmea.Mta.Temperature;
+            break;
+        case SEA_TEMPERATURE:
+            if(nmea.LastSentenceIDReceived == _T("MTW") && nmea.Parse())
+                value = nmea.Mtw.Temperature;
+            break;
+        }
+        if(isnan(value))
+            return;
+
+        m_WeatherDataTime = wxDateTime::Now();
+        if(m_Mode == INCREASING || m_Mode == DECREASING) {
+            wxDateTime now = wxDateTime::Now();
+            if(!valuetime.IsValid()) {
+                m_curvalue = value;
+                valuetime = now;
+            } else
+            if((now - valuetime).GetSeconds() >= m_iRatePeriod) {
+                m_currate = value - m_curvalue;
+                m_curvalue = value;
+                valuetime = now;
+            }
+        } else
+            m_curvalue = value;
+    }
+
+    WeatherAlarmVariable m_Variable;
+    enum Mode { ABOVE, BELOW, INCREASING, DECREASING } m_Mode;
+    double m_dVal;
+    int m_iRatePeriod;
+    double m_curvalue, m_currate;
+    wxDateTime valuetime;
+    wxDateTime m_WeatherDataTime;
+};
+
+class DeadmanAlarm : public Alarm
+{
+public:
+    DeadmanAlarm() : m_Minutes(20) {}
+
+    wxString Type() { return _("Deadman"); }
+    wxString Options() {
+        return wxString::Format(_T("%f minutes"), m_Minutes);
+    }
+
+    bool Test() {
+        wxTimeSpan DeadmanSpan = wxTimeSpan::Minutes(m_Minutes);
+        return wxDateTime::Now() - g_watchdog_pi->m_cursor_time > DeadmanSpan;
+    }
+
+    wxString GetStatus() {
+        wxTimeSpan span = wxDateTime::Now() - g_watchdog_pi->m_cursor_time;
+        int days = span.GetDays();
+        span -= wxTimeSpan::Days(days);
+        int hours = span.GetHours();
+        span -= wxTimeSpan::Hours(hours);
+        int minutes = span.GetMinutes();
+        span -= wxTimeSpan::Minutes(minutes);
+        int seconds = span.GetSeconds().ToLong();
+        wxString d, fmt(_T("%d "));
+        if(days)
+            d = wxString::Format(fmt + _T("days "), days);
+        return d + wxString::Format(_T("%02d:%02d:%02d"),
+                                    hours, minutes, seconds);
+    }
+
+    wxWindow *OpenPanel(wxWindow *parent) {
+        DeadmanPanel *panel = new DeadmanPanel(parent);
+        panel->m_sMinutes->SetValue(m_Minutes);
+        return panel;
+    }
+
+    void SavePanel(wxWindow *p) {
+        DeadmanPanel *panel = (DeadmanPanel*)p;
+        m_Minutes = panel->m_sMinutes->GetValue();
+    }
+
+    void LoadConfig(TiXmlElement *e) {
+        e->Attribute("Minutes", &m_Minutes);
+    }
+
+    void SaveConfig(TiXmlElement *c) {
+        c->SetAttribute("Type", "Deadman");
+        c->SetAttribute("Minutes", m_Minutes);
+    }
+
+private:
+    double m_Minutes;
+};
+
+class NMEADataAlarm : public Alarm
+{
+public:
+    NMEADataAlarm() :
+        start(wxDateTime::Now()),
+        m_sentences(_T("$GPGGA")),
+        m_seconds(10)
+        {}
+
+    wxString Type() { return _("NMEA Data"); }
+    wxString Options() {
+        return m_sentences;
+    }
+
+    bool Test() {
+        return ElapsedSeconds() > m_seconds;
+    }
+
+    wxString GetStatus() {
+        return wxString::Format(_T("%d ") + _("second(s)"), ElapsedSeconds());
+    }
+
+    wxWindow *OpenPanel(wxWindow *parent) {
+        NMEADataPanel *panel = new NMEADataPanel(parent);
+        panel->m_tSentences->SetValue(m_sentences);
+        panel->m_sSeconds->SetValue(m_seconds);
+        return panel;
+    }
+
+    void SavePanel(wxWindow *p) {
+        NMEADataPanel *panel = (NMEADataPanel*)p;
+        m_sentences = panel->m_tSentences->GetValue();
+        m_seconds = panel->m_sSeconds->GetValue();
+    }
+
+    void LoadConfig(TiXmlElement *e) {
+        m_sentences = wxString::FromUTF8(e->Attribute("Sentences"));
+        e->Attribute("Seconds", &m_seconds);
+    }
+
+    void SaveConfig(TiXmlElement *c) {
+        c->SetAttribute("Type", "NMEAData");
+        c->SetAttribute("Sentences", m_sentences.mb_str());
+        c->SetAttribute("Seconds", m_seconds);
+    }
+
+private:
+    void NMEAString(const wxString &string) {
+        wxString name = string.BeforeFirst(',');
+        NMEAStringTimes[name] = wxDateTime::Now();
+    }
+
+    int ElapsedSeconds() {
+        wxDateTime now = wxDateTime::Now(), time = now;
+        wxString sentences = m_sentences;
+        /* take oldest message time */
+        for(;;) {
+            wxString cur = sentences.BeforeFirst('\n');
+            cur = cur.BeforeFirst(' '); /* remove trailing spaces */
+
+            if(cur.size()) {
+                wxDateTime dt = NMEAStringTimes[cur];
+                if(!dt.IsValid())
+                    dt = start;
+                if(dt < time)
+                    time = dt;
+            }
+
+            if((int)sentences.find('\n') == wxNOT_FOUND)
+                break;
+
+            sentences = sentences.AfterFirst('\n');
+        }
+
+        return (now - time).GetSeconds().ToLong();
+    }
+
+    wxDateTime start;
+    std::map<wxString, wxDateTime> NMEAStringTimes;
+
+    wxString m_sentences;
+    double m_seconds;
+
+};
+
 class LandFallAlarm : public Alarm
 {
 public:
@@ -1542,931 +2487,6 @@ private:
     
 };
 
-class NMEADataAlarm : public Alarm
-{
-public:
-    NMEADataAlarm() :
-        start(wxDateTime::Now()),
-        m_sentences(_T("$GPGGA")),
-        m_seconds(10)
-        {}
-
-    wxString Type() { return _("NMEA Data"); }
-    wxString Options() {
-        return m_sentences;
-    }
-
-    bool Test() {
-        return ElapsedSeconds() > m_seconds;
-    }
-
-    wxString GetStatus() {
-        return wxString::Format(_T("%d ") + _("second(s)"), ElapsedSeconds());
-    }
-
-    wxWindow *OpenPanel(wxWindow *parent) {
-        NMEADataPanel *panel = new NMEADataPanel(parent);
-        panel->m_tSentences->SetValue(m_sentences);
-        panel->m_sSeconds->SetValue(m_seconds);
-        return panel;
-    }
-
-    void SavePanel(wxWindow *p) {
-        NMEADataPanel *panel = (NMEADataPanel*)p;
-        m_sentences = panel->m_tSentences->GetValue();
-        m_seconds = panel->m_sSeconds->GetValue();
-    }
-
-    void LoadConfig(TiXmlElement *e) {
-        m_sentences = wxString::FromUTF8(e->Attribute("Sentences"));
-        e->Attribute("Seconds", &m_seconds);
-    }
-
-    void SaveConfig(TiXmlElement *c) {
-        c->SetAttribute("Type", "NMEAData");
-        c->SetAttribute("Sentences", m_sentences.mb_str());
-        c->SetAttribute("Seconds", m_seconds);
-    }
-
-private:
-    void NMEAString(const wxString &string) {
-        wxString name = string.BeforeFirst(',');
-        NMEAStringTimes[name] = wxDateTime::Now();
-    }
-
-    int ElapsedSeconds() {
-        wxDateTime now = wxDateTime::Now(), time = now;
-        wxString sentences = m_sentences;
-        /* take oldest message time */
-        for(;;) {
-            wxString cur = sentences.BeforeFirst('\n');
-            cur = cur.BeforeFirst(' '); /* remove trailing spaces */
-
-            if(cur.size()) {
-                wxDateTime dt = NMEAStringTimes[cur];
-                if(!dt.IsValid())
-                    dt = start;
-                if(dt < time)
-                    time = dt;
-            }
-
-            if((int)sentences.find('\n') == wxNOT_FOUND)
-                break;
-
-            sentences = sentences.AfterFirst('\n');
-        }
-
-        return (now - time).GetSeconds().ToLong();
-    }
-
-    wxDateTime start;
-    std::map<wxString, wxDateTime> NMEAStringTimes;
-
-    wxString m_sentences;
-    double m_seconds;
-
-};
-
-class DeadmanAlarm : public Alarm
-{
-public:
-    DeadmanAlarm() : m_Minutes(20) {}
-
-    wxString Type() { return _("Deadman"); }
-    wxString Options() {
-        return wxString::Format(_T("%f minutes"), m_Minutes);
-    }
-
-    bool Test() {
-        wxTimeSpan DeadmanSpan = wxTimeSpan::Minutes(m_Minutes);
-        return wxDateTime::Now() - g_watchdog_pi->m_cursor_time > DeadmanSpan;
-    }
-
-    wxString GetStatus() {
-        wxTimeSpan span = wxDateTime::Now() - g_watchdog_pi->m_cursor_time;
-        int days = span.GetDays();
-        span -= wxTimeSpan::Days(days);
-        int hours = span.GetHours();
-        span -= wxTimeSpan::Hours(hours);
-        int minutes = span.GetMinutes();
-        span -= wxTimeSpan::Minutes(minutes);
-        int seconds = span.GetSeconds().ToLong();
-        wxString d, fmt(_T("%d "));
-        if(days)
-            d = wxString::Format(fmt + _T("days "), days);
-        return d + wxString::Format(_T("%02d:%02d:%02d"),
-                                    hours, minutes, seconds);
-    }
-
-    wxWindow *OpenPanel(wxWindow *parent) {
-        DeadmanPanel *panel = new DeadmanPanel(parent);
-        panel->m_sMinutes->SetValue(m_Minutes);
-        return panel;
-    }
-
-    void SavePanel(wxWindow *p) {
-        DeadmanPanel *panel = (DeadmanPanel*)p;
-        m_Minutes = panel->m_sMinutes->GetValue();
-    }
-
-    void LoadConfig(TiXmlElement *e) {
-        e->Attribute("Minutes", &m_Minutes);
-    }
-
-    void SaveConfig(TiXmlElement *c) {
-        c->SetAttribute("Type", "Deadman");
-        c->SetAttribute("Minutes", m_Minutes);
-    }
-
-private:
-    double m_Minutes;
-};
-
-class AnchorAlarm : public Alarm
-{
-public:
-    AnchorAlarm() : Alarm(true),
-                    m_Radius(50)
-        {
-            minoldfix.FixTime = 0;
-            m_Latitude = g_watchdog_pi->LastFix().Lat;
-            m_Longitude = g_watchdog_pi->LastFix().Lon;
-            m_bWasEnabled = false;
-        }
-
-    wxString Type() { return _("Anchor"); }
-    wxString Options() {
-        return _("radius") + wxString::Format(_T(" %f "), m_Radius) + _("meters")
-            + (m_bAutoSync ? _T(" ") + wxString(_("bAutoSync")) : _T(""));
-    }
-
-    bool Test() {
-        if(isnan(g_watchdog_pi->m_sog))
-            return m_bNoData;
-        return Distance() > m_Radius;
-    }
-
-    wxString GetStatus() {
-        if(!m_bWasEnabled && m_bEnabled && m_bAutoSync) {
-            PlugIn_Position_Fix_Ex lastfix = g_watchdog_pi->LastFix();
-            m_Latitude = lastfix.Lat;
-            m_Longitude = lastfix.Lon;
-            RequestRefresh(GetOCPNCanvasWindow());
-        }
-
-        m_bWasEnabled = m_bEnabled;
-
-        double anchordist = Distance();
-        wxString s;
-        if(isnan(anchordist))
-            s = _T("N/A");
-        else {
-            wxString fmt(_T("%.0f "));
-            s = wxString::Format(fmt + _("meter(s)"), anchordist);
-        }
-
-        return s;
-    }
-
-    void Render(wdDC &dc, PlugIn_ViewPort &vp) {
-        wxPoint r1, r2;
-        
-        GetCanvasPixLL(&vp, &r1, m_Latitude, m_Longitude);
-        GetCanvasPixLL(&vp, &r2, m_Latitude +
-                       m_Radius/1853.0/60.0,
-                       m_Longitude);
-        
-        if(m_bEnabled) {
-            if(m_bFired)
-                dc.SetPen(wxPen(*wxRED, 2));
-            else
-                dc.SetPen(wxPen(*wxGREEN, 2));
-        } else
-            dc.SetPen(wxPen(wxColour(128, 192, 0, 128), 2, wxPENSTYLE_LONG_DASH));
-         
-        dc.DrawCircle( r1.x, r1.y, hypot(r1.x-r2.x, r1.y-r2.y) );
-    }
-
-    wxWindow *OpenPanel(wxWindow *parent) {
-        AnchorPanel *panel = new AnchorPanel(parent);
-        panel->m_tLatitude->SetValue(wxString::Format(_T("%f"), m_Latitude));
-        panel->m_tLongitude->SetValue(wxString::Format(_T("%f"), m_Longitude));
-        panel->m_sRadius->SetValue(m_Radius);
-        panel->m_cbAutoSync->SetValue(m_bAutoSync);
-        return panel;
-    }
-
-    void SavePanel(wxWindow *p) {
-        AnchorPanel *panel = (AnchorPanel*)p;
-        panel->m_tLatitude->GetValue().ToDouble(&m_Latitude);
-        panel->m_tLongitude->GetValue().ToDouble(&m_Longitude);
-        m_Radius = panel->m_sRadius->GetValue();
-        m_bAutoSync = panel->m_cbAutoSync->GetValue();
-    }
-
-    void LoadConfig(TiXmlElement *e) {
-        e->Attribute("Latitude", &m_Latitude);
-        e->Attribute("Longitude", &m_Longitude);
-        e->Attribute("Radius", &m_Radius);
-        if(e->QueryBoolAttribute("AutoSync", &m_bAutoSync) != TIXML_SUCCESS)
-            m_bAutoSync = false;
-    }
-
-    void SaveConfig(TiXmlElement *c) {
-        c->SetAttribute("Type", "Anchor");
-        c->SetDoubleAttribute("Latitude", m_Latitude);
-        c->SetDoubleAttribute("Longitude", m_Longitude);
-        c->SetAttribute("Radius", m_Radius);
-        c->SetAttribute("AutoSync", m_bAutoSync);
-    }
-
-private:
-    double Distance() {
-        if(isnan(g_watchdog_pi->m_cog))
-            return NAN;
-        PlugIn_Position_Fix_Ex lastfix = g_watchdog_pi->LastFix();
-
-        double anchordist;
-        DistanceBearingMercator_Plugin(lastfix.Lat, lastfix.Lon,
-                                       m_Latitude, m_Longitude,
-                                       0, &anchordist);
-        anchordist *= 1853.248; /* in meters */
-        return anchordist;
-    }
-
-    PlugIn_Position_Fix_Ex minoldfix;
-
-    double m_Latitude, m_Longitude, m_Radius;
-    bool m_bWasEnabled, m_bAutoSync;
-};
-
-class CourseAlarm : public Alarm
-{
-public:
-    CourseAlarm() : Alarm(true), m_Mode(BOTH), m_Tolerance(20), m_bGPSCourse(true) {
-        m_Course = g_watchdog_pi->m_cog;
-    }
-
-    wxString Type() { return _("Course"); }
-    wxString Options() {
-        wxString s;
-        switch(m_Mode) {
-        case PORT: s += _("Port") + wxString(_T(" ")); break;
-        case STARBOARD: s += _("Starboard") + wxString(_T(" ")); break;
-        default: break;
-        }
-        return s + _("course") + wxString::Format(_T(" %f"), m_Course);
-    }
-
-    bool Test() {
-        double error = CourseError();
-        if(isnan(error))
-            return m_bNoData;
-            
-        return error > m_Tolerance;
-    }
-
-    wxString GetStatus() {
-        double courseerror = CourseError();
-        wxString s;
-        if(isnan(courseerror))
-            s = _T("N/A");
-        else {
-            wxString fmt(_T("%.0f "));
-            s = wxString::Format(fmt + _("degrees(s)"), courseerror);
-        }
-
-        if(m_Mode == STARBOARD)
-            s += wxString(_T(" ")) + _("Starboard");
-        else if(m_Mode == PORT)
-            s += wxString(_T(" ")) + _("Port");
-
-        return s;
-    }
-
-    void Render(wdDC &dc, PlugIn_ViewPort &vp) {
-        PlugIn_Position_Fix_Ex lastfix = g_watchdog_pi->LastFix();
-
-        double lat1 = lastfix.Lat, lon1 = lastfix.Lon, lat2, lon2, lat3, lon3;
-        double dist = lastfix.Sog;
-
-        if(isnan(dist))
-            return;
-
-        PositionBearingDistanceMercator_Plugin(lat1, lon1, m_Course+m_Tolerance,
-                                               dist, &lat2, &lon2);
-        PositionBearingDistanceMercator_Plugin(lat1, lon1, m_Course-m_Tolerance,
-                                               dist, &lat3, &lon3);
-        wxPoint r1, r2, r3;
-        GetCanvasPixLL(&vp, &r1, lat1, lon1);
-        GetCanvasPixLL(&vp, &r2, lat2, lon2);
-        GetCanvasPixLL(&vp, &r3, lat3, lon3);
-
-        if(m_bFired)
-            dc.SetPen(wxPen(*wxRED, 2));
-        else
-            dc.SetPen(wxPen(*wxGREEN, 2));
-
-        dc.DrawLine( r1.x, r1.y, r2.x, r2.y );
-        dc.DrawLine( r1.x, r1.y, r3.x, r3.y );
-    }
-
-    wxWindow *OpenPanel(wxWindow *parent) {
-        CoursePanel *panel = new CoursePanel(parent);
-        panel->m_cMode->SetSelection((int)m_Mode);
-        panel->m_sCourse->SetValue(m_Course);
-        panel->m_sTolerance->SetValue(m_Tolerance);
-        panel->m_rbGPSCourse->SetValue(m_bGPSCourse);
-        panel->m_rbHeading->SetValue(!m_bGPSCourse);
-        return panel;
-    }
-
-    void SavePanel(wxWindow *p) {
-        CoursePanel *panel = (CoursePanel*)p;
-        m_Mode = (Mode)panel->m_cMode->GetSelection();
-        m_Course = panel->m_sCourse->GetValue();
-        m_Tolerance = panel->m_sTolerance->GetValue();
-        m_bGPSCourse = panel->m_rbGPSCourse->GetValue();
-    }
-
-    void LoadConfig(TiXmlElement *e) {
-        const char *mode = e->Attribute("Mode");
-        if(!strcasecmp(mode, "Port")) m_Mode = PORT;
-        else if(!strcasecmp(mode, "Starboard")) m_Mode = STARBOARD;
-        else if(!strcasecmp(mode, "Starboard")) m_Mode = BOTH;
-        else wxLogMessage(_T("Watchdog: ") + wxString(_("invalid Course mode")) + _T(": ")
-                         + wxString::FromUTF8(mode));
-
-        e->Attribute("Tolerance", &m_Tolerance);
-        e->Attribute("Course", &m_Course);
-        e->QueryBoolAttribute("GPSCourse", &m_bGPSCourse);
-    }
-
-    void SaveConfig(TiXmlElement *c) {
-        c->SetAttribute("Type", "Course");
-        switch(m_Mode) {
-        case PORT: c->SetAttribute("Mode", "Port");
-        case STARBOARD: c->SetAttribute("Mode", "Starboard");
-        case BOTH: c->SetAttribute("Mode", "Both");
-        }
-
-        c->SetDoubleAttribute("Tolerance", m_Tolerance);
-        c->SetDoubleAttribute("Course", m_Course);
-        c->SetAttribute("GPSCourse", m_bGPSCourse);
-    }
-
-private:
-    double CourseError() {
-        double error = heading_resolve((m_bGPSCourse ?
-                                        g_watchdog_pi->m_cog :
-                                        g_watchdog_pi->m_hdm) - m_Course);
-        switch(m_Mode) {
-        case PORT:      return -error;
-        case STARBOARD: return  error;
-        default:        return fabs(error);
-        }
-    }
-    
-    enum Mode { PORT, STARBOARD, BOTH } m_Mode;
-    double m_Tolerance, m_Course;
-    bool m_bGPSCourse;
-};
-
-class SpeedAlarm : public Alarm
-{
-public:
-    SpeedAlarm() : Alarm(true), m_Mode(UNDERSPEED), m_dSpeed(1) {}
-
-    wxString Type() { return _("Speed"); }
-    wxString Options() {
-        wxString s;
-        switch(m_Mode) {
-        case UNDERSPEED: s += _("UnderSpeed") + wxString(_T(" ")); break;
-        case OVERSPEED: s += _("OverSpeed") + wxString(_T(" ")); break;
-        }
-        return s + wxString::Format(_T(" %f"), m_dSpeed);
-    }
-
-    wxString GetStatus() {
-        wxString s;
-        if(isnan(g_watchdog_pi->m_sog))
-            s = _T("N/A");
-        else {
-            wxString fmt(_T("%.1f"));
-            s = wxString::Format(fmt + (Knots() < m_dSpeed ?
-                                        _T(" < ") : _T(" > "))
-                                 + fmt, Knots(), m_dSpeed);
-        }
-
-        return s;
-    }
-
-    void Render(wdDC &dc, PlugIn_ViewPort &vp) {
-        PlugIn_Position_Fix_Ex lastfix = g_watchdog_pi->LastFix();
-
-        double knots = Knots();
-
-        double lat1 = lastfix.Lat, lon1 = lastfix.Lon, lat2, lon2;
-        PositionBearingDistanceMercator_Plugin(lat1, lon1, 0, knots, &lat2, &lon2);
-
-        wxPoint r1, r2;
-        GetCanvasPixLL(&vp, &r1, lat1, lon1);
-        GetCanvasPixLL(&vp, &r2, lat2, lon2);
-
-        if(m_bFired)
-            dc.SetPen(wxPen(*wxRED, 2));
-        else
-            dc.SetPen(wxPen(*wxBLUE, 2));
-        dc.SetBrush(*wxTRANSPARENT_BRUSH);
-        dc.DrawCircle( r1.x, r1.y, hypot(r1.x-r2.x, r1.y-r2.y) );
-    }
-
-    bool Test() {
-        double knots = Knots();
-        if(isnan(knots))
-            return m_bNoData;
-
-        if(m_Mode == UNDERSPEED)
-            return m_dSpeed > knots;
-
-        return m_dSpeed < knots;
-    }
-
-    wxWindow *OpenPanel(wxWindow *parent) {
-        SpeedPanel *panel = new SpeedPanel(parent);
-        panel->m_cMode->SetSelection((int)m_Mode);
-        panel->m_tSpeed->SetValue(wxString::Format(_T("%f"), m_dSpeed));
-        panel->m_sliderSOGAverageNumber->SetValue(m_iAverageTime);
-        return panel;
-    }
-
-    void SavePanel(wxWindow *p) {
-        SpeedPanel *panel = (SpeedPanel*)p;
-        m_Mode = (Mode)panel->m_cMode->GetSelection();
-        panel->m_tSpeed->GetValue().ToDouble(&m_dSpeed);
-        m_iAverageTime = panel->m_sliderSOGAverageNumber->GetValue();
-    }
-
-    void LoadConfig(TiXmlElement *e) {
-        const char *mode = e->Attribute("Mode");
-        if(!strcasecmp(mode, "Underspeed")) m_Mode = UNDERSPEED;
-        else if(!strcasecmp(mode, "Overspeed")) m_Mode = OVERSPEED;
-        else wxLogMessage(_T("Watchdog: ") + wxString(_("invalid Speed mode")) + _T(": ")
-                         + wxString::FromUTF8(mode));
-
-        e->Attribute("Speed", &m_dSpeed);
-        m_iAverageTime = 10;
-        e->Attribute("AverageTime", &m_iAverageTime);
-    }
-
-    void SaveConfig(TiXmlElement *c) {
-        c->SetAttribute("Type", "Speed");
-        switch(m_Mode) {
-        case UNDERSPEED: 
-            c->SetAttribute("Mode", "Underspeed");
-            break;
-        case OVERSPEED: 
-            c->SetAttribute("Mode", "Overspeed");
-            break;
-        }
-
-        c->SetDoubleAttribute("Speed", m_dSpeed);
-        c->SetAttribute("AverageTime", m_iAverageTime);
-    }
-
-    void OnTimer( wxTimerEvent &tEvent )
-    {
-        Alarm::OnTimer( tEvent );
-        double sog = g_watchdog_pi->LastFix().Sog;
-        if(!isnan(sog))
-            m_SOGqueue.push_front(sog) ;
-        return;
-    }
-    
-private:
-    double Knots() {
-        if(m_SOGqueue.size() == 0)
-            return g_watchdog_pi->LastFix().Sog;
-        // average speed in list
-        double l_avSpeed = 0.0;
-        for(std::list<double>::iterator it = m_SOGqueue.begin(); it != m_SOGqueue.end(); it++)
-            l_avSpeed += *it;
-
-        l_avSpeed /= m_SOGqueue.size();
-        return l_avSpeed;
-    }
-
-    enum Mode { UNDERSPEED, OVERSPEED } m_Mode;
-    double  m_dSpeed;
-    int     m_iAverageTime;
-    std::list<double> m_SOGqueue;
-};
-
-class WindAlarm : public Alarm
-{
-public:
-    WindAlarm() : Alarm(true), m_Mode(UNDERSPEED), m_dVal(5), m_speed(NAN), m_direction(NAN), m_gps_speed(0), m_bearing(NAN), m_WindDataTime(wxDateTime::Now()) {}
-
-    wxString Type() { return _("Wind"); }
-    wxString Options() {
-        wxString s;
-        switch(m_Mode) {
-        case UNDERSPEED: s += _("Under Speed"); break;
-        case OVERSPEED:  s += _("Over Speed"); break;
-        case DIRECTION_ABOVE: s += _("Direction Above"); break;
-        case DIRECTION_BELOW: s += _("Direction Below"); break;
-        case DIRECTION_PORT_ABOVE: s += _("Port Direction Above"); break;
-        case DIRECTION_PORT_BELOW: s += _("Port Direction Below"); break;
-        case DIRECTION_STARBOARD_ABOVE: s += _("Starboard Direction Above"); break;
-        case DIRECTION_STARBOARD_BELOW: s += _("Starboard Direction Below"); break;
-        }
-        s += wxString(_T(" "));
-        switch(m_Type) {
-        case APPARENT: s += _("Apparent"); break;
-        case TRUE_RELATIVE: s += _("True Relative"); break;
-        case TRUE_ABSOLUTE: s += _("True Absolute"); break;
-        }            
-        s += wxString(_T(" "));
-        return s + wxString::Format(_T(" %.2f"), m_dVal);
-    }
-
-    wxString GetStatus() {
-        wxString s;
-        double val = NAN;
-        if(m_Mode == UNDERSPEED || m_Mode == OVERSPEED)
-            val = m_speed;
-        else {
-            val = m_direction;
-            if(val > 180)
-                val = 360 - val;
-        }
-
-        if(isnan(val))
-            s = _T("N/A");
-        else {
-            wxString fmt(_T("%.1f"));
-            s = wxString::Format(fmt + (val < m_dVal ?
-                                        _T(" < ") : _T(" > "))
-                                 + fmt, val, m_dVal);
-        }
-
-        return s;
-    }
-
-    void Render(wdDC &dc, PlugIn_ViewPort &vp) {
-        //PlugIn_Position_Fix_Ex lastfix = g_watchdog_pi->LastFix();
-    }
-
-    bool Test() {
-        // no data for 3 seconds..  Is this correct?
-        if((wxDateTime::Now() - m_WindDataTime).GetSeconds() > 3)
-            return m_bNoData;
-        
-        switch(m_Mode) {
-        case UNDERSPEED: return m_dVal > m_speed;
-        case OVERSPEED:  return m_dVal < m_speed;
-        default: break;
-        }
-
-        double dir = m_direction;
-        if(m_Type == APPARENT || m_Type == TRUE_RELATIVE) {
-            if(dir > 180)
-                dir = 360 - dir;
-        }
-
-        switch(m_Mode) {
-        case DIRECTION_ABOVE: return m_dVal < dir;
-        case DIRECTION_BELOW: return m_dVal > dir;
-        case DIRECTION_PORT_ABOVE: return dir > 180 && m_dVal < dir;
-        case DIRECTION_PORT_BELOW: return dir > 180 && m_dVal > dir;
-        case DIRECTION_STARBOARD_ABOVE: return dir < 180 && m_dVal < dir;
-        case DIRECTION_STARBOARD_BELOW: return dir < 180 && m_dVal > dir;
-        default: break;
-        }
-
-        m_gps_speed = g_watchdog_pi->LastFix().Sog * .1 + m_gps_speed * .9;
-        return 0;
-    }
-
-    wxWindow *OpenPanel(wxWindow *parent) {
-        WindPanel *panel = new WindPanel(parent);
-        panel->m_cMode->SetSelection((int)m_Mode);
-        panel->m_cType->SetSelection((int)m_Type);
-        panel->m_sValue->SetValue(m_dVal);
-        return panel;
-    }
-
-    void SavePanel(wxWindow *p) {
-        WindPanel *panel = (WindPanel*)p;
-        m_Mode = (Mode)panel->m_cMode->GetSelection();
-        m_Type = (WindType)panel->m_cType->GetSelection();
-        m_dVal = panel->m_sValue->GetValue();
-    }
-
-    void LoadConfig(TiXmlElement *e) {
-        const char *mode = e->Attribute("Mode");
-        if(!strcasecmp(mode, "Underspeed")) m_Mode = UNDERSPEED;
-        else if(!strcasecmp(mode, "Overspeed")) m_Mode = OVERSPEED;
-        else if(!strcasecmp(mode, "DirectionAbove")) m_Mode = DIRECTION_ABOVE;
-        else if(!strcasecmp(mode, "DirectionBelow")) m_Mode = DIRECTION_BELOW;
-        else if(!strcasecmp(mode, "DirectionPortAbove")) m_Mode = DIRECTION_PORT_ABOVE;
-        else if(!strcasecmp(mode, "DirectionStarboardBelow")) m_Mode = DIRECTION_STARBOARD_BELOW;
-        else wxLogMessage(_T("Watchdog: ") + wxString(_("invalid Wind mode")) + _T(": ")
-                         + wxString::FromUTF8(mode));
-
-        const char *type = e->Attribute("Type");
-        if(!strcasecmp(mode, "Apparent")) m_Type = APPARENT;
-        else if(!strcasecmp(mode, "True Relative")) m_Type = TRUE_RELATIVE;
-        else if(!strcasecmp(mode, "True Absolute")) m_Type = TRUE_ABSOLUTE;
-        else wxLogMessage(_T("Watchdog: ") + wxString(_("invalid Wind type")) + _T(": ")
-                         + wxString::FromUTF8(type));
-
-        e->Attribute("Value", &m_dVal);
-    }
-
-    void SaveConfig(TiXmlElement *c) {
-        c->SetAttribute("Type", "Wind");
-        switch(m_Mode) {
-        case UNDERSPEED: c->SetAttribute("Mode", "Underspeed"); break;
-        case OVERSPEED:  c->SetAttribute("Mode", "Overspeed");  break;
-        case DIRECTION_ABOVE:  c->SetAttribute("Mode", "DirectionAbove");  break;
-        case DIRECTION_BELOW:  c->SetAttribute("Mode", "DirectionBelow");  break;
-        case DIRECTION_PORT_ABOVE:  c->SetAttribute("Mode", "DirectionPortAbove");  break;
-        case DIRECTION_PORT_BELOW:  c->SetAttribute("Mode", "DirectionPortBelow");  break;
-        case DIRECTION_STARBOARD_ABOVE:  c->SetAttribute("Mode", "DirectionStarboardAbove");  break;
-        case DIRECTION_STARBOARD_BELOW:  c->SetAttribute("Mode", "DirectionStarboardBelow");  break;            
-        }
-
-        c->SetDoubleAttribute("Value", m_dVal);
-    }
-    
-private:
-    void NMEAString(const wxString &string) {
-        wxString str = string;
-        NMEA0183 nmea;
-        wxString LastSentenceIDReceived;
-        nmea << str;
-        if(!nmea.PreParse())
-            return;
-        if(nmea.LastSentenceIDReceived == _T("HDM") && nmea.Parse()) {
-            m_bearing = nmea.Hdm.DegreesMagnetic + g_watchdog_pi->Declination();
-        } else
-        if(nmea.LastSentenceIDReceived == _T("MWV") &&
-           nmea.Parse() && nmea.Mwv.IsDataValid == NTrue ) {
-            double m_wSpeedFactor = 1.0; //knots ("N")
-            if (nmea.Mwv.WindSpeedUnits == _T("K") ) m_wSpeedFactor = 0.53995 ; //km/h > knots
-            if (nmea.Mwv.WindSpeedUnits == _T("M") ) m_wSpeedFactor = 1.94384;
-            if(nmea.Mwv.Reference == _T("R") && m_Type == APPARENT) {
-                ProcessWind(nmea.Mwv.WindSpeed * m_wSpeedFactor, nmea.Mwv.WindAngle);
-            } else if(nmea.Mwv.Reference == _T("T") && m_Type == TRUE_RELATIVE) {
-                // should we accept true wind nmea sentences rather than calculate ourself??
-            }
-
-        }
-    }
-
-    void ProcessWind(double apparent_speed, double apparent_direction)
-    {
-        m_WindDataTime = wxDateTime::Now();
-        if(m_Type == APPARENT) {
-            m_speed = apparent_speed;
-            m_direction = apparent_direction;
-        } else {
-/* law of cosine:
-           ________________________
-          /  2    2
-   VW =  / VA + VB - 2 VA VB cos(A)
-       \/
-
-    2    2    2
-  VA = VW + VB + 2 VW VB cos(W)
-                
-    2    2    2
-  VW + VB - VA  = 2 VW VB cos(W)
-
-          /   2    2    2\
-W = acos |  VW + VB - VA  |
-         |  ------------  |
-          \   2 VW VB    /
-*/
-            double A = deg2rad(apparent_direction);
-            double VA = apparent_speed;
-            double VB = m_gps_speed;
-            double VW = sqrt(VA*VA + VB*VB - 2*VA*VB*cos(A));
-            double W = acos((VW*VW + VB*VB - VA*VA) / (2*VW*VB));
-            m_speed = VW;
-            m_direction = rad2deg(W);
-
-            if(m_Type == TRUE_ABSOLUTE) {
-                m_direction += m_bearing;
-                if(m_direction > 360)
-                    m_direction -= 360;
-            }
-        }
-    }
-
-    enum Mode { UNDERSPEED, OVERSPEED, DIRECTION_ABOVE, DIRECTION_BELOW, DIRECTION_PORT_ABOVE, DIRECTION_PORT_BELOW, DIRECTION_STARBOARD_ABOVE, DIRECTION_STARBOARD_BELOW } m_Mode;
-    enum WindType { APPARENT, TRUE_RELATIVE, TRUE_ABSOLUTE } m_Type;
-    double  m_dVal;
-
-    double m_speed, m_direction;
-    double m_gps_speed, m_bearing;
-
-    wxDateTime m_WindDataTime;
-};
-
-class WeatherAlarm : public Alarm
-{
-public:
-    WeatherAlarm() : Alarm(false), m_Variable(BAROMETER), m_Mode(BELOW), m_dVal(1004),
-                     m_curvalue(NAN), m_currate(NAN), m_WeatherDataTime(wxDateTime::Now()) {}
-
-    wxString Type() { return _("Weather"); }
-    wxString Options() {
-        wxString s = StrVariable();
-        s += _T(" ");
-        switch(m_Mode) {
-        case BELOW: s += _("Below"); break;
-        case ABOVE:  s += _("Above"); break;
-        case INCREASING: s += _("Increasing"); break;
-        case DECREASING:  s += _("Decreasing"); break;
-        }
-        s += _T(" ");
-        return s + wxString::Format(_T(" %.2f"), m_dVal);
-    }
-
-    wxString GetStatus() {
-        wxString s = StrVariable();
-        s += _T(" ");
-        
-        double val = Value();
-        if(isnan(val))
-            s += _T("N/A");
-        else {
-            wxString fmt(_T("%.2f"));
-            double aval = m_Mode == DECREASING ? -val : val;
-            s += wxString::Format(fmt + (aval < m_dVal ?
-                                        _T(" < ") : _T(" > "))
-                                 + fmt, aval, m_dVal);
-            if(m_Mode == INCREASING || m_Mode == DECREASING)
-                s += _T(" ") + _("In") + wxString::Format(_T(" %d "), m_iRatePeriod) + _("Seconds");
-        }
-
-        return s;
-    }
-
-    bool Test() {
-        // no data for 10 seconds..  Is this correct?
-        if((wxDateTime::Now() - m_WeatherDataTime).GetSeconds() > 3)
-            return m_bNoData;
-
-        switch(m_Mode) {
-        case ABOVE: case INCREASING: return m_dVal < Value();
-        case BELOW: return m_dVal > Value();
-        case DECREASING: return m_dVal < -Value();
-        }
-        return 0;
-    }
-
-    wxWindow *OpenPanel(wxWindow *parent) {
-        WeatherPanel *panel = new WeatherPanel(parent);
-        panel->m_cVariable->SetSelection((int)m_Variable);
-        panel->m_rbRate->SetValue((int)m_Mode / 2);
-        panel->m_cType->SetSelection((int)m_Mode % 2);
-        panel->m_tValue->SetValue(wxString::Format(_T("%f"), m_dVal));
-        panel->m_sRatePeriod->SetValue(m_iRatePeriod);
-        panel->SetupControls();
-        return panel;
-    }
-
-    void SavePanel(wxWindow *p) {
-        WeatherPanel *panel = (WeatherPanel*)p;
-        m_Variable = (WeatherAlarmVariable)panel->m_cVariable->GetSelection();
-        m_Mode = (Mode)(panel->m_cType->GetSelection() + 2*panel->m_rbRate->GetValue());
-        panel->m_tValue->GetValue().ToDouble(&m_dVal);
-        m_iRatePeriod = panel->m_sRatePeriod->GetValue();
-    }
-
-    void LoadConfig(TiXmlElement *e) {
-        const char *variable = e->Attribute("Variable");
-        if(!strcasecmp(variable, "Barometer")) m_Variable = BAROMETER;
-        else if(!strcasecmp(variable, "AirTemperature")) m_Variable = AIR_TEMPERATURE;
-        else if(!strcasecmp(variable, "SeaTemperature")) m_Variable = SEA_TEMPERATURE;
-        else if(!strcasecmp(variable, "RelativeHumidity")) m_Variable = RELATIVE_HUMIDITY;
-        else {
-            wxLogMessage(_T("Watchdog: ") + wxString(_("invalid Weather variable")) +
-                         _T(": ") + wxString::FromUTF8(variable));
-            m_Variable = BAROMETER;
-        }
-
-        const char *mode = e->Attribute("Mode");
-        if(!strcasecmp(mode, "Above")) m_Mode = ABOVE;
-        else if(!strcasecmp(mode, "Below")) m_Mode = BELOW;
-        else if(!strcasecmp(mode, "Increasing")) m_Mode = INCREASING;
-        else if(!strcasecmp(mode, "Decreasing")) m_Mode = DECREASING;
-        else {
-            wxLogMessage(_T("Watchdog: ") + wxString(_("invalid Weather mode")) +
-                         _T(": ") + wxString::FromUTF8(mode));
-            m_Mode = ABOVE;
-        }
-
-        e->Attribute("Value", &m_dVal);
-        e->Attribute("RatePeriod", &m_iRatePeriod);
-    }
-
-    void SaveConfig(TiXmlElement *c) {
-        c->SetAttribute("Type", "Weather");
-        switch(m_Mode) {
-            case ABOVE: c->SetAttribute("Mode", "Above"); break;
-            case BELOW: c->SetAttribute("Mode", "Below"); break;
-            case INCREASING: c->SetAttribute("Mode", "Increasing"); break;
-            case DECREASING: c->SetAttribute("Mode", "Decreasing"); break;
-        }
-
-        const char *variable = "";
-        switch(m_Variable) {
-        case BAROMETER: variable = "Barometer"; break;
-        case AIR_TEMPERATURE: variable = "AirTemperature"; break;
-        case SEA_TEMPERATURE: variable = "SeaTemperature"; break;
-        case RELATIVE_HUMIDITY: variable = "RelativeHumidity"; break;
-        }
-        c->SetAttribute("Variable", variable);
-
-        c->SetDoubleAttribute("Value", m_dVal);
-        c->SetAttribute("RatePeriod", m_iRatePeriod);
-    }
-    
-private:
-    double Value() {
-        if(m_Mode == INCREASING || m_Mode == DECREASING)
-            return m_currate;
-        return m_curvalue;
-    }
-
-    wxString StrVariable() {
-        switch(m_Variable) {
-        case BAROMETER: return _("Barometer"); break;
-        case AIR_TEMPERATURE: return _("Air Temperature"); break;
-        case SEA_TEMPERATURE: return _("Sea Temperature"); break;
-        case RELATIVE_HUMIDITY: return _("Humidity"); break;
-        }
-        return _T("");
-    }
-
-    void NMEAString(const wxString &string) {
-        wxString str = string;
-        NMEA0183 nmea;
-        nmea << str;
-        if(!nmea.PreParse())
-            return;
-
-        double value = NAN;
-        switch(m_Variable) {
-        case BAROMETER:
-            if(nmea.LastSentenceIDReceived == _T("MDA") && nmea.Parse())
-                value = nmea.Mda.Pressure * 1000;
-            break;
-        case RELATIVE_HUMIDITY:
-            if(nmea.LastSentenceIDReceived == _T("MDA") && nmea.Parse())
-                value = nmea.Mda.RelativeHumidity;
-            break;
-        case AIR_TEMPERATURE:
-            if(nmea.LastSentenceIDReceived == _T("MTA") && nmea.Parse())
-                value = nmea.Mta.Temperature;
-            break;
-        case SEA_TEMPERATURE:
-            if(nmea.LastSentenceIDReceived == _T("MTW") && nmea.Parse())
-                value = nmea.Mtw.Temperature;
-            break;
-        }
-        if(isnan(value))
-            return;
-
-        m_WeatherDataTime = wxDateTime::Now();
-        if(m_Mode == INCREASING || m_Mode == DECREASING) {
-            wxDateTime now = wxDateTime::Now();
-            if(!valuetime.IsValid()) {
-                m_curvalue = value;
-                valuetime = now;
-            } else
-            if((now - valuetime).GetSeconds() >= m_iRatePeriod) {
-                m_currate = value - m_curvalue;
-                m_curvalue = value;
-                valuetime = now;
-            }
-        } else
-            m_curvalue = value;
-    }
-
-    WeatherAlarmVariable m_Variable;
-    enum Mode { ABOVE, BELOW, INCREASING, DECREASING } m_Mode;
-    double m_dVal;
-    int m_iRatePeriod;
-    double m_curvalue, m_currate;
-    wxDateTime valuetime;
-    wxDateTime m_WeatherDataTime;
-};
-
 ////////// Alarm Base Class /////////////////
 std::vector<Alarm*> Alarm::s_Alarms;
 
@@ -2492,15 +2512,15 @@ void Alarm::LoadConfigAll()
         if(!strcasecmp(e->Value(), "Alarm")) {
             const char *type = e->Attribute("Type");
             Alarm *alarm;
-            if(!strcasecmp(type, "LandFall")) alarm = Alarm::NewAlarm(LANDFALL);
-            else if(!strcasecmp(type, "Boundary")) alarm = Alarm::NewAlarm(BOUNDARY);
-            else if(!strcasecmp(type, "NMEAData")) alarm = Alarm::NewAlarm(NMEADATA);
-            else if(!strcasecmp(type, "Deadman")) alarm = Alarm::NewAlarm(DEADMAN);
-            else if(!strcasecmp(type, "Anchor")) alarm = Alarm::NewAlarm(ANCHOR);
+            if(!strcasecmp(type, "Anchor")) alarm = Alarm::NewAlarm(ANCHOR);
             else if(!strcasecmp(type, "Course")) alarm = Alarm::NewAlarm(COURSE);
             else if(!strcasecmp(type, "Speed")) alarm = Alarm::NewAlarm(SPEED);
             else if(!strcasecmp(type, "Wind")) alarm = Alarm::NewAlarm(WIND);
             else if(!strcasecmp(type, "Weather")) alarm = Alarm::NewAlarm(WEATHER);
+            else if(!strcasecmp(type, "Deadman")) alarm = Alarm::NewAlarm(DEADMAN);
+            else if(!strcasecmp(type, "NMEAData")) alarm = Alarm::NewAlarm(NMEADATA);
+            else if(!strcasecmp(type, "LandFall")) alarm = Alarm::NewAlarm(LANDFALL);
+            else if(!strcasecmp(type, "Boundary")) alarm = Alarm::NewAlarm(BOUNDARY);
             else {
                 wxLogMessage(_T("Watchdog: ") + wxString(_("invalid alarm type")) + _T(": ") + wxString::FromUTF8(type));
                 continue;
@@ -2563,15 +2583,15 @@ Alarm *Alarm::NewAlarm(enum AlarmType type)
 {
     Alarm *alarm;
     switch(type) {
-    case LANDFALL: alarm = new LandFallAlarm; break;
-    case BOUNDARY: alarm = new BoundaryAlarm; break;
-    case NMEADATA: alarm = new NMEADataAlarm; break;
-    case DEADMAN:  alarm = new DeadmanAlarm;  break;
     case ANCHOR:   alarm = new AnchorAlarm;   break;
     case COURSE:   alarm = new CourseAlarm;   break;
     case SPEED:    alarm = new SpeedAlarm;    break;
     case WIND:     alarm = new WindAlarm;     break;
     case WEATHER:  alarm = new WeatherAlarm; break;
+    case DEADMAN:  alarm = new DeadmanAlarm;  break;
+    case NMEADATA: alarm = new NMEADataAlarm; break;
+    case LANDFALL: alarm = new LandFallAlarm; break;
+    case BOUNDARY: alarm = new BoundaryAlarm; break;
     default:  wxLogMessage(_T("Invalid Alarm Type")); return NULL;
     }
 
@@ -2580,7 +2600,7 @@ Alarm *Alarm::NewAlarm(enum AlarmType type)
 }
 
 Alarm::Alarm(bool gfx, int interval)
-    : m_bHasGraphics(gfx), m_bEnabled(true), m_bgfxEnabled(false), m_bFired(false), m_bSpecial(false),
+    : m_bHasGraphics(gfx), m_bEnabled(false), m_bgfxEnabled(false), m_bFired(false), m_bSpecial(false),
       m_bSound(true), m_bCommand(false), m_bMessageBox(false), m_bNoData(true), m_bRepeat(false), m_bAutoReset(false),
       m_sSound(*GetpSharedDataLocation() + _T("sounds/2bells.wav")),
       m_LastAlarmTime(wxDateTime::Now()),

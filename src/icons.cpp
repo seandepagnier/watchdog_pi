@@ -30,10 +30,6 @@ void initialize_images(void)
     fn.AppendDir(_T("data"));
     fn.SetFullName(_T("watchdog_pi.svg"));
     _svg_watchdog = fn.GetFullPath();
-    fn.SetFullName(_T("watchdog_pi_rollover.svg"));
-    _svg_watchdog_rollover = fn.GetFullPath();
-    fn.SetFullName(_T("watchdog_pi_toggled.svg"));
-    _svg_watchdog_toggled = fn.GetFullPath();
 #endif
 
 	return;

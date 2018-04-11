@@ -33,6 +33,7 @@
 #include "WatchdogUI.h"
 #include "watchdog_pi.h"
 
+#include "WindPanel.h"
 #include "WeatherPanel.h"
 #include "ODAPI.h"
 
@@ -352,15 +353,28 @@ void CoursePanel::OnCurrentCourse( wxCommandEvent& )
     m_sCourse->SetValue(g_watchdog_pi->m_cog);
 }
 
+void WindPanel::OnType( wxCommandEvent& )
+{
+    if(!m_sRange->IsEnabled())
+        m_sValue->SetValue(m_direction);
+    m_sRange->Enable(m_cType->GetSelection() == 2);
+}
+
 void WindPanel::OnAboutWind( wxCommandEvent& )
 {
-    wxString l_s = _("Wind Alarms can be from:\
-1) Apparent - measured from moving boat (requires only wind sensors)\
-2) True Relative - wind would feel like if boat stopped (requires wind sensors + gps)\
+    wxString l_s = _("Wind Alarms can be from:\n\
+1) Apparent - measured from moving boat (requires only wind sensors)\n\
+2) True Relative - wind would feel like if boat stopped (requires wind sensors + gps)\n\
 3) True Absolute - wind would feel if boat stopped and faced north (requires wind sensors + gps + compass)");
     wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchdog"), wxOK | wxICON_WARNING);
     mdlg.ShowModal();
 }
+
+void WindPanel::OnSync( wxCommandEvent& )
+{
+    m_sValue->SetValue(m_direction);
+}
+
 
 void WeatherPanel::SetupControls()
 {

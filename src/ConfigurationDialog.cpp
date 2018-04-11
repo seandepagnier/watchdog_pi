@@ -83,22 +83,25 @@ void ConfigurationDialog::OnNewAlarm( wxCommandEvent& event )
     if(dlg.ShowModal() == wxID_CANCEL)
         return;
 
-    if(Alarm::NewAlarm((AlarmType)dlg.m_lAlarmType->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED)) == NULL) return;
+    Alarm *alarm = Alarm::NewAlarm((AlarmType)dlg.m_lAlarmType->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED));
+    if(!alarm) return;
 
-    
     wxListItem item;
     long index = m_lAlarms->InsertItem(m_lAlarms->GetItemCount(), item);
 
     m_lAlarms->SetItemState(m_lAlarms->GetItemCount() - 1,
                             wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
-    g_watchdog_pi->m_WatchdogDialog->UpdateAlarms();
 
+    g_watchdog_pi->m_WatchdogDialog->UpdateAlarms();
     UpdateItem(index);
     UpdateStates();
 
     OnEditAlarm(event);
-    if(m_bOnEditAlarmOK) return;
-    else OnDeleteAlarm(event);
+    if(m_bOnEditAlarmOK)
+        alarm->m_bEnabled = true;
+    else
+        OnDeleteAlarm(event);
+    g_watchdog_pi->m_WatchdogDialog->UpdateAlarms();
 }
 
 void ConfigurationDialog::OnEditAlarm( wxCommandEvent& event )

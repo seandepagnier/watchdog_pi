@@ -1,8 +1,8 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Dec  3 2017)
+// C++ code generated with wxFormBuilder (version Feb 20 2018)
 // http://www.wxformbuilder.org/
 //
-// PLEASE DO "NOT" EDIT THIS FILE!
+// PLEASE DO *NOT* EDIT THIS FILE!
 ///////////////////////////////////////////////////////////////////////////
 
 #ifndef __WATCHDOGUI_H__
@@ -28,10 +28,10 @@
 #include <wx/textctrl.h>
 #include <wx/spinctrl.h>
 #include <wx/panel.h>
-#include <wx/radiobox.h>
-#include <wx/slider.h>
-#include <wx/statline.h>
 #include <wx/choice.h>
+#include <wx/slider.h>
+#include <wx/radiobox.h>
+#include <wx/statline.h>
 
 #include "wxWTranslateCatalog.h"
 
@@ -209,112 +209,6 @@ class EditAlarmDialogBase : public wxDialog
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-/// Class LandFallPanel
-///////////////////////////////////////////////////////////////////////////////
-class LandFallPanel : public wxPanel 
-{
-	private:
-	
-	protected:
-		wxStaticText* m_staticText30;
-		wxStaticText* m_staticText7;
-		wxStaticText* m_staticText39122;
-		wxStaticText* m_staticText45;
-	
-	public:
-		wxRadioButton* m_rbTime;
-		wxSpinCtrl* m_sTimeMinutes;
-		wxRadioButton* m_rbDistance;
-		wxTextCtrl* m_tDistance;
-		
-		LandFallPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL ); 
-		~LandFallPanel();
-	
-};
-
-///////////////////////////////////////////////////////////////////////////////
-/// Class BoundaryPanel
-///////////////////////////////////////////////////////////////////////////////
-class BoundaryPanel : public wxPanel 
-{
-	private:
-	
-	protected:
-		wxStaticText* m_staticText30;
-		wxStaticText* m_staticText7;
-		wxStaticText* m_staticText321;
-		wxStaticText* m_staticText32;
-		wxButton* m_button12;
-		wxStaticText* m_staticTextCheckFrequency;
-		wxStaticText* m_staticText39122;
-		wxStaticLine* m_staticline1;
-		
-		// Virtual event handlers, overide them in your derived class
-		void OnRadioButton( wxCommandEvent& event );
-		void OnGuardZoneGUIDKillFocus( wxFocusEvent& event );
-		void OnBoundaryGUIDKillFocus( wxFocusEvent& event );
-		void OnGetBoundaryGUID( wxCommandEvent& event );
-		
-	
-	public:
-		wxRadioButton* m_rbTime;
-		wxSpinCtrl* m_sTimeMinutes;
-		wxRadioButton* m_rbDistance;
-		wxTextCtrl* m_tDistance;
-		wxRadioButton* m_rbGuard;
-		wxTextCtrl* m_tGuardZoneGUID;
-		wxRadioButton* m_rbAnchor;
-		wxTextCtrl* m_tBoundaryGUID;
-		wxRadioBox* m_radioBoxBoundaryType;
-		wxRadioBox* m_radioBoxBoundaryState;
-		wxSlider* m_sliderCheckFrequency;
-		
-		BoundaryPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL ); 
-		~BoundaryPanel();
-	
-};
-
-///////////////////////////////////////////////////////////////////////////////
-/// Class NMEADataPanel
-///////////////////////////////////////////////////////////////////////////////
-class NMEADataPanel : public wxPanel 
-{
-	private:
-	
-	protected:
-		wxStaticText* m_staticText34;
-		wxStaticText* m_staticText35;
-		wxStaticText* m_staticText13;
-	
-	public:
-		wxTextCtrl* m_tSentences;
-		wxSpinCtrl* m_sSeconds;
-		
-		NMEADataPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL ); 
-		~NMEADataPanel();
-	
-};
-
-///////////////////////////////////////////////////////////////////////////////
-/// Class DeadmanPanel
-///////////////////////////////////////////////////////////////////////////////
-class DeadmanPanel : public wxPanel 
-{
-	private:
-	
-	protected:
-		wxStaticText* m_staticText33;
-		wxStaticText* m_staticText6;
-	
-	public:
-		wxSpinCtrl* m_sMinutes;
-		
-		DeadmanPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL ); 
-		~DeadmanPanel();
-	
-};
-
-///////////////////////////////////////////////////////////////////////////////
 /// Class AnchorPanel
 ///////////////////////////////////////////////////////////////////////////////
 class AnchorPanel : public wxPanel 
@@ -400,9 +294,9 @@ class SpeedPanel : public wxPanel
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-/// Class WindPanel
+/// Class WindPanelBase
 ///////////////////////////////////////////////////////////////////////////////
-class WindPanel : public wxPanel 
+class WindPanelBase : public wxPanel 
 {
 	private:
 	
@@ -412,19 +306,24 @@ class WindPanel : public wxPanel
 		wxButton* m_bAboutWind;
 		wxStaticText* m_staticText44;
 		wxStaticText* m_staticText24;
-		wxStaticText* m_staticText391;
+		wxButton* m_bSync;
+		wxStaticText* m_staticText58;
+		wxStaticText* m_staticText59;
 		
 		// Virtual event handlers, overide them in your derived class
+		void OnType( wxCommandEvent& event );
 		void OnAboutWind( wxCommandEvent& event );
+		void OnSync( wxCommandEvent& event );
 		
 	
 	public:
 		wxChoice* m_cMode;
 		wxChoice* m_cType;
 		wxSpinCtrl* m_sValue;
+		wxSpinCtrl* m_sRange;
 		
-		WindPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL ); 
-		~WindPanel();
+		WindPanelBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL ); 
+		~WindPanelBase();
 	
 };
 
@@ -458,6 +357,112 @@ class WeatherPanelBase : public wxPanel
 		
 		WeatherPanelBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL ); 
 		~WeatherPanelBase();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class DeadmanPanel
+///////////////////////////////////////////////////////////////////////////////
+class DeadmanPanel : public wxPanel 
+{
+	private:
+	
+	protected:
+		wxStaticText* m_staticText33;
+		wxStaticText* m_staticText6;
+	
+	public:
+		wxSpinCtrl* m_sMinutes;
+		
+		DeadmanPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL ); 
+		~DeadmanPanel();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class NMEADataPanel
+///////////////////////////////////////////////////////////////////////////////
+class NMEADataPanel : public wxPanel 
+{
+	private:
+	
+	protected:
+		wxStaticText* m_staticText34;
+		wxStaticText* m_staticText35;
+		wxStaticText* m_staticText13;
+	
+	public:
+		wxTextCtrl* m_tSentences;
+		wxSpinCtrl* m_sSeconds;
+		
+		NMEADataPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL ); 
+		~NMEADataPanel();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class LandFallPanel
+///////////////////////////////////////////////////////////////////////////////
+class LandFallPanel : public wxPanel 
+{
+	private:
+	
+	protected:
+		wxStaticText* m_staticText30;
+		wxStaticText* m_staticText7;
+		wxStaticText* m_staticText39122;
+		wxStaticText* m_staticText45;
+	
+	public:
+		wxRadioButton* m_rbTime;
+		wxSpinCtrl* m_sTimeMinutes;
+		wxRadioButton* m_rbDistance;
+		wxTextCtrl* m_tDistance;
+		
+		LandFallPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL ); 
+		~LandFallPanel();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class BoundaryPanel
+///////////////////////////////////////////////////////////////////////////////
+class BoundaryPanel : public wxPanel 
+{
+	private:
+	
+	protected:
+		wxStaticText* m_staticText30;
+		wxStaticText* m_staticText7;
+		wxStaticText* m_staticText321;
+		wxStaticText* m_staticText32;
+		wxButton* m_button12;
+		wxStaticText* m_staticTextCheckFrequency;
+		wxStaticText* m_staticText39122;
+		wxStaticLine* m_staticline1;
+		
+		// Virtual event handlers, overide them in your derived class
+		void OnRadioButton( wxCommandEvent& event );
+		void OnGuardZoneGUIDKillFocus( wxFocusEvent& event );
+		void OnBoundaryGUIDKillFocus( wxFocusEvent& event );
+		void OnGetBoundaryGUID( wxCommandEvent& event );
+		
+	
+	public:
+		wxRadioButton* m_rbTime;
+		wxSpinCtrl* m_sTimeMinutes;
+		wxRadioButton* m_rbDistance;
+		wxTextCtrl* m_tDistance;
+		wxRadioButton* m_rbGuard;
+		wxTextCtrl* m_tGuardZoneGUID;
+		wxRadioButton* m_rbAnchor;
+		wxTextCtrl* m_tBoundaryGUID;
+		wxRadioBox* m_radioBoxBoundaryType;
+		wxRadioBox* m_radioBoxBoundaryState;
+		wxSlider* m_sliderCheckFrequency;
+		
+		BoundaryPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL ); 
+		~BoundaryPanel();
 	
 };
 

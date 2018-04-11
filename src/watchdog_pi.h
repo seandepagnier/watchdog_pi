@@ -71,7 +71,7 @@ std::cout << x << std::endl; } while (0)
 #include "msvcdefs.h"
 #endif
 
-double heading_resolve(double degrees);
+double heading_resolve(double degrees, double offset=0);
 
 //----------------------------------
 //    The PlugIn Class Definition
