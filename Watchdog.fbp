@@ -7401,7 +7401,7 @@
             <property name="context_help"></property>
             <property name="context_menu">1</property>
             <property name="enabled">1</property>
-            <property name="event_handler">decl</property>
+            <property name="event_handler">decl_pure_virtual</property>
             <property name="fg"></property>
             <property name="font"></property>
             <property name="hidden">0</property>

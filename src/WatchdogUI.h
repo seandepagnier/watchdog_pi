@@ -311,9 +311,9 @@ class WindPanelBase : public wxPanel
 		wxStaticText* m_staticText59;
 		
 		// Virtual event handlers, overide them in your derived class
-		void OnType( wxCommandEvent& event );
-		void OnAboutWind( wxCommandEvent& event );
-		void OnSync( wxCommandEvent& event );
+		virtual void OnType( wxCommandEvent& event ) = 0;
+		virtual void OnAboutWind( wxCommandEvent& event ) = 0;
+		virtual void OnSync( wxCommandEvent& event ) = 0;
 		
 	
 	public:
