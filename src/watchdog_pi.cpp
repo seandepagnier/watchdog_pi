@@ -355,7 +355,9 @@ void watchdog_pi::OnTimer( wxTimerEvent & )
         if(isnan(m_cog))
             m_cog = cog, m_sog = sog;
         else {
+            cog = heading_resolve(cog, m_cog);
             m_cog = .25*cog + .75*m_cog;
+            m_cog = heading_resolve(m_cog, 180);
             m_sog = .25*sog + .75*m_sog;
         }
         m_hdm = m_lastfix.Hdm;
