@@ -412,8 +412,9 @@ public:
         Alarm::OnTimer( tEvent );
         double sog = g_watchdog_pi->LastFix().Sog;
         if(!isnan(sog))
-            m_SOGqueue.push_front(sog) ;
-        return;
+            m_SOGqueue.push_front(sog);
+        while(m_SOGqueue.size() > m_iAverageTime)
+            m_SOGqueue.pop_back();
     }
     
 private:
