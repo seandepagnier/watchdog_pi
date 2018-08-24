@@ -5,7 +5,7 @@
  * Author:   Sean D'Epagnier
  *
  ***************************************************************************
- *   Copyright (C) 2015 by Sean D'Epagnier                                 *
+ *   Copyright (C) 2018 by Sean D'Epagnier                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -28,6 +28,7 @@
 
 #include "watchdog_pi.h"
 #include "WatchdogDialog.h"
+#include "NewAlarmDialog.h"
 #include "EditAlarmDialog.h"
 
 /* XPM */
@@ -139,7 +140,6 @@ void WatchdogDialog::UpdateAlarms()
 
     for(unsigned int i=0; i<Alarm::s_Alarms.size(); i++)
         UpdateStatus(i);
-    
 }
 
 void WatchdogDialog::UpdateStatus(int index)
@@ -157,7 +157,6 @@ void WatchdogDialog::UpdateStatus(int index)
     else
         m_lStatus->SetItemTextColour(index, alarm->m_bFired ? *wxRED: *wxBLACK);
     m_lStatus->SetColumnWidth(ALARM_STATUS, wxLIST_AUTOSIZE);
-
 }
 
 void WatchdogDialog::OnLeftDown( wxMouseEvent& event )
@@ -180,6 +179,21 @@ void WatchdogDialog::OnLeftDown( wxMouseEvent& event )
     UpdateStatus(index);
 }
 
+void WatchdogDialog::OnRightDown( wxMouseEvent& event )
+{
+    wxPoint pos = event.GetPosition();
+    int flags = 0;
+    long index = m_lStatus->HitTest(pos, flags);
+    if(index >= 0)
+        m_menualarm = Alarm::s_Alarms[index];
+
+    m_Edit->Enable(index >= 0);
+    m_Reset->Enable(index >= 0);
+    m_Delete->Enable(index >= 0);
+    
+    WatchdogDialogBaseOnContextMenu(event);
+}
+
 void WatchdogDialog::OnDoubleClick( wxMouseEvent& event )
 {
     if(event.GetX() < m_lStatus->GetColumnWidth(0))
@@ -188,8 +202,12 @@ void WatchdogDialog::OnDoubleClick( wxMouseEvent& event )
     wxPoint pos = event.GetPosition();
     int flags = 0;
     long index = m_lStatus->HitTest(pos, flags);
-    if(index < 0)
+    if(index < 0) {
+        // double click but not on alarm, add a new one
+        wxCommandEvent e;
+        OnNew(e);
         return;
+    }
 
     Alarm *alarm = Alarm::s_Alarms[index];
     EditAlarmDialog dlg(this, alarm);
@@ -197,13 +215,61 @@ void WatchdogDialog::OnDoubleClick( wxMouseEvent& event )
         dlg.Save();
 }
 
-void WatchdogDialog::OnConfiguration( wxCommandEvent& event )
+void WatchdogDialog::OnNew( wxCommandEvent& event )
 {
-    m_watchdog_pi.ShowConfigurationDialog( this );
+    NewAlarmDialog dlg(this);
+    if(dlg.ShowModal() == wxID_CANCEL)
+        return;
+
+    Alarm *alarm = Alarm::NewAlarm((AlarmType)dlg.m_lAlarmType->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED));
+    if(!alarm) return;
+
+    EditAlarmDialog edlg(this, alarm);
+    if(edlg.ShowModal() == wxID_OK) {
+        edlg.Save();
+        Alarm::s_Alarms.push_back(alarm);
+        UpdateAlarms();
+    } else
+        delete alarm;
+}
+
+void WatchdogDialog::OnEdit( wxCommandEvent& event )
+{
+    EditAlarmDialog dlg(this, m_menualarm);
+    if(dlg.ShowModal() == wxID_OK)
+        dlg.Save();
+    UpdateAlarms();
 }
 
 void WatchdogDialog::OnReset( wxCommandEvent& event )
 {
+    m_menualarm->m_bFired = false;
+    UpdateAlarms();
+}
+
+void WatchdogDialog::OnDelete( wxCommandEvent& event )
+{
+    std::vector<Alarm*>::iterator it = Alarm::s_Alarms.begin();
+    while(*it != m_menualarm)
+        it++;
+    Alarm::s_Alarms.erase(it);
+    delete m_menualarm;
+    UpdateAlarms();
+}
+
+void WatchdogDialog::OnResetAll( wxCommandEvent& event )
+{
     Alarm::ResetAll();
     UpdateAlarms();
+}
+
+void WatchdogDialog::OnDeleteAll( wxCommandEvent& event )
+{
+    Alarm::DeleteAll();
+    UpdateAlarms();
+}
+
+void WatchdogDialog::OnConfiguration( wxCommandEvent& event )
+{
+    m_watchdog_pi.ShowConfigurationDialog( this );
 }

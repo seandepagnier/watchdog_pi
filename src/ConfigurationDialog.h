@@ -34,25 +34,10 @@ public:
     ConfigurationDialog( watchdog_pi &_watchdog_pi, wxWindow* parent);
 
     void OnEnabled( wxCommandEvent& event );
-
-    void OnNewAlarm( wxCommandEvent& event );
-    void OnEditAlarm( wxCommandEvent& event );
-    void OnDeleteAlarm( wxCommandEvent& event );
-    void OnDeleteAllAlarms( wxCommandEvent& event );
-    void AlarmSelected( wxListEvent& event ) { UpdateStates(); }
-    void OnDoubleClick( wxMouseEvent& event );
+    void OnFont( wxFontPickerEvent& event );
 
 private:
-    void UpdateStates();
-    int CurrentSelection();
-    Alarm *CurrentAlarm();
-
-    void UpdateItem(int index);
-
     void OnInformation( wxCommandEvent& event );
-    void OnAboutAuthor( wxCommandEvent& event );
 
     watchdog_pi &m_watchdog_pi;
-    bool m_bOnEditAlarmOK;
-//    watchdog_pi m_watchdog_pi;
 };

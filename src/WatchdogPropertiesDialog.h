@@ -23,39 +23,23 @@
 *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,  USA.         *
 **************************************************************************/
 
-#include "wx/wxprec.h"
+#ifndef __WatchdogPropertiesDialog__
+#define __WatchdogPropertiesDialog__
 
-#ifndef  WX_PRECOMP
-#include "wx/wx.h"
-#endif //precompiled headers
+#include "WatchdogUI.h"
+#include <wx/bmpcbox.h>
 
-#include "watchdog_pi.h"
-#include "WatchdogPropertiesDialog.h"
-#include "version.h"
-#include <wx/fontdlg.h>
+#define STRINGIFY(x) #x
+#define TOSTRING(x) STRINGIFY(x)
 
-WatchdogPropertiesDialog::WatchdogPropertiesDialog( wxWindow* parent )
-:
-WatchdogPropertiesDialogBase( parent )
+class WatchdogPropertiesDialog : public WatchdogPropertiesDialogBase
 {
-    m_staticTextNameVal->SetLabel( wxT("Watchdog Plugin") );
-    m_staticTextMajorVal->SetLabel(wxString::Format(wxT("%i"), PLUGIN_VERSION_MAJOR ));
-    m_staticTextMinorVal->SetLabel(wxString::Format(wxT("%i"), PLUGIN_VERSION_MINOR ));
-    m_staticTextPatchVal->SetLabel( wxT(TOSTRING(PLUGIN_VERSION_PATCH)) );
-    m_staticTextDateVal->SetLabel( wxT(TOSTRING(PLUGIN_VERSION_DATE)) );
+public:
+    WatchdogPropertiesDialog( wxWindow* parent );
 
-}
+protected:
+    void OnWatchdogPropertiesOKClick( wxCommandEvent& event );
+    void OnAboutAuthor( wxCommandEvent& event );
+};
 
-void WatchdogPropertiesDialog::OnWatchdogPropertiesOKClick( wxCommandEvent& event )
-{
-    Show( false );
-#ifdef __WXOSX__    
-    EndModal(wxID_OK);
-#endif
-    event.Skip();
-}
-
-void WatchdogPropertiesDialog::OnAboutAuthor( wxCommandEvent& event )
-{
-    wxLaunchDefaultBrowser(_T(ABOUT_AUTHOR_URL));
-}
+#endif // __WatchdogPropertiesDialog__

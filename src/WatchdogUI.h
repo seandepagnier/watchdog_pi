@@ -17,12 +17,17 @@
 #include <wx/colour.h>
 #include <wx/settings.h>
 #include <wx/string.h>
-#include <wx/button.h>
 #include <wx/sizer.h>
+#include <wx/bitmap.h>
+#include <wx/image.h>
+#include <wx/icon.h>
+#include <wx/menu.h>
 #include <wx/dialog.h>
 #include <wx/stattext.h>
+#include <wx/button.h>
 #include <wx/radiobut.h>
 #include <wx/statbox.h>
+#include <wx/fontpicker.h>
 #include <wx/checkbox.h>
 #include <wx/filepicker.h>
 #include <wx/textctrl.h>
@@ -32,6 +37,8 @@
 #include <wx/slider.h>
 #include <wx/radiobox.h>
 #include <wx/statline.h>
+#include <wx/combobox.h>
+#include <wx/notebook.h>
 
 #include "wxWTranslateCatalog.h"
 
@@ -50,23 +57,34 @@ class WatchdogDialogBase : public wxDialog
 	private:
 	
 	protected:
-		wxListCtrl* m_lStatus;
-		wxButton* m_bConfiguration;
-		wxButton* m_bReset;
-		wxButton* m_bClose;
+		wxMenu* m_Menu;
+		wxMenuItem* m_Edit;
+		wxMenuItem* m_Reset;
+		wxMenuItem* m_Delete;
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnDoubleClick( wxMouseEvent& event ) { event.Skip(); }
 		virtual void OnLeftDown( wxMouseEvent& event ) { event.Skip(); }
-		virtual void OnConfiguration( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnRightDown( wxMouseEvent& event ) { event.Skip(); }
+		virtual void OnNew( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnEdit( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnReset( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnClose( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnDelete( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnResetAll( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnDeleteAll( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnConfiguration( wxCommandEvent& event ) { event.Skip(); }
 		
 	
 	public:
+		wxListCtrl* m_lStatus;
 		
-		WatchdogDialogBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("WatchDog"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxCAPTION|wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxTAB_TRAVERSAL ); 
+		WatchdogDialogBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("WatchDog"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,120 ), long style = wxCAPTION|wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxTAB_TRAVERSAL ); 
 		~WatchdogDialogBase();
+		
+		void WatchdogDialogBaseOnContextMenu( wxMouseEvent &event )
+		{
+			this->PopupMenu( m_Menu, event.GetPosition() );
+		}
 	
 };
 
@@ -92,9 +110,11 @@ class WatchdogPropertiesDialogBase : public wxDialog
 		wxStaticText* m_staticTextDateVal;
 		wxStaticText* m_staticTextOther;
 		wxStaticText* m_staticTextOtherVal;
+		wxButton* m_button7;
 		wxButton* m_buttonOK;
 		
 		// Virtual event handlers, overide them in your derived class
+		virtual void OnAboutAuthor( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnWatchdogPropertiesOKClick( wxCommandEvent& event ) { event.Skip(); }
 		
 	
@@ -117,24 +137,13 @@ class ConfigurationDialogBase : public wxDialog
 		wxRadioButton* m_rbOnce;
 		wxRadioButton* m_rbVisible;
 		wxRadioButton* m_rbNever;
-		wxButton* m_bNew;
-		wxButton* m_bEdit;
-		wxButton* m_bDelete;
-		wxButton* m_bDeleteAll;
-		wxListCtrl* m_lAlarms;
-		wxButton* m_button7;
+		wxFontPickerCtrl* m_font;
 		wxStdDialogButtonSizer* m_sdbSizer1;
 		wxButton* m_sdbSizer1OK;
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnEnabled( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnNewAlarm( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnEditAlarm( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnDeleteAlarm( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnDeleteAllAlarms( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnDoubleClick( wxMouseEvent& event ) { event.Skip(); }
-		virtual void AlarmSelected( wxListEvent& event ) { event.Skip(); }
-		virtual void OnAboutAuthor( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnFont( wxFontPickerEvent& event ) { event.Skip(); }
 		
 	
 	public:
@@ -163,7 +172,7 @@ class NewAlarmDialogBase : public wxDialog
 	public:
 		wxListCtrl* m_lAlarmType;
 		
-		NewAlarmDialogBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("New Alarm"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 400,300 ), long style = wxDEFAULT_DIALOG_STYLE ); 
+		NewAlarmDialogBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("New Alarm"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 200,300 ), long style = wxDEFAULT_DIALOG_STYLE ); 
 		~NewAlarmDialogBase();
 	
 };
@@ -463,6 +472,45 @@ class BoundaryPanel : public wxPanel
 		
 		BoundaryPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL ); 
 		~BoundaryPanel();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class pypilotPanel
+///////////////////////////////////////////////////////////////////////////////
+class pypilotPanel : public wxPanel 
+{
+	private:
+	
+	protected:
+		wxNotebook* m_notebook1;
+		wxPanel* m_panel2;
+		wxPanel* m_panel3;
+		wxButton* m_button19;
+		wxPanel* m_panel1;
+		wxStaticText* m_staticText72;
+		wxStaticText* m_staticText73;
+	
+	public:
+		wxComboBox* m_cHost;
+		wxCheckBox* m_cbNoConnection;
+		wxCheckBox* m_cbOverTemperature;
+		wxCheckBox* m_cbOverCurrent;
+		wxCheckBox* m_cbNoIMU;
+		wxCheckBox* m_cbNoMotorController;
+		wxCheckBox* m_cbNoRudderFeedback;
+		wxCheckBox* m_cbNoMotorTemperature;
+		wxCheckBox* m_cbDriverTimeout;
+		wxCheckBox* m_cbEndOfTravel;
+		wxCheckBox* m_cbLostMode;
+		wxCheckBox* m_cbServoSaturated;
+		wxCheckBox* m_cbPowerConsumption;
+		wxSpinCtrlDouble* m_sPowerConsumption;
+		wxCheckBox* m_cbCourseError;
+		wxSpinCtrlDouble* m_sCourseError;
+		
+		pypilotPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL ); 
+		~pypilotPanel();
 	
 };
 

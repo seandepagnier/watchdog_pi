@@ -27,8 +27,7 @@
 #include <wx/wx.h>
 #include <wx/stdpaths.h>
 
-#include "wxJSON/jsonreader.h"
-#include "wxJSON/jsonwriter.h"
+#include "json/json.h"
 
 #include "wddc.h"
 
@@ -39,25 +38,25 @@
 #include "icons.h"
 #include "AIS_Target_Info.h"
 
-wxJSONValue g_ReceivedPathGUIDJSONMsg;
+Json::Value g_ReceivedPathGUIDJSONMsg;
 wxString    g_ReceivedPathGUIDMessage;
-wxJSONValue g_ReceivedBoundaryTimeJSONMsg;
+Json::Value g_ReceivedBoundaryTimeJSONMsg;
 wxString    g_ReceivedBoundaryTimeMessage;
-wxJSONValue g_ReceivedBoundaryDistanceJSONMsg;
+Json::Value g_ReceivedBoundaryDistanceJSONMsg;
 wxString    g_ReceivedBoundaryDistanceMessage;
-wxJSONValue g_ReceivedBoundaryAnchorJSONMsg;
+Json::Value g_ReceivedBoundaryAnchorJSONMsg;
 wxString    g_ReceivedBoundaryAnchorMessage;
-wxJSONValue g_ReceivedBoundaryGUIDJSONMsg;
+Json::Value g_ReceivedBoundaryGUIDJSONMsg;
 wxString    g_ReceivedBoundaryGUIDMessage;
-wxJSONValue g_ReceivedGuardZoneJSONMsg;
+Json::Value g_ReceivedGuardZoneJSONMsg;
 wxString    g_ReceivedGuardZoneMessage;
-wxJSONValue g_ReceivedGuardZoneGUIDJSONMsg;
+Json::Value g_ReceivedGuardZoneGUIDJSONMsg;
 wxString    g_ReceivedGuardZoneGUIDMessage;
-wxJSONValue g_ReceivedODVersionJSONMsg;
+Json::Value g_ReceivedODVersionJSONMsg;
 wxString    g_ReceivedODVersionMessage;
-wxJSONValue g_ReceivedODAPIJSONMsg;
+Json::Value g_ReceivedODAPIJSONMsg;
 wxString    g_ReceivedODAPIMessage;
-wxJSONValue g_ReceivedAISJSONMsg;
+Json::Value g_ReceivedAISJSONMsg;
 wxString    g_ReceivedAISMessage;
 
 wxString    g_BoundaryName;
@@ -145,12 +144,12 @@ int watchdog_pi::Init(void)
     Alarm::LoadConfigAll();
 
 #ifdef WATCHDOG_USE_SVG
-    m_leftclick_tool_id = InsertPlugInToolSVG( _T( "Watchdog" ), _svg_watchdog, _svg_watchdog,
-        _svg_watchdog, wxITEM_CHECK, _( "Watchdog" ), _T( "" ), NULL, WATCHDOG_TOOL_POSITION, 0, this);
+    m_leftclick_tool_id = InsertPlugInToolSVG(  "Watchdog" , _svg_watchdog, _svg_watchdog,
+        _svg_watchdog, wxITEM_CHECK, _( "Watchdog" ),  "" , NULL, WATCHDOG_TOOL_POSITION, 0, this);
 #else
     m_leftclick_tool_id  = InsertPlugInTool
-        (_T(""), _img_watchdog, _img_watchdog, wxITEM_NORMAL,
-         _("Watchdog"), _T(""), NULL, WATCHDOG_TOOL_POSITION, 0, this);
+        ("", _img_watchdog, _img_watchdog, wxITEM_NORMAL,
+         _("Watchdog"), "", NULL, WATCHDOG_TOOL_POSITION, 0, this);
 #endif
     
     m_PropertiesDialog = NULL;
@@ -186,7 +185,6 @@ bool watchdog_pi::DeInit(void)
 {
     Alarm::SaveConfigAll();
     Alarm::DeleteAll();
-    Alarm::s_Alarms.clear();
 
     //    Record the dialog position
     if (m_WatchdogDialog)
@@ -395,98 +393,85 @@ void watchdog_pi::SetPositionFixEx(PlugIn_Position_Fix_Ex &pfix)
 void watchdog_pi::SetPluginMessage(wxString &message_id, wxString &message_body)
 {
     // construct the JSON root object
-    wxJSONValue  root;
+    Json::Value  root;
     // construct a JSON parser
-    wxJSONReader reader;
-    wxString    sLogMessage;
+    Json::Reader reader;
     bool        bFail = false;
     
-    if(message_id == wxS("WATCHDOG_PI")) {
+    if(message_id == "WATCHDOG_PI") {
         // now read the JSON text and store it in the 'root' structure
         // check for errors before retreiving values...
-        int numErrors = reader.Parse( message_body, &root );
-        if ( numErrors > 0 )  {
-            const wxArrayString& errors = reader.GetErrors();
-            for(int i = 0; i < (int)errors.GetCount(); i++)
-            {
-                if(i == 0) {
-                    sLogMessage.clear();
-                    sLogMessage.Append(wxT("watchdog_pi: Error parsing JSON message - "));
-                    sLogMessage.Append( message_id );
-                    sLogMessage.Append(wxT(", error text: "));
-                } else sLogMessage.Append(wxT("\n"));
-                sLogMessage.append( errors.Item( i ) );
-                wxLogMessage( sLogMessage );
-            }
+        if ( !reader.parse( (std::string)message_body, root ) ) {
+            wxLogMessage(wxString("watchdog_pi: Error parsing JSON message: ") + reader.getFormattedErrorMessages() );
             return;
         }
         
-        if(!root.HasMember( wxS("Source"))) {
+        if(!root.isMember( "Source")) {
             // Originator
-            wxLogMessage( wxS("No Source found in message") );
+            wxLogMessage( "No Source found in message" );
             bFail = true;
         }
         
-        if(!root.HasMember( wxS("Msg"))) {
+        if(!root.isMember( "Msg")) {
             // Message identifier
-            wxLogMessage( wxS("No Msg found in message") );
+            wxLogMessage( "No Msg found in message" );
             bFail = true;
         }
         
-        if(!root.HasMember( wxS("Type"))) {
+        if(!root.isMember( "Type")) {
             // Message type, orig or resp
-            wxLogMessage( wxS("No Type found in message") );
+            wxLogMessage( "No Type found in message" );
             bFail = true;
         }
         
-        if(!root.HasMember( wxS("MsgId"))) {
+        if(!root.isMember( "MsgId")) {
             // Unique (?) Msg number/identifier
-            wxLogMessage( wxS("No MsgNo found in message") );
+            wxLogMessage( "No MsgNo found in message" );
             bFail = true;
         }
         
         if(!bFail) {
-            if(root[wxS("Type")].AsString() == wxS("Response") && root[wxS("Source")].AsString() == wxS("OCPN_DRAW_PI")) {
-                if(root[wxS("Msg")].AsString() == wxS("FindPathByGUID") ) {
-                    if(root[wxS("MsgId")].AsString() == wxS("guard") || root[wxS("MsgId")].AsString() == wxS("inclusion") || root[wxS("MsgId")].AsString() == wxS("general")) {                        g_ReceivedPathGUIDJSONMsg = root;
+            if(root["Type"].asString() == "Response" && root["Source"].asString() == "OCPN_DRAW_PI") {
+                if(root["Msg"].asString() == "FindPathByGUID" ) {
+                    if(root["MsgId"].asString() == "guard" || root["MsgId"].asString() == "inclusion" || root["MsgId"].asString() == "general") {                        g_ReceivedPathGUIDJSONMsg = root;
                         g_ReceivedPathGUIDMessage = message_body;
                     }
-                } else if(root[wxS("Msg")].AsString() == wxS("FindPointInAnyBoundary") ) {
-                    if(root[wxS("MsgId")].AsString() == wxS("time")) {
+                } else if(root["Msg"].asString() == "FindPointInAnyBoundary" ) {
+                    if(root["MsgId"].asString() == "time") {
                     g_ReceivedBoundaryTimeJSONMsg = root;
                     g_ReceivedBoundaryTimeMessage = message_body;
-                    } else if(root[wxS("MsgId")].AsString() == wxS("distance")) {
+                    } else if(root["MsgId"].asString() == "distance") {
                         g_ReceivedBoundaryDistanceJSONMsg = root;
                         g_ReceivedBoundaryDistanceMessage = message_body;
-                    } else if(root[wxS("MsgId")].AsString() == wxS("GetGUID")) {
+                    } else if(root["MsgId"].asString() == "GetGUID") {
                         g_ReceivedBoundaryGUIDJSONMsg = root;
                         g_ReceivedBoundaryGUIDMessage = message_body;
                     }
-                } else if(root[wxS("Msg")].AsString() == wxS("FindClosestBoundaryLineCrossing") ) {
-                    if(root[wxS("MsgId")].AsString() == wxS("distance")) {
+                } else if(root["Msg"].asString() == "FindClosestBoundaryLineCrossing" ) {
+                    if(root["MsgId"].asString() == "distance") {
                         g_ReceivedBoundaryDistanceJSONMsg = root;
                         g_ReceivedBoundaryDistanceMessage = message_body;
-                    } else if(root[wxS("MsgId")].AsString() == wxS("time")) {
+                    } else if(root["MsgId"].asString() == "time") {
                         g_ReceivedBoundaryTimeJSONMsg = root;
                         g_ReceivedBoundaryTimeMessage = message_body;
                     }
-                } else if(root[wxS("Msg")].AsString() == wxS("FindPointInBoundary") ) {
-                    if(root[wxS("MsgId")].AsString() == wxS("anchor")) {
+                } else if(root["Msg"].asString() == "FindPointInBoundary" ) {
+                    if(root["MsgId"].asString() == "anchor") {
                         g_ReceivedBoundaryAnchorJSONMsg = root;
                         g_ReceivedBoundaryAnchorMessage = message_body;
                     }
-                } else if(root[wxS("Msg")].AsString() == wxS("FindPointInGuardZone") ) {
-                    if(root[wxS("MsgId")].AsString() == wxS("guard")) {
+                } else if(root["Msg"].asString() == "FindPointInGuardZone" ) {
+                    if(root["MsgId"].asString() == "guard") {
                         g_ReceivedGuardZoneJSONMsg = root;
                         g_ReceivedGuardZoneMessage = message_body;
                     }
-                } else if(root[wxS("Msg")].AsString() == wxS("Version") ) {
-                    if(root[wxS("MsgId")].AsString() == wxS("version")) {
+                } else if(root["Msg"].asString() == "Version" ) {
+                    if(root["MsgId"].asString() == "version") {
                         g_ReceivedODVersionJSONMsg = root;
                         g_ReceivedODVersionMessage = message_body;
                     }
-                } else if(root[wxS("Msg")].AsString() == wxS("GetAPIAddresses") ) {
-                    if(root[wxS("MsgId")].AsString() == wxS("GetAPIAddresses")) {
+                } else if(root["Msg"].asString() == "GetAPIAddresses" ) {
+                    if(root["MsgId"].asString() == "GetAPIAddresses") {
                         g_ReceivedODAPIJSONMsg = root;
                         g_ReceivedODAPIMessage = message_body;
                     }
@@ -494,93 +479,81 @@ void watchdog_pi::SetPluginMessage(wxString &message_id, wxString &message_body)
             }
         }
         return;
-    } else if(message_id == wxS("AIS")) {
-        int numErrors = reader.Parse( message_body, &root );
-        if ( numErrors > 0 )  {
-            const wxArrayString& errors = reader.GetErrors();
-            for(int i = 0; i < (int)errors.GetCount(); i++)
-            {
-                if(i == 0) {
-                    sLogMessage.clear();
-                    sLogMessage.Append(wxT("watchdog_pi: Error parsing JSON message - "));
-                    sLogMessage.Append( message_id );
-                    sLogMessage.Append(wxT(", error text: "));
-                } else sLogMessage.Append(wxT("\n"));
-                sLogMessage.append( errors.Item( i ) );
-                wxLogMessage( sLogMessage );
-            }
+    } else if(message_id == "AIS") {
+        if(reader.parse( (std::string)message_body, root )) {
+            wxLogMessage(wxString("watchdog_pi: Error parsing JSON message: ") + reader.getFormattedErrorMessages() );
             return;
         }
-        if(!root.HasMember( wxS("Source"))) {
-            wxLogMessage( wxS("No Source found in message") );
+        if(!root.isMember( "Source")) {
+            wxLogMessage( "No Source found in message" );
             bFail = true;
         }
-        if(!root.HasMember( wxS("Msg"))) {
-            wxLogMessage( wxS("No Msg found in message") );
+        if(!root.isMember( "Msg")) {
+            wxLogMessage( "No Msg found in message" );
             bFail = true;
         }
-        if(!root.HasMember( wxS("Type"))) {
-            wxLogMessage( wxS("No Type found in message") );
+        if(!root.isMember( "Type")) {
+            wxLogMessage( "No Type found in message" );
             bFail = true;
         }
-        if(!root.HasMember( wxS("MsgId"))) {
-            wxLogMessage( wxS("No MsgNo found in message") );
+        if(!root.isMember( "MsgId")) {
+            wxLogMessage( "No MsgNo found in message" );
             bFail = true;
         }
-        if(!root.HasMember( wxS("lat"))) {
-            wxLogMessage( wxS("No Latitude found in message") );
+        if(!root.isMember( "lat")) {
+            wxLogMessage( "No Latitude found in message" );
             bFail = true;
         }
-        if(!root.HasMember( wxS("lon"))) {
-            wxLogMessage( wxS("No Longitude found in message") );
+        if(!root.isMember( "lon")) {
+            wxLogMessage( "No Longitude found in message" );
             bFail = true;
         }
-        if(!root.HasMember( wxS("sog"))) {
-            wxLogMessage( wxS("No SOG found in message") );
+        if(!root.isMember( "sog")) {
+            wxLogMessage( "No SOG found in message" );
             bFail = true;
         }
-        if(!root.HasMember( wxS("cog"))) {
-            wxLogMessage( wxS("No COG found in message") );
+        if(!root.isMember( "cog")) {
+            wxLogMessage( "No COG found in message" );
             bFail = true;
         }
-        if(!root.HasMember( wxS("hdg"))) {
-            wxLogMessage( wxS("No Heading found in message") );
+        if(!root.isMember( "hdg")) {
+            wxLogMessage( "No Heading found in message" );
             bFail = true;
         }
-        if(!root.HasMember( wxS("mmsi"))) {
-            wxLogMessage( wxS("No MMSI found in message") );
+        if(!root.isMember( "mmsi")) {
+            wxLogMessage( "No MMSI found in message" );
             bFail = true;
         }
-        if(!root.HasMember( wxS("shipname"))) {
-            wxLogMessage( wxS("No Ship Name found in message") );
+        if(!root.isMember( "shipname")) {
+            wxLogMessage( "No Ship Name found in message" );
             bFail = true;
         }
         
         if(!bFail) {
-            if(root[wxS("Type")].AsString() == wxS("Information") && root[wxS("Source")].AsString() == wxS("AIS_Decoder")) {
+            if(root["Type"].asString() == "Information" && root["Source"].asString() == "AIS_Decoder") {
                 g_ReceivedAISJSONMsg = root;
                 g_ReceivedAISMessage = message_body;
-                g_ReceivedAISJSONMsg[wxS("lat")].AsString().ToDouble( &g_AISTarget.m_dLat );
-                g_ReceivedAISJSONMsg[wxS("lon")].AsString().ToDouble( &g_AISTarget.m_dLon );
-                g_ReceivedAISJSONMsg[wxS("sog")].AsString().ToDouble( &g_AISTarget.m_dSOG );
-                g_ReceivedAISJSONMsg[wxS("cog")].AsString().ToDouble( &g_AISTarget.m_dCOG );
-                g_ReceivedAISJSONMsg[wxS("hdg")].AsString().ToDouble( &g_AISTarget.m_dHDG );
-                g_AISTarget.m_iMMSI = g_ReceivedAISJSONMsg[wxS("mmsi")].AsLong();
-                g_AISTarget.m_sShipName = g_ReceivedAISJSONMsg[wxS("shipname")].AsString().Trim();
-                if(root.HasMember( wxS("callsign") ))
-                    g_AISTarget.m_sCallSign = g_ReceivedAISJSONMsg[wxS("callsign")].AsString().Trim();
+                g_AISTarget.m_dLat = g_ReceivedAISJSONMsg["lat"].asDouble();
+                g_AISTarget.m_dLon = g_ReceivedAISJSONMsg["lon"].asDouble();
+                g_AISTarget.m_dSOG = g_ReceivedAISJSONMsg["sog"].asDouble();
+                g_AISTarget.m_dCOG = g_ReceivedAISJSONMsg["cog"].asDouble();
+                g_AISTarget.m_dHDG = g_ReceivedAISJSONMsg["hdg"].asDouble();
+                g_AISTarget.m_iMMSI = g_ReceivedAISJSONMsg["mmsi"].asDouble();
+                g_AISTarget.m_sShipName = wxString(g_ReceivedAISJSONMsg["shipname"].asString()).Trim();
+                if(root.isMember( "callsign" ))
+                    g_AISTarget.m_sCallSign = wxString(g_ReceivedAISJSONMsg["callsign"].asString()).Trim();
                 else
                     g_AISTarget.m_sCallSign = wxEmptyString;
-                if(root.HasMember( wxS("active") ))
-                    g_AISTarget.m_bActive = g_ReceivedAISJSONMsg[wxS("active")].AsBool();
+                if(root.isMember( "active" ))
+                    g_AISTarget.m_bActive = g_ReceivedAISJSONMsg["active"].asBool();
                 else
                     g_AISTarget.m_bActive = true;
-                if(root.HasMember( wxS("lost") ))
-                    g_AISTarget.m_bLost = g_ReceivedAISJSONMsg[wxS("lost")].AsBool();
+                if(root.isMember( "lost" ))
+                    g_AISTarget.m_bLost = g_ReceivedAISJSONMsg["lost"].asBool();
                 else
                     g_AISTarget.m_bLost = false;
-                if(root.HasMember( wxS("ownship") ))
-                    g_AISTarget.m_bOwnship = g_ReceivedAISJSONMsg[wxS("ownship")].AsBool();
+                if(root.isMember( "ownship" ))
+                    g_AISTarget.m_bOwnship = g_ReceivedAISJSONMsg["ownship"].asBool();
                 else
                     g_AISTarget.m_bOwnship = false;
             }
@@ -591,9 +564,9 @@ void watchdog_pi::SetPluginMessage(wxString &message_id, wxString &message_body)
                 }
             }
         }
-    } else if(message_id == _T("WMM_VARIATION_BOAT")) {
-        if(reader.Parse( message_body, &root ) == 0) {
-            root[_T("Decl")].AsString().ToDouble(&m_declination);
+    } else if(message_id == "WMM_VARIATION_BOAT") {
+        if(reader.parse( (std::string)message_body, root )) {
+            m_declination = root["Decl"].asDouble();
             m_declinationTime = wxDateTime::Now();
         }
     }
@@ -615,19 +588,19 @@ wxString watchdog_pi::StandardPath()
 #elif defined(__WXGTK__) || defined(__WXQT__)
     wxString stdPath  = std_path.GetUserDataDir();
 #elif defined(__WXOSX__)
-    wxString stdPath  = (std_path.GetUserConfigDir() + s + _T("opencpn"));
+    wxString stdPath  = (std_path.GetUserConfigDir() + s + "opencpn");
 #endif
 
-    stdPath += s + _T("plugins");
+    stdPath += s + "plugins";
     if (!wxDirExists(stdPath))
       wxMkdir(stdPath);
 
-    stdPath += s + _T("watchdog");
+    stdPath += s + "watchdog";
 
 #ifdef __WXOSX__
     // Compatibility with pre-OCPN-4.2; move config dir to
     // ~/Library/Preferences/opencpn if it exists
-    wxString oldPath = (std_path.GetUserConfigDir() + s + _T("plugins") + s + _T("weatherfax"));
+    wxString oldPath = (std_path.GetUserConfigDir() + s + "plugins" + s + "weatherfax");
     if (wxDirExists(oldPath) && !wxDirExists(stdPath)) {
 	wxLogMessage("weatherfax_pi: moving config dir %s to %s", oldPath, stdPath);
 	wxRenameFile(oldPath, stdPath);
@@ -643,12 +616,8 @@ wxString watchdog_pi::StandardPath()
 
 double watchdog_pi::Declination()
 {
-    if(!m_declinationTime.IsValid() || (wxDateTime::Now() - m_declinationTime).GetSeconds() > 1200) {
-        wxJSONWriter w;
-        wxString out;
-        wxJSONValue v;
-        w.Write(v, out);
-        SendPluginMessage(wxString(_T("WMM_VARIATION_BOAT_REQUEST")), out);
-    }
+    if(!m_declinationTime.IsValid() || (wxDateTime::Now() - m_declinationTime).GetSeconds() > 1200)
+        SendPluginMessage("WMM_VARIATION_BOAT_REQUEST", "");
+
     return m_declination;
 }

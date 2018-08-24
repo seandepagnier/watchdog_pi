@@ -45,17 +45,9 @@ ConfigurationDialog::ConfigurationDialog( watchdog_pi &_watchdog_pi, wxWindow* p
     m_rbVisible->SetValue(enabled == 3);
     m_rbNever->SetValue(enabled == 0);
 
-    m_lAlarms->InsertColumn(ALARM_TYPE, _("Type"));
-    m_lAlarms->InsertColumn(ALARM_OPTIONS, _("Options"));
-    m_lAlarms->InsertColumn(ALARM_ACTION, _("Action"));
-
-    for(unsigned int i=0; i<Alarm::s_Alarms.size(); i++) {
-        wxListItem item;
-        m_lAlarms->InsertItem(i, item);
-        UpdateItem(i);
-    }
-    UpdateStates();
-    
+    wxFont font(pConf->Read ( _T ( "Font" ), wxFont(14, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL).GetNativeFontInfoDesc()));
+    m_font->SetFont(font);
+    m_watchdog_pi.m_WatchdogDialog->m_lStatus->SetFont(font);
 }
 
 void ConfigurationDialog::OnEnabled( wxCommandEvent& event )
@@ -73,119 +65,15 @@ void ConfigurationDialog::OnEnabled( wxCommandEvent& event )
     m_watchdog_pi.m_iEnableType = enabled;
     wxFileConfig *pConf = GetOCPNConfigObject();
     pConf->SetPath ( _T( "/Settings/Watchdog" ) );
-
     pConf->Write ( _T ( "Enabled" ), enabled );
 }
 
-void ConfigurationDialog::OnNewAlarm( wxCommandEvent& event )
+void ConfigurationDialog::OnFont( wxFontPickerEvent& event )
 {
-    NewAlarmDialog dlg(this);
-    if(dlg.ShowModal() == wxID_CANCEL)
-        return;
-
-    Alarm *alarm = Alarm::NewAlarm((AlarmType)dlg.m_lAlarmType->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED));
-    if(!alarm) return;
-
-    wxListItem item;
-    long index = m_lAlarms->InsertItem(m_lAlarms->GetItemCount(), item);
-
-    m_lAlarms->SetItemState(m_lAlarms->GetItemCount() - 1,
-                            wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
-
-    g_watchdog_pi->m_WatchdogDialog->UpdateAlarms();
-    UpdateItem(index);
-    UpdateStates();
-
-    OnEditAlarm(event);
-    if(m_bOnEditAlarmOK)
-        alarm->m_bEnabled = true;
-    else
-        OnDeleteAlarm(event);
-    g_watchdog_pi->m_WatchdogDialog->UpdateAlarms();
-}
-
-void ConfigurationDialog::OnEditAlarm( wxCommandEvent& event )
-{
-    EditAlarmDialog dlg(this, CurrentAlarm());
-    if(dlg.ShowModal() == wxID_OK) {
-        dlg.Save();
-        UpdateItem(CurrentSelection());
-        m_bOnEditAlarmOK = true;
-    } else
-        m_bOnEditAlarmOK = false;
-}
-
-void ConfigurationDialog::OnDeleteAlarm( wxCommandEvent& event )
-{
-    std::vector<Alarm*>::iterator it = Alarm::s_Alarms.begin();
-    for(int i=0; i<CurrentSelection(); i++)
-        it++;
-    delete *it;
-    Alarm::s_Alarms.erase(it);
-    m_lAlarms->DeleteItem(CurrentSelection());
-
-    UpdateStates();
-
-    g_watchdog_pi->m_WatchdogDialog->UpdateAlarms();
-}
-
-void ConfigurationDialog::OnDeleteAllAlarms( wxCommandEvent& event )
-{
-    for(unsigned int i=0; i<Alarm::s_Alarms.size(); i++)
-        m_lAlarms->DeleteItem(0);
-    Alarm::DeleteAll();
-    Alarm::s_Alarms.clear();
-
-    UpdateStates();
-    g_watchdog_pi->m_WatchdogDialog->UpdateAlarms();
-}
-
-void ConfigurationDialog::OnDoubleClick( wxMouseEvent& event )
-{
-    if(CurrentSelection() < 0)
-        return;
-
-    wxCommandEvent e;
-    OnEditAlarm(e);
-}
-
-void ConfigurationDialog::UpdateStates()
-{
-    bool enable = CurrentSelection() >= 0;
-    m_bEdit->Enable(enable);
-    m_bDelete->Enable(enable);
-    if(m_lAlarms->GetItemCount() > 0)
-        m_bDeleteAll->Enable( true );
-    else
-        m_bDeleteAll->Enable( false );
-    this->GetSizer()->Fit( this );
-    this->Layout();
+    wxFont font = event.GetFont();
+    m_watchdog_pi.m_WatchdogDialog->m_lStatus->SetFont(font);
     
-}
-
-int ConfigurationDialog::CurrentSelection()
-{
-    return m_lAlarms->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
-}
-
-Alarm *ConfigurationDialog::CurrentAlarm()
-{
-    return Alarm::s_Alarms[CurrentSelection()];
-}
-
-void ConfigurationDialog::UpdateItem(int index)
-{
-    Alarm *alarm = Alarm::s_Alarms[index];
-
-    m_lAlarms->SetItem(index, ALARM_TYPE, alarm->Type());
-    m_lAlarms->SetColumnWidth(ALARM_TYPE, wxLIST_AUTOSIZE);
-    m_lAlarms->SetItem(index, ALARM_OPTIONS, alarm->Options());
-    m_lAlarms->SetColumnWidth(ALARM_OPTIONS, wxLIST_AUTOSIZE);
-    m_lAlarms->SetItem(index, ALARM_ACTION, alarm->Action());
-    m_lAlarms->SetColumnWidth(ALARM_ACTION, wxLIST_AUTOSIZE);
-}
-
-void ConfigurationDialog::OnAboutAuthor( wxCommandEvent& event )
-{
-    wxLaunchDefaultBrowser(_T(ABOUT_AUTHOR_URL));
+    wxFileConfig *pConf = GetOCPNConfigObject();
+    pConf->SetPath ( _T( "/Settings/Watchdog" ) );
+    pConf->Write ( _T ( "Font" ), font.GetNativeFontInfoDesc() );
 }

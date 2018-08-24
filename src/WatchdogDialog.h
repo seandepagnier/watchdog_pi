@@ -37,12 +37,18 @@ public:
     void UpdateAlarms();
     void UpdateStatus(int index);
 
-    void OnLeftDown( wxMouseEvent& event );
     void OnDoubleClick( wxMouseEvent& event );
-    void OnConfiguration( wxCommandEvent& event );
+    void OnLeftDown( wxMouseEvent& event );
+    void OnRightDown( wxMouseEvent& event );
+    void OnNew( wxCommandEvent& event );
+    void OnEdit( wxCommandEvent& event );
     void OnReset( wxCommandEvent& event );
-    void OnClose( wxCommandEvent& event ) { Hide(); }
-
+    void OnDelete( wxCommandEvent& event );
+    void OnResetAll( wxCommandEvent& event );
+    void OnDeleteAll( wxCommandEvent& event );
+    void OnConfiguration( wxCommandEvent& event );
+    
 private:
     watchdog_pi &m_watchdog_pi;
+    Alarm *m_menualarm;
 };
