@@ -2418,6 +2418,7 @@ public:
         {
             // give 10 seconds to at startup before connection failure
             m_startTime = wxDateTime::UNow() + wxTimeSpan::Seconds(10);
+            m_lastMessageTime = wxDateTime::UNow();
         }
 
     wxString Type() { return _("pypilot"); }
