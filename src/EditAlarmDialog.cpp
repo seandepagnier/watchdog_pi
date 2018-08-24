@@ -5,7 +5,7 @@
  * Author:   Sean D'Epagnier
  *
  ***************************************************************************
- *   Copyright (C) 2015 by Sean D'Epagnier                                 *
+ *   Copyright (C) 2018 by Sean D'Epagnier                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -394,4 +394,17 @@ void WeatherPanel::SetupControls()
 void WeatherPanel::OnVariable( wxCommandEvent& )
 {
     SetupControls();
+}
+
+void pypilotPanel::OnAboutHardwareErrors( wxCommandEvent& )
+{
+    wxString l_s = _("Hardware errors usually indicate bad wiring or failed components.\n\
+No IMU Sensor - inertial sensors cannot be read\n\
+No Motor Controller - motor controller lost communication\n\
+No Rudder Feedback - optional Rudder feedback sensor not working\n\
+No Motor Temperature - optional motor temperature sensor not working\n\
+Driver Timeout - Motor not drawing power: motor not connected to controller\n");
+
+    wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchdog"), wxOK | wxICON_INFORMATION);
+    mdlg.ShowModal();
 }

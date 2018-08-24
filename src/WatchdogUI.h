@@ -78,7 +78,7 @@ class WatchdogDialogBase : public wxDialog
 	public:
 		wxListCtrl* m_lStatus;
 		
-		WatchdogDialogBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("WatchDog"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,120 ), long style = wxCAPTION|wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxTAB_TRAVERSAL ); 
+		WatchdogDialogBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("WatchDog"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxCAPTION|wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxTAB_TRAVERSAL ); 
 		~WatchdogDialogBase();
 		
 		void WatchdogDialogBaseOnContextMenu( wxMouseEvent &event )
@@ -490,6 +490,10 @@ class pypilotPanel : public wxPanel
 		wxPanel* m_panel1;
 		wxStaticText* m_staticText72;
 		wxStaticText* m_staticText73;
+		
+		// Virtual event handlers, overide them in your derived class
+		void OnAboutHardwareErrors( wxCommandEvent& event );
+		
 	
 	public:
 		wxComboBox* m_cHost;

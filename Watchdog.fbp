@@ -45,7 +45,7 @@
             <property name="minimum_size">-1,-1</property>
             <property name="name">WatchdogDialogBase</property>
             <property name="pos"></property>
-            <property name="size">-1,120</property>
+            <property name="size">-1,-1</property>
             <property name="style">wxCAPTION|wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER</property>
             <property name="subclass"></property>
             <property name="title">WatchDog</property>
@@ -138,7 +138,7 @@
                         <property name="maximum_size"></property>
                         <property name="min_size"></property>
                         <property name="minimize_button">0</property>
-                        <property name="minimum_size">200,60</property>
+                        <property name="minimum_size">300,50</property>
                         <property name="moveable">1</property>
                         <property name="name">m_lStatus</property>
                         <property name="pane_border">1</property>
@@ -149,7 +149,7 @@
                         <property name="pos"></property>
                         <property name="resize">Resizable</property>
                         <property name="show">1</property>
-                        <property name="size"></property>
+                        <property name="size">-1,-1</property>
                         <property name="style">wxLC_NO_HEADER|wxLC_REPORT</property>
                         <property name="subclass"></property>
                         <property name="toolbar_pane">0</property>
@@ -12904,7 +12904,7 @@
                         <object class="notebookpage" expanded="1">
                             <property name="bitmap"></property>
                             <property name="label">Hardware Failures</property>
-                            <property name="select">0</property>
+                            <property name="select">1</property>
                             <object class="wxPanel" expanded="0">
                                 <property name="BottomDockable">1</property>
                                 <property name="LeftDockable">1</property>
@@ -13920,7 +13920,7 @@
                                                     <property name="window_extra_style"></property>
                                                     <property name="window_name"></property>
                                                     <property name="window_style"></property>
-                                                    <event name="OnButtonClick"></event>
+                                                    <event name="OnButtonClick">OnAboutHardwareErrors</event>
                                                     <event name="OnChar"></event>
                                                     <event name="OnEnterWindow"></event>
                                                     <event name="OnEraseBackground"></event>

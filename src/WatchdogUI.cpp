@@ -20,15 +20,16 @@ WatchdogDialogBase::WatchdogDialogBase( wxWindow* parent, wxWindowID id, const w
 	fgSizer8->SetFlexibleDirection( wxBOTH );
 	fgSizer8->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_ALL );
 	
-	m_lStatus = new wxListCtrl( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_NO_HEADER|wxLC_REPORT );
+	m_lStatus = new wxListCtrl( this, wxID_ANY, wxDefaultPosition, wxSize( -1,-1 ), wxLC_NO_HEADER|wxLC_REPORT );
 	m_lStatus->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxT("Sans") ) );
-	m_lStatus->SetMinSize( wxSize( 200,60 ) );
+	m_lStatus->SetMinSize( wxSize( 300,50 ) );
 	
 	fgSizer8->Add( m_lStatus, 1, wxALL|wxEXPAND, 5 );
 	
 	
 	this->SetSizer( fgSizer8 );
 	this->Layout();
+	fgSizer8->Fit( this );
 	m_Menu = new wxMenu();
 	wxMenuItem* m_New;
 	m_New = new wxMenuItem( m_Menu, wxID_ANY, wxString( _("New") ) , wxEmptyString, wxITEM_NORMAL );
@@ -1266,7 +1267,7 @@ pypilotPanel::pypilotPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos,
 	m_panel2->SetSizer( fgSizer57 );
 	m_panel2->Layout();
 	fgSizer57->Fit( m_panel2 );
-	m_notebook1->AddPage( m_panel2, _("Hardware Failures"), false );
+	m_notebook1->AddPage( m_panel2, _("Hardware Failures"), true );
 	m_panel3 = new wxPanel( m_notebook1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxFlexGridSizer* fgSizer59;
 	fgSizer59 = new wxFlexGridSizer( 0, 1, 0, 0 );
@@ -1359,8 +1360,14 @@ pypilotPanel::pypilotPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos,
 	this->SetSizer( fgSizer17 );
 	this->Layout();
 	fgSizer17->Fit( this );
+	
+	// Connect Events
+	m_button19->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( pypilotPanel::OnAboutHardwareErrors ), NULL, this );
 }
 
 pypilotPanel::~pypilotPanel()
 {
+	// Disconnect Events
+	m_button19->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( pypilotPanel::OnAboutHardwareErrors ), NULL, this );
+	
 }
