@@ -2437,14 +2437,13 @@ public:
                      m_bCourseError(false), m_dCourseError(20),
                      m_host("192.168.14.1")
         {
-            m_lastMessageTime = wxDateTime::UNow();
+            // give 10 seconds to at startup before connection failure
+            m_startTime = wxDateTime::UNow() + wxTimeSpan::Seconds(10);
         }
 
     wxString Type() { return _("pypilot"); }
 
     wxString GetStatus() {
-        if(!connected())
-            return "no connection";
         return m_status;
     }
 
@@ -2452,7 +2451,8 @@ public:
         wxString status = "ok";
         double d;
         // in order of importance
-        if(m_bNoConnection && (wxDateTime::UNow() - m_lastMessageTime).GetMilliseconds() > 3000)
+        wxDateTime unow = wxDateTime::UNow();
+        if(m_bNoConnection && unow > m_startTime && (!connected() || (unow - m_lastMessageTime).GetMilliseconds() > 3000))
             status = "no connection";
         if(m_bNoIMU && lastvalue("imu.loopfreq") == "0")
             status = "no imu";
@@ -2648,7 +2648,7 @@ private:
     double m_dCourseError;
     wxString m_host;
 
-    wxDateTime m_lastMessageTime;
+    wxDateTime m_startTime, m_lastMessageTime;
 };
 
 ////////// Alarm Base Class /////////////////
