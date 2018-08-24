@@ -86,7 +86,7 @@ const char * check_xpm[] = {
 "...................."};
 
 
-enum AlarmStatus { ALARM_ENABLED, ALARM_TYPE, ALARM_STATUS };
+enum AlarmStatus { ALARM_ENABLED, ALARM_TYPE, ALARM_STATUS, ALARM_COUNT };
 
 WatchdogDialog::WatchdogDialog( watchdog_pi &_watchdog_pi, wxWindow* parent)
     : WatchdogDialogBase( parent ), m_watchdog_pi(_watchdog_pi)
@@ -111,9 +111,11 @@ WatchdogDialog::WatchdogDialog( watchdog_pi &_watchdog_pi, wxWindow* parent)
     m_lStatus->InsertColumn(ALARM_ENABLED, _T("X"));
     m_lStatus->InsertColumn(ALARM_TYPE, _("Type"));
     m_lStatus->InsertColumn(ALARM_STATUS, _("Status"));
+    m_lStatus->InsertColumn(ALARM_COUNT, _("Count"));
     m_lStatus->SetColumnWidth(ALARM_ENABLED, wxLIST_AUTOSIZE);
     m_lStatus->SetColumnWidth(ALARM_TYPE, wxLIST_AUTOSIZE);
     m_lStatus->SetColumnWidth(ALARM_STATUS, wxLIST_AUTOSIZE);
+    m_lStatus->SetColumnWidth(ALARM_COUNT, wxLIST_AUTOSIZE);
 
     this->GetSizer()->Fit( this );
     this->Layout();
@@ -156,11 +158,13 @@ void WatchdogDialog::UpdateStatus(int index)
     m_lStatus->SetItem(index, ALARM_TYPE, alarm->Type());
     m_lStatus->SetColumnWidth(ALARM_TYPE, wxLIST_AUTOSIZE);
     m_lStatus->SetItem(index, ALARM_STATUS, alarm->GetStatus());
+    m_lStatus->SetItem(index, ALARM_COUNT, wxString::Format("%d", alarm->GetCount()));
     if(alarm->m_bSpecial)
         m_lStatus->SetItemTextColour(index, *wxBLUE);
     else
         m_lStatus->SetItemTextColour(index, alarm->m_bFired ? *wxRED: *wxBLACK);
     m_lStatus->SetColumnWidth(ALARM_STATUS, wxLIST_AUTOSIZE);
+    m_lStatus->SetColumnWidth(ALARM_COUNT, wxLIST_AUTOSIZE);
 }
 
 void WatchdogDialog::OnLeftDown( wxMouseEvent& event )
@@ -247,7 +251,7 @@ void WatchdogDialog::OnEdit( wxCommandEvent& event )
 
 void WatchdogDialog::OnReset( wxCommandEvent& event )
 {
-    m_menualarm->m_bFired = false;
+    m_menualarm->Reset();
     UpdateAlarms();
 }
 

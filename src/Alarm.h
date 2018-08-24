@@ -54,6 +54,7 @@ public:
     virtual wxString Type() = 0;
     virtual bool Test() = 0;
     virtual wxString GetStatus() = 0;
+    virtual int GetCount() { return m_count; }
     virtual void NMEAString(const wxString &sentence) {}
     virtual void Render(wdDC &dc, PlugIn_ViewPort &vp) {}
     virtual wxWindow *OpenPanel(wxWindow *parent) = 0;
@@ -67,6 +68,8 @@ public:
     void SaveConfigBase(TiXmlElement *c);
 
     virtual void OnTimer(wxTimerEvent &);
+
+    void Reset() { m_bFired = false; m_count = 0; }
 
     bool m_bHasGraphics, m_bEnabled, m_bgfxEnabled, m_bFired, m_bSpecial;
 
@@ -85,9 +88,9 @@ private:
 
     void ConfigItem(bool read, wxString name, wxControl *control);
     virtual void GetStatusControls(wxControl *&Text, wxControl *&status) { Text = status = NULL; }
+    virtual wxString MessageBoxText() { return ""; }
 
-    int m_interval;
-
+    int m_interval, m_count;
 };
 
 class TestAlarm : public Alarm

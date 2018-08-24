@@ -2101,25 +2101,12 @@ public:
         c->SetAttribute("GuardZoneName", m_GuardZoneName.mb_str());
     }
 
-    void Run()
+    wxString MessageBoxText()
     {
-        if(m_bSound)
-            PlugInPlaySound(m_sSound);
-        
-        if(m_bCommand)
-            if(!wxProcess::Open(m_sCommand)) {
-                wxMessageDialog mdlg(GetOCPNCanvasWindow(),
-                                     Type() + " " +
-                                     _("Failed to execute command: ") + m_sCommand,
-                                     _("Watchdog"), wxOK | wxICON_ERROR);
-                mdlg.ShowModal();
-                m_bCommand = false;
-            }
-            
         if(m_bMessageBox) {
             switch (m_Mode) {
             case TIME: {
-                wxString  l_s = Type() + " " + _("ALARM!") + "\n" 
+                wxString  l_s = "\n"
                     + _("Name") + ": " + m_BoundaryName + "\n"
                     + _("Description") + ": " + m_BoundaryDescription + "\n"
                     + _("GUID") + ": " + m_BoundaryGUID + "\n";
@@ -2127,12 +2114,10 @@ public:
                     l_s.append(wxString(_("inside boundary")));
                 else
                     l_s.append(wxString(_("in")) + ": " + TimeBoundaryMsg());
-                wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchdog"), wxOK | wxICON_WARNING);
-                mdlg.ShowModal();
-                break;
+                return l_s;
             }
             case DISTANCE: {
-                wxString l_s = Type() + " " + _("ALARM!") + "\n" 
+                wxString l_s = "\n"
                     + _("Name") + ": " + m_BoundaryName + "\n"
                     + _("Description") + ": " + m_BoundaryDescription + "\n"
                     + _("GUID") + ": " + m_BoundaryGUID + "\n";
@@ -2143,23 +2128,19 @@ public:
                     l_s << m_BoundaryDistance;
                     l_s += " nm";
                 }
-                wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchdog"), wxOK | wxICON_WARNING);
-                mdlg.ShowModal();
-                break;
+                return l_s;
             }
             case ANCHOR: {
-                wxString l_s = Type() + " " + _("ALARM!") + "\n" 
+                wxString l_s = "\n" 
                     + _("Outside") + "\n"
                     + _("Name") + ": " + m_BoundaryName + "\n"
                     + _("Description") + ": " + m_BoundaryDescription + "\n"
                     + _("GUID") + ": " + m_BoundaryGUID;
                 wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchdog"), wxOK | wxICON_WARNING);
-                mdlg.ShowModal();
-                break;
+                return l_s;
             }
             case GUARD: {
-                wxString l_s;
-                l_s = Type() + " " + _("ALARM!") + "\n" 
+                wxString l_s = "\n" 
                     + _("Guard Zone Name") + ": " + m_GuardZoneName + "\n"
                     + _("Description") + ": " + m_GuardZoneDescription + "\n"
                     + _("GUID") + ": " + m_GuardZoneGUID + "\n" 
@@ -2172,15 +2153,12 @@ public:
                     l_s.append(_("Ship Name") + ": " + g_AISTarget.m_sShipName + "\n"
                                + _("Ship MMSI") + ": " + wxString::Format("%i", g_AISTarget.m_iMMSI));
                 }
-                wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchdog"), wxOK | wxICON_WARNING);
-                mdlg.ShowModal();
-                break;
+                return l_s;
             }
             }
         } else {
             if(m_bSpecial && m_Mode == GUARD) {
-                wxString l_s;
-                l_s = Type() + " " + _("ALARM!") + "\n" 
+                wxString l_s = "\n" 
                     + _("Guard Zone Name") + ": " + m_GuardZoneName + "\n"
                     + _("Description") + ": " + m_GuardZoneDescription + "\n"
                     + _("GUID") + ": " + m_GuardZoneGUID + "\n" + _("Guard Zone not Found");
@@ -2190,6 +2168,7 @@ public:
                 m_bEnabled = false;
             }       
         }
+        return "";
     }
     
     void OnAISMessage (int iAlarmIndex) 
@@ -2739,7 +2718,7 @@ void Alarm::DeleteAll()
 void Alarm::ResetAll()
 {
     for(unsigned int i=0; i<s_Alarms.size(); i++)
-        s_Alarms[i]->m_bFired = false;
+        s_Alarms[i]->Reset();
 }
 
 void Alarm::NMEAStringAll(const wxString &sentence)
@@ -2774,7 +2753,7 @@ Alarm::Alarm(bool gfx, int interval)
       m_sSound(*GetpSharedDataLocation() + "sounds/2bells.wav"),
       m_LastAlarmTime(wxDateTime::Now()),
       m_iRepeatSeconds(60), m_iDelay(0),
-      m_interval(interval)
+      m_interval(interval), m_count(0)
 {
     m_Timer.Connect(wxEVT_TIMER, wxTimerEventHandler( Alarm::OnTimer ), NULL, this);
     m_Timer.Start(m_interval * 1000, wxTIMER_CONTINUOUS);
@@ -2807,7 +2786,8 @@ void Alarm::Run()
         }
 
     if(m_bMessageBox) {
-        wxMessageDialog mdlg(GetOCPNCanvasWindow(), Type() + " " + _("ALARM!"),
+        wxMessageDialog mdlg(GetOCPNCanvasWindow(), Type() + " " + _("ALARM!")
+                             + MessageBoxText(),
                              _("Watchdog"), wxOK | wxICON_WARNING);
         mdlg.ShowModal();
     }
@@ -2871,6 +2851,7 @@ void Alarm::OnTimer( wxTimerEvent & )
                     }
                 } else {
                     m_bFired = true;
+                    m_count++;
                     Run();
                     m_LastAlarmTime = now;
                 }
