@@ -99,6 +99,9 @@ WatchdogDialog::WatchdogDialog( watchdog_pi &_watchdog_pi, wxWindow* parent)
     Move(0, 0);        // workaround for gtk autocentre dialog behavior
 #endif
     Move(pConf->Read ( _T ( "DialogPosX" ), 20L ), pConf->Read ( _T ( "DialogPosY" ), 20L ));
+    wxSize size;
+    pConf->Read ( _T ( "DialogWidth" ), &size.x, GetSize().x);
+    pConf->Read ( _T ( "DialogHeight" ), &size.y, GetSize().y);
 
     wxImageList *imglist = new wxImageList(20, 20, true, 1);
     imglist->Add(wxBitmap(box_xpm));
@@ -114,7 +117,8 @@ WatchdogDialog::WatchdogDialog( watchdog_pi &_watchdog_pi, wxWindow* parent)
 
     this->GetSizer()->Fit( this );
     this->Layout();
-    this->SetSizeHints( GetSize().x, GetSize().y );
+    SetSize(size);
+    this->SetSizeHints( 250, 100 );
 }
 
 WatchdogDialog::~WatchdogDialog()
@@ -122,10 +126,10 @@ WatchdogDialog::~WatchdogDialog()
     wxFileConfig *pConf = GetOCPNConfigObject();
     pConf->SetPath ( _T ( "/Settings/Watchdog" ) );
 
-    wxPoint p = GetPosition();
-
-    pConf->Write ( _T ( "DialogPosX" ), p.x );
-    pConf->Write ( _T ( "DialogPosY" ), p.y );
+    pConf->Write ( _T ( "DialogPosX" ), GetPosition().x );
+    pConf->Write ( _T ( "DialogPosY" ), GetPosition().y );
+    pConf->Write ( _T ( "DialogWidth" ), GetSize().x);
+    pConf->Write ( _T ( "DialogHeight" ), GetSize().y);
 }
 
 void WatchdogDialog::UpdateAlarms()
