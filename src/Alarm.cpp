@@ -5,7 +5,7 @@
  * Author:   Sean D'Epagnier
  *
  ***************************************************************************
- *   Copyright (C) 2017 by Sean D'Epagnier                                 *
+ *   Copyright (C) 2018 by Sean D'Epagnier                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -27,13 +27,13 @@
 #include <map>
 
 #include <wx/wx.h>
-#include "wx28compat.h"
 #include "wddc.h"
 
 #include <wx/process.h>
 
-#include "wxJSON/jsonwriter.h"
+#include "json/json.h"
 #include "tinyxml/tinyxml.h"
+#include "signalk_client.h"
 
 #include "watchdog_pi.h"
 #include "WatchdogDialog.h"
@@ -68,10 +68,6 @@ public:
         }
 
     wxString Type() { return _("Anchor"); }
-    wxString Options() {
-        return _("radius") + wxString::Format(_T(" %f "), m_Radius) + _("meters")
-            + (m_bAutoSync ? _T(" ") + wxString(_("bAutoSync")) : _T(""));
-    }
 
     bool Test() {
         if(isnan(g_watchdog_pi->m_sog))
@@ -92,9 +88,9 @@ public:
         double anchordist = Distance();
         wxString s;
         if(isnan(anchordist))
-            s = _T("N/A");
+            s = "N/A";
         else {
-            wxString fmt(_T("%.0f "));
+            wxString fmt("%.0f ");
             s = wxString::Format(fmt + _("meter(s)"), anchordist);
         }
 
@@ -122,8 +118,8 @@ public:
 
     wxWindow *OpenPanel(wxWindow *parent) {
         AnchorPanel *panel = new AnchorPanel(parent);
-        panel->m_tLatitude->SetValue(wxString::Format(_T("%f"), m_Latitude));
-        panel->m_tLongitude->SetValue(wxString::Format(_T("%f"), m_Longitude));
+        panel->m_tLatitude->SetValue(wxString::Format("%f", m_Latitude));
+        panel->m_tLongitude->SetValue(wxString::Format("%f", m_Longitude));
         panel->m_sRadius->SetValue(m_Radius);
         panel->m_cbAutoSync->SetValue(m_bAutoSync);
         return panel;
@@ -181,15 +177,6 @@ public:
     }
 
     wxString Type() { return _("Course"); }
-    wxString Options() {
-        wxString s;
-        switch(m_Mode) {
-        case PORT: s += _("Port") + wxString(_T(" ")); break;
-        case STARBOARD: s += _("Starboard") + wxString(_T(" ")); break;
-        default: break;
-        }
-        return s + _("course") + wxString::Format(_T(" %f"), m_Course);
-    }
 
     bool Test() {
         double error = CourseError();
@@ -203,16 +190,16 @@ public:
         double courseerror = CourseError();
         wxString s;
         if(isnan(courseerror))
-            s = _T("N/A");
+            s = "N/A";
         else {
-            wxString fmt(_T("%.0f "));
+            wxString fmt("%.0f ");
             s = wxString::Format(fmt + _("degrees(s)"), courseerror);
         }
 
         if(m_Mode == STARBOARD)
-            s += wxString(_T(" ")) + _("Starboard");
+            s += wxString(" ") + _("Starboard");
         else if(m_Mode == PORT)
-            s += wxString(_T(" ")) + _("Port");
+            s += wxString(" ") + _("Port");
 
         return s;
     }
@@ -267,7 +254,7 @@ public:
         if(!strcasecmp(mode, "Port")) m_Mode = PORT;
         else if(!strcasecmp(mode, "Starboard")) m_Mode = STARBOARD;
         else if(!strcasecmp(mode, "Starboard")) m_Mode = BOTH;
-        else wxLogMessage(_T("Watchdog: ") + wxString(_("invalid Course mode")) + _T(": ")
+        else wxLogMessage("Watchdog: " + wxString(_("invalid Course mode")) + ": "
                          + wxString::FromUTF8(mode));
 
         e->Attribute("Tolerance", &m_Tolerance);
@@ -311,23 +298,15 @@ public:
     SpeedAlarm() : Alarm(true), m_Mode(UNDERSPEED), m_dSpeed(1) {}
 
     wxString Type() { return _("Speed"); }
-    wxString Options() {
-        wxString s;
-        switch(m_Mode) {
-        case UNDERSPEED: s += _("UnderSpeed") + wxString(_T(" ")); break;
-        case OVERSPEED: s += _("OverSpeed") + wxString(_T(" ")); break;
-        }
-        return s + wxString::Format(_T(" %f"), m_dSpeed);
-    }
 
     wxString GetStatus() {
         wxString s;
         if(isnan(g_watchdog_pi->m_sog))
-            s = _T("N/A");
+            s = "N/A";
         else {
-            wxString fmt(_T("%.1f"));
+            wxString fmt("%.1f");
             s = wxString::Format(fmt + (Knots() < m_dSpeed ?
-                                        _T(" < ") : _T(" > "))
+                                        " < " : " > ")
                                  + fmt, Knots(), m_dSpeed);
         }
 
@@ -368,7 +347,7 @@ public:
     wxWindow *OpenPanel(wxWindow *parent) {
         SpeedPanel *panel = new SpeedPanel(parent);
         panel->m_cMode->SetSelection((int)m_Mode);
-        panel->m_tSpeed->SetValue(wxString::Format(_T("%f"), m_dSpeed));
+        panel->m_tSpeed->SetValue(wxString::Format("%f", m_dSpeed));
         panel->m_sliderSOGAverageNumber->SetValue(m_iAverageTime);
         return panel;
     }
@@ -384,7 +363,7 @@ public:
         const char *mode = e->Attribute("Mode");
         if(!strcasecmp(mode, "Underspeed")) m_Mode = UNDERSPEED;
         else if(!strcasecmp(mode, "Overspeed")) m_Mode = OVERSPEED;
-        else wxLogMessage(_T("Watchdog: ") + wxString(_("invalid Speed mode")) + _T(": ")
+        else wxLogMessage("Watchdog: " + wxString(_("invalid Speed mode")) + ": "
                          + wxString::FromUTF8(mode));
 
         e->Attribute("Speed", &m_dSpeed);
@@ -413,7 +392,7 @@ public:
         double sog = g_watchdog_pi->LastFix().Sog;
         if(!isnan(sog))
             m_SOGqueue.push_front(sog);
-        while(m_SOGqueue.size() > m_iAverageTime)
+        while((int)m_SOGqueue.size() > m_iAverageTime)
             m_SOGqueue.pop_back();
     }
     
@@ -466,24 +445,6 @@ public:
     WindAlarm() : Alarm(true), m_Mode(UNDERSPEED), m_Type(APPARENT), m_dVal(5), m_dRange(15), m_speed(NAN), m_direction(NAN), m_gps_speed(0), m_bearing(NAN), m_WindDataTime(wxDateTime::Now()) {}
 
     wxString Type() { return _("Wind"); }
-    wxString Options() {
-        wxString s;
-        switch(m_Mode) {
-        case UNDERSPEED: s += _("Under Speed"); break;
-        case OVERSPEED:  s += _("Over Speed"); break;
-        case DIRECTION: s += _("Direction"); break;
-        }
-        s += wxString(_T(" "));
-        switch(m_Type) {
-        case APPARENT: s += _("Apparent"); break;
-        case TRUE_RELATIVE: s += _("True Relative"); break;
-        case TRUE_ABSOLUTE: s += _("True Absolute"); break;
-        }            
-        s += wxString::Format(" %.2f", m_dVal);
-        if(m_Mode == DIRECTION)
-            s += wxString::Format(" +-%.2f", m_dRange);
-        return s;
-    }
 
     wxString GetStatus() {
         wxString s;
@@ -499,7 +460,7 @@ public:
             if(isnan(m_direction))
                 return "N/A";
             else
-                return wxString::Format(fmt + _T(" < ") + fmt + _T(" < ") + fmt,
+                return wxString::Format(fmt + " < " + fmt + " < " + fmt,
                                         heading_resolve(m_dVal - m_dRange), m_direction,
                                         heading_resolve(m_dVal + m_dRange));
         }
@@ -521,6 +482,8 @@ public:
             bearing = 0;
         case TRUE_RELATIVE:
             TrueWind(m_speed, m_direction, m_gps_speed, speed, direction);
+        case APPARENT:
+            break;
         }
         PositionBearingDistanceMercator_Plugin(lat[0], lon[0], bearing + direction,
                                                dist, &lat[1], &lon[1]);
@@ -569,7 +532,7 @@ public:
         WindPanel *panel = new WindPanel(parent, m_direction);
         panel->m_cMode->SetSelection((int)m_Mode);
         panel->m_cType->SetSelection((int)m_Type);
-        panel->m_sRange->Enable(m_Mode == DIRECTION);
+        panel->m_sRange->Enable(m_Type == (int)DIRECTION);
         panel->m_sValue->SetValue(m_dVal);
         panel->m_sRange->SetValue(m_dRange);
         return panel;
@@ -590,14 +553,14 @@ public:
         else if(!strcasecmp(mode, "Direction")) {
             m_Mode = DIRECTION;
             e->Attribute("Range", &m_dRange);
-        } else wxLogMessage(_T("Watchdog: ") + wxString(_("invalid Wind mode")) + _T(": ")
+        } else wxLogMessage("Watchdog: " + wxString(_("invalid Wind mode")) + ": "
                          + wxString::FromUTF8(mode));
 
         const char *type = e->Attribute("Type");
         if(!strcasecmp(mode, "Apparent")) m_Type = APPARENT;
         else if(!strcasecmp(mode, "True Relative")) m_Type = TRUE_RELATIVE;
         else if(!strcasecmp(mode, "True Absolute")) m_Type = TRUE_ABSOLUTE;
-        else wxLogMessage(_T("Watchdog: ") + wxString(_("invalid Wind type")) + _T(": ")
+        else wxLogMessage("Watchdog: " + wxString(_("invalid Wind type")) + ": "
                          + wxString::FromUTF8(type));
 
         e->Attribute("Value", &m_dVal);
@@ -625,17 +588,17 @@ private:
         nmea << str;
         if(!nmea.PreParse())
             return;
-        if(nmea.LastSentenceIDReceived == _T("HDM") && nmea.Parse()) {
+        if(nmea.LastSentenceIDReceived == "HDM" && nmea.Parse()) {
             m_bearing = nmea.Hdm.DegreesMagnetic + g_watchdog_pi->Declination();
         } else
-        if(nmea.LastSentenceIDReceived == _T("MWV") &&
+        if(nmea.LastSentenceIDReceived == "MWV" &&
            nmea.Parse() && nmea.Mwv.IsDataValid == NTrue ) {
             double m_wSpeedFactor = 1.0; //knots ("N")
-            if (nmea.Mwv.WindSpeedUnits == _T("K") ) m_wSpeedFactor = 0.53995 ; //km/h > knots
-            if (nmea.Mwv.WindSpeedUnits == _T("M") ) m_wSpeedFactor = 1.94384;
-            if(nmea.Mwv.Reference == _T("R") && m_Type == APPARENT) {
+            if (nmea.Mwv.WindSpeedUnits == "K" ) m_wSpeedFactor = 0.53995 ; //km/h > knots
+            if (nmea.Mwv.WindSpeedUnits == "M" ) m_wSpeedFactor = 1.94384;
+            if(nmea.Mwv.Reference == "R" && m_Type == APPARENT) {
                 ProcessWind(nmea.Mwv.WindSpeed * m_wSpeedFactor, nmea.Mwv.WindAngle);
-            } else if(nmea.Mwv.Reference == _T("T") && m_Type == TRUE_RELATIVE) {
+            } else if(nmea.Mwv.Reference == "T" && m_Type == TRUE_RELATIVE) {
                 // should we accept true wind nmea sentences rather than calculate ourself??
             }
         }
@@ -675,34 +638,22 @@ public:
                      m_curvalue(NAN), m_currate(NAN), m_WeatherDataTime(wxDateTime::Now()) {}
 
     wxString Type() { return _("Weather"); }
-    wxString Options() {
-        wxString s = StrVariable();
-        s += _T(" ");
-        switch(m_Mode) {
-        case BELOW: s += _("Below"); break;
-        case ABOVE:  s += _("Above"); break;
-        case INCREASING: s += _("Increasing"); break;
-        case DECREASING:  s += _("Decreasing"); break;
-        }
-        s += _T(" ");
-        return s + wxString::Format(_T(" %.2f"), m_dVal);
-    }
 
     wxString GetStatus() {
         wxString s = StrVariable();
-        s += _T(" ");
+        s += " ";
         
         double val = Value();
         if(isnan(val))
-            s += _T("N/A");
+            s += "N/A";
         else {
-            wxString fmt(_T("%.2f"));
+            wxString fmt("%.2f");
             double aval = m_Mode == DECREASING ? -val : val;
             s += wxString::Format(fmt + (aval < m_dVal ?
-                                        _T(" < ") : _T(" > "))
+                                        " < " : " > ")
                                  + fmt, aval, m_dVal);
             if(m_Mode == INCREASING || m_Mode == DECREASING)
-                s += _T(" ") + _("In") + wxString::Format(_T(" %d "), m_iRatePeriod) + _("Seconds");
+                s += " " + _("In") + wxString::Format(" %d ", m_iRatePeriod) + _("Seconds");
         }
 
         return s;
@@ -726,7 +677,7 @@ public:
         panel->m_cVariable->SetSelection((int)m_Variable);
         panel->m_rbRate->SetValue((int)m_Mode / 2);
         panel->m_cType->SetSelection((int)m_Mode % 2);
-        panel->m_tValue->SetValue(wxString::Format(_T("%f"), m_dVal));
+        panel->m_tValue->SetValue(wxString::Format("%f", m_dVal));
         panel->m_sRatePeriod->SetValue(m_iRatePeriod);
         panel->SetupControls();
         return panel;
@@ -747,8 +698,8 @@ public:
         else if(!strcasecmp(variable, "SeaTemperature")) m_Variable = SEA_TEMPERATURE;
         else if(!strcasecmp(variable, "RelativeHumidity")) m_Variable = RELATIVE_HUMIDITY;
         else {
-            wxLogMessage(_T("Watchdog: ") + wxString(_("invalid Weather variable")) +
-                         _T(": ") + wxString::FromUTF8(variable));
+            wxLogMessage("Watchdog: " + wxString(_("invalid Weather variable")) +
+                         ": " + wxString::FromUTF8(variable));
             m_Variable = BAROMETER;
         }
 
@@ -758,8 +709,8 @@ public:
         else if(!strcasecmp(mode, "Increasing")) m_Mode = INCREASING;
         else if(!strcasecmp(mode, "Decreasing")) m_Mode = DECREASING;
         else {
-            wxLogMessage(_T("Watchdog: ") + wxString(_("invalid Weather mode")) +
-                         _T(": ") + wxString::FromUTF8(mode));
+            wxLogMessage("Watchdog: " + wxString(_("invalid Weather mode")) +
+                         ": " + wxString::FromUTF8(mode));
             m_Mode = ABOVE;
         }
 
@@ -803,7 +754,7 @@ private:
         case SEA_TEMPERATURE: return _("Sea Temperature"); break;
         case RELATIVE_HUMIDITY: return _("Humidity"); break;
         }
-        return _T("");
+        return "";
     }
 
     void NMEAString(const wxString &string) {
@@ -816,19 +767,19 @@ private:
         double value = NAN;
         switch(m_Variable) {
         case BAROMETER:
-            if(nmea.LastSentenceIDReceived == _T("MDA") && nmea.Parse())
+            if(nmea.LastSentenceIDReceived == "MDA" && nmea.Parse())
                 value = nmea.Mda.Pressure * 1000;
             break;
         case RELATIVE_HUMIDITY:
-            if(nmea.LastSentenceIDReceived == _T("MDA") && nmea.Parse())
+            if(nmea.LastSentenceIDReceived == "MDA" && nmea.Parse())
                 value = nmea.Mda.RelativeHumidity;
             break;
         case AIR_TEMPERATURE:
-            if(nmea.LastSentenceIDReceived == _T("MTA") && nmea.Parse())
+            if(nmea.LastSentenceIDReceived == "MTA" && nmea.Parse())
                 value = nmea.Mta.Temperature;
             break;
         case SEA_TEMPERATURE:
-            if(nmea.LastSentenceIDReceived == _T("MTW") && nmea.Parse())
+            if(nmea.LastSentenceIDReceived == "MTW" && nmea.Parse())
                 value = nmea.Mtw.Temperature;
             break;
         }
@@ -866,9 +817,6 @@ public:
     DeadmanAlarm() : m_Minutes(20) {}
 
     wxString Type() { return _("Deadman"); }
-    wxString Options() {
-        return wxString::Format(_T("%f minutes"), m_Minutes);
-    }
 
     bool Test() {
         wxTimeSpan DeadmanSpan = wxTimeSpan::Minutes(m_Minutes);
@@ -884,10 +832,10 @@ public:
         int minutes = span.GetMinutes();
         span -= wxTimeSpan::Minutes(minutes);
         int seconds = span.GetSeconds().ToLong();
-        wxString d, fmt(_T("%d "));
+        wxString d, fmt("%d ");
         if(days)
-            d = wxString::Format(fmt + _T("days "), days);
-        return d + wxString::Format(_T("%02d:%02d:%02d"),
+            d = wxString::Format(fmt + "days ", days);
+        return d + wxString::Format("%02d:%02d:%02d",
                                     hours, minutes, seconds);
     }
 
@@ -920,21 +868,18 @@ class NMEADataAlarm : public Alarm
 public:
     NMEADataAlarm() :
         start(wxDateTime::Now()),
-        m_sentences(_T("$GPGGA")),
+        m_sentences("$GPGGA"),
         m_seconds(10)
         {}
 
     wxString Type() { return _("NMEA Data"); }
-    wxString Options() {
-        return m_sentences;
-    }
 
     bool Test() {
         return ElapsedSeconds() > m_seconds;
     }
 
     wxString GetStatus() {
-        return wxString::Format(_T("%d ") + _("second(s)"), ElapsedSeconds());
+        return wxString::Format("%d " + _("second(s)"), ElapsedSeconds());
     }
 
     wxWindow *OpenPanel(wxWindow *parent) {
@@ -1009,20 +954,13 @@ public:
                       m_Distance(3)
         {
             if(!PlugIn_GSHHS_CrossesLand(0, 0, 60, 60)) {
-                wxLogMessage(_T("Watchdog: ") + wxString(_("landfall alarm without gshhs data")));
+                wxLogMessage("Watchdog: " + wxString(_("landfall alarm without gshhs data")));
                 m_bData = false;
             } else
                 m_bData = true;
         }
 
     wxString Type() { return _("LandFall"); }
-    wxString Options() {
-        switch(m_Mode) {
-        case TIME: return _("Time") + wxString::Format(_T(" < %f"), m_TimeMinutes);
-        case DISTANCE: return _("Distance") + wxString::Format(_T(" < %f nm"), m_Distance);
-        default: return _T("");
-        }
-    }
 
     bool Test() {
         PlugIn_Position_Fix_Ex lastfix = g_watchdog_pi->LastFix();
@@ -1089,7 +1027,7 @@ public:
             if(m_LandFallTime.IsNull())
                 return _("LandFall Time Invalid");
 
-            wxString s, fmt(_T(" %d "));
+            wxString s, fmt(" %d ");
             int days = m_LandFallTime.GetDays();
             if(days > 1)
                 s = wxString::Format(fmt + _("Days"), days);
@@ -1124,12 +1062,12 @@ public:
 
         case DISTANCE:
         {
-            return wxString::Format(_T(" ") + wxString(_("Distance")) +
-                                    (m_bFired ? _T(" <") : _T(" >")) +
-                                    _T(" %.2f nm"), m_Distance);
+            return wxString::Format(" " + wxString(_("Distance")) +
+                                    (m_bFired ? " <" : " >") +
+                                    " %.2f nm", m_Distance);
         } break;
         }
-        return _T("");
+        return "";
     }
 
     void Render(wdDC &dc, PlugIn_ViewPort &vp) {
@@ -1159,7 +1097,7 @@ public:
         panel->m_rbTime->SetValue(m_Mode == TIME);
         panel->m_rbDistance->SetValue(m_Mode == DISTANCE);
         panel->m_sTimeMinutes->SetValue(m_TimeMinutes);
-        panel->m_tDistance->SetValue(wxString::Format(_T("%f"), m_Distance));
+        panel->m_tDistance->SetValue(wxString::Format("%f", m_Distance));
         return panel;
     }
 
@@ -1174,7 +1112,7 @@ public:
         const char *mode = e->Attribute("Mode");
         if(!strcasecmp(mode, "Time")) m_Mode = TIME;
         else if(!strcasecmp(mode, "Distance")) m_Mode = DISTANCE;
-        else wxLogMessage(_T("Watchdog: ") + wxString(_("invalid LandFall mode")) + _T(": ")
+        else wxLogMessage("Watchdog: " + wxString(_("invalid LandFall mode")) + ": "
                          + wxString::FromUTF8(mode));
 
         e->Attribute("TimeMinutes", &m_TimeMinutes);
@@ -1203,24 +1141,24 @@ protected:
     bool m_bData;
 };
 
-extern wxJSONValue g_ReceivedBoundaryTimeJSONMsg;
+extern Json::Value g_ReceivedBoundaryTimeJSONMsg;
 extern wxString    g_ReceivedBoundaryTimeMessage;
-extern wxJSONValue g_ReceivedBoundaryDistanceJSONMsg;
+extern Json::Value g_ReceivedBoundaryDistanceJSONMsg;
 extern wxString    g_ReceivedBoundaryDistanceMessage;
-extern wxJSONValue g_ReceivedBoundaryAnchorJSONMsg;
+extern Json::Value g_ReceivedBoundaryAnchorJSONMsg;
 extern wxString    g_ReceivedBoundaryAnchorMessage;
-extern wxJSONValue g_ReceivedGuardZoneJSONMsg;
+extern Json::Value g_ReceivedGuardZoneJSONMsg;
 extern wxString    g_ReceivedGuardZoneMessage;
-extern wxJSONValue g_ReceivedODVersionJSONMsg;
+extern Json::Value g_ReceivedODVersionJSONMsg;
 extern wxString    g_ReceivedODVersionMessage;
 extern wxString    g_GuardZoneName;
 extern AIS_Target_Info g_AISTarget;
 extern wxString    g_BoundaryName;
 extern wxString    g_BoundaryDescription;
 extern wxString    g_BoundaryGUID;
-extern wxJSONValue g_ReceivedODAPIJSONMsg;
+extern Json::Value g_ReceivedODAPIJSONMsg;
 extern wxString    g_ReceivedODAPIMessage;
-extern wxJSONValue g_ReceivedPathGUIDJSONMsg;
+extern Json::Value g_ReceivedPathGUIDJSONMsg;
 extern wxString    g_ReceivedPathGUIDMessage;
 
 
@@ -1304,29 +1242,29 @@ public:
                 
         m_BoundaryTime = wxTimeSpan();
 
-        bool l_bUseODAPI_FPIAB = false;
+//        bool l_bUseODAPI_FPIAB = false;
         bool l_bUseODAPI_FCBLC = false;
         OD_FindPointInAnyBoundary pOD_FindPointInAnyBoundary = NULL;
         OD_FindClosestBoundaryLineCrossing pODFindClosestBoundaryLineCrossing = NULL;
         
         if(ODVersionNewerThan( 1, 1, 15)) {
-            wxJSONValue jMsg;
-            wxJSONWriter writer;
+            Json::Value jMsg;
+            Json::FastWriter writer;
             wxString    MsgString;
-            jMsg[wxT("Source")] = wxT("WATCHDOG_PI");
-            jMsg[wxT("Type")] = wxT("Request");
-            jMsg[wxT("Msg")] = wxS("GetAPIAddresses");
-            jMsg[wxT("MsgId")] = wxS("GetAPIAddresses");
-            writer.Write( jMsg, MsgString );
-            SendPluginMessage( wxS("OCPN_DRAW_PI"), MsgString );
-            if(g_ReceivedODAPIMessage != wxEmptyString &&  g_ReceivedODAPIJSONMsg[wxT("MsgId")].AsString() == wxS("GetAPIAddresses")) {
-                wxString sptr = g_ReceivedODAPIJSONMsg[_T("OD_FindPointInAnyBoundary")].AsString();
-                if(sptr != _T("null")) {
+            jMsg["Source"] = "WATCHDOG_PI";
+            jMsg["Type"] = "Request";
+            jMsg["Msg"] = "GetAPIAddresses";
+            jMsg["MsgId"] = "GetAPIAddresses";
+            MsgString = writer.write( jMsg );
+            SendPluginMessage( "OCPN_DRAW_PI", MsgString );
+            if(g_ReceivedODAPIMessage != wxEmptyString &&  g_ReceivedODAPIJSONMsg["MsgId"].asString() == "GetAPIAddresses") {
+                wxString sptr = g_ReceivedODAPIJSONMsg["OD_FindPointInAnyBoundary"].asString();
+                if(sptr != "null") {
                     sscanf(sptr.To8BitData().data(), "%p", &pOD_FindPointInAnyBoundary);
-                    l_bUseODAPI_FPIAB = true;
+                    //l_bUseODAPI_FPIAB = true;
                 }
-                sptr = g_ReceivedODAPIJSONMsg[_T("OD_FindClosestBoundaryLineCrossing")].AsString();
-                if(sptr != _T("null")) {
+                sptr = g_ReceivedODAPIJSONMsg["OD_FindClosestBoundaryLineCrossing"].asString();
+                if(sptr != "null") {
                     sscanf(sptr.To8BitData().data(), "%p", &pODFindClosestBoundaryLineCrossing);
                     l_bUseODAPI_FCBLC = true;
                 }
@@ -1347,30 +1285,30 @@ public:
                         pFCPIAB->dEndLon = lon;
                         switch (m_BoundaryType) {
                             case ID_BOUNDARY_ANY:
-                                pFCPIAB->sBoundaryType = wxT("Any");
+                                pFCPIAB->sBoundaryType = "Any";
                                 break;
                             case ID_BOUNDARY_EXCLUSION:
-                                pFCPIAB->sBoundaryType = wxT("Exclusion");
+                                pFCPIAB->sBoundaryType = "Exclusion";
                                 break;
                             case ID_BOUNDARY_INCLUSION:
-                                pFCPIAB->sBoundaryType = wxT("Inclusion");
+                                pFCPIAB->sBoundaryType = "Inclusion";
                                 break;
                             case ID_BOUNDARY_NEITHER:
-                                pFCPIAB->sBoundaryType = wxT("Neither");
+                                pFCPIAB->sBoundaryType = "Neither";
                                 break;
                             default:
-                                pFCPIAB->sBoundaryType = wxT("Any");
+                                pFCPIAB->sBoundaryType = "Any";
                                 break;
                         }
                         switch (m_BoundaryState) {
                             case ID_BOUNDARY_STATE_ANY:
-                                pFCPIAB->sBoundaryState = wxT("Any");
+                                pFCPIAB->sBoundaryState = "Any";
                                 break;
                             case ID_BOUNDARY_STATE_ACTIVE:
-                                pFCPIAB->sBoundaryState = wxT("Active");
+                                pFCPIAB->sBoundaryState = "Active";
                                 break;
                             case ID_BOUNDARY_STATE_INACTIVE:
-                                pFCPIAB->sBoundaryState = wxT("Inactive");
+                                pFCPIAB->sBoundaryState = "Inactive";
                                 break;
                         }
                         if((*pODFindClosestBoundaryLineCrossing)(pFCPIAB)) {
@@ -1391,66 +1329,66 @@ public:
                         return false;
                         
                     } else {
-                        wxJSONValue jMsg;
-                        wxJSONWriter writer;
+                        Json::Value jMsg;
+                        Json::FastWriter writer;
                         wxString    MsgString;
-                        jMsg[wxS("Source")] = wxS("WATCHDOG_PI");
-                        jMsg[wxT("Type")] = wxT("Request");
-                        jMsg[wxT("Msg")] = wxS("FindClosestBoundaryLineCrossing");
-                        jMsg[wxT("MsgId")] = wxS("time");
-                        jMsg[wxS("StartLat")] = lastfix.Lat;
-                        jMsg[wxS("StartLon")] = lastfix.Lon;
-                        jMsg[wxS("EndLat")] = lat;
-                        jMsg[wxS("EndLon")] = lon;
+                        jMsg["Source"] = "WATCHDOG_PI";
+                        jMsg["Type"] = "Request";
+                        jMsg["Msg"] = "FindClosestBoundaryLineCrossing";
+                        jMsg["MsgId"] = "time";
+                        jMsg["StartLat"] = lastfix.Lat;
+                        jMsg["StartLon"] = lastfix.Lon;
+                        jMsg["EndLat"] = lat;
+                        jMsg["EndLon"] = lon;
                         switch (m_BoundaryType) {
                             case ID_BOUNDARY_ANY:
-                                jMsg[wxS("BoundaryType")] = wxT("Any");
+                                jMsg["BoundaryType"] = "Any";
                                 break;
                             case ID_BOUNDARY_EXCLUSION:
-                                jMsg[wxS("BoundaryType")] = wxT("Exclusion");
+                                jMsg["BoundaryType"] = "Exclusion";
                                 break;
                             case ID_BOUNDARY_INCLUSION:
-                                jMsg[wxS("BoundaryType")] = wxT("Inclusion");
+                                jMsg["BoundaryType"] = "Inclusion";
                                 break;
                             case ID_BOUNDARY_NEITHER:
-                                jMsg[wxS("BoundaryType")] = wxT("Neither");
+                                jMsg["BoundaryType"] = "Neither";
                                 break;
                             default:
-                                jMsg[wxS("BoundaryType")] = wxT("Any");
+                                jMsg["BoundaryType"] = "Any";
                                 break;
                         }
                         switch (m_BoundaryState) {
                             case ID_BOUNDARY_STATE_ANY:
-                                jMsg[wxS("BoundaryState")] = wxT("Any");
+                                jMsg["BoundaryState"] = "Any";
                                 break;
                             case ID_BOUNDARY_STATE_ACTIVE:
-                                jMsg[wxS("BoundaryState")] = wxT("Active");
+                                jMsg["BoundaryState"] = "Active";
                                 break;
                             case ID_BOUNDARY_STATE_INACTIVE:
-                                jMsg[wxS("BoundaryState")] = wxT("Inactive");
+                                jMsg["BoundaryState"] = "Inactive";
                                 break;
                         }
-                        writer.Write( jMsg, MsgString );
-                        SendPluginMessage( wxS("OCPN_DRAW_PI"), MsgString );
+                        MsgString = writer.write( jMsg );
+                        SendPluginMessage( "OCPN_DRAW_PI", MsgString );
                         if(g_ReceivedBoundaryTimeMessage != wxEmptyString &&
-                            g_ReceivedBoundaryTimeJSONMsg[wxS("MsgId")].AsString() == wxS("time") &&
-                            g_ReceivedBoundaryTimeJSONMsg[wxS("Found")].AsBool() == true ) {
+                           g_ReceivedBoundaryTimeJSONMsg["MsgId"].asString() == "time" &&
+                            g_ReceivedBoundaryTimeJSONMsg["Found"].asBool() == true ) {
                             // This is our message
                             int l_BoundaryType = ID_BOUNDARY_ANY;
-                            if(g_ReceivedBoundaryTimeJSONMsg[wxS("BoundaryType")].AsString() == wxT("Exclusion")) l_BoundaryType = ID_BOUNDARY_EXCLUSION;
-                            else if(g_ReceivedBoundaryTimeJSONMsg[wxS("BoundaryType")].AsString() == wxT("Inclusion")) l_BoundaryType = ID_BOUNDARY_INCLUSION;
-                            else if(g_ReceivedBoundaryTimeJSONMsg[wxS("BoundaryType")].AsString() == wxT("Neither")) l_BoundaryType = ID_BOUNDARY_NEITHER;
+                            if(g_ReceivedBoundaryTimeJSONMsg["BoundaryType"].asString() == "Exclusion") l_BoundaryType = ID_BOUNDARY_EXCLUSION;
+                            else if(g_ReceivedBoundaryTimeJSONMsg["BoundaryType"].asString() == "Inclusion") l_BoundaryType = ID_BOUNDARY_INCLUSION;
+                            else if(g_ReceivedBoundaryTimeJSONMsg["BoundaryType"].asString() == "Neither") l_BoundaryType = ID_BOUNDARY_NEITHER;
                             if(m_BoundaryType == ID_BOUNDARY_ANY || m_BoundaryType == l_BoundaryType ) {
                                 if(m_bCurrentBoatPos)
                                     m_BoundaryTime = wxTimeSpan();
                                 else
                                     m_BoundaryTime = wxTimeSpan::Seconds(3600.0 * dist / lastfix.Sog);
-                                m_BoundaryAtLat = g_ReceivedBoundaryTimeJSONMsg[wxS("CrossingLat")].AsDouble();
-                                m_BoundaryAtLon = g_ReceivedBoundaryTimeJSONMsg[wxS("CrossingLon")].AsDouble();
-                                m_BoundaryDistance = g_ReceivedBoundaryTimeJSONMsg[wxS("CrossingDist")].AsDouble();
-                                m_BoundaryName = g_ReceivedBoundaryTimeJSONMsg[wxS("Name")].AsString();
-                                m_BoundaryDescription = g_ReceivedBoundaryTimeJSONMsg[wxS("Description")].AsString();
-                                m_BoundaryGUID = g_ReceivedBoundaryTimeJSONMsg[wxS("GUID")].AsString();
+                                m_BoundaryAtLat = g_ReceivedBoundaryTimeJSONMsg["CrossingLat"].asDouble();
+                                m_BoundaryAtLon = g_ReceivedBoundaryTimeJSONMsg["CrossingLon"].asDouble();
+                                m_BoundaryDistance = g_ReceivedBoundaryTimeJSONMsg["CrossingDist"].asDouble();
+                                m_BoundaryName = g_ReceivedBoundaryTimeJSONMsg["Name"].asString();
+                                m_BoundaryDescription = g_ReceivedBoundaryTimeJSONMsg["Description"].asString();
+                                m_BoundaryGUID = g_ReceivedBoundaryTimeJSONMsg["GUID"].asString();
                                 g_ReceivedBoundaryTimeMessage = wxEmptyString;
                                 return true;
                             }
@@ -1469,67 +1407,66 @@ public:
                         }
                         
                         // Do JSON message to OD Plugin to check if boundary m_crossinglat
-                        wxJSONValue jMsg;
-                        wxJSONWriter writer;
+                        Json::Value jMsg;
+                        Json::FastWriter writer;
                         wxString    MsgString;
-                        jMsg[wxS("Source")] = wxS("WATCHDOG_PI");
-                        jMsg[wxT("Type")] = wxT("Request");
-                        jMsg[wxT("Msg")] = wxS("FindPointInAnyBoundary");
-                        jMsg[wxT("MsgId")] = wxS("time");
-                        jMsg[wxS("lat")] = lat;
-                        jMsg[wxS("lon")] = lon;
+                        jMsg["Source"] = "WATCHDOG_PI";
+                        jMsg["Type"] = "Request";
+                        jMsg["Msg"] = "FindPointInAnyBoundary";
+                        jMsg["MsgId"] = "time";
+                        jMsg["lat"] = lat;
+                        jMsg["lon"] = lon;
                         switch (m_BoundaryType) {
                             case ID_BOUNDARY_ANY:
-                                jMsg[wxS("BoundaryType")] = wxT("Any");
+                                jMsg["BoundaryType"] = "Any";
                                 break;
                             case ID_BOUNDARY_EXCLUSION:
-                                jMsg[wxS("BoundaryType")] = wxT("Exclusion");
+                                jMsg["BoundaryType"] = "Exclusion";
                                 break;
                             case ID_BOUNDARY_INCLUSION:
-                                jMsg[wxS("BoundaryType")] = wxT("Inclusion");
+                                jMsg["BoundaryType"] = "Inclusion";
                                 break;
                             case ID_BOUNDARY_NEITHER:
-                                jMsg[wxS("BoundaryType")] = wxT("Neither");
+                                jMsg["BoundaryType"] = "Neither";
                                 break;
                             default:
-                                jMsg[wxS("BoundaryType")] = wxT("Any");
+                                jMsg["BoundaryType"] = "Any";
                                 break;
                         }
                         switch (m_BoundaryState) {
                             case ID_BOUNDARY_STATE_ANY:
-                                jMsg[wxS("BoundaryState")] = wxT("Any");
+                                jMsg["BoundaryState"] = "Any";
                                 break;
                             case ID_BOUNDARY_STATE_ACTIVE:
-                                jMsg[wxS("BoundaryState")] = wxT("Active");
+                                jMsg["BoundaryState"] = "Active";
                                 break;
                             case ID_BOUNDARY_STATE_INACTIVE:
-                                jMsg[wxS("BoundaryState")] = wxT("Inactive");
+                                jMsg["BoundaryState"] = "Inactive";
                                 break;
                         }
-                        writer.Write( jMsg, MsgString );
-                        SendPluginMessage( wxS("OCPN_DRAW_PI"), MsgString );
+                        MsgString = writer.write( jMsg );
+                        SendPluginMessage( "OCPN_DRAW_PI", MsgString );
                         if(g_ReceivedBoundaryTimeMessage != wxEmptyString &&
-                        g_ReceivedBoundaryTimeJSONMsg[wxS("MsgId")].AsString() == wxS("time") &&
-                        g_ReceivedBoundaryTimeJSONMsg[wxS("Found")].AsBool() == true ) {
+                           g_ReceivedBoundaryTimeJSONMsg["MsgId"].asString() == "time" &&
+                           g_ReceivedBoundaryTimeJSONMsg["Found"].asBool() == true ) {
                             // This is our message
                             int l_BoundaryType = ID_BOUNDARY_ANY;
-                            if(g_ReceivedBoundaryTimeJSONMsg[wxS("BoundaryType")].AsString() == wxT("Exclusion")) l_BoundaryType = ID_BOUNDARY_EXCLUSION;
-                            else if(g_ReceivedBoundaryTimeJSONMsg[wxS("BoundaryType")].AsString() == wxT("Inclusion")) l_BoundaryType = ID_BOUNDARY_INCLUSION;
-                            else if(g_ReceivedBoundaryTimeJSONMsg[wxS("BoundaryType")].AsString() == wxT("Neither")) l_BoundaryType = ID_BOUNDARY_NEITHER;
+                            if(g_ReceivedBoundaryTimeJSONMsg["BoundaryType"].asString() == "Exclusion") l_BoundaryType = ID_BOUNDARY_EXCLUSION;
+                            else if(g_ReceivedBoundaryTimeJSONMsg["BoundaryType"].asString() == "Inclusion") l_BoundaryType = ID_BOUNDARY_INCLUSION;
+                            else if(g_ReceivedBoundaryTimeJSONMsg["BoundaryType"].asString() == "Neither") l_BoundaryType = ID_BOUNDARY_NEITHER;
                             if(m_BoundaryType == ID_BOUNDARY_ANY || m_BoundaryType == l_BoundaryType ) {
                                 if(m_bCurrentBoatPos)
                                     m_BoundaryTime = wxTimeSpan();
                                 else
                                     m_BoundaryTime = wxTimeSpan::Seconds(3600.0 * dist / lastfix.Sog);
-                                m_BoundaryName = g_ReceivedBoundaryTimeJSONMsg[wxS("Name")].AsString();
-                                m_BoundaryDescription = g_ReceivedBoundaryTimeJSONMsg[wxS("Description")].AsString();
-                                m_BoundaryGUID = g_ReceivedBoundaryTimeJSONMsg[wxS("GUID")].AsString();
+                                m_BoundaryName = g_ReceivedBoundaryTimeJSONMsg["Name"].asString();
+                                m_BoundaryDescription = g_ReceivedBoundaryTimeJSONMsg["Description"].asString();
+                                m_BoundaryGUID = g_ReceivedBoundaryTimeJSONMsg["GUID"].asString();
                                 g_ReceivedBoundaryTimeMessage = wxEmptyString;
                                 return true;
                             }
                         }
                         g_ReceivedBoundaryTimeMessage = wxEmptyString;
-                        
                     }
                 }
                 break;
@@ -1549,30 +1486,30 @@ public:
                             pFCPIAB->dEndLon = lon;
                             switch (m_BoundaryType) {
                                 case ID_BOUNDARY_ANY:
-                                    pFCPIAB->sBoundaryType = wxT("Any");
+                                    pFCPIAB->sBoundaryType = "Any";
                                     break;
                                 case ID_BOUNDARY_EXCLUSION:
-                                    pFCPIAB->sBoundaryType = wxT("Exclusion");
+                                    pFCPIAB->sBoundaryType = "Exclusion";
                                     break;
                                 case ID_BOUNDARY_INCLUSION:
-                                    pFCPIAB->sBoundaryType = wxT("Inclusion");
+                                    pFCPIAB->sBoundaryType = "Inclusion";
                                     break;
                                 case ID_BOUNDARY_NEITHER:
-                                    pFCPIAB->sBoundaryType = wxT("Neither");
+                                    pFCPIAB->sBoundaryType = "Neither";
                                     break;
                                 default:
-                                    pFCPIAB->sBoundaryType = wxT("Any");
+                                    pFCPIAB->sBoundaryType = "Any";
                                     break;
                             }
                             switch (m_BoundaryState) {
                                 case ID_BOUNDARY_STATE_ANY:
-                                    pFCPIAB->sBoundaryState = wxT("Any");
+                                    pFCPIAB->sBoundaryState = "Any";
                                     break;
                                 case ID_BOUNDARY_STATE_ACTIVE:
-                                    pFCPIAB->sBoundaryState = wxT("Active");
+                                    pFCPIAB->sBoundaryState = "Active";
                                     break;
                                 case ID_BOUNDARY_STATE_INACTIVE:
-                                    pFCPIAB->sBoundaryState = wxT("Inactive");
+                                    pFCPIAB->sBoundaryState = "Inactive";
                                     break;
                             }
                             if((*pODFindClosestBoundaryLineCrossing)(pFCPIAB)) {
@@ -1587,63 +1524,63 @@ public:
                             }
                             delete pFCPIAB;
                         } else {
-                            wxJSONValue jMsg;
-                            wxJSONWriter writer;
+                            Json::Value jMsg;
+                            Json::FastWriter writer;
                             wxString    MsgString;
-                            jMsg[wxS("Source")] = wxS("WATCHDOG_PI");
-                            jMsg[wxT("Type")] = wxT("Request");
-                            jMsg[wxT("Msg")] = wxS("FindClosestBoundaryLineCrossing");
-                            jMsg[wxT("MsgId")] = wxS("distance");
-                            jMsg[wxS("StartLat")] = lastfix.Lat;
-                            jMsg[wxS("StartLon")] = lastfix.Lon;
-                            jMsg[wxS("EndLat")] = lat;
-                            jMsg[wxS("EndLon")] = lon;
+                            jMsg["Source"] = "WATCHDOG_PI";
+                            jMsg["Type"] = "Request";
+                            jMsg["Msg"] = "FindClosestBoundaryLineCrossing";
+                            jMsg["MsgId"] = "distance";
+                            jMsg["StartLat"] = lastfix.Lat;
+                            jMsg["StartLon"] = lastfix.Lon;
+                            jMsg["EndLat"] = lat;
+                            jMsg["EndLon"] = lon;
                             switch (m_BoundaryType) {
                                 case ID_BOUNDARY_ANY:
-                                    jMsg[wxS("BoundaryType")] = wxT("Any");
+                                    jMsg["BoundaryType"] = "Any";
                                     break;
                                 case ID_BOUNDARY_EXCLUSION:
-                                    jMsg[wxS("BoundaryType")] = wxT("Exclusion");
+                                    jMsg["BoundaryType"] = "Exclusion";
                                     break;
                                 case ID_BOUNDARY_INCLUSION:
-                                    jMsg[wxS("BoundaryType")] = wxT("Inclusion");
+                                    jMsg["BoundaryType"] = "Inclusion";
                                     break;
                                 case ID_BOUNDARY_NEITHER:
-                                    jMsg[wxS("BoundaryType")] = wxT("Neither");
+                                    jMsg["BoundaryType"] = "Neither";
                                     break;
                                 default:
-                                    jMsg[wxS("BoundaryType")] = wxT("Any");
+                                    jMsg["BoundaryType"] = "Any";
                                     break;
                             }
                             switch (m_BoundaryState) {
                                 case ID_BOUNDARY_STATE_ANY:
-                                    jMsg[wxS("BoundaryState")] = wxT("Any");
+                                    jMsg["BoundaryState"] = "Any";
                                     break;
                                 case ID_BOUNDARY_STATE_ACTIVE:
-                                    jMsg[wxS("BoundaryState")] = wxT("Active");
+                                    jMsg["BoundaryState"] = "Active";
                                     break;
                                 case ID_BOUNDARY_STATE_INACTIVE:
-                                    jMsg[wxS("BoundaryState")] = wxT("Inactive");
+                                    jMsg["BoundaryState"] = "Inactive";
                                     break;
                             }
-                            writer.Write( jMsg, MsgString );
-                            SendPluginMessage( wxS("OCPN_DRAW_PI"), MsgString );
+                            MsgString = writer.write( jMsg );
+                            SendPluginMessage( "OCPN_DRAW_PI", MsgString );
                             if(g_ReceivedBoundaryDistanceMessage != wxEmptyString &&
-                                g_ReceivedBoundaryDistanceJSONMsg[wxS("MsgId")].AsString() == wxS("distance") &&
-                                g_ReceivedBoundaryDistanceJSONMsg[wxS("Found")].AsBool() == true ) {
+                               g_ReceivedBoundaryDistanceJSONMsg["MsgId"].asString() == "distance" &&
+                                g_ReceivedBoundaryDistanceJSONMsg["Found"].asBool() == true ) {
                                 // This is our message
                                 int l_BoundaryType = ID_BOUNDARY_ANY;
-                                if(g_ReceivedBoundaryDistanceJSONMsg[wxS("BoundaryType")].AsString() == wxS("Exclusion")) l_BoundaryType = ID_BOUNDARY_EXCLUSION;
-                                else if(g_ReceivedBoundaryDistanceJSONMsg[wxS("BoundaryType")].AsString() == wxS("Inclusion")) l_BoundaryType = ID_BOUNDARY_INCLUSION;
-                                else if(g_ReceivedBoundaryDistanceJSONMsg[wxS("BoundaryType")].AsString() == wxS("Neither")) l_BoundaryType = ID_BOUNDARY_NEITHER;
+                                if(g_ReceivedBoundaryDistanceJSONMsg["BoundaryType"].asString() == "Exclusion") l_BoundaryType = ID_BOUNDARY_EXCLUSION;
+                                else if(g_ReceivedBoundaryDistanceJSONMsg["BoundaryType"].asString() == "Inclusion") l_BoundaryType = ID_BOUNDARY_INCLUSION;
+                                else if(g_ReceivedBoundaryDistanceJSONMsg["BoundaryType"].asString() == "Neither") l_BoundaryType = ID_BOUNDARY_NEITHER;
                                 if(m_BoundaryType == ID_BOUNDARY_ANY || m_BoundaryType == l_BoundaryType ) {
                                     BOUNDARYCROSSING l_BoundaryCrossing;
-                                    l_BoundaryCrossing.Name = g_ReceivedBoundaryDistanceJSONMsg[wxS("Name")].AsString();
-                                    l_BoundaryCrossing.Description = g_ReceivedBoundaryDistanceJSONMsg[wxS("Description")].AsString();
-                                    l_BoundaryCrossing.GUID = g_ReceivedBoundaryDistanceJSONMsg[wxS("GUID")].AsString();
-                                    l_BoundaryCrossing.Lon = g_ReceivedBoundaryDistanceJSONMsg[wxS("CrossingLon")].AsDouble();
-                                    l_BoundaryCrossing.Lat = g_ReceivedBoundaryDistanceJSONMsg[wxS("CrossingLat")].AsDouble();
-                                    l_BoundaryCrossing.Len = g_ReceivedBoundaryDistanceJSONMsg[wxS("CrossingDist")].AsDouble();
+                                    l_BoundaryCrossing.Name = g_ReceivedBoundaryDistanceJSONMsg["Name"].asString();
+                                    l_BoundaryCrossing.Description = g_ReceivedBoundaryDistanceJSONMsg["Description"].asString();
+                                    l_BoundaryCrossing.GUID = g_ReceivedBoundaryDistanceJSONMsg["GUID"].asString();
+                                    l_BoundaryCrossing.Lon = g_ReceivedBoundaryDistanceJSONMsg["CrossingLon"].asDouble();
+                                    l_BoundaryCrossing.Lat = g_ReceivedBoundaryDistanceJSONMsg["CrossingLat"].asDouble();
+                                    l_BoundaryCrossing.Len = g_ReceivedBoundaryDistanceJSONMsg["CrossingDist"].asDouble();
                                     BoundaryCrossingList.push_back(l_BoundaryCrossing);
                                     g_ReceivedBoundaryDistanceMessage = wxEmptyString;
                                 }
@@ -1694,53 +1631,53 @@ public:
                                 m_bCurrentBoatPos = false;
                             }
                             
-                            wxJSONValue jMsg;
-                            wxJSONWriter writer;
+                            Json::Value jMsg;
+                            Json::FastWriter writer;
                             wxString    MsgString;
-                            jMsg[wxS("Source")] = wxS("WATCHDOG_PI");
-                            jMsg[wxT("Type")] = wxT("Request");
-                            jMsg[wxT("Msg")] = wxS("FindPointInAnyBoundary");
-                            jMsg[wxT("MsgId")] = wxS("distance");
-                            jMsg[wxS("lat")] = lat;
-                            jMsg[wxS("lon")] = lon;
+                            jMsg["Source"] = "WATCHDOG_PI";
+                            jMsg["Type"] = "Request";
+                            jMsg["Msg"] = "FindPointInAnyBoundary";
+                            jMsg["MsgId"] = "distance";
+                            jMsg["lat"] = lat;
+                            jMsg["lon"] = lon;
                             switch (m_BoundaryType) {
                                 case ID_BOUNDARY_ANY:
-                                    jMsg[wxS("BoundaryType")] = wxT("Any");
+                                    jMsg["BoundaryType"] = "Any";
                                     break;
                                 case ID_BOUNDARY_EXCLUSION:
-                                    jMsg[wxS("BoundaryType")] = wxT("Exclusion");
+                                    jMsg["BoundaryType"] = "Exclusion";
                                     break;
                                 case ID_BOUNDARY_INCLUSION:
-                                    jMsg[wxS("BoundaryType")] = wxT("Inclusion");
+                                    jMsg["BoundaryType"] = "Inclusion";
                                     break;
                                 case ID_BOUNDARY_NEITHER:
-                                    jMsg[wxS("BoundaryType")] = wxT("Neither");
+                                    jMsg["BoundaryType"] = "Neither";
                                     break;
                                 default:
-                                    jMsg[wxS("BoundaryType")] = wxT("Any");
+                                    jMsg["BoundaryType"] = "Any";
                                     break;
                             }
                             switch (m_BoundaryState) {
                                 case ID_BOUNDARY_STATE_ANY:
-                                    jMsg[wxS("BoundaryState")] = wxT("Any");
+                                    jMsg["BoundaryState"] = "Any";
                                     break;
                                 case ID_BOUNDARY_STATE_ACTIVE:
-                                    jMsg[wxS("BoundaryState")] = wxT("Active");
+                                    jMsg["BoundaryState"] = "Active";
                                     break;
                                 case ID_BOUNDARY_STATE_INACTIVE:
-                                    jMsg[wxS("BoundaryState")] = wxT("Inactive");
+                                    jMsg["BoundaryState"] = "Inactive";
                                     break;
                             }
-                            writer.Write( jMsg, MsgString );
-                            SendPluginMessage( wxS("OCPN_DRAW_PI"), MsgString );
+                            MsgString = writer.write( jMsg );
+                            SendPluginMessage( "OCPN_DRAW_PI", MsgString );
                             if(g_ReceivedBoundaryDistanceMessage != wxEmptyString &&
-                                g_ReceivedBoundaryDistanceJSONMsg[wxS("MsgId")].AsString() == wxS("distance") &&
-                                g_ReceivedBoundaryDistanceJSONMsg[wxS("Found")].AsBool() == true ) {
+                                g_ReceivedBoundaryDistanceJSONMsg["MsgId"].asString() == "distance" &&
+                                g_ReceivedBoundaryDistanceJSONMsg["Found"].asBool() == true ) {
                                 // This is our message
                                 int l_BoundaryType = ID_BOUNDARY_ANY;
-                            if(g_ReceivedBoundaryDistanceJSONMsg[wxS("BoundaryType")].AsString() == wxS("Exclusion")) l_BoundaryType = ID_BOUNDARY_EXCLUSION;
-                            else if(g_ReceivedBoundaryDistanceJSONMsg[wxS("BoundaryType")].AsString() == wxS("Inclusion")) l_BoundaryType = ID_BOUNDARY_INCLUSION;
-                            else if(g_ReceivedBoundaryDistanceJSONMsg[wxS("BoundaryType")].AsString() == wxS("Neither")) l_BoundaryType = ID_BOUNDARY_NEITHER;
+                            if(g_ReceivedBoundaryDistanceJSONMsg["BoundaryType"].asString() == "Exclusion") l_BoundaryType = ID_BOUNDARY_EXCLUSION;
+                            else if(g_ReceivedBoundaryDistanceJSONMsg["BoundaryType"].asString() == "Inclusion") l_BoundaryType = ID_BOUNDARY_INCLUSION;
+                            else if(g_ReceivedBoundaryDistanceJSONMsg["BoundaryType"].asString() == "Neither") l_BoundaryType = ID_BOUNDARY_NEITHER;
                             if(m_BoundaryType == ID_BOUNDARY_ANY || m_BoundaryType == l_BoundaryType ) {
                                 if(m_bCurrentBoatPos)
                                     m_BoundaryDistance = 0;
@@ -1749,9 +1686,9 @@ public:
                                 m_BoundaryDirection = t;
                                 m_BoundaryAtLat = lat;
                                 m_BoundaryAtLon = lon;
-                                m_BoundaryName = g_ReceivedBoundaryDistanceJSONMsg[wxS("Name")].AsString();
-                                m_BoundaryDescription = g_ReceivedBoundaryDistanceJSONMsg[wxS("Description")].AsString();
-                                m_BoundaryGUID = g_ReceivedBoundaryDistanceJSONMsg[wxS("GUID")].AsString();
+                                m_BoundaryName = g_ReceivedBoundaryDistanceJSONMsg["Name"].asString();
+                                m_BoundaryDescription = g_ReceivedBoundaryDistanceJSONMsg["Description"].asString();
+                                m_BoundaryGUID = g_ReceivedBoundaryDistanceJSONMsg["GUID"].asString();
                                 g_ReceivedBoundaryDistanceMessage = wxEmptyString;
                                 return true;
                             }
@@ -1769,22 +1706,20 @@ public:
                 if(m_BoundaryDescription == wxEmptyString)
                     m_BoundaryDescription = g_BoundaryDescription;
                 
-                wxJSONValue jMsg;
-                wxJSONWriter writer;
-                wxString    MsgString;
-                jMsg[wxS("Source")] = wxS("WATCHDOG_PI");
-                jMsg[wxT("Type")] = wxT("Request");
-                jMsg[wxT("Msg")] = wxS("FindPointInBoundary");
-                jMsg[wxT("MsgId")] = wxS("anchor");
-                jMsg[wxS("GUID")] = m_BoundaryGUID;
-                jMsg[wxS("lat")] = lastfix.Lat;
-                jMsg[wxS("lon")] = lastfix.Lon;
+                Json::Value jMsg;
+                Json::FastWriter writer;
+                jMsg["Source"] = "WATCHDOG_PI";
+                jMsg["Type"] = "Request";
+                jMsg["Msg"] = "FindPointInBoundary";
+                jMsg["MsgId"] = "anchor";
+                jMsg["GUID"] = (std::string)m_BoundaryGUID;
+                jMsg["lat"] = lastfix.Lat;
+                jMsg["lon"] = lastfix.Lon;
                 
-                writer.Write( jMsg, MsgString );
-                SendPluginMessage( wxS("OCPN_DRAW_PI"), MsgString );
+                SendPluginMessage( "OCPN_DRAW_PI", writer.write( jMsg ));
                 if(g_ReceivedBoundaryAnchorMessage != wxEmptyString &&
-                    g_ReceivedBoundaryAnchorJSONMsg[wxS("MsgId")].AsString() == wxS("anchor") &&
-                    g_ReceivedBoundaryAnchorJSONMsg[wxS("Found")].AsBool() == false ) {
+                    g_ReceivedBoundaryAnchorJSONMsg["MsgId"].asString() == "anchor" &&
+                    g_ReceivedBoundaryAnchorJSONMsg["Found"].asBool() == false ) {
 
                     // This is our message
                     g_ReceivedBoundaryDistanceMessage = wxEmptyString;
@@ -1797,55 +1732,53 @@ public:
             }
             case GUARD: {
                 if(wxIsNaN(g_AISTarget.m_dLat) || wxIsNaN(g_AISTarget.m_dLat)) break;
-                wxJSONValue jMsg;
-                wxJSONWriter writer;
-                wxString    MsgString;
-                jMsg[wxS("Source")] = wxS("WATCHDOG_PI");
-                jMsg[wxT("Type")] = wxT("Request");
-                jMsg[wxT("Msg")] = wxS("FindPointInGuardZone");
-                jMsg[wxT("MsgId")] = wxS("guard");
-                jMsg[wxS("GUID")] = m_GuardZoneGUID;
-                jMsg[wxS("lat")] = g_AISTarget.m_dLat;
-                jMsg[wxS("lon")] = g_AISTarget.m_dLon;
+                Json::Value jMsg;
+                Json::FastWriter writer;
+                jMsg["Source"] = "WATCHDOG_PI";
+                jMsg["Type"] = "Request";
+                jMsg["Msg"] = "FindPointInGuardZone";
+                jMsg["MsgId"] = "guard";
+                jMsg["GUID"] = (std::string)m_GuardZoneGUID;
+                jMsg["lat"] = g_AISTarget.m_dLat;
+                jMsg["lon"] = g_AISTarget.m_dLon;
                 switch (m_BoundaryType) {
                     case ID_BOUNDARY_ANY:
-                        jMsg[wxS("BoundaryType")] = wxT("Any");
+                        jMsg["BoundaryType"] = "Any";
                         break;
                     case ID_BOUNDARY_EXCLUSION:
-                        jMsg[wxS("BoundaryType")] = wxT("Exclusion");
+                        jMsg["BoundaryType"] = "Exclusion";
                         break;
                     case ID_BOUNDARY_INCLUSION:
-                        jMsg[wxS("BoundaryType")] = wxT("Inclusion");
+                        jMsg["BoundaryType"] = "Inclusion";
                         break;
                     case ID_BOUNDARY_NEITHER:
-                        jMsg[wxS("BoundaryType")] = wxT("Neither");
+                        jMsg["BoundaryType"] = "Neither";
                         break;
                     default:
-                        jMsg[wxS("BoundaryType")] = wxT("Any");
+                        jMsg["BoundaryType"] = "Any";
                         break;
                 }
                 switch (m_BoundaryState) {
                     case ID_BOUNDARY_STATE_ANY:
-                        jMsg[wxS("BoundaryState")] = wxT("Any");
+                        jMsg["BoundaryState"] = "Any";
                         break;
                     case ID_BOUNDARY_STATE_ACTIVE:
-                        jMsg[wxS("BoundaryState")] = wxT("Active");
+                        jMsg["BoundaryState"] = "Active";
                         break;
                     case ID_BOUNDARY_STATE_INACTIVE:
-                        jMsg[wxS("BoundaryState")] = wxT("Inactive");
+                        jMsg["BoundaryState"] = "Inactive";
                         break;
                 }
                 
-                writer.Write( jMsg, MsgString );
-                SendPluginMessage( wxS("OCPN_DRAW_PI"), MsgString );
+                SendPluginMessage( "OCPN_DRAW_PI", writer.write( jMsg ));
                 if(g_ReceivedGuardZoneMessage != wxEmptyString &&
-                    g_ReceivedGuardZoneJSONMsg[wxS("MsgId")].AsString() == wxS("guard") &&
-                    g_ReceivedGuardZoneJSONMsg[wxS("Found")].AsBool() == true ) { 
+                   g_ReceivedGuardZoneJSONMsg["MsgId"].asString() == "guard" &&
+                   g_ReceivedGuardZoneJSONMsg["Found"].asBool() == true ) { 
 
                     g_ReceivedGuardZoneMessage = wxEmptyString;
-                    m_GuardZoneName = g_ReceivedGuardZoneJSONMsg[wxS("Name")].AsString();
-                    m_GuardZoneDescription = g_ReceivedGuardZoneJSONMsg[wxS("Description")].AsString();
-                    m_GuardZoneGUID = g_ReceivedGuardZoneJSONMsg[wxS("GUID")].AsString();
+                    m_GuardZoneName = g_ReceivedGuardZoneJSONMsg["Name"].asString();
+                    m_GuardZoneDescription = g_ReceivedGuardZoneJSONMsg["Description"].asString();
+                    m_GuardZoneGUID = g_ReceivedGuardZoneJSONMsg["GUID"].asString();
                     return true;
                 }
                 g_ReceivedGuardZoneMessage = wxEmptyString;
@@ -1869,9 +1802,9 @@ public:
                 m_bWasEnabled = m_bEnabled;
                 
                 if(m_BoundaryName != wxEmptyString)
-                    l_s = _T(" ") + wxString(_("Boundary name")) + _T(": ") + m_BoundaryName;
+                    l_s = " " + wxString(_("Boundary name")) + ": " + m_BoundaryName;
                 else
-                    l_s =  _T(" ") + wxString(_("Boundary GUID")) + _T(": ") + m_BoundaryGUID;
+                    l_s =  " " + wxString(_("Boundary GUID")) + ": " + m_BoundaryGUID;
 
                 if(m_BoundaryTime.IsNull()) {
                     if(!m_bCurrentBoatPos) {
@@ -1909,9 +1842,9 @@ public:
                 
                 if(m_bFired) {
                     if(m_BoundaryName != wxEmptyString)
-                        l_s = _T(" ") + wxString(_("Boundary name")) + _T(": ") + m_BoundaryName;
+                        l_s = " " + wxString(_("Boundary name")) + ": " + m_BoundaryName;
                     else
-                        l_s =  _T(" ") + wxString(_("Boundary GUID")) + _T(": ") + m_BoundaryGUID;
+                        l_s =  " " + wxString(_("Boundary GUID")) + ": " + m_BoundaryGUID;
                     if(m_bCurrentBoatPos) {
                         switch (m_BoundaryState) {
                             case ID_BOUNDARY_STATE_ANY:
@@ -1926,23 +1859,23 @@ public:
                         }
                     }
                     else {
-                        l_s.append(_T(" <= "));
+                        l_s.append(" <= ");
                         l_s << m_BoundaryDistance;
-                        l_s.append(_T(" nm"));
+                        l_s.append(" nm");
                     }
                 } else {
                     switch (m_BoundaryState) {
                         case ID_BOUNDARY_STATE_ANY:
-                            l_s = _("Any Boundary Distance") + _T(" >");
+                            l_s = _("Any Boundary Distance") + " >";
                             break;
                         case ID_BOUNDARY_STATE_ACTIVE:
-                            l_s = _("Active Boundary Distance") + _T(" >");
+                            l_s = _("Active Boundary Distance") + " >";
                             break;
                         case ID_BOUNDARY_STATE_INACTIVE:
-                            l_s = _("Inactive Boundary Distance") + _T(" >");
+                            l_s = _("Inactive Boundary Distance") + " >";
                             break;
                     }
-                    l_s.append(wxString::Format(_T(" %.2f nm"), m_Distance));
+                    l_s.append(wxString::Format(" %.2f nm", m_Distance));
                 }
                 return l_s;
                 break;
@@ -1950,11 +1883,11 @@ public:
             case ANCHOR:
             {
                 if(m_BoundaryName != wxEmptyString) {
-                    return _T(" ") + wxString(_("Boat")) + _T(" ") +
+                    return " " + wxString(_("Boat")) + " " +
                     (m_bAnchorOutside ? _("outside") : _("inside")) +
                     wxString(_(" boundary area: ")) + m_BoundaryName;
                 } else {
-                return _T(" ") + wxString(_("Boat")) + _T(" ") +
+                return " " + wxString(_("Boat")) + " " +
                     (m_bAnchorOutside ? wxString(_("outside")) : wxString(_("inside"))) +
                     wxString(_(" boundary area: ")) + m_BoundaryGUID;
                 }
@@ -1962,35 +1895,35 @@ public:
             }
             case GUARD:
             {
-                wxJSONValue jMsg;
-                wxJSONWriter writer;
+                Json::Value jMsg;
+                Json::FastWriter writer;
                 wxString    MsgString;
                 
-                jMsg[wxT("Source")] = wxT("WATCHDOG_PI");
-                jMsg[wxT("Type")] = wxT("Request");
-                jMsg[wxT("Msg")] = wxS("FindPathByGUID");
-                jMsg[wxT("MsgId")] = wxS("guard");
-                jMsg[wxS("GUID")] = m_GuardZoneGUID;
-                writer.Write( jMsg, MsgString );
+                jMsg["Source"] = "WATCHDOG_PI";
+                jMsg["Type"] = "Request";
+                jMsg["Msg"] = "FindPathByGUID";
+                jMsg["MsgId"] = "guard";
+                jMsg["GUID"] = (std::string)m_GuardZoneGUID;
+                MsgString = writer.write( jMsg );
                 g_ReceivedPathGUIDMessage = wxEmptyString;
-                SendPluginMessage( wxS("OCPN_DRAW_PI"), MsgString );
+                SendPluginMessage( "OCPN_DRAW_PI", MsgString );
                 if(g_ReceivedPathGUIDMessage != wxEmptyString && 
-                    g_ReceivedPathGUIDJSONMsg[wxT("MsgId")].AsString() == wxS("guard") && 
-                    g_ReceivedPathGUIDJSONMsg[wxT("Found")].AsBool() == true ) {
-                    g_GuardZoneName = g_ReceivedPathGUIDJSONMsg[wxS("Name")].AsString();
+                   g_ReceivedPathGUIDJSONMsg["MsgId"].asString() == "guard" && 
+                   g_ReceivedPathGUIDJSONMsg["Found"].asBool() == true ) {
+                    g_GuardZoneName = g_ReceivedPathGUIDJSONMsg["Name"].asString();
                     m_bSpecial = false;
                 } else {
                     m_bSpecial = true;
                 }
                 if(m_bSpecial)
-                    return _T(" ") + wxString(_("Guard Zone")) + _T(": ") + m_GuardZoneName + _T(": Not found");
+                    return " " + wxString(_("Guard Zone")) + ": " + m_GuardZoneName + ": Not found";
                 else
-                    return _T(" ") + wxString(_("Guard Zone")) + _T(": ") + m_GuardZoneName + _T(": ") +
+                    return " " + wxString(_("Guard Zone")) + ": " + m_GuardZoneName + ": " +
                     (m_bGuardZoneFired ? wxString(_("AIS Target in zone")) : wxString(_("NO AIS tagets found in zone")));
                 break;
             }
         }
-        return _T("");
+        return "";
     }
 
     void Render(wdDC &dc, PlugIn_ViewPort &vp) {
@@ -2017,7 +1950,7 @@ public:
         panel->m_rbAnchor->SetValue(m_Mode == ANCHOR);
         panel->m_rbGuard->SetValue(m_Mode == GUARD);
         panel->m_sTimeMinutes->SetValue(m_TimeMinutes);
-        panel->m_tDistance->SetValue(wxString::Format(_T("%f"), m_Distance));
+        panel->m_tDistance->SetValue(wxString::Format("%f", m_Distance));
         switch (m_BoundaryType) {
             case ID_BOUNDARY_ANY:
                 panel->m_radioBoxBoundaryType->SetSelection(0);
@@ -2123,7 +2056,7 @@ public:
         else if(!strcasecmp(mode, "Distance")) m_Mode = DISTANCE;
         else if(!strcasecmp(mode, "Anchor")) m_Mode = ANCHOR;
         else if(!strcasecmp(mode, "Guard")) m_Mode = GUARD;
-        else wxLogMessage(_T("Watchdog: ") + wxString(_("invalid Boundary mode")) + _T(": ")
+        else wxLogMessage("Watchdog: " + wxString(_("invalid Boundary mode")) + ": "
                          + wxString::FromUTF8(mode));
 
         e->Attribute("TimeMinutes", &m_TimeMinutes);
@@ -2176,7 +2109,7 @@ public:
         if(m_bCommand)
             if(!wxProcess::Open(m_sCommand)) {
                 wxMessageDialog mdlg(GetOCPNCanvasWindow(),
-                                     Type() + _T(" ") +
+                                     Type() + " " +
                                      _("Failed to execute command: ") + m_sCommand,
                                      _("Watchdog"), wxOK | wxICON_ERROR);
                 mdlg.ShowModal();
@@ -2186,58 +2119,58 @@ public:
         if(m_bMessageBox) {
             switch (m_Mode) {
             case TIME: {
-                wxString  l_s = Type() + _T(" ") + _("ALARM!") + _T("\n") 
-                    + _("Name") + _T(": ") + m_BoundaryName + _T("\n")
-                    + _("Description") + _T(": ") + m_BoundaryDescription + _T("\n")
-                    + _("GUID") + _T(": ") + m_BoundaryGUID + _T("\n");
+                wxString  l_s = Type() + " " + _("ALARM!") + "\n" 
+                    + _("Name") + ": " + m_BoundaryName + "\n"
+                    + _("Description") + ": " + m_BoundaryDescription + "\n"
+                    + _("GUID") + ": " + m_BoundaryGUID + "\n";
                 if(m_bCurrentBoatPos)
                     l_s.append(wxString(_("inside boundary")));
                 else
-                    l_s.append(wxString(_("in")) + _T(": ") + TimeBoundaryMsg());
+                    l_s.append(wxString(_("in")) + ": " + TimeBoundaryMsg());
                 wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchdog"), wxOK | wxICON_WARNING);
                 mdlg.ShowModal();
                 break;
             }
             case DISTANCE: {
-                wxString l_s = Type() + _T(" ") + _("ALARM!") + _T("\n") 
-                    + _("Name") + _T(": ") + m_BoundaryName + _T("\n")
-                    + _("Description") + _T(": ") + m_BoundaryDescription + _T("\n")
-                    + _("GUID") + _T(": ") + m_BoundaryGUID + _T("\n");
+                wxString l_s = Type() + " " + _("ALARM!") + "\n" 
+                    + _("Name") + ": " + m_BoundaryName + "\n"
+                    + _("Description") + ": " + m_BoundaryDescription + "\n"
+                    + _("GUID") + ": " + m_BoundaryGUID + "\n";
                 if(m_bCurrentBoatPos)
                     l_s.append(wxString(_("inside boundary")));
                 else {
-                    l_s += wxString(_("in")) + _T(": ");
+                    l_s += wxString(_("in")) + ": ";
                     l_s << m_BoundaryDistance;
-                    l_s += _T(" nm");
+                    l_s += " nm";
                 }
                 wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchdog"), wxOK | wxICON_WARNING);
                 mdlg.ShowModal();
                 break;
             }
             case ANCHOR: {
-                wxString l_s = Type() + _T(" ") + _("ALARM!") + _T("\n") 
-                    + _("Outside") + _T("\n")
-                    + _("Name") + _T(": ") + m_BoundaryName + _T("\n")
-                    + _("Description") + _T(": ") + m_BoundaryDescription + _T("\n")
-                    + _("GUID") + _T(": ") + m_BoundaryGUID;
+                wxString l_s = Type() + " " + _("ALARM!") + "\n" 
+                    + _("Outside") + "\n"
+                    + _("Name") + ": " + m_BoundaryName + "\n"
+                    + _("Description") + ": " + m_BoundaryDescription + "\n"
+                    + _("GUID") + ": " + m_BoundaryGUID;
                 wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchdog"), wxOK | wxICON_WARNING);
                 mdlg.ShowModal();
                 break;
             }
             case GUARD: {
                 wxString l_s;
-                l_s = Type() + _T(" ") + _("ALARM!") + _T("\n") 
-                    + _("Guard Zone Name") + _T(": ") + m_GuardZoneName + _T("\n")
-                    + _("Description") + _T(": ") + m_GuardZoneDescription + _T("\n")
-                    + _("GUID") + _T(": ") + m_GuardZoneGUID + _T("\n") 
-                    + _("Time") + _T(": ") + wxDateTime::Now().FormatISOCombined(' ') + _T("\n");
+                l_s = Type() + " " + _("ALARM!") + "\n" 
+                    + _("Guard Zone Name") + ": " + m_GuardZoneName + "\n"
+                    + _("Description") + ": " + m_GuardZoneDescription + "\n"
+                    + _("GUID") + ": " + m_GuardZoneGUID + "\n" 
+                    + _("Time") + ": " + wxDateTime::Now().FormatISOCombined(' ') + "\n";
                 if(m_bSpecial) {
                     l_s.append("Guard Zone not Found");
                     m_bFired = false;
                     m_bEnabled = false;
                 } else {
-                    l_s.append(_("Ship Name") + _T(": ") + g_AISTarget.m_sShipName + _T("\n")
-                               + _("Ship MMSI") + _T(": ") + wxString::Format(_T("%i"), g_AISTarget.m_iMMSI));
+                    l_s.append(_("Ship Name") + ": " + g_AISTarget.m_sShipName + "\n"
+                               + _("Ship MMSI") + ": " + wxString::Format("%i", g_AISTarget.m_iMMSI));
                 }
                 wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchdog"), wxOK | wxICON_WARNING);
                 mdlg.ShowModal();
@@ -2247,10 +2180,10 @@ public:
         } else {
             if(m_bSpecial && m_Mode == GUARD) {
                 wxString l_s;
-                l_s = Type() + _T(" ") + _("ALARM!") + _T("\n") 
-                    + _("Guard Zone Name") + _T(": ") + m_GuardZoneName + _T("\n")
-                    + _("Description") + _T(": ") + m_GuardZoneDescription + _T("\n")
-                    + _("GUID") + _T(": ") + m_GuardZoneGUID + _T("\n") + _("Guard Zone not Found");
+                l_s = Type() + " " + _("ALARM!") + "\n" 
+                    + _("Guard Zone Name") + ": " + m_GuardZoneName + "\n"
+                    + _("Description") + ": " + m_GuardZoneDescription + "\n"
+                    + _("GUID") + ": " + m_GuardZoneGUID + "\n" + _("Guard Zone not Found");
                 wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchdog"), wxOK | wxICON_WARNING);
                 mdlg.ShowModal();
                 m_bFired = false;
@@ -2268,9 +2201,9 @@ public:
             std::list<AISMMSITIME>::iterator it = AISMsgInfoList.begin();
             while(it != AISMsgInfoList.end()) {
                 wxFileConfig *l_pConf = GetOCPNConfigObject();
-                l_pConf->SetPath ( _T( "/Settings/AIS" ) );
+                l_pConf->SetPath (  "/Settings/AIS"  );
                 
-                int l_iLostMins = l_pConf->Read ( _T ( "MarkLost_Minutes" ), 8L );
+                int l_iLostMins = l_pConf->Read ( "MarkLost_Minutes", 8L );
                 
                 if((wxDateTime::Now() - it->MsgTime).GetSeconds() > (l_iLostMins * 60)) {
                     AISMsgInfoList.erase(it);
@@ -2358,7 +2291,7 @@ public:
     
     wxString TimeBoundaryMsg()
     {
-        wxString s, fmt(_T(" %d "));
+        wxString s, fmt(" %d ");
         int days = m_BoundaryTime.GetDays();
         if(days > 1)
             s = wxString::Format(fmt + _("Days"), days);
@@ -2394,47 +2327,47 @@ public:
     bool ODVersionNewerThan(int major, int minor, int patch)
     {
         if(g_ReceivedODVersionMessage == wxEmptyString) return false;
-        if(g_ReceivedODVersionJSONMsg[wxS("Major")].AsInt() > major) return true;
-        if(g_ReceivedODVersionJSONMsg[wxS("Major")].AsInt() == major &&
-            g_ReceivedODVersionJSONMsg[wxS("Minor")].AsInt() > minor) return true;
-        if(g_ReceivedODVersionJSONMsg[wxS("Major")].AsInt() == major &&
-            g_ReceivedODVersionJSONMsg[wxS("Minor")].AsInt() == minor &&
-            g_ReceivedODVersionJSONMsg[wxS("Patch")].AsInt() >= patch) return true;
+        if(g_ReceivedODVersionJSONMsg["Major"].asInt() > major) return true;
+        if(g_ReceivedODVersionJSONMsg["Major"].asInt() == major &&
+            g_ReceivedODVersionJSONMsg["Minor"].asInt() > minor) return true;
+        if(g_ReceivedODVersionJSONMsg["Major"].asInt() == major &&
+            g_ReceivedODVersionJSONMsg["Minor"].asInt() == minor &&
+            g_ReceivedODVersionJSONMsg["Patch"].asInt() >= patch) return true;
         return false;
     }
     
     void GetODVersion( void )
     {
-        wxJSONValue jMsg;
-        wxJSONWriter writer;
+        Json::Value jMsg;
+        Json::FastWriter writer;
         wxString    MsgString;
-        jMsg[wxS("Source")] = wxS("WATCHDOG_PI");
-        jMsg[wxT("Type")] = wxT("Request");
-        jMsg[wxT("Msg")] = wxS("Version");
-        jMsg[wxT("MsgId")] = wxS("version");
-        writer.Write( jMsg, MsgString );
-        SendPluginMessage( wxS("OCPN_DRAW_PI"), MsgString );
+        jMsg["Source"] = "WATCHDOG_PI";
+        jMsg["Type"] = "Request";
+        jMsg["Msg"] = "Version";
+        jMsg["MsgId"] = "version";
+        MsgString = writer.write( jMsg );
+        SendPluginMessage( "OCPN_DRAW_PI", MsgString );
     }
     
     wxString GetPathNameByGUID(wxString GUID)
     {
-        wxJSONValue jMsg;
-        wxJSONWriter writer;
+        Json::Value jMsg;
+        Json::FastWriter writer;
         wxString    MsgString;
         wxString    l_sName = wxEmptyString;
 
-        jMsg[wxT("Source")] = wxT("WATCHDOG_PI");
-        jMsg[wxT("Type")] = wxT("Request");
-        jMsg[wxT("Msg")] = wxS("FindPathByGUID");
-        jMsg[wxT("MsgId")] = wxS("general");
-        jMsg[wxS("GUID")] = GUID;
-        writer.Write( jMsg, MsgString );
+        jMsg["Source"] = "WATCHDOG_PI";
+        jMsg["Type"] = "Request";
+        jMsg["Msg"] = "FindPathByGUID";
+        jMsg["MsgId"] = "general";
+        jMsg["GUID"] = (std::string)GUID;
+        MsgString = writer.write( jMsg );
         g_ReceivedPathGUIDMessage = wxEmptyString;
-        SendPluginMessage( wxS("OCPN_DRAW_PI"), MsgString );
+        SendPluginMessage( "OCPN_DRAW_PI", MsgString );
         if(g_ReceivedPathGUIDMessage != wxEmptyString &&
-            g_ReceivedPathGUIDJSONMsg[wxT("MsgId")].AsString() == wxS("general") &&
-            g_ReceivedPathGUIDJSONMsg[wxT("Found")].AsBool() == true ) {
-            l_sName = g_ReceivedPathGUIDJSONMsg[wxS("Name")].AsString();
+           g_ReceivedPathGUIDJSONMsg["MsgId"].asString() == "general" &&
+           g_ReceivedPathGUIDJSONMsg["Found"].asBool() == true ) {
+            l_sName = g_ReceivedPathGUIDJSONMsg["Name"].asString();
             }
             return l_sName;
     }
@@ -2488,6 +2421,236 @@ private:
     
 };
 
+
+class pypilotAlarm : virtual public Alarm, virtual public SignalKClient
+{
+public:
+    pypilotAlarm() : SignalKClient(false, false),
+                     m_bNoConnection(true),
+                     m_bOverTemperature(true), m_bOverCurrent(false),
+                     m_bNoIMU(true), m_bNoMotorController(true),
+                     m_bNoRudderFeedback(false), m_bNoMotorTemperature(false),
+                     m_bDriverTimeout(true),
+                     m_bEndOfTravel(false), m_bLostMode(false),
+                     m_bServoSaturated(false),
+                     m_bPowerConsumption(false), m_dPowerConsumption(10),
+                     m_bCourseError(false), m_dCourseError(20),
+                     m_host("192.168.14.1")
+        {
+            m_lastMessageTime = wxDateTime::UNow();
+        }
+
+    wxString Type() { return _("pypilot"); }
+
+    wxString GetStatus() {
+        if(!connected())
+            return "no connection";
+        return m_status;
+    }
+
+    bool Test() {
+        wxString status = "ok";
+        double d;
+        // in order of importance
+        if(m_bNoConnection && (wxDateTime::UNow() - m_lastMessageTime).GetMilliseconds() > 3000)
+            status = "no connection";
+        if(m_bNoIMU && lastvalue("imu.loopfreq") == "0")
+            status = "no imu";
+        else if(m_bNoMotorController && lastvalue("servo.controller") == "none")
+            status = "no controller";
+        else if(m_bEndOfTravel && (lastvalue("servo.flags").Contains("FAULT") ||
+                                   lastvalue("servo.flags").Contains("RUDDER")))
+            status = "end of travel";
+        else if(m_bOverTemperature && lastvalue("servo.flags").Contains("OVERTEMP"))
+            status = "over temperature";
+        else if(m_bOverCurrent && lastvalue("servo.flags").Contains("OVERCURRENT"))
+            status = "over current";
+        else if(m_bNoRudderFeedback && lastvalue("servo.rudder") == "False")
+            status = "no rudder feedback";
+        else if(m_bNoMotorTemperature && lastvalue("servo.motor_temp") == "False")
+            status = "no motor temperature";
+        else if(m_bDriverTimeout && lastvalue("servo.flags").Contains("DRIVER_TIMEOUT"))
+            status = "driver timeout (No Motor)";
+        else if(m_bLostMode && lastvalue("ap.lostmode") == "True")
+            status = "lost mode";
+        else if(m_bServoSaturated && lastvalue("servo.flags").Contains("SATURATED"))
+            status = "servo saturated";
+        else if(m_bPowerConsumption && lastvalue("servo.watts").ToDouble(&d) && d > m_dPowerConsumption)
+            status = "power consumption " + wxString::Format("%.2f > %.2f", d, m_dPowerConsumption);
+        else if(m_bCourseError && lastvalue("ap.heading_error").ToDouble(&d) && d > m_dCourseError)
+            status = "course error " + wxString::Format("%.2f > %.2f", d, m_dCourseError);
+        if(m_status != status)
+            m_DelayTime = wxDateTime(); // invalid
+
+        m_status = status;
+        return status != "ok";
+    }
+
+    void OnTimer(wxTimerEvent &tEvent) {
+        Alarm::OnTimer( tEvent );
+        if(!connected()) {
+            connect(m_host);
+            return;
+        }
+
+        std::string name;
+        Json::Value data;
+        while(receive(name, data)) {
+            Json::Value value = data.get("value", "");
+            if(value.isConvertibleTo(Json::stringValue))
+               m_lastvalues[name] = value.asString();
+            m_lastMessageTime = wxDateTime::UNow();
+        }
+    }
+
+    void OnConnected() {
+        UpdateWatchlist();
+    }
+
+    void OnDisconnected() {
+        m_watchlist.clear();
+        m_lastvalues.clear();
+    }
+
+    void UpdateWatchlist() {
+        if(!connected())
+            return;
+
+        std::map<std::string, bool> watchlist;
+        if(m_bNoConnection)              watchlist["imu.loopfreq"]     = true;
+        if(m_bOverTemperature || m_bOverCurrent || m_bDriverTimeout
+           || m_bEndOfTravel || m_bServoSaturated)
+            watchlist["servo.flags"] = true;
+        if(m_bNoIMU)              watchlist["imu.loopfreq"]     = true;
+        if(m_bNoMotorController)       watchlist["servo.controller"] = true;
+        if(m_bNoRudderFeedback)   watchlist["servo.rudder"]     = true;
+        if(m_bNoMotorTemperature) watchlist["servo.motor_temp"] = true;
+        if(m_bLostMode)           watchlist["ap.lost_mode"]     = true;
+        if(m_bPowerConsumption)   watchlist["servo.watts"]      = true;
+        if(m_bCourseError)        watchlist["ap.heading_error"] = true;
+
+        // watch new keys we weren't watching
+        for(std::map<std::string, bool>::iterator it = watchlist.begin(); it != watchlist.end(); it++)
+            if(m_watchlist.find(it->first) == m_watchlist.end())
+                watch(it->first);
+
+        // unwatch old keys we don't need
+        for(std::map<std::string, bool>::iterator it = m_watchlist.begin(); it != m_watchlist.end(); it++)
+            if(watchlist.find(it->first) == watchlist.end())
+                watch(it->first, false);
+        
+        m_watchlist = watchlist;
+    }
+
+    wxString lastvalue(std::string name)
+    {
+        if(m_lastvalues.find(name) == m_lastvalues.end())
+            return "";
+        return m_lastvalues[name];
+    }
+
+    wxWindow *OpenPanel(wxWindow *parent) {
+        pypilotPanel *panel = new pypilotPanel(parent);
+        panel->m_cbNoConnection->SetValue(m_bNoConnection);
+        panel->m_cbOverTemperature->SetValue(m_bOverTemperature);
+        panel->m_cbOverCurrent->SetValue(m_bOverCurrent);
+        panel->m_cbNoIMU->SetValue(m_bNoIMU);
+        panel->m_cbNoMotorController->SetValue(m_bNoMotorController);
+        panel->m_cbNoRudderFeedback->SetValue(m_bNoRudderFeedback);
+        panel->m_cbNoMotorTemperature->SetValue(m_bNoMotorTemperature);
+        panel->m_cbDriverTimeout->SetValue(m_bDriverTimeout);
+        panel->m_cbEndOfTravel->SetValue(m_bEndOfTravel);
+        panel->m_cbLostMode->SetValue(m_bLostMode);
+        panel->m_cbServoSaturated->SetValue(m_bServoSaturated);
+        panel->m_cbPowerConsumption->SetValue(m_bPowerConsumption);
+        panel->m_sPowerConsumption->SetValue(m_dPowerConsumption);
+        panel->m_cbCourseError->SetValue(m_bCourseError);
+        panel->m_sCourseError->SetValue(m_dCourseError);
+        panel->m_cHost->SetValue(m_host);
+        return panel;
+    }
+
+    void SavePanel(wxWindow *p) {
+        pypilotPanel *panel = (pypilotPanel*)p;
+        m_bNoConnection = panel->m_cbNoConnection->GetValue();
+        m_bOverTemperature = panel->m_cbOverTemperature->GetValue();
+        m_bOverCurrent = panel->m_cbOverCurrent->GetValue();
+        m_bNoIMU = panel->m_cbNoIMU->GetValue();
+        m_bNoMotorController = panel->m_cbNoMotorController->GetValue();
+        m_bNoRudderFeedback = panel->m_cbNoRudderFeedback->GetValue();
+        m_bNoMotorTemperature = panel->m_cbNoMotorTemperature->GetValue();
+        m_bDriverTimeout = panel->m_cbDriverTimeout->GetValue();
+        m_bEndOfTravel = panel->m_cbEndOfTravel->GetValue();
+        m_bLostMode = panel->m_cbLostMode->GetValue();
+        m_bServoSaturated = panel->m_cbServoSaturated->GetValue();
+        m_bPowerConsumption = panel->m_cbPowerConsumption->GetValue();
+        m_dPowerConsumption = panel->m_sPowerConsumption->GetValue();
+        m_bCourseError = panel->m_cbCourseError->GetValue();
+        m_dCourseError = panel->m_sCourseError->GetValue();
+        m_host = panel->m_cHost->GetValue().BeforeFirst(' ');
+
+        UpdateWatchlist();
+    }
+
+    void LoadConfig(TiXmlElement *e) {
+        e->QueryBoolAttribute("NoConnection", &m_bNoConnection);
+        e->QueryBoolAttribute("OverTemperature", &m_bOverTemperature);
+        e->QueryBoolAttribute("OverCurrent", &m_bOverCurrent);
+        e->QueryBoolAttribute("NoIMU", &m_bNoIMU);
+        e->QueryBoolAttribute("NoMotorController", &m_bNoMotorController);
+        e->QueryBoolAttribute("NoRudderFeedback", &m_bNoRudderFeedback);
+        e->QueryBoolAttribute("NoMotorTemperature", &m_bNoMotorTemperature);
+        e->QueryBoolAttribute("DriverTimeout", &m_bDriverTimeout);
+        e->QueryBoolAttribute("EndOfTravel", &m_bEndOfTravel);
+        e->QueryBoolAttribute("LostMode", &m_bLostMode);
+        e->QueryBoolAttribute("ServoSaturated", &m_bServoSaturated);
+        e->QueryBoolAttribute("PowerConsumption", &m_bPowerConsumption);
+        e->Attribute("PowerConsumptionWatts", &m_dPowerConsumption);
+        e->QueryBoolAttribute("CourseError", &m_bCourseError);
+        e->Attribute("CourseErrorDegrees", &m_dCourseError);
+        m_host = e->Attribute("Host");
+
+        UpdateWatchlist();
+    }
+
+    void SaveConfig(TiXmlElement *c) {
+        c->SetAttribute("Type", "pypilot");
+        c->SetAttribute("NoConnection", m_bNoConnection);
+        c->SetAttribute("OverTemperature", m_bOverTemperature);
+        c->SetAttribute("OverCurrent", m_bOverCurrent);
+        c->SetAttribute("NoIMU", m_bNoIMU);
+        c->SetAttribute("NoMotorController", m_bNoMotorController);
+        c->SetAttribute("NoRudderFeedback", m_bNoRudderFeedback);
+        c->SetAttribute("NoMotorTemperature", m_bNoMotorTemperature);
+        c->SetAttribute("DriverTimeout", m_bDriverTimeout);
+        c->SetAttribute("EndOfTravel", m_bEndOfTravel);
+        c->SetAttribute("LostMode", m_bLostMode);
+        c->SetAttribute("ServoSaturated", m_bServoSaturated);
+        c->SetAttribute("PowerConsumption", m_bPowerConsumption);
+        c->SetDoubleAttribute("PowerConsumptionWatts", m_dPowerConsumption);
+        c->SetAttribute("CourseError", m_bCourseError);
+        c->SetDoubleAttribute("CourseErrorDegrees", m_dCourseError);
+        c->SetAttribute("Host", m_host);
+    }
+    
+private:
+    std::map<std::string, bool> m_watchlist;
+    std::map<std::string, std::string> m_lastvalues;
+    wxString m_status;
+
+    bool m_bNoConnection, m_bOverTemperature, m_bOverCurrent;
+    bool m_bNoIMU, m_bNoMotorController, m_bNoRudderFeedback,
+        m_bNoMotorTemperature, m_bDriverTimeout;
+    bool m_bEndOfTravel, m_bLostMode, m_bServoSaturated;
+    bool m_bPowerConsumption;
+    double m_dPowerConsumption;
+    bool m_bCourseError;
+    double m_dCourseError;
+    wxString m_host;
+
+    wxDateTime m_lastMessageTime;
+};
+
 ////////// Alarm Base Class /////////////////
 std::vector<Alarm*> Alarm::s_Alarms;
 
@@ -2500,11 +2663,11 @@ void Alarm::RenderAll(wdDC &dc, PlugIn_ViewPort &vp)
 
 void Alarm::LoadConfigAll()
 {
-    wxString configuration = watchdog_pi::StandardPath() + _T("WatchdogConfiguration.xml");
+    wxString configuration = watchdog_pi::StandardPath() + "WatchdogConfiguration.xml";
     TiXmlDocument doc;
 
     if(!doc.LoadFile(configuration.mb_str())) {
-        wxLogMessage(_T("Watchdog: ") + wxString(_("Failed to read")) + _T(": ") + configuration);
+        wxLogMessage("Watchdog: " + wxString(_("Failed to read")) + ": " + configuration);
         return;
     }
 
@@ -2512,6 +2675,8 @@ void Alarm::LoadConfigAll()
     for(TiXmlElement* e = root.FirstChild().Element(); e; e = e->NextSiblingElement()) {
         if(!strcasecmp(e->Value(), "Alarm")) {
             const char *type = e->Attribute("Type");
+            if(!type)
+                continue;
             Alarm *alarm;
             if(!strcasecmp(type, "Anchor")) alarm = Alarm::NewAlarm(ANCHOR);
             else if(!strcasecmp(type, "Course")) alarm = Alarm::NewAlarm(COURSE);
@@ -2522,13 +2687,15 @@ void Alarm::LoadConfigAll()
             else if(!strcasecmp(type, "NMEAData")) alarm = Alarm::NewAlarm(NMEADATA);
             else if(!strcasecmp(type, "LandFall")) alarm = Alarm::NewAlarm(LANDFALL);
             else if(!strcasecmp(type, "Boundary")) alarm = Alarm::NewAlarm(BOUNDARY);
+            else if(!strcasecmp(type, "pypilot")) alarm = Alarm::NewAlarm(PYPILOT);
             else {
-                wxLogMessage(_T("Watchdog: ") + wxString(_("invalid alarm type")) + _T(": ") + wxString::FromUTF8(type));
+                wxLogMessage("Watchdog: " + wxString(_("invalid alarm type")) + ": " + wxString::FromUTF8(type));
                 continue;
             }
 
             alarm->LoadConfigBase(e);
             alarm->LoadConfig(e);
+            Alarm::s_Alarms.push_back(alarm);
         }
     }
 }
@@ -2557,15 +2724,16 @@ void Alarm::SaveConfigAll()
         root->LinkEndChild(c);
     }
 
-    wxString configuration = watchdog_pi::StandardPath() + _T("WatchdogConfiguration.xml");
+    wxString configuration = watchdog_pi::StandardPath() + "WatchdogConfiguration.xml";
     if(!doc.SaveFile(configuration.mb_str()))
-        wxLogMessage(_T("Watchdog: ") + wxString(_("failed to save")) + _T(": ") + configuration);
+        wxLogMessage("Watchdog: " + wxString(_("failed to save")) + ": " + configuration);
 }
 
 void Alarm::DeleteAll()
 {
     for(unsigned int i=0; i<s_Alarms.size(); i++)
         delete s_Alarms[i];
+    s_Alarms.clear();
 }
 
 void Alarm::ResetAll()
@@ -2593,17 +2761,17 @@ Alarm *Alarm::NewAlarm(enum AlarmType type)
     case NMEADATA: alarm = new NMEADataAlarm; break;
     case LANDFALL: alarm = new LandFallAlarm; break;
     case BOUNDARY: alarm = new BoundaryAlarm; break;
-    default:  wxLogMessage(_T("Invalid Alarm Type")); return NULL;
+    case PYPILOT: alarm = new pypilotAlarm; break;
+    default:  wxLogMessage("Invalid Alarm Type"); return NULL;
     }
 
-    s_Alarms.push_back(alarm);
     return alarm;
 }
 
 Alarm::Alarm(bool gfx, int interval)
     : m_bHasGraphics(gfx), m_bEnabled(false), m_bgfxEnabled(false), m_bFired(false), m_bSpecial(false),
-      m_bSound(true), m_bCommand(false), m_bMessageBox(false), m_bNoData(true), m_bRepeat(false), m_bAutoReset(false),
-      m_sSound(*GetpSharedDataLocation() + _T("sounds/2bells.wav")),
+      m_bSound(true), m_bCommand(false), m_bMessageBox(false), m_bNoData(true), m_bRepeat(false), m_bAutoReset(true),
+      m_sSound(*GetpSharedDataLocation() + "sounds/2bells.wav"),
       m_LastAlarmTime(wxDateTime::Now()),
       m_iRepeatSeconds(60), m_iDelay(0),
       m_interval(interval)
@@ -2615,11 +2783,11 @@ Alarm::Alarm(bool gfx, int interval)
 wxString Alarm::Action()
 {
     wxString s;
-    if(m_bSound)      s += _("Sound")      + wxString(_T(" "));
-    if(m_bCommand)    s += _("Command")    + wxString(_T(" "));
-    if(m_bMessageBox) s += _("MessageBox") + wxString(_T(" "));
-    if(m_bRepeat)     s += _("Repeat")     + wxString(_T(" "));
-    if(m_bAutoReset)  s += _("Auto Reset") + wxString(_T(" "));
+    if(m_bSound)      s += _("Sound")      + wxString(" ");
+    if(m_bCommand)    s += _("Command")    + wxString(" ");
+    if(m_bMessageBox) s += _("MessageBox") + wxString(" ");
+    if(m_bRepeat)     s += _("Repeat")     + wxString(" ");
+    if(m_bAutoReset)  s += _("Auto Reset") + wxString(" ");
     return s;
 }
 
@@ -2631,7 +2799,7 @@ void Alarm::Run()
     if(m_bCommand)
         if(!wxProcess::Open(m_sCommand)) {
             wxMessageDialog mdlg(GetOCPNCanvasWindow(),
-                                 Type() + _T(" ") +
+                                 Type() + " " +
                                  _("Failed to execute command: ") + m_sCommand,
                                  _("Watchdog"), wxOK | wxICON_ERROR);
             mdlg.ShowModal();
@@ -2639,7 +2807,7 @@ void Alarm::Run()
         }
 
     if(m_bMessageBox) {
-        wxMessageDialog mdlg(GetOCPNCanvasWindow(), Type() + _T(" ") + _("ALARM!"),
+        wxMessageDialog mdlg(GetOCPNCanvasWindow(), Type() + " " + _("ALARM!"),
                              _("Watchdog"), wxOK | wxICON_WARNING);
         mdlg.ShowModal();
     }
@@ -2680,9 +2848,9 @@ void Alarm::SaveConfigBase(TiXmlElement *c)
 void Alarm::OnTimer( wxTimerEvent & )
 {
     wxFileConfig *pConf = GetOCPNConfigObject();
-    pConf->SetPath ( _T( "/Settings/Watchdog" ) );
+    pConf->SetPath (  "/Settings/Watchdog"  );
 
-    int enabled = pConf->Read ( _T ( "Enabled" ), 1L );
+    int enabled = pConf->Read ( "Enabled", 1L );
 
     if(enabled == 2 && !g_watchdog_pi->m_bWatchdogDialogShown)
         enabled = 0;
@@ -2690,7 +2858,7 @@ void Alarm::OnTimer( wxTimerEvent & )
     if(enabled == 3 && (!g_watchdog_pi->m_WatchdogDialog || !g_watchdog_pi->m_WatchdogDialog->IsShown()))
        enabled = 0;
 
-    if(enabled && (m_bEnabled)) {
+    if(enabled && m_bEnabled) {
         if(Test()) {
             wxDateTime now = wxDateTime::Now();
             if(!m_DelayTime.IsValid())

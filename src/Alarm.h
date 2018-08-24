@@ -30,7 +30,7 @@
 class wdDC;
 class TiXmlElement;
 
-enum AlarmType {ANCHOR, COURSE, SPEED, WIND, WEATHER, DEADMAN, NMEADATA, LANDFALL, BOUNDARY};
+enum AlarmType {ANCHOR, COURSE, SPEED, WIND, WEATHER, DEADMAN, NMEADATA, LANDFALL, BOUNDARY, PYPILOT};
 
 class Alarm : public wxEvtHandler {
 public:
@@ -52,7 +52,6 @@ public:
     virtual void Run();
 
     virtual wxString Type() = 0;
-    virtual wxString Options() = 0;
     virtual bool Test() = 0;
     virtual wxString GetStatus() = 0;
     virtual void NMEAString(const wxString &sentence) {}
@@ -96,7 +95,6 @@ class TestAlarm : public Alarm
 public:
     TestAlarm() {}
     wxString Type() { return _("Test"); }
-    wxString Options() { return _T(""); }
     bool Test() { return false; }
     wxString GetStatus() { return _T(""); }
     wxWindow *OpenPanel(wxWindow *parent) { return NULL; }

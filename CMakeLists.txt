@@ -39,6 +39,7 @@ SET(SRC_WATCHDOG
             src/NewAlarmDialog.cpp
             src/EditAlarmDialog.cpp
             src/Alarm.cpp
+            src/signalk_client.cpp
             src/WatchdogUI.cpp
             src/icons.cpp
             src/ODAPI.h
