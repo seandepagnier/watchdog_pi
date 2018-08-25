@@ -2488,7 +2488,6 @@ public:
     }
 
     void OnDisconnected() {
-        m_watchlist.clear();
         m_lastvalues.clear();
     }
 
@@ -2509,17 +2508,7 @@ public:
         if(m_bPowerConsumption)   watchlist["servo.watts"]      = true;
         if(m_bCourseError)        watchlist["ap.heading_error"] = true;
 
-        // watch new keys we weren't watching
-        for(std::map<std::string, bool>::iterator it = watchlist.begin(); it != watchlist.end(); it++)
-            if(m_watchlist.find(it->first) == m_watchlist.end())
-                watch(it->first);
-
-        // unwatch old keys we don't need
-        for(std::map<std::string, bool>::iterator it = m_watchlist.begin(); it != m_watchlist.end(); it++)
-            if(watchlist.find(it->first) == watchlist.end())
-                watch(it->first, false);
-        
-        m_watchlist = watchlist;
+        update_watchlist(watchlist);
     }
 
     wxString lastvalue(std::string name)
@@ -2614,7 +2603,6 @@ public:
     }
     
 private:
-    std::map<std::string, bool> m_watchlist;
     std::map<std::string, std::string> m_lastvalues;
     wxString m_status;
 
