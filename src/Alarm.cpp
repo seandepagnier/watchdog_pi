@@ -675,8 +675,8 @@ public:
     wxWindow *OpenPanel(wxWindow *parent) {
         WeatherPanel *panel = new WeatherPanel(parent);
         panel->m_cVariable->SetSelection((int)m_Variable);
-        panel->m_rbRate->SetValue((int)m_Mode / 2);
-        panel->m_cType->SetSelection((int)m_Mode % 2);
+        panel->m_rbRate->SetValue((bool)(m_Mode / 2));
+        panel->m_cType->SetSelection((bool)(m_Mode % 2));
         panel->m_tValue->SetValue(wxString::Format("%f", m_dVal));
         panel->m_sRatePeriod->SetValue(m_iRatePeriod);
         panel->SetupControls();
