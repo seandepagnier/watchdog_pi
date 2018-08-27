@@ -105,6 +105,7 @@ public:
                        m_Radius/1853.0/60.0,
                        m_Longitude);
         
+        dc.SetBrush(*wxTRANSPARENT_BRUSH);
         if(m_bEnabled) {
             if(m_bFired)
                 dc.SetPen(wxPen(*wxRED, 2));
