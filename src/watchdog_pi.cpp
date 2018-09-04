@@ -402,7 +402,7 @@ void watchdog_pi::SetPluginMessage(wxString &message_id, wxString &message_body)
         // now read the JSON text and store it in the 'root' structure
         // check for errors before retreiving values...
         if ( !reader.parse( (std::string)message_body, root ) ) {
-            wxLogMessage(wxString("watchdog_pi: Error parsing JSON message: ") + reader.getFormattedErrorMessages() );
+            wxLogMessage(wxString("watchdog_pi: Error parsing JSON message: ") + reader.getFormattedErrorMessages() + " : " + message_body );
             return;
         }
         
@@ -481,7 +481,7 @@ void watchdog_pi::SetPluginMessage(wxString &message_id, wxString &message_body)
         return;
     } else if(message_id == "AIS") {
         if(reader.parse( (std::string)message_body, root )) {
-            wxLogMessage(wxString("watchdog_pi: Error parsing JSON message: ") + reader.getFormattedErrorMessages() );
+            wxLogMessage(wxString("watchdog_pi: Error parsing AIS JSON message: ") + reader.getFormattedErrorMessages() + " : " + message_body );
             return;
         }
         if(!root.isMember( "Source")) {

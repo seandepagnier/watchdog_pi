@@ -1251,13 +1251,12 @@ public:
         if(ODVersionNewerThan( 1, 1, 15)) {
             Json::Value jMsg;
             Json::FastWriter writer;
-            wxString    MsgString;
+
             jMsg["Source"] = "WATCHDOG_PI";
             jMsg["Type"] = "Request";
             jMsg["Msg"] = "GetAPIAddresses";
             jMsg["MsgId"] = "GetAPIAddresses";
-            MsgString = writer.write( jMsg );
-            SendPluginMessage( "OCPN_DRAW_PI", MsgString );
+            SendPluginMessage( "OCPN_DRAW_PI", writer.write( jMsg ) );
             if(g_ReceivedODAPIMessage != wxEmptyString &&  g_ReceivedODAPIJSONMsg["MsgId"].asString() == "GetAPIAddresses") {
                 wxString sptr = g_ReceivedODAPIJSONMsg["OD_FindPointInAnyBoundary"].asString();
                 if(sptr != "null") {
@@ -2429,7 +2428,7 @@ public:
     }
 
     bool Test() {
-        wxString status = "ok";
+        wxString status;
         double d;
         // in order of importance
         wxDateTime unow = wxDateTime::UNow();
@@ -2463,8 +2462,11 @@ public:
         if(m_status != status)
             m_DelayTime = wxDateTime(); // invalid
 
+        if(!status)
+            return false;
+        
         m_status = status;
-        return status != "ok";
+        return true;
     }
 
     void OnTimer(wxTimerEvent &tEvent) {

@@ -137,6 +137,7 @@ class ConfigurationDialogBase : public wxDialog
 		wxRadioButton* m_rbOnce;
 		wxRadioButton* m_rbVisible;
 		wxRadioButton* m_rbNever;
+		wxStaticText* m_staticText61;
 		wxFontPickerCtrl* m_font;
 		wxStdDialogButtonSizer* m_sdbSizer1;
 		wxButton* m_sdbSizer1OK;
