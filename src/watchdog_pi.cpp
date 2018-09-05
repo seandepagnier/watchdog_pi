@@ -480,7 +480,7 @@ void watchdog_pi::SetPluginMessage(wxString &message_id, wxString &message_body)
         }
         return;
     } else if(message_id == "AIS") {
-        if(reader.parse( (std::string)message_body, root )) {
+        if(!reader.parse( (std::string)message_body, root )) {
             wxLogMessage(wxString("watchdog_pi: Error parsing AIS JSON message: ") + reader.getFormattedErrorMessages() + " : " + message_body );
             return;
         }
