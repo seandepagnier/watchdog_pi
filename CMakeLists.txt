@@ -5,7 +5,7 @@
 ##---------------------------------------------------------------------------
  
 # define minimum cmake version
-CMAKE_MINIMUM_REQUIRED(VERSION 2.6.2)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
 
 PROJECT(watchdog_pi)
 SET(PACKAGE_NAME watchdog_pi)
@@ -24,6 +24,10 @@ SET(VERSION_DATE ${PLUGIN_VERSION_DATE})
 SET(PLUGIN_VERSION "${PLUGIN_VERSION_MAJOR}.${PLUGIN_VERSION_MINOR}.${PLUGIN_VERSION_PATCH}" )
 
 OPTION(WATCHDOG_USE_SVG "Use SVG graphics" ON)
+
+SET(CMAKE_MACOSX_RPATH "ON")
+
+SET(CMAKE_CXX_STANDARD 11)
 
 INCLUDE("cmake/PluginConfigure.cmake")
 
