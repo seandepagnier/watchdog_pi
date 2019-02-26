@@ -635,7 +635,7 @@ private:
 class WeatherAlarm : public Alarm
 {
 public:
-    WeatherAlarm() : Alarm(false), m_Variable(BAROMETER), m_Mode(BELOW), m_dVal(1004),
+    WeatherAlarm() : Alarm(false), m_Variable(BAROMETER), m_Mode(BELOW), m_dVal(1004), m_iRatePeriod(0),
                      m_curvalue(NAN), m_currate(NAN), m_WeatherDataTime(wxDateTime::Now()) {}
 
     wxString Type() { return _("Weather"); }
