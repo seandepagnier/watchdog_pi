@@ -806,8 +806,9 @@ WeatherPanelBase::WeatherPanelBase( wxWindow* parent, wxWindowID id, const wxPoi
 	m_staticText51->Wrap( -1 );
 	fgSizer14->Add( m_staticText51, 0, wxALL, 5 );
 
-	wxArrayString m_cTypeChoices;
-	m_cType = new wxChoice( sbSizer7->GetStaticBox(), wxID_ANY, wxDefaultPosition, wxDefaultSize, m_cTypeChoices, 0 );
+	wxString m_cTypeChoices[] = { _("Increasing"), _("Decreasing") };
+	int m_cTypeNChoices = sizeof( m_cTypeChoices ) / sizeof( wxString );
+	m_cType = new wxChoice( sbSizer7->GetStaticBox(), wxID_ANY, wxDefaultPosition, wxDefaultSize, m_cTypeNChoices, m_cTypeChoices, 0 );
 	m_cType->SetSelection( 0 );
 	fgSizer14->Add( m_cType, 0, wxALL, 5 );
 
