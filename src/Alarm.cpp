@@ -70,7 +70,7 @@ public:
     wxString Type() { return _("Anchor"); }
 
     bool Test() {
-        if(isnan(g_watchdog_pi->m_sog))
+        if(wxIsNaN(g_watchdog_pi->m_sog))
             return m_bNoData;
         return Distance() > m_Radius;
     }
@@ -87,7 +87,7 @@ public:
 
         double anchordist = Distance();
         wxString s;
-        if(isnan(anchordist))
+        if(wxIsNaN(anchordist))
             s = "N/A";
         else {
             wxString fmt("%.0f ");
@@ -152,7 +152,7 @@ public:
 
 private:
     double Distance() {
-        if(isnan(g_watchdog_pi->m_cog))
+        if(wxIsNaN(g_watchdog_pi->m_cog))
             return NAN;
         PlugIn_Position_Fix_Ex lastfix = g_watchdog_pi->LastFix();
 
@@ -181,7 +181,7 @@ public:
 
     bool Test() {
         double error = CourseError();
-        if(isnan(error))
+        if(wxIsNaN(error))
             return m_bNoData;
             
         return error > m_Tolerance;
@@ -190,7 +190,7 @@ public:
     wxString GetStatus() {
         double courseerror = CourseError();
         wxString s;
-        if(isnan(courseerror))
+        if(wxIsNaN(courseerror))
             s = "N/A";
         else {
             wxString fmt("%.0f ");
@@ -211,7 +211,7 @@ public:
         double lat1 = lastfix.Lat, lon1 = lastfix.Lon, lat2, lon2, lat3, lon3;
         double dist = lastfix.Sog;
 
-        if(isnan(dist))
+        if(wxIsNaN(dist))
             return;
 
         PositionBearingDistanceMercator_Plugin(lat1, lon1, m_Course+m_Tolerance,
@@ -302,7 +302,7 @@ public:
 
     wxString GetStatus() {
         wxString s;
-        if(isnan(g_watchdog_pi->m_sog))
+        if(wxIsNaN(g_watchdog_pi->m_sog))
             s = "N/A";
         else {
             wxString fmt("%.1f");
@@ -336,7 +336,7 @@ public:
 
     bool Test() {
         double knots = Knots();
-        if(isnan(knots))
+        if(wxIsNaN(knots))
             return m_bNoData;
 
         if(m_Mode == UNDERSPEED)
@@ -391,7 +391,7 @@ public:
     {
         Alarm::OnTimer( tEvent );
         double sog = g_watchdog_pi->LastFix().Sog;
-        if(!isnan(sog))
+        if(!wxIsNaN(sog))
             m_SOGqueue.push_front(sog);
         while((int)m_SOGqueue.size() > m_iAverageTime)
             m_SOGqueue.pop_back();
@@ -453,12 +453,12 @@ public:
         switch(m_Mode) {
         case UNDERSPEED:
         case OVERSPEED:
-            if(isnan(m_speed))
+            if(wxIsNaN(m_speed))
                 return "N/A";
             else
                 return wxString::Format(fmt + (m_Mode == UNDERSPEED ? " < " : " > ") + fmt, m_speed, m_dVal);
         case DIRECTION:
-            if(isnan(m_direction))
+            if(wxIsNaN(m_direction))
                 return "N/A";
             else
                 return wxString::Format(fmt + " < " + fmt + " < " + fmt,
@@ -471,7 +471,7 @@ public:
     void Render(wdDC &dc, PlugIn_ViewPort &vp) {
         if(m_Mode != DIRECTION)
             return;
-        if(isnan(m_direction))
+        if(wxIsNaN(m_direction))
             return;
         PlugIn_Position_Fix_Ex lastfix = g_watchdog_pi->LastFix();
 
@@ -645,7 +645,7 @@ public:
         s += " ";
         
         double val = Value();
-        if(isnan(val))
+        if(wxIsNaN(val))
             s += "N/A";
         else {
             wxString fmt("%.2f");
@@ -784,7 +784,7 @@ private:
                 value = nmea.Mtw.Temperature;
             break;
         }
-        if(isnan(value))
+        if(wxIsNaN(value))
             return;
 
         m_WeatherDataTime = wxDateTime::Now();
@@ -966,7 +966,7 @@ public:
     bool Test() {
         PlugIn_Position_Fix_Ex lastfix = g_watchdog_pi->LastFix();
 
-        if(isnan(lastfix.Lat))
+        if(wxIsNaN(lastfix.Lat))
             return m_bNoData;
 
         double lat1 = lastfix.Lat, lon1 = lastfix.Lon, lat2, lon2;
@@ -1073,7 +1073,7 @@ public:
 
     void Render(wdDC &dc, PlugIn_ViewPort &vp) {
         PlugIn_Position_Fix_Ex lastfix = g_watchdog_pi->LastFix();
-        if(isnan(m_crossinglat1))
+        if(wxIsNaN(m_crossinglat1))
             return;
 
         wxPoint r1, r2, r3, r4;
@@ -1235,7 +1235,7 @@ public:
     bool Test() {
         PlugIn_Position_Fix_Ex lastfix = g_watchdog_pi->LastFix();
 
-        if(isnan(lastfix.Lat))
+        if(wxIsNaN(lastfix.Lat))
             return m_bNoData;
 
         double lat, lon;
