@@ -153,7 +153,6 @@ set(USE_LOCAL_GLU FALSE)
 message(STATUS "USE_GL: ${USE_GL}")
 #------End Settings
 
-
 if("${CMAKE_BUILD_TYPE}" STREQUAL "")
   set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the type of build" FORCE)
 endif("${CMAKE_BUILD_TYPE}" STREQUAL "")
@@ -245,7 +244,7 @@ endif()
 #===========================================================
 INCLUDE("cmake/PluginConfigure.cmake")
 #===========================================================
-# ----- Change below to match your project requirements ----- ##
+# ----- Change below to match project requirements ----- ##
 # ++++++++++++++Section below is direct from Watchdog +++++++++##
 
 # needed?
@@ -326,6 +325,11 @@ INCLUDE_DIRECTORIES(api-16)
 #            src/tinyxml/tinyxmlparser.cpp
 #            src/tinyxml/tinyxmlerror.cpp
 # )
+
+if(UNIX)
+    add_definitions("-fpic")
+endif(UNIX)
+
 ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRCS} ${HDRS} ${SRC_JSON} ${SRC_NMEA0183} ${SRC_LTINYXML})
 # ENDIF(TINYXML_FOUND)
 ADD_DEFINITIONS(-DTIXML_USE_STL)
@@ -334,10 +338,11 @@ ADD_DEFINITIONS(-DTIXML_USE_STL)
 # +++++Section above is direct from Watchdog +++++++++++++##
 #
 #----INCLUDE CMAKE #3 & #4 -----
+#INCLUDE("cmake/PluginGL.cmake")
 INCLUDE("cmake/PluginNMEA.cmake") #not for wxfax
 INCLUDE("cmake/PluginJSON.cmake")  #not for wxfax
 INCLUDE("cmake/PluginXML.cmake")
-#INCLUDE("cmake/PluginGL.cmake")
+
 
 # ----- Do not change - needed to build app ----- ##
 #
