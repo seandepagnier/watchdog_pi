@@ -270,7 +270,7 @@ SET(SRCS
 	)
 	
 SET(HDRS
-  	        src/AIS_Targent_Info.h
+  	        src/AIS_Target_Info.h
 			Alarm.h
 			ConfigurationDialog.h
 			EditAlarmDialog.h
