@@ -271,25 +271,26 @@ SET(SRCS
 	
 SET(HDRS
   	        src/AIS_Target_Info.h
-			Alarm.h
-			ConfigurationDialog.h
-			EditAlarmDialog.h
-			icons.h
-			msvcdefs.h
-			NewAlarmDialog.h
-			ocpn_plugin.h
-			ODAPI.h
-			signalk_client.h
-			Texfont.h
-			version.h
-			watchdog_pi.h
-			WatchdogDialog.h
-			WatchdogPropertiesDialog.h
-			WatchdogUI.h
-			wddc.h
-			WeatherPanel.h
-			WindPanel.h
-			wxWTranslateCatalog.h
+			src/Alarm.h
+			src/ConfigurationDialog.h
+			src/EditAlarmDialog.h
+			src/icons.h
+			src/msvcdefs.h
+			src/NewAlarmDialog.h
+			src/ODAPI.h
+			src/signalk_client.h
+			src/Texfont.h
+			src/version.h
+			src/watchdog_pi.h
+			src/WatchdogDialog.h
+			src/WatchdogPropertiesDialog.h
+			src/WatchdogUI.h
+			src/wddc.h
+			src/WeatherPanel.h
+			src/WindPanel.h
+			src/wxWTranslateCatalog.h
+
+            api-16/ocpn_plugin.h
 )
 
 
