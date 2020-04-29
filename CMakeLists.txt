@@ -279,7 +279,7 @@ SET(HDRS
 			src/NewAlarmDialog.h
 			src/ODAPI.h
 			src/signalk_client.h
-			src/Texfont.h
+			src/TexFont.h
 			src/version.h
 			src/watchdog_pi.h
 			src/WatchdogDialog.h
