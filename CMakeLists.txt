@@ -280,7 +280,6 @@ SET(HDRS
 			src/ODAPI.h
 			src/signalk_client.h
 			src/TexFont.h
-			src/version.h
 			src/watchdog_pi.h
 			src/WatchdogDialog.h
 			src/WatchdogPropertiesDialog.h
