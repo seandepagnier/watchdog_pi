@@ -21,7 +21,9 @@
 #-----------------------------------------------------------------------------
 # Frontend2 Author: Jon Gough  
 # ---------------------------------------------------------------------------
-# CMake-CI Number: 0.0.004  
+# CMake-CI Number: 0.0.006  
+#    - Reverse dates here
+#    - 2/05/2020 MacOS final fix- JG
 # ---------------------------------------------------------------------------
 # ----- Modify section below to include all the details for your plugin ----- ##
 
@@ -61,7 +63,7 @@ set(GIT_REPOSITORY_NAME "watchdog_pi")
 message(STATUS "CIRCLECI: ${CIRCLECLI}, Env CIRCLECI: $ENV{CIRCLECI}")
 message(STATUS "TRAVIS: ${TRAVIS}, Env TRAVIS: $ENV{TRAVIS}")
 
-## Allows setup of a local webserver with git for testing
+#Permits setup of a local webserver with git for testing
 if($ENV{CIRCLECI})
   set(GIT_REPOSITORY_HOST "github.com")
   set(GIT_REPOSITORY_DIR "${GIT_USER}/")
@@ -145,6 +147,8 @@ message(STATUS "${VERBOSE_NAME} Version: ${VERSION_MAJOR}.${VERSION_MINOR}.${VER
 message(STATUS "OPCN_FLATPAK: ${OCPN_FLATPAK}")
 
 #------Settings
+# Prefer libGL.so to libOpenGL.so, see CMP0072
+set(OpenGL_GL_PREFERENCE "LEGACY")
 # Don't use local version of GLU library
 set(USE_LOCAL_GLU FALSE)
 
@@ -291,6 +295,53 @@ SET(HDRS
             api-16/ocpn_plugin.h
 )
 
+add_definitions(-DPLUGIN_USE_SVG)
+									
+#IF(APPLE)
+ #   OPTION(TP_JSON_SCHEMA_VALIDATOR "Use JSON Schema validator" OFF)
+#ELSE(APPLE)
+#    OPTION(TP_JSON_SCHEMA_VALIDATOR "Use JSON Schema validator" ON)
+#ENDIF(APPLE)
+
+#IF(TP_JSON_SCHEMA_VALIDATOR)
+#    MESSAGE(STATUS "Using JSON Schema validation - warning this changes the 'flavour' of the executable and it may not be compatible with OpenCPN")
+#    ADD_DEFINITIONS(-DTP_JSON_SCHEMA_VALIDATOR)
+#    MESSAGE(STATUS "Adding JSON Schema validation")
+
+#    SET(EXTSRC
+#        ${EXTSRC}
+#        extsrc/json-schema-validator/json-schema-draft7.json.cpp
+#        extsrc/json-schema-validator/json-uri.cpp
+#        extsrc/json-schema-validator/json-validator.cpp
+#    )
+#    SET(EXTINCLUDE
+#        ${EXTINCLUDE}
+#        extinclude/nlohmann/json.hpp
+#        extinclude/json-schema-validator/json-schema.hpp
+#    )
+#    INCLUDE_DIRECTORIES(BEFORE ${PROJECT_SOURCE_DIR}/extinclude/json-schema-validator)
+#ELSE(TP_JSON_SCHEMA_VALIDATOR)
+#    MESSAGE(STATUS "Not using JSON Schema validation - warning invalid JSON 'may' cause unexpected crashes")
+#ENDIF(TP_JSON_SCHEMA_VALIDATOR)
+
+##=============================================================
+# Modify/configure 'Include' Directories below for the Plugin
+##=============================================================
+#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude)
+#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/extinclude)
+#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/)
+#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/wx/include)
+#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude/wxcurl)
+#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude/wxcurl/include)
+#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnsrc/lz4)
+#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnsrc/bitmaps)
+
+##================================================================================
+## Required to collect all the set( headers and SRCS  - Adjust as required
+## This add_library  can be used in conditionals below.
+##================================================================================	
+#    SET(EXTSRC  ${EXTSRC}   etc   Can be in an if statement as below
+##================================================================================								
 
 #INCLUDE_DIRECTORIES(BEFORE ${PROJECT_SOURCE_DIR}/src/libaudiofile)
 #INCLUDE_DIRECTORIES(BEFORE ${PROJECT_SOURCE_DIR}/src/plugingl)
