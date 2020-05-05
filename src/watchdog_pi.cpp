@@ -233,7 +233,9 @@ wxBitmap *watchdog_pi::GetPlugInBitmap()
 
 wxString watchdog_pi::GetCommonName()
 {
-    return _("Watchdog");
+//    return _("Watchdog");
+	
+	return _T(PLUGIN_COMMON_NAME);
 }
 
 wxString watchdog_pi::GetShortDescription()

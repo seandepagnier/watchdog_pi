@@ -40,7 +40,7 @@ endif(COMMAND cmake_policy)
 
 SET(VERBOSE_NAME Watchdog)
 # Search "getcommonname"in watchdog_pi.cpp
-set(COMMON_NAME "Weatherfax")
+set(COMMON_NAME "Watchdog")
 set(TITLE_NAME "Watchdog")
 set(PACKAGE_CONTACT "Sean d'Epagnier")
 SET(PACKAGE "watchdog_pi")
@@ -98,7 +98,7 @@ message(STATUS "Git Branch: ${GIT_REPOSITORY_BRANCH}")
 set(CLOUDSMITH_USER "rick-gleason")
 
 #set(CLOUDSMITH_BASE_REPOSITORY "${GIT_REPOSITORY_NAME}")
-#set(CLOUDSMITH_BASE_REPOSITORY "weatherfax_pi")  #Jon Gough's customization
+#set(CLOUDSMITH_BASE_REPOSITORY "watchdog_pi")  #Jon Gough's customization
 #set(CLOUDSMITH_BASE_REPOSITORY "opencpn-plugins")  #Sean's customization
 
 set(CLOUDSMITH_BASE_REPOSITORY "opencpn-plugins")  #Rick's customization
