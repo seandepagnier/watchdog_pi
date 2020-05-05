@@ -39,8 +39,8 @@ if(COMMAND cmake_policy)
 endif(COMMAND cmake_policy)
 
 SET(VERBOSE_NAME Watchdog)
-# Search "getcommonname"in weather_routing_pi.cpp
-set(COMMON_NAME "Weatherfax")
+# Search "getcommonname"in watchdog_pi.cpp
+set(COMMON_NAME "Watchdog")
 set(TITLE_NAME "Watchdog")
 set(PACKAGE_CONTACT "Sean d'Epagnier")
 SET(PACKAGE "watchdog_pi")
@@ -98,8 +98,9 @@ message(STATUS "Git Branch: ${GIT_REPOSITORY_BRANCH}")
 set(CLOUDSMITH_USER "rick-gleason")
 
 #set(CLOUDSMITH_BASE_REPOSITORY "${GIT_REPOSITORY_NAME}")
-#set(CLOUDSMITH_BASE_REPOSITORY "weatherfax_pi")  #Jon Gough's customization
+#set(CLOUDSMITH_BASE_REPOSITORY "watchdog_pi")  #Jon Gough's customization
 #set(CLOUDSMITH_BASE_REPOSITORY "opencpn-plugins")  #Sean's customization
+
 set(CLOUDSMITH_BASE_REPOSITORY "opencpn-plugins")  #Rick's customization
 
 # Set Cloudsmith upload repository suffix for each catalog
@@ -108,10 +109,9 @@ set(BETA "beta") #Standard Repos
 set(ALPHA "alpha") #Standard Repos
 
 # Set Plugin info-url, summary and description
-set(XML_INFO_URL "https://opencpn.org/OpenCPN/plugins/weatherfax.html")
-set(XML_SUMMARY "Open fax image files or decode audio faxes and overlay on chart")
-set(XML_DESCRIPTION "Simple image overlay calibration, Converts any image image into a raster chart.  Db for HF radio fax stations via SSB and Metro URL internet retrieval.")
-
+set(XML_INFO_URL "https://opencpn.org/OpenCPN/plugins/watchdog.html")
+set(XML_SUMMARY "Implement watchdog ability for opencpn")
+set(XML_DESCRIPTION "Multiple Configurable alarms for  changing conditions for boundaries, cog, landfall, ais, wind, nmea, weather, pypilot, wind, deadman, etc.")
 
 ##
 ## ----- Modify above to include all the plugin details --------- ##
@@ -153,7 +153,7 @@ set(OpenGL_GL_PREFERENCE "LEGACY")
 set(USE_LOCAL_GLU FALSE)
 
 # Question still needed? on or off?
-# option(USE_GL "Enable OpenGL support" ON)
+# option(USE_GL "Enable OpenGL support" OFF)
 message(STATUS "USE_GL: ${USE_GL}")
 #------End Settings
 
@@ -178,10 +178,12 @@ message(STATUS "PACKAGING_NAME: ${PACKAGING_NAME}")
 
 set(PLUGIN_NAME ${PACKAGE}-plugin-${PKG_TARGET}-${PKG_TARGET_VERSION})
 
+# Settings and Options
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
 option(Plugin_CXX11 "Use c++11" OFF)
 
+# Check on compiler support
 if(Plugin_CXX11)
   message(STATUS "Attempting to use c++11")
   include(CheckCXXCompilerFlag)
@@ -241,14 +243,16 @@ if(CMAKE_VERSION VERSION_GREATER 3.9)
   endif()
 endif()
 
-#
+# -------Section above is directly from WxFax & Testplugin --------------#  
 # ----- Modify section above for special plugin requirements----- ##
-#
-## --Section above is direct from Weatherfax located above SET(SRC_WEATHERFAX  ---##
+
 #===========================================================
 INCLUDE("cmake/PluginConfigure.cmake")
 #===========================================================
 # ----- Change below to match project requirements ----- ##
+
+add_definitions(-DUSE_S57)
+
 # ++++++++++++++Section below is direct from Watchdog +++++++++##
 
 # needed?
@@ -387,6 +391,32 @@ ADD_DEFINITIONS(-DTIXML_USE_STL)
 
 
 # +++++Section above is direct from Watchdog +++++++++++++##
+
+#JSON Validator: Every plugin that uses JSON for passing messages should use a validator.  A JSON validator is much like an XML validator, the validator allows the system to ignore non-conformant messages.  The JSON validator changes the OSABI flavor of the Linux executable so there is code to change it back.
+
+# IF(UNIX AND NOT APPLE)
+  # IF(TP_JSON_SCHEMA_VALIDATOR)
+#    Change OS/ABI to be UNIX - System V to make it run with OCPN
+    # SET(lib_name lib${PACKAGE_NAME}.so)
+    # MESSAGE(STATUS "lib-name: ${lib_name}")
+    # FIND_FILE(elfedit elfedit)
+    # IF(NOT (${elfedit} STREQUAL "elfedit-NOTFOUND"))
+      # MESSAGE(STATUS "Will ensure OS/ABI is set to 0 to match OCPN")
+      # ADD_CUSTOM_COMMAND(
+        # TARGET ${PACKAGE_NAME}
+        # POST_BUILD
+        # WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+        # DEPENDS ${PACKAGE_NAME}
+        # COMMENT " Running post build action on ${lib_name}."
+        # COMMAND sh -c 'elfedit --input-osabi=Linux --output-osabi=none ${lib_name} || (echo 0) '
+      # )
+    # ELSE(NOT (${elfedit} STREQUAL "elfedit-NOTFOUND"))
+      # MESSAGE(STATUS "Cannot correct OS/ABI to match OCPN if it is generated incorrectly. Package binutils needed")
+    # ENDIF(NOT (${elfedit} STREQUAL "elfedit-NOTFOUND"))
+  # ENDIF(TP_JSON_SCHEMA_VALIDATOR)
+# ENDIF(UNIX AND NOT APPLE)
+
+
 #
 #----INCLUDE CMAKE #3 & #4 -----
 #INCLUDE("cmake/PluginGL.cmake")
