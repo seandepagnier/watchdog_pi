@@ -21,9 +21,7 @@
 #-----------------------------------------------------------------------------
 # Frontend2 Author: Jon Gough  
 # ---------------------------------------------------------------------------
-# CMake-CI Number: 0.0.006  
-#    - Reverse dates here
-#    - 2/05/2020 MacOS final fix- JG
+# CMake-CI Number: 0.0.004  
 # ---------------------------------------------------------------------------
 # ----- Modify section below to include all the details for your plugin ----- ##
 
@@ -55,6 +53,7 @@ set(OCPN_API_VERSION_MAJOR "1")
 set(OCPN_API_VERSION_MINOR "16")
 
 set(PARENT "opencpn")
+
 #set(GIT_USER "seandepagnier")
 #set(GIT_USER "jongough")
 set(GIT_USER "rgleason")
@@ -63,7 +62,7 @@ set(GIT_REPOSITORY_NAME "watchdog_pi")
 message(STATUS "CIRCLECI: ${CIRCLECLI}, Env CIRCLECI: $ENV{CIRCLECI}")
 message(STATUS "TRAVIS: ${TRAVIS}, Env TRAVIS: $ENV{TRAVIS}")
 
-#Permits setup of a local webserver with git for testing
+## Allows setup of a local webserver with git for testing
 if($ENV{CIRCLECI})
   set(GIT_REPOSITORY_HOST "github.com")
   set(GIT_REPOSITORY_DIR "${GIT_USER}/")
@@ -118,16 +117,17 @@ set(XML_DESCRIPTION "Simple image overlay calibration, Converts any image image 
 ## ----- Modify below for plugin special requirements------------ ##
 ##
 
-#------Settings
-SET(BUNDLE_DATA FALSE)  #from wd
-SET(CMAKE_MACOSX_RPATH "ON")  #from WD
+#------
+set(BUNDLE_DATA_FALSE)	# From old wd
+SET(CMAKE_MACOSX_RPATH "ON")  # From old wd
+set(APPVEYOR_TEST_DEPLOY_TO_CLOUDSMITH "true")
 option(PLUGIN_USE_SVG "Use SVG graphics" ON)  
-#OPTION(WATCHDOG_USE_SVG "Use SVG graphics" ON) #from WD
-SET(CMAKE_CXX_STANDARD 11)  #also from WD
+# OPTION(WATCHDOG_USE_SVG "Use SVG graphics" ON) # From watchdog earlier
+set(CMAKE_CXX_STANDARD 11)  #also old wd
 
 # Prefer libGL.so to libOpenGL.so, see CMP0072
 set(OpenGL_GL_PREFERENCE "LEGACY")
-#------ End Settings
+#------
 
 if(NOT ${PACKAGE} MATCHES "(.*)_pi")
   set(PACKAGE_NAME ${PACKAGE}_pi)
@@ -147,15 +147,14 @@ message(STATUS "${VERBOSE_NAME} Version: ${VERSION_MAJOR}.${VERSION_MINOR}.${VER
 message(STATUS "OPCN_FLATPAK: ${OCPN_FLATPAK}")
 
 #------Settings
-# Prefer libGL.so to libOpenGL.so, see CMP0072
-set(OpenGL_GL_PREFERENCE "LEGACY")
 # Don't use local version of GLU library
 set(USE_LOCAL_GLU FALSE)
 
-# Question still needed? on or off?
+# Not in Master branch. Question still needed? on or off?
 # option(USE_GL "Enable OpenGL support" ON)
 message(STATUS "USE_GL: ${USE_GL}")
 #------End Settings
+
 
 if("${CMAKE_BUILD_TYPE}" STREQUAL "")
   set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the type of build" FORCE)
@@ -169,6 +168,7 @@ set(PKG_URL "https://dl.cloudsmith.io/public/--pkg_repo--/raw/names/--name--/ver
 #===========================================================
 INCLUDE("cmake/PluginSetup.cmake")
 #===========================================================
+
 if(DEFINED ENV{OCPN_TARGET})
     set(PACKAGING_NAME "${PKG_NVR}_${PKG_TARGET}-${PKG_TARGET_VERSION}-$ENV{OCPN_TARGET}")
 else(DEFINED ENV{OCPN_TARGET})
@@ -244,19 +244,51 @@ endif()
 #
 # ----- Modify section above for special plugin requirements----- ##
 #
-## --Section above is direct from Weatherfax located above SET(SRC_WEATHERFAX  ---##
+
+#======== Portaudio Section below direct from weatherfax_pi =======
+IF (UNIX)
+INCLUDE("cmake/FindPortaudio.cmake")
+IF (PORTAUDIO_FOUND)
+    MESSAGE (STATUS "Portaudio Found")
+    INCLUDE_DIRECTORIES(BEFORE ${PORTAUDIO_INCLUDE_DIRS})
+    SET(EXTRA_LIBS ${EXTRA_LIBS} ${PORTAUDIO_LIBRARIES})
+    ADD_DEFINITIONS(${PORTAUDIO_DEFINITIONS})
+    ADD_DEFINITIONS(-DOCPN_USE_PORTAUDIO)
+ELSE (PORTAUDIO_FOUND)
+    MESSAGE (STATUS "Portaudio Not Found...")
+ENDIF (PORTAUDIO_FOUND)
+ELSE (UNIX)
+    INCLUDE_DIRECTORIES(BEFORE ${PLUGIN_SOURCE_DIR}/include)
+    IF(STANDALONE MATCHES "BUNDLED")
+        # within OpenCPN tree
+        SET(EXTRA_LIBS ${EXTRA_LIBS} ../../buildwin/portaudio_x86)
+    	INSTALL(FILES "../../buildwin/portaudio_x86.dll" DESTINATION ".")
+    ELSE()
+        SET(EXTRA_LIBS ${EXTRA_LIBS} ../buildwin/portaudio_x86)
+    	INSTALL(FILES "buildwin/portaudio_x86.dll" DESTINATION ".")
+    	message(STATUS "Not Bundled: Portaudio")
+    ENDIF()
+
+    ADD_DEFINITIONS(-DOCPN_USE_PORTAUDIO)
+ENDIF (UNIX)
+
+IF (MSVC)
+    INCLUDE_DIRECTORIES(BEFORE ${PLUGIN_SOURCE_DIR}/include/msvc)
+ENDIF (MSVC)
+
+## --Section above is direct from Weatherfax -------------##
 #===========================================================
 INCLUDE("cmake/PluginConfigure.cmake")
 #===========================================================
-# ----- Change below to match project requirements ----- ##
-# ++++++++++++++Section below is direct from Watchdog +++++++++##
+# ---- Change below to match your project requirements -- ##
+# +++++Section below is direct from Watchdog +++++++++++++##
 
-# needed?
+#needed?
 IF(WATCHDOG_USE_SVG)
   ADD_DEFINITIONS(-DWATCHDOG_USE_SVG)
 ENDIF(WATCHDOG_USE_SVG)
 
-SET(SRCS
+SET(SRC_WATCHDOG
             src/watchdog_pi.cpp
             src/WatchdogDialog.cpp
             src/WatchdogPropertiesDialog.cpp
@@ -271,133 +303,170 @@ SET(SRCS
             src/wddc.cpp
             src/TexFont.cpp
 	)
-	
-SET(HDRS
-  	        src/AIS_Target_Info.h
-			src/Alarm.h
-			src/ConfigurationDialog.h
-			src/EditAlarmDialog.h
-			src/icons.h
-			src/msvcdefs.h
-			src/NewAlarmDialog.h
-			src/ODAPI.h
-			src/signalk_client.h
-			src/TexFont.h
-			src/watchdog_pi.h
-			src/WatchdogDialog.h
-			src/WatchdogPropertiesDialog.h
-			src/WatchdogUI.h
-			src/wddc.h
-			src/WeatherPanel.h
-			src/WindPanel.h
-			src/wxWTranslateCatalog.h
 
-            api-16/ocpn_plugin.h
-)
-
-add_definitions(-DPLUGIN_USE_SVG)
-									
-#IF(APPLE)
- #   OPTION(TP_JSON_SCHEMA_VALIDATOR "Use JSON Schema validator" OFF)
-#ELSE(APPLE)
-#    OPTION(TP_JSON_SCHEMA_VALIDATOR "Use JSON Schema validator" ON)
-#ENDIF(APPLE)
-
-#IF(TP_JSON_SCHEMA_VALIDATOR)
-#    MESSAGE(STATUS "Using JSON Schema validation - warning this changes the 'flavour' of the executable and it may not be compatible with OpenCPN")
-#    ADD_DEFINITIONS(-DTP_JSON_SCHEMA_VALIDATOR)
-#    MESSAGE(STATUS "Adding JSON Schema validation")
-
-#    SET(EXTSRC
-#        ${EXTSRC}
-#        extsrc/json-schema-validator/json-schema-draft7.json.cpp
-#        extsrc/json-schema-validator/json-uri.cpp
-#        extsrc/json-schema-validator/json-validator.cpp
-#    )
-#    SET(EXTINCLUDE
-#        ${EXTINCLUDE}
-#        extinclude/nlohmann/json.hpp
-#        extinclude/json-schema-validator/json-schema.hpp
-#    )
-#    INCLUDE_DIRECTORIES(BEFORE ${PROJECT_SOURCE_DIR}/extinclude/json-schema-validator)
-#ELSE(TP_JSON_SCHEMA_VALIDATOR)
-#    MESSAGE(STATUS "Not using JSON Schema validation - warning invalid JSON 'may' cause unexpected crashes")
-#ENDIF(TP_JSON_SCHEMA_VALIDATOR)
-
-##=============================================================
-# Modify/configure 'Include' Directories below for the Plugin
-##=============================================================
-#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude)
-#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/extinclude)
-#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/)
-#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/wx/include)
-#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude/wxcurl)
-#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude/wxcurl/include)
-#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnsrc/lz4)
-#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnsrc/bitmaps)
-
-##================================================================================
-## Required to collect all the set( headers and SRCS  - Adjust as required
-## This add_library  can be used in conditionals below.
-##================================================================================	
-#    SET(EXTSRC  ${EXTSRC}   etc   Can be in an if statement as below
-##================================================================================								
 
 #INCLUDE_DIRECTORIES(BEFORE ${PROJECT_SOURCE_DIR}/src/libaudiofile)
-#INCLUDE_DIRECTORIES(BEFORE ${PROJECT_SOURCE_DIR}/src/plugingl)
+INCLUDE_DIRECTORIES(BEFORE ${PROJECT_SOURCE_DIR}/src/plugingl)
 INCLUDE_DIRECTORIES(api-16)
+
 
 # ----- Change above to match project requirements ----- ##
 #--------REMOVE LN 194 to LN 296 from Testplugin_pi---------------
 #------- Change below to match project requirements --------------#
 
 #----INCLUDE CMAKE -----
-# INCLUDE("cmake/PluginNMEA.cmake")  #from WD
-# INCLUDE("cmake/PluginJSON.cmake")  #from WD
-#INCLUDE("cmake/PluginXML.cmake")  #WD not used
-#INCLUDE("cmake/PluginGL.cmake")  #WD not used
+INCLUDE("cmake/PluginNMEA.cmake")
+INCLUDE("cmake/PluginJSON.cmake")
 #----INCLUDE CMAKE -----
 
-#IF(UNIX)
-# INCLUDE("cmake/FindTinyXML.cmake")
-# FIND_PACKAGE(TinyXML QUIET)
-#ENDIF(UNIX)
+IF(UNIX)
+ INCLUDE("cmake/FindTinyXML.cmake")
+ FIND_PACKAGE(TinyXML QUIET)
+ENDIF(UNIX)
 
-#IF(TINYXML_FOUND)
-# message (STATUS "Building with system tinyxml")
-# INCLUDE_DIRECTORIES(${TINYXML_INCLUDE_DIR})
-# ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRC_WATCHDOG} ${SRC_JSON} ${SRC_NMEA0183})
-# TARGET_LINK_LIBRARIES(${PACKAGE_NAME} ${TINYXML_LIBRARIES})
-#ELSE(TINYXML_FOUND)
-# message (STATUS "Building with embedded tinyxml")
-# INCLUDE_DIRECTORIES(BEFORE ${PROJECT_SOURCE_DIR}/src/tinyxml/)
-# SET(SRC_LTINYXML
-#            src/tinyxml/tinyxml.cpp
-#            src/tinyxml/tinyxmlparser.cpp
-#            src/tinyxml/tinyxmlerror.cpp
-# )
-
-if(UNIX)
-    add_definitions("-fpic")
-endif(UNIX)
-
-ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRCS} ${HDRS} ${SRC_JSON} ${SRC_NMEA0183} ${SRC_LTINYXML})
-# ENDIF(TINYXML_FOUND)
+IF(TINYXML_FOUND)
+ message (STATUS "Building with system tinyxml")
+ INCLUDE_DIRECTORIES(${TINYXML_INCLUDE_DIR})
+ ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRC_WATCHDOG} ${SRC_JSON} ${SRC_NMEA0183})
+ TARGET_LINK_LIBRARIES(${PACKAGE_NAME} ${TINYXML_LIBRARIES})
+ELSE(TINYXML_FOUND)
+ message (STATUS "Building with embedded tinyxml")
+ INCLUDE_DIRECTORIES(BEFORE ${PROJECT_SOURCE_DIR}/src/tinyxml/)
+ SET(SRC_LTINYXML
+            src/tinyxml/tinyxml.cpp
+            src/tinyxml/tinyxmlparser.cpp
+            src/tinyxml/tinyxmlerror.cpp
+ )
+ ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRC_WATCHDOG} ${SRC_JSON} ${SRC_NMEA0183} ${SRC_LTINYXML})
+ENDIF(TINYXML_FOUND)
 ADD_DEFINITIONS(-DTIXML_USE_STL)
-
 
 # +++++Section above is direct from Watchdog +++++++++++++##
 #
-#----INCLUDE CMAKE #3 & #4 -----
-#INCLUDE("cmake/PluginGL.cmake")
-INCLUDE("cmake/PluginNMEA.cmake") #not for wxfax
-INCLUDE("cmake/PluginJSON.cmake")  #not for wxfax
-INCLUDE("cmake/PluginXML.cmake")
-
-
 # ----- Do not change - needed to build app ----- ##
 #
 #INCLUDE CMAKE #5,6 & 7 -----
 INCLUDE("cmake/PluginInstall.cmake")
 INCLUDE("cmake/PluginLocalization.cmake")
 INCLUDE("cmake/PluginPackage.cmake")
+
+# ++++++++++++++Section above is direct from Watchdog   +++++++++##
+
+#### END END END ####
+####
+
+
+
+
+# ++++++++++++++Section below is direct from Weatherfax +++++++++##
+  
+
+# Added by Rick recently
+SET (HDRS
+            api-16/ocpn_plugin.h
+			src/AboutDialog.h
+			src/DecoderOptionsDialog.h
+			src/defs.h
+			src/FaxDecoder.h
+			src/georef.h
+			src/icons.h
+			src/InternetRetrievalDialog.h
+			src/SchedulesDialog.h
+			src/wximgkap.h
+			src/plugingl/linmath.h
+			src/plugingl/pi_shaders.h
+			src/plugingl/pidc.h
+			src/plugingl/qtstylesheet.h
+			src/plugingl/TexFont.h
+			src/tinyxml/tinyxml.h
+)			
+
+## --------------------Section above is direct from Weatherfax -----------##
+## --------------------Section below added recently to Weatherfax set -----##
+#  not needed see PluginGL Line 594
+SET (SRC_PLUGINGL
+           src/plugingl/pi_shaders.cpp
+			src/plugingl/pidc.cpp
+			src/plugingl/qtstylesheet.cpp
+			src/plugingl/TexFont.cpp
+)
+
+#  not needed see PluginXML Line 593
+SET (SRC_TINYXML
+           src/tinyxml/tinyxml.cpp
+			src/tinyxml/tinyxmlerror.cpp
+			src/tinyxml/tinyxmlparser.cpp
+)
+
+## +++++++++Section above is added recently to Weatherfax set ++++++++++##
+##++++++++++++RTLSDR Section directly from Weatherfax +++++++++##
+
+#IF(UNIX)
+#  find_library(RTLSDR_LIBRARY NAMES rtlsdr
+#    DOC "The rtlsdr library"
+#    )
+#  IF(RTLSDR_LIBRARY)
+#    MESSAGE (STATUS "Found rtlsdr:  ${RTLSDR_LIBRARY}")
+#    ADD_DEFINITIONS( "-DBUILTIN_RTLAIS" )
+
+#    SET(PLUGINS_LIBS ${PLUGINS_LIBS} ${RTLSDR_LIBRARY})
+#  ELSE()
+#    MESSAGE (STATUS "")
+#    MESSAGE (STATUS "================ WARNING ===================")
+#    MESSAGE (STATUS "rtlsdr library not found, cannot decode from rtlsdr")
+#    MESSAGE (STATUS "You may want to install librtlsdr-dev and run cmake again")
+#    MESSAGE (STATUS "============================================")
+#    MESSAGE (STATUS "")
+#  ENDIF()
+#ENDIF(UNIX)
+
+      
+#IF(WIN32)
+#    IF(STANDALONE MATCHES "BUNDLED")
+#	# within OpenCPN tree
+#	INSTALL(FILES "../../buildwin/PVW32Con.exe" DESTINATION "plugins\\\\${PACKAGE_NAME}")
+#    ELSE()
+#	INSTALL(FILES "buildwin/PVW32Con.exe" DESTINATION "plugins\\\\${PACKAGE_NAME}")
+#    ENDIF()
+#ENDIF(WIN32)
+
+INCLUDE_DIRECTORIES(BEFORE ${PROJECT_SOURCE_DIR}/src/libaudiofile)
+INCLUDE_DIRECTORIES(BEFORE ${PROJECT_SOURCE_DIR}/src/plugingl)
+INCLUDE_DIRECTORIES(api-16)
+
+##================================================================================
+## Required to collect all the set( headers and SRCS  - Adjust as required
+## This add_library  is used in the conditionals below.
+##================================================================================
+##    add_library(${PACKAGE_NAME} SHARED ${SRCS}  ${SRC_NMEA0183})
+##================================================================================
+
+ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRC_WATCHDOG} ${SRC_JSON} ${SRC_NMEA0183} )
+
+##++++++++++Section above from Weatherfax located relative to where it was  ++++++++
+##
+## ----- Change below to match project requirements ----- ##
+##
+
+#if(WIN32)
+#    if(MSVC)
+#        target_link_libraries(${PACKAGE_NAME} ${PORTAUDIO_LIBS})
+#    endif(MSVC)
+3endif(WIN32)
+
+# ----- Change above to match project requirements ----- ##
+#--------REMOVE LN 194 to LN 296 from Testplugin_pi---------------
+#------- Change below to match project requirements --------------#
+
+#----INCLUDE CMAKE #3 & #4 -----
+# INCLUDE("cmake/PluginNMEA.cmake") #not for wxfax
+# INCLUDE("cmake/PluginJSON.cmake")  #not for wxfax
+INCLUDE("cmake/PluginXML.cmake")
+INCLUDE("cmake/PluginGL.cmake")
+#
+# ----- Do not change - needed to build app ----- ##
+#
+#INCLUDE CMAKE #5,6 & 7 -----
+include("cmake/PluginInstall.cmake")
+include("cmake/PluginLocalization.cmake")
+include("cmake/PluginPackage.cmake")
