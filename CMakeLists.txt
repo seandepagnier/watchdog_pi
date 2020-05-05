@@ -396,7 +396,7 @@ ADD_DEFINITIONS(-DTIXML_USE_STL)
 
 # IF(UNIX AND NOT APPLE)
   # IF(TP_JSON_SCHEMA_VALIDATOR)
-    Change OS/ABI to be UNIX - System V to make it run with OCPN
+#    Change OS/ABI to be UNIX - System V to make it run with OCPN
     # SET(lib_name lib${PACKAGE_NAME}.so)
     # MESSAGE(STATUS "lib-name: ${lib_name}")
     # FIND_FILE(elfedit elfedit)
