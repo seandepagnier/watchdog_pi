@@ -41,7 +41,7 @@ before_build:
   - cd c:\project\watchdog_pi
 #  - cd buildwin
 #  - ps: Start-FileDownload https://downloads.sourceforge.net/project/opencpnplugins/opencpn_packaging_data/PVW32Con.exe
-#  - cd ..  
+#  - cd ..    
   - rm -rf build && mkdir build && cd build
   - ps: Start-FileDownload https://downloads.sourceforge.net/project/opencpnplugins/opencpn_lib/4.99.1405-vc141_xp/opencpn.lib
   - ps: Start-FileDownload http://opencpn.navnux.org/build_deps/OpenCPN_buildwin-4.99a.7z
@@ -49,11 +49,7 @@ before_build:
   - cmake -T v141_xp ..
 
 build_script:
-  - cmake -G "Visual Studio 15 2017"   ..
   - cmake --build . --target package --config Release
-#  - cmake --build . --target install --config RelWithDebInfo
-#  - cmake --build . --target package --config RelWithDebInfo
-  - choco install git
   - python -m ensurepip
   - python -m pip install -q setuptools
   - python -m pip install -q cloudsmith-cli
@@ -66,9 +62,9 @@ artifacts:
 deploy:
   description: 'release created by AppVeyor CI'
   provider: GitHub
-  auth_token: #'%GitHub_auth_token%'
-    secure: cVjUS6mAkIIO+MuB378UOhwmO/WFiXXHiuBcF2oQIDP8ngzW3Nq5bvyHIrT4ABR4
-  artifact: installer
+  #auth_token: '%GitHub_auth_token%'
+  auth_token: '%appveyor_auth_token_watchdog%'
+  artifact: installer,portable
   draft: true
   prerelease: true
   on:
