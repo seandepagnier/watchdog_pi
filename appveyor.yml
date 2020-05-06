@@ -62,8 +62,8 @@ artifacts:
 deploy:
   description: 'release created by AppVeyor CI'
   provider: GitHub
-  #auth_token: '%GitHub_auth_token%'
-  auth_token: '%appveyor_auth_token_watchdog%'
+#  auth_token: '%GitHub_auth_token%'
+  auth_token: '%git-ptoken-watchdog-into-appveyor%'
   artifact: installer,portable
   draft: true
   prerelease: true
