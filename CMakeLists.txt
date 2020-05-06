@@ -90,8 +90,19 @@ else()
     message(STATUS "Setting default GIT repository branch - master")
     set(GIT_REPOSITORY_BRANCH "master")
   endif()
+  execute_process(
+    COMMAND git tag --contains
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    OUTPUT_VARIABLE GIT_REPOSITORY_TAG
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
 endif()
 message(STATUS "Git Branch: ${GIT_REPOSITORY_BRANCH}")
+if("${GIT_REPOSITORY_BRANCH}" EQUAL "")
+  set(GIT_BRANCH_OR_TAG "TAG")
+else()
+  set(GIT_BRANCH_OR_TAG "BRANCH")
+endif()
 
 #set(CLOUDSMITH_USER "sean-depagnier")
 #set(CLOUDSMITH_USER "jon-gough")
