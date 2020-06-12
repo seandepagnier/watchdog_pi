@@ -86,16 +86,16 @@ set(PROD "prod")   #Standard Repos
 set(BETA "beta")   #Standard Repos
 set(ALPHA "alpha") #Standard Repos
 
-#set(CLOUDSMITH_USER "sean-depagnier")
-#set(CLOUDSMITH_USER "jon-gough")
-set(CLOUDSMITH_USER "rick-gleason")
+# set(CLOUDSMITH_USER "sean-depagnier")
+# set(CLOUDSMITH_USER "jon-gough")
+# set(CLOUDSMITH_USER "rick-gleason")
 set(CLOUDSMITH_USER "opencpn")
 
 # Set if  Cloudsmith Base Repository name does not match your Git Repository name.
 # set(CLOUDSMITH_BASE_REPOSITORY "${GIT_REPOSITORY_NAME}")
 # set(CLOUDSMITH_BASE_REPOSITORY "watchdog_pi")     #Jon Gough's customization
 # set(CLOUDSMITH_BASE_REPOSITORY "opencpn-plugins") #Sean's customization
-set(CLOUDSMITH_BASE_REPOSITORY "opencpn-plugins")  #Rick's customization
+set(CLOUDSMITH_BASE_REPOSITORY "watchdog")  #Rick's customization
 
 # Set Plugin info-url, summary and description
 set(XML_INFO_URL "https://opencpn.org/OpenCPN/plugins/watchdog.html")
