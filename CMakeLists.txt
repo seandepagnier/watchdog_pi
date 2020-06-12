@@ -1,4 +1,6 @@
 # ---------------------------------------------------------------------------
+# Frontend2 Author: jongough aka. Jon Gough    License:wxWidgets License
+# ---------------------------------------------------------------------------
 ##---------------------------------------------------------------------------
 ## Author:      Sean d'Epagnier
 ##***************************************************************************
@@ -18,29 +20,43 @@
 ## *   along with this program; if not, write to the                         *
 ## *   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx,                                       *
 ## *   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                                       *
+## ***
 #-----------------------------------------------------------------------------
 # Frontend2 Author: Jon Gough  
 # ---------------------------------------------------------------------------
-# CMake-CI Number: 0.0.006  
-#    - Reverse dates here
-#    - 2/05/2020 MacOS final fix- JG
+# CMake-CI Number: 0.0.009
+#    - 28/05/2020 Work on Local Build
+#    - 28/05/2020 Move CmakeLists code into PluginSetup.cmake
+#    - 30/05/2020 Minor Update for Arch
+#    - 09/06/2020 Fix gtk3 and new build naming  
 # ---------------------------------------------------------------------------
-# ----- Modify section below to include all the details for your plugin ----- ##
 
+## ----- When changing this file do NOT change the order in which sections occur        ----- ##
+## ----- Changes should only be made between the section blocks that identify where     ----- ##
+## ----- these changes should be. The whole configuration process relies on this        ----- ##
+## ----- sequence to be successful                                                      ----- ##
+
+##
+##----- Modify section below to include all the details for your plugin ----- ##
+##
+
+set(CMLOC "CMakeLists: ")
+
+# define minimum cmake version
 cmake_minimum_required(VERSION 3.1.1)
 if(COMMAND cmake_policy)
-  if(POLICY CMP0043)
-    cmake_policy(SET CMP0043 NEW)
-  endif(POLICY CMP0043)
-  cmake_policy(SET CMP0048 NEW)
-  if(POLICY CMP0077)
-    cmake_policy(SET CMP0077 NEW)
-  endif(POLICY CMP0077)
+    if(POLICY CMP0043)
+        cmake_policy(SET CMP0043 NEW)
+    endif(POLICY CMP0043)
+    cmake_policy(SET CMP0048 NEW)
+    if(POLICY CMP0077)
+        cmake_policy(SET CMP0077 NEW)
+    endif(POLICY CMP0077)
 endif(COMMAND cmake_policy)
 
-SET(VERBOSE_NAME Watchdog)
-# Search "getcommonname"in watchdog_pi.cpp
-set(COMMON_NAME "Watchdog")
+# define plugin name, owner and versions
+SET(VERBOSE_NAME "Watchdog")
+set(COMMON_NAME "Watchdog")  # Search "getcommonname"in watchdog_pi.cpp
 set(TITLE_NAME "Watchdog")
 set(PACKAGE_CONTACT "Sean d'Epagnier")
 SET(PACKAGE "watchdog_pi")
@@ -48,8 +64,8 @@ SET(PACKAGE "watchdog_pi")
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "4")
 set(VERSION_PATCH "8")
-set(VERSION_TWEAK "1")
-set(VERSION_DATE "6/05/2020")
+set(VERSION_TWEAK "2")
+set(VERSION_DATE "6/11/2020")
 set(OCPN_MIN_VERSION "ov50")
 set(OCPN_API_VERSION_MAJOR "1")
 set(OCPN_API_VERSION_MINOR "16")
@@ -59,65 +75,27 @@ set(PARENT "opencpn")
 #set(GIT_USER "jongough")
 set(GIT_USER "rgleason")
 
-set(GIT_REPOSITORY_NAME "watchdog_pi")
-message(STATUS "CIRCLECI: ${CIRCLECLI}, Env CIRCLECI: $ENV{CIRCLECI}")
-message(STATUS "TRAVIS: ${TRAVIS}, Env TRAVIS: $ENV{TRAVIS}")
+# For setting up your own local webserver with git loaded, for testing purposes.
+set(GIT_REPOSITORY_SERVER "github.com")
 
-#Permits setup of a local webserver with git for testing
-if($ENV{CIRCLECI})
-  set(GIT_REPOSITORY_HOST "github.com")
-  set(GIT_REPOSITORY_DIR "${GIT_USER}/")
-  set(GIT_REPOSITORY_BRANCH "$ENV{CIRCLE_BRANCH}")
-elseif($ENV{TRAVIS})
-  set(GIT_REPOSITORY_HOST "github.com")
-  set(GIT_REPOSITORY_DIR "${GIT_USER}/")
-  set(GIT_REPOSITORY_BRANCH "$ENV{TRAVIS_BRANCH}")
-elseif($ENV{APPVEYOR})
-  set(GIT_REPOSITORY_HOST "github.com")
-  set(GIT_REPOSITORY_DIR "${GIT_USER}/")
-  set(GIT_REPOSITORY_BRANCH "$ENV{APPVEYOR_REPO_BRANCH}")
-else()
-  set(GIT_REPOSITORY_HOST "github.com")
-  set(GIT_REPOSITORY_DIR "${GIT_USER}/")
-  # Get the current working branch
-  execute_process(
-    COMMAND git rev-parse --abbrev-ref HEAD
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-    OUTPUT_VARIABLE GIT_REPOSITORY_BRANCH
-    OUTPUT_STRIP_TRAILING_WHITESPACE
-    )
-  if(${GIT_REPOSITORY_BRANCH} EQUAL "")
-    message(STATUS "Setting default GIT repository branch - master")
-    set(GIT_REPOSITORY_BRANCH "master")
-  endif()
-  execute_process(
-    COMMAND git tag --contains
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-    OUTPUT_VARIABLE GIT_REPOSITORY_TAG
-    OUTPUT_STRIP_TRAILING_WHITESPACE
-    )
-endif()
-message(STATUS "Git Branch: ${GIT_REPOSITORY_BRANCH}")
-if("${GIT_REPOSITORY_BRANCH}" EQUAL "")
-  set(GIT_BRANCH_OR_TAG "TAG")
-else()
-  set(GIT_BRANCH_OR_TAG "BRANCH")
-endif()
+#No longer needed, queried.
+#set(GIT_USER "rgleason")
+set(GIT_REPOSITORY_NAME "watchdog_pi")
+# Set Cloudsmith upload repository suffix for each catalog
+set(PROD "prod")   #Standard Repos
+set(BETA "beta")   #Standard Repos
+set(ALPHA "alpha") #Standard Repos
 
 #set(CLOUDSMITH_USER "sean-depagnier")
 #set(CLOUDSMITH_USER "jon-gough")
 set(CLOUDSMITH_USER "rick-gleason")
+set(CLOUDSMITH_USER "opencpn")
 
-#set(CLOUDSMITH_BASE_REPOSITORY "${GIT_REPOSITORY_NAME}")
-#set(CLOUDSMITH_BASE_REPOSITORY "watchdog_pi")  #Jon Gough's customization
-#set(CLOUDSMITH_BASE_REPOSITORY "opencpn-plugins")  #Sean's customization
-
+# Set if  Cloudsmith Base Repository name does not match your Git Repository name.
+# set(CLOUDSMITH_BASE_REPOSITORY "${GIT_REPOSITORY_NAME}")
+# set(CLOUDSMITH_BASE_REPOSITORY "watchdog_pi")     #Jon Gough's customization
+# set(CLOUDSMITH_BASE_REPOSITORY "opencpn-plugins") #Sean's customization
 set(CLOUDSMITH_BASE_REPOSITORY "opencpn-plugins")  #Rick's customization
-
-# Set Cloudsmith upload repository suffix for each catalog
-set(PROD "prod") #Standard Repos
-set(BETA "beta") #Standard Repos
-set(ALPHA "alpha") #Standard Repos
 
 # Set Plugin info-url, summary and description
 set(XML_INFO_URL "https://opencpn.org/OpenCPN/plugins/watchdog.html")
@@ -129,7 +107,6 @@ set(XML_DESCRIPTION "Multiple Configurable alarms for  changing conditions for b
 ## ----- Modify below for plugin special requirements------------ ##
 ##
 
-#------Settings
 SET(BUNDLE_DATA FALSE)  #from wd
 SET(CMAKE_MACOSX_RPATH "ON")  #from WD
 option(PLUGIN_USE_SVG "Use SVG graphics" ON)  
@@ -138,135 +115,53 @@ SET(CMAKE_CXX_STANDARD 11)  #also from WD
 
 # Prefer libGL.so to libOpenGL.so, see CMP0072
 set(OpenGL_GL_PREFERENCE "LEGACY")
-#------ End Settings
 
-if(NOT ${PACKAGE} MATCHES "(.*)_pi")
-  set(PACKAGE_NAME ${PACKAGE}_pi)
-  set(PACKAGE_FILE_NAME "${PACKAGE}_pi")
-else(NOT ${PACKAGE} MATCHES "(.*)_pi")
-  set(PACKAGE_NAME ${PACKAGE})
-  set(PACKAGE_FILE_NAME "${PACKAGE}")
-endif(NOT ${PACKAGE} MATCHES "(.*)_pi")
-string(TOUPPER "${PACKAGE}" TITLE_NAME)
-
-project(${PACKAGE_NAME} VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}.${VERSION_TWEAK})
-message(STATUS "PROJECT_VERSION: ${PROJECT_VERSION}")
-
-set(PACKAGE_VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
-
-message(STATUS "${VERBOSE_NAME} Version: ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}.${VERSION_TWEAK}")
-message(STATUS "OPCN_FLATPAK: ${OCPN_FLATPAK}")
-
-#------Settings
-# Prefer libGL.so to libOpenGL.so, see CMP0072
-set(OpenGL_GL_PREFERENCE "LEGACY")
 # Don't use local version of GLU library
 set(USE_LOCAL_GLU FALSE)
 
 # Question still needed? on or off?
 # option(USE_GL "Enable OpenGL support" OFF)
-message(STATUS "USE_GL: ${USE_GL}")
-#------End Settings
+message(STATUS "${CMLOC}USE_GL: ${USE_GL}")
 
 if("${CMAKE_BUILD_TYPE}" STREQUAL "")
-  set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the type of build" FORCE)
+    set(CMAKE_BUILD_TYPE
+        "Release"
+        CACHE STRING "Choose the type of build" FORCE)
 endif("${CMAKE_BUILD_TYPE}" STREQUAL "")
 set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "" "Debug" "Release" "RelWithDebInfo" "MinSizeRel")
-message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
+message(STATUS "${CMLOC}Build type: ${CMAKE_BUILD_TYPE}")
 
-set(PKG_NVR ${PACKAGE_NAME}-${PROJECT_VERSION})
-set(PKG_URL "https://dl.cloudsmith.io/public/--pkg_repo--/raw/names/--name--/versions/--version--/--filename--")
+project(watchdog_pi)
 
+##
+## ----- The statement below is used to setup standard variables that are required by the CMAKE process - do not remove ----- ##
 #===========================================================
 INCLUDE("cmake/PluginSetup.cmake")
 #===========================================================
-if(DEFINED ENV{OCPN_TARGET})
-    set(PACKAGING_NAME "${PKG_NVR}_${PKG_TARGET}-${PKG_TARGET_VERSION}-$ENV{OCPN_TARGET}")
-else(DEFINED ENV{OCPN_TARGET})
-    set(PACKAGING_NAME "${PKG_NVR}_${PKG_TARGET}-${PKG_TARGET_VERSION}")
-endif(DEFINED ENV{OCPN_TARGET})
-message(STATUS "PACKAGING_NAME: ${PACKAGING_NAME}")
 
-set(PLUGIN_NAME ${PACKAGE}-plugin-${PKG_TARGET}-${PKG_TARGET_VERSION})
+##
+## ----- Modify section below if there are special requirements for the plugin ----- ##
+##
 
-# Settings and Options
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
 option(Plugin_CXX11 "Use c++11" OFF)
 
-# Check on compiler support
-if(Plugin_CXX11)
-  message(STATUS "Attempting to use c++11")
-  include(CheckCXXCompilerFlag)
-  check_cxx_compiler_flag("-std=c++11" COMPILER_SUPPORTS_CXX11)
-  check_cxx_compiler_flag("-std=c++0x" COMPILER_SUPPORTS_CXX0X)
-  if(COMPILER_SUPPORTS_CXX11)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-    set(Plugin_USE_CXX11 ON)
-  elseif(COMPILER_SUPPORTS_CXX0X)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
-    set(Plugin_USE_CXX11 ON)
-  else()
-    message(STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
-    set(Plugin_USE_CXX11 OFF)
-  endif()
-else()
-  set(Plugin_USE_CXX11 OFF)
-endif()
+## ----- Modify section above if there are special requirements for the plugin ----- ##
 
-if(Plugin_USE_CXX11)
-  message(STATUS "Allowing use of c++11")
-endif()
-
-message(STATUS "CMAKE version: ${CMAKE_VERSION}")
-if(CMAKE_VERSION VERSION_GREATER 3.4)
-  set(ENABLE_CLANG_TIDY
-      OFF
-      CACHE BOOL "Add clang-tidy automatically to builds")
-  if(ENABLE_CLANG_TIDY)
-    find_program(
-      CLANG_TIDY_EXE
-      NAMES "clang-tidy"
-      PATHS /usr/local/opt/llvm/bin)
-    if(CLANG_TIDY_EXE)
-      message(STATUS "clang-tidy found: ${CLANG_TIDY_EXE}")
-      # For more, see http://clang.llvm.org/extra/clang-tidy/ set(CLANG_TIDY_CHECKS "-*,modernize-*")
-      set(CLANG_TIDY_CHECKS "-*,performance-*")
-      set(CMAKE_CXX_CLANG_TIDY
-          "${CLANG_TIDY_EXE};-checks=${CLANG_TIDY_CHECKS};-header-filter='${CMAKE_SOURCE_DIR}/*'"
-          CACHE STRING "" FORCE)
-    else()
-      message(AUTHOR_WARNING "clang-tidy not found!")
-      set(CMAKE_CXX_CLANG_TIDY
-          ""
-          CACHE STRING "" FORCE) # delete it
-    endif()
-  endif()
-endif()
-
-if(CMAKE_VERSION VERSION_GREATER 3.9)
-  set(ENABLE_CPPCHECK
-      OFF
-      CACHE BOOL "Add cppcheck automatically to builds")
-  if(ENABLE_CPPCHECK)
-    find_program(CPPCHECK_EXECUTABLE NAMES "cppcheck")
-    set(CMAKE_CXX_CPPCHECK ${CPPCHECK_EXECUTABLE})
-  endif()
-endif()
-
-# -------Section above is directly from WxFax & Testplugin --------------#  
-# ----- Modify section above for special plugin requirements----- ##
-
+## ----- do not change next section - needed to configure build process ----- ##
 #===========================================================
 INCLUDE("cmake/PluginConfigure.cmake")
 #===========================================================
-# ----- Change below to match project requirements ----- ##
+## ----- do not change section above - needed to configure build process ----- ##
+# ----- Change below to match project requirements for source, headers, etc. ----- ##
 
 add_definitions(-DUSE_S57)
 
+# ------These lines below are only for Testplugin - do not use ------------##
+# ----Remember to Add your project Set(SRCS and set(HDRS  etc..	
 # ++++++++++++++Section below is direct from Watchdog +++++++++##
 
-# needed?
 IF(WATCHDOG_USE_SVG)
   ADD_DEFINITIONS(-DWATCHDOG_USE_SVG)
 ENDIF(WATCHDOG_USE_SVG)
@@ -311,52 +206,45 @@ SET(HDRS
 )
 
 add_definitions(-DPLUGIN_USE_SVG)
-									
-#IF(APPLE)
- #   OPTION(TP_JSON_SCHEMA_VALIDATOR "Use JSON Schema validator" OFF)
-#ELSE(APPLE)
-#    OPTION(TP_JSON_SCHEMA_VALIDATOR "Use JSON Schema validator" ON)
-#ENDIF(APPLE)
 
-#IF(TP_JSON_SCHEMA_VALIDATOR)
-#    MESSAGE(STATUS "Using JSON Schema validation - warning this changes the 'flavour' of the executable and it may not be compatible with OpenCPN")
-#    ADD_DEFINITIONS(-DTP_JSON_SCHEMA_VALIDATOR)
-#    MESSAGE(STATUS "Adding JSON Schema validation")
+if(APPLE)
+    option(PI_JSON_SCHEMA_VALIDATOR "Use JSON Schema validator" OFF)
+else(APPLE)
+    option(PI_JSON_SCHEMA_VALIDATOR "Use JSON Schema validator" ON)
+endif(APPLE)
+																					 
 
-#    SET(EXTSRC
-#        ${EXTSRC}
-#        extsrc/json-schema-validator/json-schema-draft7.json.cpp
-#        extsrc/json-schema-validator/json-uri.cpp
-#        extsrc/json-schema-validator/json-validator.cpp
-#    )
-#    SET(EXTINCLUDE
-#        ${EXTINCLUDE}
-#        extinclude/nlohmann/json.hpp
-#        extinclude/json-schema-validator/json-schema.hpp
-#    )
-#    INCLUDE_DIRECTORIES(BEFORE ${PROJECT_SOURCE_DIR}/extinclude/json-schema-validator)
-#ELSE(TP_JSON_SCHEMA_VALIDATOR)
-#    MESSAGE(STATUS "Not using JSON Schema validation - warning invalid JSON 'may' cause unexpected crashes")
-#ENDIF(TP_JSON_SCHEMA_VALIDATOR)
+if(PI_JSON_SCHEMA_VALIDATOR)
+    message(STATUS "${CMLOC}Using JSON Schema validation - warning this changes the 'flavour' of the executable and it may not be compatible with OpenCPN")
+    add_definitions(-DPI_JSON_SCHEMA_VALIDATOR)
+    message(STATUS "${CMLOC}Adding JSON Schema validation")
+
+    set(EXTSRC ${EXTSRC} extsrc/json-schema-validator/json-schema-draft7.json.cpp extsrc/json-schema-validator/json-uri.cpp extsrc/json-schema-validator/json-validator.cpp)
+    set(EXTINCLUDE ${EXTINCLUDE} extinclude/nlohmann/json.hpp extinclude/json-schema-validator/json-schema.hpp)
+    include_directories(BEFORE ${PROJECT_SOURCE_DIR}/extinclude/json-schema-validator)
+else(PI_JSON_SCHEMA_VALIDATOR)
+    message(STATUS "${CMLOC}Not using JSON Schema validation - warning invalid JSON 'may' cause unexpected crashes")
+endif(PI_JSON_SCHEMA_VALIDATOR)
+
 
 ##=============================================================
 # Modify/configure 'Include' Directories below for the Plugin
 ##=============================================================
-#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude)
-#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/extinclude)
-#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/)
-#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/wx/include)
-#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude/wxcurl)
-#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude/wxcurl/include)
-#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnsrc/lz4)
-#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnsrc/bitmaps)
+# include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude)
+# include_directories(BEFORE ${PROJECT_SOURCE_DIR}/extinclude)
+# include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/)
+# include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/wx/include)
+# include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude/wxcurl)
+# include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude/wxcurl/include)
+# include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnsrc/lz4)
+# include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnsrc/bitmaps)
 
 ##================================================================================
 ## Required to collect all the set( headers and SRCS  - Adjust as required
 ## This add_library  can be used in conditionals below.
 ##================================================================================	
 #    SET(EXTSRC  ${EXTSRC}   etc   Can be in an if statement as below
-##================================================================================								
+##================================================================================			
 
 #INCLUDE_DIRECTORIES(BEFORE ${PROJECT_SOURCE_DIR}/src/libaudiofile)
 #INCLUDE_DIRECTORIES(BEFORE ${PROJECT_SOURCE_DIR}/src/plugingl)
@@ -398,46 +286,46 @@ endif(UNIX)
 
 ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRCS} ${HDRS} ${SRC_JSON} ${SRC_NMEA0183} ${SRC_LTINYXML})
 # ENDIF(TINYXML_FOUND)
+
 ADD_DEFINITIONS(-DTIXML_USE_STL)
 
-
 # +++++Section above is direct from Watchdog +++++++++++++##
+# Was commented out
 
 #JSON Validator: Every plugin that uses JSON for passing messages should use a validator.  A JSON validator is much like an XML validator, the validator allows the system to ignore non-conformant messages.  The JSON validator changes the OSABI flavor of the Linux executable so there is code to change it back.
 
-# IF(UNIX AND NOT APPLE)
-  # IF(TP_JSON_SCHEMA_VALIDATOR)
-#    Change OS/ABI to be UNIX - System V to make it run with OCPN
-    # SET(lib_name lib${PACKAGE_NAME}.so)
-    # MESSAGE(STATUS "lib-name: ${lib_name}")
-    # FIND_FILE(elfedit elfedit)
-    # IF(NOT (${elfedit} STREQUAL "elfedit-NOTFOUND"))
-      # MESSAGE(STATUS "Will ensure OS/ABI is set to 0 to match OCPN")
-      # ADD_CUSTOM_COMMAND(
-        # TARGET ${PACKAGE_NAME}
-        # POST_BUILD
-        # WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-        # DEPENDS ${PACKAGE_NAME}
-        # COMMENT " Running post build action on ${lib_name}."
-        # COMMAND sh -c 'elfedit --input-osabi=Linux --output-osabi=none ${lib_name} || (echo 0) '
-      # )
-    # ELSE(NOT (${elfedit} STREQUAL "elfedit-NOTFOUND"))
-      # MESSAGE(STATUS "Cannot correct OS/ABI to match OCPN if it is generated incorrectly. Package binutils needed")
-    # ENDIF(NOT (${elfedit} STREQUAL "elfedit-NOTFOUND"))
-  # ENDIF(TP_JSON_SCHEMA_VALIDATOR)
-# ENDIF(UNIX AND NOT APPLE)
+if(UNIX AND NOT APPLE)
+    if(PI_JSON_SCHEMA_VALIDATOR)
+        # Change OS/ABI to be UNIX - System V to make it run with OCPN
+        set(lib_name lib${PACKAGE_NAME}.so)
+        message(STATUS "${CMLOC}lib-name: ${lib_name}")
+        find_file(elfedit elfedit)
+        if(NOT (${elfedit} STREQUAL "elfedit-NOTFOUND"))
+            message(STATUS "${CMLOC}Will ensure OS/ABI is set to 0 to match OCPN")
+            add_custom_command(
+                TARGET ${PACKAGE_NAME}
+                POST_BUILD
+                WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+                DEPENDS ${PACKAGE_NAME}
+                COMMENT " Running post build action on ${lib_name}."
+                COMMAND sh -c 'elfedit --input-osabi=Linux --output-osabi=none ${lib_name} || (echo 0) ')
+        else(NOT (${elfedit} STREQUAL "elfedit-NOTFOUND"))
+            message(STATUS "${CMLOC}Cannot correct OS/ABI to match OCPN if it is generated incorrectly. Package binutils needed")
+        endif(NOT (${elfedit} STREQUAL "elfedit-NOTFOUND"))
+    endif(PI_JSON_SCHEMA_VALIDATOR)
+endif(UNIX AND NOT APPLE)
 
+##================================================================================
+## ----- Change above to match project requirements ----- ##
 
-#
-#----INCLUDE CMAKE #3 & #4 -----
+#These are NOT used in Testplugin, used for other plugins
+
 #INCLUDE("cmake/PluginGL.cmake")
 INCLUDE("cmake/PluginNMEA.cmake") #not for wxfax
 INCLUDE("cmake/PluginJSON.cmake")  #not for wxfax
 INCLUDE("cmake/PluginXML.cmake")
 
-
-# ----- Do not change - needed to build app ----- ##
-#
+## ----- Do not change - needed to build app ----- ##
 #INCLUDE CMAKE #5,6 & 7 -----
 INCLUDE("cmake/PluginInstall.cmake")
 INCLUDE("cmake/PluginLocalization.cmake")
