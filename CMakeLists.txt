@@ -23,12 +23,7 @@
 ## ***
 #-----------------------------------------------------------------------------
 # Frontend2 Author: Jon Gough  
-# ---------------------------------------------------------------------------
-# CMake-CI Number: 0.0.009
-#    - 28/05/2020 Work on Local Build
-#    - 28/05/2020 Move CmakeLists code into PluginSetup.cmake
-#    - 30/05/2020 Minor Update for Arch
-#    - 09/06/2020 Fix gtk3 and new build naming  
+# Frontend2: v1.0.116
 # ---------------------------------------------------------------------------
 
 ## ----- When changing this file do NOT change the order in which sections occur        ----- ##
@@ -64,38 +59,33 @@ SET(PACKAGE "watchdog_pi")
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "4")
 set(VERSION_PATCH "10")
-set(VERSION_TWEAK "1")
-set(VERSION_DATE "6/18/2020")
+set(VERSION_TWEAK "2")
+set(VERSION_DATE "6/19/2020")
 set(OCPN_MIN_VERSION "ov50")
 set(OCPN_API_VERSION_MAJOR "1")
 set(OCPN_API_VERSION_MINOR "16")
 
 set(PARENT "opencpn")
-#set(GIT_USER "seandepagnier")
-#set(GIT_USER "jongough")
-set(GIT_USER "rgleason")
 
-# For setting up your own local webserver with git loaded, for testing purposes.
+#Used to set up a local webserver with git loaded, for testing purposes.
 set(GIT_REPOSITORY_SERVER "github.com")
 
 #No longer needed, queried.
 #set(GIT_USER "rgleason")
-set(GIT_REPOSITORY_NAME "watchdog_pi")
+#set(GIT_REPOSITORY_NAME "watchdog_pi")
 # Set Cloudsmith upload repository suffix for each catalog
 set(PROD "prod")   #Standard Repos
 set(BETA "beta")   #Standard Repos
 set(ALPHA "alpha") #Standard Repos
 
 # set(CLOUDSMITH_USER "sean-depagnier")
-# set(CLOUDSMITH_USER "jon-gough")
 # set(CLOUDSMITH_USER "rick-gleason")
 set(CLOUDSMITH_USER "opencpn")
 
 # Set if  Cloudsmith Base Repository name does not match your Git Repository name.
 # set(CLOUDSMITH_BASE_REPOSITORY "${GIT_REPOSITORY_NAME}")
-# set(CLOUDSMITH_BASE_REPOSITORY "watchdog_pi")     #Jon Gough's customization
-# set(CLOUDSMITH_BASE_REPOSITORY "opencpn-plugins") #Sean's customization
-set(CLOUDSMITH_BASE_REPOSITORY "watchdog")  #Rick's customization
+# set(CLOUDSMITH_BASE_REPOSITORY "opencpn-plugins") #Rick's customization
+set(CLOUDSMITH_BASE_REPOSITORY "watchdog")  #without the pi
 
 # Set Plugin info-url, summary and description
 set(XML_INFO_URL "https://opencpn.org/OpenCPN/plugins/watchdog.html")
@@ -109,9 +99,10 @@ set(XML_DESCRIPTION "Multiple Configurable alarms for  changing conditions for b
 
 SET(BUNDLE_DATA FALSE)  #from wd
 SET(CMAKE_MACOSX_RPATH "ON")  #from WD
+
 option(PLUGIN_USE_SVG "Use SVG graphics" ON)  
-#OPTION(WATCHDOG_USE_SVG "Use SVG graphics" ON) #from WD
-SET(CMAKE_CXX_STANDARD 11)  #also from WD
+
+set(CMAKE_CXX_STANDARD 11)
 
 # Prefer libGL.so to libOpenGL.so, see CMP0072
 set(OpenGL_GL_PREFERENCE "LEGACY")
@@ -131,14 +122,19 @@ endif("${CMAKE_BUILD_TYPE}" STREQUAL "")
 set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "" "Debug" "Release" "RelWithDebInfo" "MinSizeRel")
 message(STATUS "${CMLOC}Build type: ${CMAKE_BUILD_TYPE}")
 
+#
+## ----- The statements below are used to setup standard variables that are required by the CMAKE process - do not remove ----- ##
+##
+
 project(watchdog_pi)
 
-##
 ## ----- The statement below is used to setup standard variables that are required by the CMAKE process - do not remove ----- ##
 #===========================================================
 INCLUDE("cmake/PluginSetup.cmake")
 #===========================================================
-
+##
+## ----- The above is used to setup standard variables that are required by the CMAKE process - do not remove ----- ##
+##
 ##
 ## ----- Modify section below if there are special requirements for the plugin ----- ##
 ##
@@ -158,7 +154,6 @@ INCLUDE("cmake/PluginConfigure.cmake")
 
 add_definitions(-DUSE_S57)
 
-# ------These lines below are only for Testplugin - do not use ------------##
 # ----Remember to Add your project Set(SRCS and set(HDRS  etc..	
 # ++++++++++++++Section below is direct from Watchdog +++++++++##
 
@@ -203,7 +198,7 @@ SET(HDRS
 			src/wxWTranslateCatalog.h
 
             api-16/ocpn_plugin.h
-)
+ )
 
 add_definitions(-DPLUGIN_USE_SVG)
 
@@ -317,14 +312,15 @@ endif(UNIX AND NOT APPLE)
 
 ##================================================================================
 ## ----- Change above to match project requirements ----- ##
-
 #These are NOT used in Testplugin, used for other plugins
-
 #INCLUDE("cmake/PluginGL.cmake")
 INCLUDE("cmake/PluginNMEA.cmake") #not for wxfax
 INCLUDE("cmake/PluginJSON.cmake")  #not for wxfax
 INCLUDE("cmake/PluginXML.cmake")
 
+##
+## ----- Change above to match project requirements ----- ##
+##
 ## ----- Do not change - needed to build app ----- ##
 #INCLUDE CMAKE #5,6 & 7 -----
 INCLUDE("cmake/PluginInstall.cmake")
