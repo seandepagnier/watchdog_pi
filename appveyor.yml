@@ -59,14 +59,15 @@ artifacts:
   - path: 'build\*.exe'
     name: installer
 
-deploy:
-  description: 'release created by AppVeyor CI'
-  provider: GitHub
-  #auth_token: '%GitHub_auth_token%'
-  auth_token: '%git-ptoken-watchdog-into-appveyor%'
-  artifact: installer,portable
-  draft: true
-  prerelease: true
-  on:
-    appveyor_repo_tag: true # deploy on tag push only
-    configuration: Release  # Debug contains non-redist MS DLLs
+# Removed from process as not providing real benefit at the moment
+#deploy:
+#  description: 'release created by AppVeyor CI'
+#  provider: GitHub
+#  #auth_token: '%GitHub_auth_token%'
+#  auth_token: '%git-ptoken-watchdog-into-appveyor%'
+#  artifact: installer,portable
+#  draft: true
+#  prerelease: true
+#  on:
+#    appveyor_repo_tag: true # deploy on tag push only
+#    configuration: Release  # Debug contains non-redist MS DLLs

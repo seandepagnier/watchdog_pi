@@ -23,7 +23,7 @@
 ## ***
 #-----------------------------------------------------------------------------
 # Frontend2 Author: Jon Gough  
-# Frontend2: v1.0.116
+# Frontend2: v1.0.120
 # ---------------------------------------------------------------------------
 
 ## ----- When changing this file do NOT change the order in which sections occur        ----- ##
@@ -58,9 +58,9 @@ SET(PACKAGE "watchdog_pi")
 
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "4")
-set(VERSION_PATCH "11")
+set(VERSION_PATCH "12")
 set(VERSION_TWEAK "0")
-set(VERSION_DATE "6/19/2020")
+set(VERSION_DATE "6/28/2020")
 set(OCPN_MIN_VERSION "ov50")
 set(OCPN_API_VERSION_MAJOR "1")
 set(OCPN_API_VERSION_MINOR "16")
