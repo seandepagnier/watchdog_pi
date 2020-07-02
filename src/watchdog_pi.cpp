@@ -208,12 +208,12 @@ bool watchdog_pi::DeInit(void)
 
 int watchdog_pi::GetAPIVersionMajor()
 {
-    return MY_API_VERSION_MAJOR;
+    return OCPN_API_VERSION_MAJOR;
 }
 
 int watchdog_pi::GetAPIVersionMinor()
 {
-    return MY_API_VERSION_MINOR;
+    return OCPN_API_VERSION_MINOR;
 }
 
 int watchdog_pi::GetPlugInVersionMajor()
