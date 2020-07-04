@@ -110,8 +110,8 @@ The following directories and files are not needed from testplugin_pi
      - See the more detailed instructions in the Developer's Manual wiki.
    - For custom Cloudsmith repository destinations, modify if needed.
 
-# Deployment 
-
+# DEPLOYMENT 
+----------------------------------------------------------------
 The current setup for Frontend2 plugins does this:
     - Non-Master branch no tag -> Alpha repository
     - Non-Master branch with tag -> Beta repository
@@ -137,9 +137,11 @@ Example:
   To https://github.com/xxxx/weatherfax_pi.git  
     * [new tag]           v1.9.5.10 -> v1.9.5.10
 1. git push origin master 
-   
-### Comparing Plugin Manager "Frontend2" in testplugin_pi to weatherfax_pi,
-to highlight the differences
+
+----------------------------------------------------------------   
+### Weatherfax_pi Differences  using testplugin_pi "Frontend2"
+
+Weatherfax_pi needs to have sound support for Windows and Mingw, additionally use with rtlsdr requires additional files. 
 
 1. circleci/config.yml  -same
 1. ci/ all scripts same except

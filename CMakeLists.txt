@@ -23,7 +23,7 @@
 ## ***
 #-----------------------------------------------------------------------------
 # Frontend2 Author: Jon Gough  
-# Frontend2: v1.0.120
+# Frontend2: v1.0.124
 # ---------------------------------------------------------------------------
 
 ## ----- When changing this file do NOT change the order in which sections occur        ----- ##
@@ -58,9 +58,9 @@ SET(PACKAGE "watchdog_pi")
 
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "4")
-set(VERSION_PATCH "13")
+set(VERSION_PATCH "14")
 set(VERSION_TWEAK "0")
-set(VERSION_DATE "7/01/2020")
+set(VERSION_DATE "7/04/2020")
 set(OCPN_MIN_VERSION "ov50")
 set(OCPN_API_VERSION_MAJOR "1")
 set(OCPN_API_VERSION_MINOR "16")
@@ -126,7 +126,7 @@ message(STATUS "${CMLOC}Build type: ${CMAKE_BUILD_TYPE}")
 ## ----- The statements below are used to setup standard variables that are required by the CMAKE process - do not remove ----- ##
 ##
 
-project(watchdog_pi)
+project(${PACKAGE})
 
 ## ----- The statement below is used to setup standard variables that are required by the CMAKE process - do not remove ----- ##
 #===========================================================
