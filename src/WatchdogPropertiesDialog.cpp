@@ -42,13 +42,9 @@ WatchdogPropertiesDialogBase( parent )
     m_staticTextMajorVal->SetLabel(wxString::Format(wxT("%i"), PLUGIN_VERSION_MAJOR ));
     m_staticTextMinorVal->SetLabel(wxString::Format(wxT("%i"), PLUGIN_VERSION_MINOR ));
     m_staticTextPatchVal->SetLabel( wxT(TOSTRING(PLUGIN_VERSION_PATCH)) );
-//	m_staticTextTweakVal->SetLabel( wxT(TOSTRING(PLUGIN_VERSION_TWEAK)) );
     m_staticTextDateVal->SetLabel( wxT(TOSTRING(PLUGIN_VERSION_DATE)) );
 
 }
-
-
-m_stVersion->SetLabel(wxString::Format(_T("%d.%d.%d.%d"), PLUGIN_VERSION_MAJOR, PLUGIN_VERSION_MINOR,PLUGIN_VERSION_PATCH,PLUGIN_VERSION_TWEAK));
 
 void WatchdogPropertiesDialog::OnWatchdogPropertiesOKClick( wxCommandEvent& event )
 {
