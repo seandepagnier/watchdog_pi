@@ -208,22 +208,30 @@ bool watchdog_pi::DeInit(void)
 
 int watchdog_pi::GetAPIVersionMajor()
 {
+
     return OCPN_API_VERSION_MAJOR;
+
 }
 
 int watchdog_pi::GetAPIVersionMinor()
 {
-    return OCPN_API_VERSION_MINOR;
+ 
+ return OCPN_API_VERSION_MINOR;
+
 }
 
 int watchdog_pi::GetPlugInVersionMajor()
 {
+
     return PLUGIN_VERSION_MAJOR;
+
 }
 
 int watchdog_pi::GetPlugInVersionMinor()
 {
+
     return PLUGIN_VERSION_MINOR;
+
 }
 
 wxBitmap *watchdog_pi::GetPlugInBitmap()
@@ -233,8 +241,10 @@ wxBitmap *watchdog_pi::GetPlugInBitmap()
 
 wxString watchdog_pi::GetCommonName()
 {
+
     // return _("Watchdog");
 	return _T(PLUGIN_COMMON_NAME);
+
 }
 
 wxString watchdog_pi::GetShortDescription()
