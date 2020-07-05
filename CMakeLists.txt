@@ -221,7 +221,6 @@ else(PI_JSON_SCHEMA_VALIDATOR)
     message(STATUS "${CMLOC}Not using JSON Schema validation - warning invalid JSON 'may' cause unexpected crashes")
 endif(PI_JSON_SCHEMA_VALIDATOR)
 
-
 ##=============================================================
 # Modify/configure 'Include' Directories below for the Plugin
 ##=============================================================
