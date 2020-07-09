@@ -274,12 +274,6 @@ INCLUDE_DIRECTORIES(api-16)
 #            src/tinyxml/tinyxmlerror.cpp
 # )
 
-SET(SRC_LTINYXML
-            src/tinyxml/tinyxml.cpp
-            src/tinyxml/tinyxmlparser.cpp
-            src/tinyxml/tinyxmlerror.cpp
-)
-
 if(UNIX)
     add_definitions("-fpic")
 endif(UNIX)
