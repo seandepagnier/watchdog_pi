@@ -286,6 +286,9 @@ ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRCS} ${HDRS} ${SRC_JSON} ${SRC_NMEA0183})
 add_subdirectory(libs/tinyxml)
 target_link_libraries(${PACKAGE_NAME} ocpn::tinyxml)
 
+add_subdirectory(libs/bzip2)
+target_link_libraries(${PACKAGE_NAME} ocpn::bzip2)
+
 # +++++Section above is direct from Watchdog +++++++++++++##
 # Was commented out
 
