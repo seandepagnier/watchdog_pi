@@ -19,27 +19,32 @@ add_library(_BZIP2 INTERFACE)
 add_library(ocpn::bzip2 ALIAS _BZIP2)
 
 find_package(BZip2)
+message(STATUS "BZIP2_FOUND $[BZIP2_FOUND}")
+message(STATUS "BZIP2_LIBRARIES $[BZIP2_LIBRARIES}")
+message(STATUS "BZIP2_INCLUDE_DIR $[BZIP2_INCLUDE_DIR}")
 if (BZIP2_FOUND)
   message(${CMLOC} "Using system bzip2")
   target_include_directories(_BZIP2 INTERFACE ${BZIP2_INCLUDE_DIR})
   target_link_libraries(_BZIP2 INTERFACE ${BZIP2_LIBRARIES})
 else ()
   message(${CMLOC} "Using bundled bzip2")
-  set (BZ2_LIBRARY ${CMAKE_CURRENT_SOURCE_DIR}/bzip2-1.0.6/libbz2.a)
   set (BZ2_DIR ${CMAKE_CURRENT_SOURCE_DIR}/bzip2-1.0.6)
-
-  ExternalProject_Add(libbzip2
-    SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/bzip2-1.0.6
-    CONFIGURE_COMMAND /usr/bin/true
-    BUILD_COMMAND make -f Makefile-libbz2_so
-    BUILD_IN_SOURCE 1
-    INSTALL_COMMAND  /bin/true
+  set (SRC
+    ${BZ2_DIR}/blocksort.c
+    ${BZ2_DIR}/bzlib.c
+    ${BZ2_DIR}/crctable.c
+    ${BZ2_DIR}/compress.c
+    ${BZ2_DIR}/decompress.c
+    ${BZ2_DIR}/huffman.c
+    ${BZ2_DIR}/randtable.c 
   )
-  add_library(BZIP2 STATIC IMPORTED)
-  add_dependencies(BZIP2 libbzip2)
-  set_target_properties(BZIP2 PROPERTIES IMPORTED_LOCATION ${BZ2_LIBRARY})
-  set_target_properties(
-    BZIP2 PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${BZ2_DIR}
-  )
+  add_library(BZIP2 STATIC ${SRC})
+  target_include_directories(BZIP2 PUBLIC ${BZ2_DIR})
   target_link_libraries(_BZIP2 INTERFACE BZIP2)
+endif ()
+
+if (MSVC)
+  set_target_properties(BZIP2
+      PROPERTIES LINK_FLAGS_DEBUG " /NODEFAULTLIB:MSVCRT"
+  )
 endif ()
