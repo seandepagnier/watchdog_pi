@@ -36,6 +36,7 @@
 ##
 
 set(CMLOC "CMakeLists: ")
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 # define minimum cmake version
 cmake_minimum_required(VERSION 3.1.1)
@@ -244,6 +245,8 @@ endif(PI_JSON_SCHEMA_VALIDATOR)
 #INCLUDE_DIRECTORIES(BEFORE ${PROJECT_SOURCE_DIR}/src/plugingl)
 INCLUDE_DIRECTORIES(api-16)
 
+
+
 # ----- Change above to match project requirements ----- ##
 #--------REMOVE LN 194 to LN 296 from Testplugin_pi---------------
 #------- Change below to match project requirements --------------#
@@ -278,10 +281,10 @@ if(UNIX)
     add_definitions("-fpic")
 endif(UNIX)
 
-ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRCS} ${HDRS} ${SRC_JSON} ${SRC_NMEA0183} ${SRC_LTINYXML})
-# ENDIF(TINYXML_FOUND)
+ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRCS} ${HDRS} ${SRC_JSON} ${SRC_NMEA0183})
 
-ADD_DEFINITIONS(-DTIXML_USE_STL)
+add_subdirectory(libs/tinyxml)
+target_link_libraries(${PACKAGE_NAME} ocpn::tinyxml)
 
 # +++++Section above is direct from Watchdog +++++++++++++##
 # Was commented out
@@ -315,7 +318,6 @@ endif(UNIX AND NOT APPLE)
 #INCLUDE("cmake/PluginGL.cmake")
 INCLUDE("cmake/PluginNMEA.cmake") #not for wxfax
 INCLUDE("cmake/PluginJSON.cmake")  #not for wxfax
-INCLUDE("cmake/PluginXML.cmake")
 
 ##
 ## ----- Change above to match project requirements ----- ##
