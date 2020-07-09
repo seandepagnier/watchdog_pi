@@ -45,6 +45,6 @@ endif ()
 
 if (MSVC)
   set_target_properties(BZIP2
-      PROPERTIES LINK_FLAGS_DEBUG " /NODEFAULTLIB:MSVCRT"
+      PROPERTIES LINK_FLAGS_DEBUG "/NODEFAULTLIB:MSVCRT"
   )
 endif ()
