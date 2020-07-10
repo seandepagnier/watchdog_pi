@@ -90,7 +90,7 @@ enum {
     ID_ALARM_VISIBLE
 };
 
-class watchdog_pi : public wxEvtHandler, public opencpn_plugin_113
+class watchdog_pi : public wxEvtHandler, public opencpn_plugin_116
 {
 public:
 
