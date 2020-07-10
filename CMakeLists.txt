@@ -112,7 +112,7 @@ set(OpenGL_GL_PREFERENCE "LEGACY")
 set(USE_LOCAL_GLU FALSE)
 
 # Question still needed? on or off?
-option(USE_GL "Enable OpenGL support" OFF)
+#option(USE_GL "Enable OpenGL support" OFF)
 message(STATUS "${CMLOC}USE_GL: ${USE_GL}")
 
 if("${CMAKE_BUILD_TYPE}" STREQUAL "")
@@ -201,12 +201,6 @@ SET(HDRS
             api-16/ocpn_plugin.h
  )
 
-SET(SRC_GL
-            src/GL/gl.h
-            src/GL/gl_private.h
-            src/GL/glext.h
-            src/GL/glu.h
-)			
 
 add_definitions(-DPLUGIN_USE_SVG)
 
@@ -288,7 +282,7 @@ if(UNIX)
     add_definitions("-fpic")
 endif(UNIX)
 
-ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRCS} ${HDRS} ${SRC_JSON} ${SRC_NMEA0183} ${SRC_GL})
+ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRCS} ${HDRS} ${SRC_JSON} ${SRC_NMEA0183} )
 
 add_subdirectory(libs/tinyxml)
 target_link_libraries(${PACKAGE_NAME} ocpn::tinyxml)
@@ -325,7 +319,7 @@ endif(UNIX AND NOT APPLE)
 ##================================================================================
 ## ----- Change above to match project requirements ----- ##
 #These are NOT used in Testplugin, used for other plugins
-INCLUDE("cmake/PluginGL.cmake")
+#INCLUDE("cmake/PluginGL.cmake")
 INCLUDE("cmake/PluginNMEA.cmake") #not for wxfax
 INCLUDE("cmake/PluginJSON.cmake")  #not for wxfax
 
