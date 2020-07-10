@@ -234,22 +234,6 @@ int watchdog_pi::GetPlugInVersionMinor()
 
 }
 
-int watchdog_pi::GGetPlugInVersionPatch()
-{
-    return PLUGIN_VERSION_PATCH;
-}
-
-
-const char* watchdog_pi::GGetPlugInVersionPre()
-{
-    return "";
-}
-
-const char* watchdog_pi::GGetPlugInVersionBuild()
-{
-    return "";
-}
-
 wxBitmap *watchdog_pi::GetPlugInBitmap()
 {
     return new wxBitmap(_img_watchdog->ConvertToImage().Copy());
