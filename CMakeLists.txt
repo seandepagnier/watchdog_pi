@@ -59,9 +59,9 @@ SET(PACKAGE "watchdog_pi")
 
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "4")
-set(VERSION_PATCH "15")
+set(VERSION_PATCH "16")
 set(VERSION_TWEAK "0")
-set(VERSION_DATE "7/05/2020")
+set(VERSION_DATE "7/10/2020")
 set(OCPN_MIN_VERSION "ov50")
 set(OCPN_API_VERSION_MAJOR "1")
 set(OCPN_API_VERSION_MINOR "16")
@@ -112,7 +112,7 @@ set(OpenGL_GL_PREFERENCE "LEGACY")
 set(USE_LOCAL_GLU FALSE)
 
 # Question still needed? on or off?
-# option(USE_GL "Enable OpenGL support" OFF)
+option(USE_GL "Enable OpenGL support" OFF)
 message(STATUS "${CMLOC}USE_GL: ${USE_GL}")
 
 if("${CMAKE_BUILD_TYPE}" STREQUAL "")
@@ -201,6 +201,13 @@ SET(HDRS
             api-16/ocpn_plugin.h
  )
 
+SET(SRC_GL
+            src/GL/gl.h
+            src/GL/gl_private.h
+            src/GL/glext.h
+            src/GL/glu.h
+)			
+
 add_definitions(-DPLUGIN_USE_SVG)
 
 if(APPLE)
@@ -281,7 +288,7 @@ if(UNIX)
     add_definitions("-fpic")
 endif(UNIX)
 
-ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRCS} ${HDRS} ${SRC_JSON} ${SRC_NMEA0183})
+ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRCS} ${HDRS} ${SRC_JSON} ${SRC_NMEA0183} ${SRC_GL})
 
 add_subdirectory(libs/tinyxml)
 target_link_libraries(${PACKAGE_NAME} ocpn::tinyxml)
@@ -318,7 +325,7 @@ endif(UNIX AND NOT APPLE)
 ##================================================================================
 ## ----- Change above to match project requirements ----- ##
 #These are NOT used in Testplugin, used for other plugins
-#INCLUDE("cmake/PluginGL.cmake")
+INCLUDE("cmake/PluginGL.cmake")
 INCLUDE("cmake/PluginNMEA.cmake") #not for wxfax
 INCLUDE("cmake/PluginJSON.cmake")  #not for wxfax
 
