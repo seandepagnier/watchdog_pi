@@ -278,10 +278,6 @@ INCLUDE_DIRECTORIES(api-16)
 #            src/tinyxml/tinyxmlerror.cpp
 # )
 
-if(UNIX)
-    add_definitions("-fpic")
-endif(UNIX)
-
 ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRCS} ${HDRS} ${SRC_JSON} ${SRC_NMEA0183} )
 
 add_subdirectory(libs/tinyxml)
