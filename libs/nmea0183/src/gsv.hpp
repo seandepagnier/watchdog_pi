@@ -41,6 +41,9 @@
 ** You can use it any way you like.
 */
 
+// Required for struct SAT_INFO
+#include "SatInfo.h"
+
 class GSV : public RESPONSE
 {
 
@@ -53,7 +56,10 @@ class GSV : public RESPONSE
       ** Data
       */
 
+      int NumberOfMessages;
+      int MessageNumber;
       int   SatsInView;
+      SAT_INFO SatInfo[4];
 
       /*
       ** Methods

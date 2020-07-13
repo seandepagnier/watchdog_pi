@@ -96,7 +96,7 @@ bool RMC::Parse( const SENTENCE& sentence )
    ** 12) Checksum
 
    ** Version 2.3
-   ** 12) The value can be A=autonomous, D=differential, E=Estimated, N=not valid, S=Simulator, optional, may be NULL
+   ** 12) Mode (D or A), optional, may be NULL
    ** 13) Checksum
    */
 
@@ -104,47 +104,50 @@ bool RMC::Parse( const SENTENCE& sentence )
    ** First we check the checksum...
    */
 
-   int nFields = sentence.GetNumberOfDataFields( );
-   
-   NMEA0183_BOOLEAN check = sentence.IsChecksumBad( nFields + 1 );
+   NMEA0183_BOOLEAN check = sentence.IsChecksumBad( 12 );
 
    if ( check == NTrue )
    {
    /*
-   ** This may be an NMEA Version 3+ sentence, with added fields
+   ** This may be an NMEA Version 2.3 sentence, with "Mode" field
    */
-        wxString checksum_in_sentence = sentence.Field( nFields + 1 );
+       wxString checksum_in_sentence = sentence.Field( 12 );
        if(checksum_in_sentence.StartsWith(_T("*")))       // Field is a valid erroneous checksum
        {
          SetErrorMessage( _T("Invalid Checksum") );
          return( FALSE );
        }
-   }
-
-   // If sentence is at least Version 2.3, check the extra mode indicator field
-   bool mode_valid = true;
-   if(nFields >= 12){
-       wxString mode_string = sentence.Field( 12 );
-       if(!mode_string.StartsWith(_T("*"))) {
-           if((mode_string == _T("N")) || (mode_string == _T("S")))     // Not valid, or simulator mode
-               mode_valid = false;
+       else
+       {
+         check = sentence.IsChecksumBad( 13 );
+         if( check == NTrue)
+         {
+            SetErrorMessage( _T("Invalid Checksum") );
+            return( FALSE );
+         }
        }
    }
-       
+
+   //   Is this a 2.3 message?
+   bool bext_valid = true;
+   wxString checksum_in_sentence = sentence.Field( 12 );
+   if(!checksum_in_sentence.StartsWith(_T("*"))) {
+       if(checksum_in_sentence == _T("N") )
+            bext_valid = false;
+    }
 
    UTCTime                    = sentence.Field( 1 );
-   
    IsDataValid                = sentence.Boolean( 2 );
-   if( !mode_valid )
+   if( !bext_valid )
        IsDataValid = NFalse;
-       
+
    Position.Parse( 3, 4, 5, 6, sentence );
    SpeedOverGroundKnots       = sentence.Double( 7 );
    TrackMadeGoodDegreesTrue   = sentence.Double( 8 );
    Date                       = sentence.Field( 9 );
    MagneticVariation          = sentence.Double( 10 );
    MagneticVariationDirection = sentence.EastOrWest( 11 );
-   
+
    return( TRUE );
 }
 
@@ -164,15 +167,9 @@ bool RMC::Write( SENTENCE& sentence )
    sentence += SpeedOverGroundKnots;
    sentence += TrackMadeGoodDegreesTrue;
    sentence += Date;
+   sentence += MagneticVariation;
+   sentence += MagneticVariationDirection;
 
-   if(MagneticVariation > 360.)
-         sentence += _T(",,");
-   else
-   {
-         sentence += MagneticVariation;
-         sentence += MagneticVariationDirection;
-   }
-   sentence += FAAModeIndicator;
    sentence.Finish();
 
    return( TRUE );
@@ -190,7 +187,6 @@ const RMC& RMC::operator = ( const RMC& source )
    Date                       = source.Date;
    MagneticVariation          = source.MagneticVariation;
    MagneticVariationDirection = source.MagneticVariationDirection;
-   FAAModeIndicator           = source.FAAModeIndicator;
 
   return( *this );
 }

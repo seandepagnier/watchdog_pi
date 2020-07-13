@@ -31,20 +31,6 @@
 
 
 #include "nmea0183.h"
-#include <math.h>
-
-#if !defined(NAN)
-
-//static const long long lNaN = 0x7fffffffffffffff;
-
-//#define NaN (*(double*)&lNaN)
-//#else
-static const long long lNaN = 0xfff8000000000000;
-#define NAN (*(double*)&lNaN)
-
-#endif
-
-
 
 /*
 ** Author: Samuel R. Blackburn
@@ -154,7 +140,7 @@ unsigned char SENTENCE::ComputeChecksum( void ) const
        Sentence[ index ] != LINE_FEED )
    {
        checksum_value ^= (char)Sentence[ index ];
-         index++;
+       index++;
    }
 
    return( checksum_value );
@@ -163,15 +149,11 @@ unsigned char SENTENCE::ComputeChecksum( void ) const
 double SENTENCE::Double( int field_number ) const
 {
  //  ASSERT_VALID( this );
-      if(Field( field_number ).Len() == 0)
-            return (NAN);
-
-      wxCharBuffer abuf = Field( field_number).ToUTF8();
-      if( !abuf.data() )                            // badly formed sentence?
-        return (NAN);
-      
-      return( ::atof( abuf.data() ));
-      
+    wxCharBuffer abuf = Field( field_number).ToUTF8();
+    if( !abuf.data() || strlen(abuf.data()) == 0 )                            // badly formed sentence?
+        return (999.);
+ 
+    return( ::atof( abuf.data() ));
 }
 
 
@@ -219,6 +201,7 @@ const wxString& SENTENCE::Field( int desired_field_number ) const
 
       if( Sentence[ index ] == '*')
           return_string += Sentence[ index ];
+
       index++;
    }
 
@@ -281,10 +264,11 @@ void SENTENCE::Finish( void )
 int SENTENCE::Integer( int field_number ) const
 {
 //   ASSERT_VALID( this );
+
     wxCharBuffer abuf = Field( field_number).ToUTF8();
     if( !abuf.data() )                            // badly formed sentence?
         return 0;
-
+    
     return( ::atoi( abuf.data() ));
 }
 
@@ -497,21 +481,6 @@ const SENTENCE& SENTENCE::operator += ( double value )
    return( *this );
 }
 
-SENTENCE& SENTENCE::Add ( double value, int precision )
-{
-//   ASSERT_VALID( this );
-
-    wxString temp_string;
-    wxString s_Precision;
-
-    s_Precision.Printf(_T("%c.%if"), '%', precision );
-    temp_string.Printf( s_Precision, value );
-
-    Sentence += _T(",");
-    Sentence += temp_string;
-
-    return( *this );
-}
 const SENTENCE& SENTENCE::operator += ( COMMUNICATIONS_MODE mode )
 {
 //   ASSERT_VALID( this );

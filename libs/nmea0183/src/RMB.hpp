@@ -63,7 +63,6 @@ class RMB : public RESPONSE
       double           BearingToDestinationDegreesTrue;
       double           DestinationClosingVelocityKnots;
       NMEA0183_BOOLEAN IsArrivalCircleEntered;
-      wxString         FAAModeIndicator;
 
       /*
       ** Methods

@@ -93,22 +93,30 @@
 #include "hdt.hpp"
 #include "RMB.hpp"
 #include "RMC.HPP"
+#include "rsa.hpp"
 #include "wpl.hpp"
 #include "rte.hpp"
 #include "gll.hpp"
 #include "vtg.hpp"
 #include "gsv.hpp"
 #include "gga.hpp"
-#include "GPwpl.hpp"
-#include "apb.hpp"
-#include "xte.hpp"
+#include "dbt.hpp"
+#include "dpt.hpp"
+#include "mta.hpp" //Air temperature
+#include "mtw.hpp" //Water temperature
+#include "mda.hpp" //barometric pressure
 #include "mwd.hpp"
 #include "mwv.hpp"
-
+#include "vhw.hpp"
+#include "vwr.hpp"
+#include "vwt.hpp"
+#include "zda.hpp"
+#include "vlw.hpp"
+#include "xdr.hpp" //transducer data
+#include "xte.hpp"
 /*
 #include "ROT.hpp"
 #include "RPM.hpp"
-#include "RSA.hpp"
 #include "RSD.hpp"
 #include "SFI.hpp"
 #include "STN.hpp"
@@ -123,6 +131,7 @@
 #include "WCV.hpp"
 #include "WNC.hpp"
 #include "XDR.hpp"
+#include "XTE.hpp"
 #include "XTR.hpp"
 #include "ZDA.hpp"
 #include "ZFO.hpp"
@@ -152,8 +161,6 @@ class NMEA0183
       NMEA0183();
       virtual ~NMEA0183();
 
-      wxArrayString GetRecognizedArray(void);
-      
       /*
       ** NMEA 0183 Sentences we understand
       */
@@ -168,60 +175,82 @@ class NMEA0183
       BWC Bwc;
       BWR Bwr;
       BWW Bww;
+*/
       DBT Dbt;
+/*
       DCN Dcn;
+*/
       DPT Dpt;
+/*
       FSI Fsi;
+*/
       GGA Gga;
+/*
       GLC Glc;
+*/
       GLL Gll;
+      GSV Gsv;
+/*
       GXA Gxa;
+*/
+      HDM Hdm;
+      HDG Hdg;
+      HDT Hdt;
+/*
       HSC Hsc;
       LCD Lcd;
+*/
+      MTA Mta; //Air temperature
       MTW Mtw;
+      MWD Mwd;
       MWV Mwv;
+      MDA Mda; //Metrological comopsite	
+/*
       OLN Oln;
       OSD Osd;
       P   Proprietary;
       RMA Rma;
 */
-       HDM Hdm;
-       HDG Hdg;
-       HDT Hdt;
-       RMB Rmb;
-       RMC Rmc;
-       WPL Wpl;
-       RTE Rte;
-       GLL Gll;
-       VTG Vtg;
-       GSV Gsv;
-       GGA Gga;
-       GPWPL GPwpl;
-       APB Apb;
-       XTE Xte;
-       MWD Mwd;
-       MWV Mwv;
- /*
+      RMB Rmb;
+      RMC Rmc;
+/*
       ROT Rot;
       RPM Rpm;
+*/
       RSA Rsa;
+/*
       RSD Rsd;
+*/
+      RTE Rte;
+/*
       SFI Sfi;
       STN Stn;
       TRF Trf;
       TTM Ttm;
       VBW Vbw;
       VDR Vdr;
+*/
       VHW Vhw;
-      VLW Vlw;
+	  VLW Vlw;
+/*
+      
       VPW Vpw;
+*/
       VTG Vtg;
+      VWR Vwr;
+      VWT Vwt;
+/*
       WCV Wcv;
       WNC Wnc;
+*/
+      WPL Wpl;
+
       XDR Xdr;
-      XTE Xte;
+/*    XTE Xte;
       XTR Xtr;
+*/
       ZDA Zda;
+/*
       ZFO Zfo;
       ZTG Ztg;
 */
@@ -234,9 +263,9 @@ class NMEA0183
 
 //      MANUFACTURER_LIST Manufacturers;
 
-      virtual bool IsGood( void ) const;
-      virtual bool Parse( void );
-      virtual bool PreParse( void );
+      bool IsGood( void ) const;
+      bool Parse( void );
+      bool PreParse( void );
 
       NMEA0183& operator << ( wxString& source );
       NMEA0183& operator >> ( wxString& destination );

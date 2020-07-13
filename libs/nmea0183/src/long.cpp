@@ -81,11 +81,11 @@ void LONGITUDE::Set( double position, const wxString& east_or_west )
    Longitude = position;
    wxString ts = east_or_west;
 
-   if ( !ts.IsEmpty( ) && ts.Trim(false)[ 0 ] == 'E' )
+   if ( ts.Trim(false)[ 0 ] == 'E' )
    {
       Easting = East;
    }
-   else if ( !ts.IsEmpty( ) && ts.Trim(false)[ 0 ] == 'W' )
+   else if ( ts.Trim(false)[ 0 ] == 'W' )
    {
       Easting = West;
    }
@@ -108,9 +108,8 @@ void LONGITUDE::Write( SENTENCE& sentence )
             neg = 1;
             }
     d = (int) Longitude;
-    double m0 = (Longitude - (double) d) * 60000.0;
-    m = (int)wxRound(m0);
-    
+    m = (int) ((Longitude - (double) d) * 60000.0);
+
     if (neg)
             d = -d;
 

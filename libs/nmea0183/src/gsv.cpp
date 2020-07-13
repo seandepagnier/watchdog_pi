@@ -55,7 +55,16 @@ GSV::~GSV()
 
 void GSV::Empty( void )
 {
+   NumberOfMessages = 0;
+   MessageNumber = 0;
    SatsInView = 0;
+   for (int idx = 0; idx < 4; idx++)
+   {
+         SatInfo[idx].SatNumber = 0;
+         SatInfo[idx].ElevationDegrees = 0;
+         SatInfo[idx].AzimuthDegreesTrue = 0;
+         SatInfo[idx].SignalToNoiseRatio = 0;
+   }
 }
 
 bool GSV::Parse( const SENTENCE& sentence )
@@ -98,13 +107,35 @@ Where:
    */
 
    /*
-   ** Ignore the checksum...
+   ** First we check the checksum...
    */
+    int nNumberOfDataFields = sentence.GetNumberOfDataFields();
+    int satInfoCnt = (nNumberOfDataFields-3) / 4;
+    if (satInfoCnt < 1)
+    {
+        SetErrorMessage(_T("Invalid Field count"));
+        return(FALSE);
+    }
 
+    if (sentence.IsChecksumBad(nNumberOfDataFields + 1) == NTrue)
+    {
+        SetErrorMessage( _T("Invalid Checksum" ));
+        return( FALSE );
+    }
 
-   SatsInView = sentence.Integer( 3 );
+    NumberOfMessages = sentence.Integer( 1 );
+    MessageNumber = sentence.Integer( 2 );
+    SatsInView = sentence.Integer( 3 );
 
-   return( TRUE );
+    for (int idx = 0; idx < satInfoCnt; idx++)
+    {
+        SatInfo[idx].SatNumber = sentence.Integer( idx*4+4 );
+        SatInfo[idx].ElevationDegrees = sentence.Integer( idx*4+5 );
+        SatInfo[idx].AzimuthDegreesTrue = sentence.Integer( idx*4+6 );
+        SatInfo[idx].SignalToNoiseRatio = sentence.Integer( idx*4+7 );
+    }
+
+    return( TRUE );
 }
 
 bool GSV::Write( SENTENCE& sentence )
@@ -115,10 +146,18 @@ bool GSV::Write( SENTENCE& sentence )
 
    RESPONSE::Write( sentence );
 
-   sentence += 1;
-   sentence += 1;
+   sentence += NumberOfMessages;
+   sentence += MessageNumber;
    sentence += SatsInView;
-   
+
+   for (int idx = 0; idx < 4; idx++)
+   {
+         sentence += SatInfo[idx].SatNumber;
+         sentence += SatInfo[idx].ElevationDegrees;
+         sentence += SatInfo[idx].AzimuthDegreesTrue;
+         sentence += SatInfo[idx].SignalToNoiseRatio;
+   }
+
    sentence.Finish();
 
    return( TRUE );
@@ -126,7 +165,17 @@ bool GSV::Write( SENTENCE& sentence )
 
 const GSV& GSV::operator = ( const GSV& source )
 {
-      SatsInView = source.SatsInView;
+   NumberOfMessages = source.NumberOfMessages;
+   MessageNumber = source.MessageNumber;
+   SatsInView = source.SatsInView;
+
+   for (int idx = 0; idx < 4; idx++)
+   {
+         SatInfo[idx].SatNumber = source.SatInfo[idx].SatNumber;
+         SatInfo[idx].ElevationDegrees = source.SatInfo[idx].ElevationDegrees;
+         SatInfo[idx].AzimuthDegreesTrue = source.SatInfo[idx].AzimuthDegreesTrue;
+         SatInfo[idx].SignalToNoiseRatio = source.SatInfo[idx].SignalToNoiseRatio;
+   }
 
    return( *this );
 }
