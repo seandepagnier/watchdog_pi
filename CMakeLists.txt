@@ -60,8 +60,8 @@ SET(PACKAGE "watchdog_pi")
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "4")
 set(VERSION_PATCH "17")
-set(VERSION_TWEAK "0")
-set(VERSION_DATE "7/10/2020")
+set(VERSION_TWEAK "1")
+set(VERSION_DATE "7/12/2020")
 set(OCPN_MIN_VERSION "ov50")
 set(OCPN_API_VERSION_MAJOR "1")
 set(OCPN_API_VERSION_MINOR "16")
@@ -209,7 +209,6 @@ if(APPLE)
 else(APPLE)
     option(PI_JSON_SCHEMA_VALIDATOR "Use JSON Schema validator" ON)
 endif(APPLE)
-																					 
 
 if(PI_JSON_SCHEMA_VALIDATOR)
     message(STATUS "${CMLOC}Using JSON Schema validation - warning this changes the 'flavour' of the executable and it may not be compatible with OpenCPN")
@@ -286,6 +285,10 @@ target_link_libraries(${PACKAGE_NAME} ocpn::tinyxml)
 add_subdirectory(libs/bzip2)
 target_link_libraries(${PACKAGE_NAME} ocpn::bzip2)
 
+add_subdirectory(libs/nmea0183)
+target_link_libraries(${PACKAGE_NAME} ocpn::nmea0183)
+
+
 # +++++Section above is direct from Watchdog +++++++++++++##
 # Was commented out
 
@@ -316,7 +319,7 @@ endif(UNIX AND NOT APPLE)
 ## ----- Change above to match project requirements ----- ##
 #These are NOT used in Testplugin, used for other plugins
 #INCLUDE("cmake/PluginGL.cmake")
-INCLUDE("cmake/PluginNMEA.cmake") #not for wxfax
+#INCLUDE("cmake/PluginNMEA.cmake") #not for wxfax
 INCLUDE("cmake/PluginJSON.cmake")  #not for wxfax
 
 ##
