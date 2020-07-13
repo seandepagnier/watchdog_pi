@@ -60,8 +60,8 @@ SET(PACKAGE "watchdog_pi")
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "4")
 set(VERSION_PATCH "17")
-set(VERSION_TWEAK "2")
-set(VERSION_DATE "7/12/2020")
+set(VERSION_TWEAK "3")
+set(VERSION_DATE "7/13/2020")
 set(OCPN_MIN_VERSION "ov50")
 set(OCPN_API_VERSION_MAJOR "1")
 set(OCPN_API_VERSION_MINOR "16")
@@ -98,19 +98,14 @@ set(XML_DESCRIPTION "Multiple Configurable alarms for  changing conditions for b
 ## ----- Modify below for plugin special requirements------------ ##
 ##
 
-SET(BUNDLE_DATA FALSE)  #from wd
-SET(CMAKE_MACOSX_RPATH "ON")  #from WD
-
+set(BUNDLE_DATA FALSE)  #from wd
+set(CMAKE_MACOSX_RPATH "ON")  #from WD
 option(PLUGIN_USE_SVG "Use SVG graphics" ON)  
-
 set(CMAKE_CXX_STANDARD 11)
-
 # Prefer libGL.so to libOpenGL.so, see CMP0072
 set(OpenGL_GL_PREFERENCE "LEGACY")
-
 # Don't use local version of GLU library
 set(USE_LOCAL_GLU FALSE)
-
 # Question still needed? on or off?
 #option(USE_GL "Enable OpenGL support" OFF)
 message(STATUS "${CMLOC}USE_GL: ${USE_GL}")
@@ -133,10 +128,7 @@ project(${PACKAGE})
 #===========================================================
 INCLUDE("cmake/PluginSetup.cmake")
 #===========================================================
-##
 ## ----- The above is used to setup standard variables that are required by the CMAKE process - do not remove ----- ##
-##
-##
 ## ----- Modify section below if there are special requirements for the plugin ----- ##
 ##
 
@@ -145,7 +137,6 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 option(Plugin_CXX11 "Use c++11" OFF)
 
 ## ----- Modify section above if there are special requirements for the plugin ----- ##
-
 ## ----- do not change next section - needed to configure build process ----- ##
 #===========================================================
 INCLUDE("cmake/PluginConfigure.cmake")
@@ -250,32 +241,6 @@ INCLUDE_DIRECTORIES(api-16)
 # ----- Change above to match project requirements ----- ##
 #--------REMOVE LN 194 to LN 296 from Testplugin_pi---------------
 #------- Change below to match project requirements --------------#
-
-#----INCLUDE CMAKE -----
-# INCLUDE("cmake/PluginNMEA.cmake")  #from WD
-# INCLUDE("cmake/PluginJSON.cmake")  #from WD
-#INCLUDE("cmake/PluginXML.cmake")  #WD not used
-#INCLUDE("cmake/PluginGL.cmake")  #WD not used
-#----INCLUDE CMAKE -----
-
-#IF(UNIX)
-# INCLUDE("cmake/FindTinyXML.cmake")
-# FIND_PACKAGE(TinyXML QUIET)
-#ENDIF(UNIX)
-
-#IF(TINYXML_FOUND)
-# message (STATUS "Building with system tinyxml")
-# INCLUDE_DIRECTORIES(${TINYXML_INCLUDE_DIR})
-# ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRC_WATCHDOG} ${SRC_JSON} ${SRC_NMEA0183})
-# TARGET_LINK_LIBRARIES(${PACKAGE_NAME} ${TINYXML_LIBRARIES})
-#ELSE(TINYXML_FOUND)
-# message (STATUS "Building with embedded tinyxml")
-# INCLUDE_DIRECTORIES(BEFORE ${PROJECT_SOURCE_DIR}/src/tinyxml/)
-# SET(SRC_LTINYXML
-#            src/tinyxml/tinyxml.cpp
-#            src/tinyxml/tinyxmlparser.cpp
-#            src/tinyxml/tinyxmlerror.cpp
-# )
 
 ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRCS} ${HDRS} ${SRC_JSON} ${SRC_NMEA0183} )
 
