@@ -1,6 +1,3 @@
-# ---------------------------------------------------------------------------
-# Frontend2 Author: jongough aka. Jon Gough    License:wxWidgets License
-# ---------------------------------------------------------------------------
 ##---------------------------------------------------------------------------
 ## Author:      Sean d'Epagnier
 ##***************************************************************************
@@ -23,7 +20,7 @@
 ## ***
 #-----------------------------------------------------------------------------
 # Frontend2 Author: Jon Gough  
-# Frontend2: v1.0.124
+# Frontend2: v1.0.132.1
 # ---------------------------------------------------------------------------
 
 ## ----- When changing this file do NOT change the order in which sections occur        ----- ##
@@ -55,8 +52,9 @@ SET(VERBOSE_NAME "Watchdog")
 set(COMMON_NAME "Watchdog")  # Search "getcommonname"in watchdog_pi.cpp
 set(TITLE_NAME "Watchdog")
 set(PACKAGE_CONTACT "Sean d'Epagnier")
-SET(PACKAGE "watchdog_pi")
-
+set(PACKAGE "watchdog_pi")
+set(SHORT_DESCRIPTION "Implement watchdog ability for opencpn")
+set(LONG_DESCRIPTION "Multiple Configurable alarms for  changing conditions for boundaries, cog, landfall, ais, wind, nmea, weather, pypilot, wind, deadman, etc.")
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "4")
 set(VERSION_PATCH "20")
@@ -65,16 +63,19 @@ set(VERSION_DATE "8/29/2020")
 set(OCPN_MIN_VERSION "ov50")
 set(OCPN_API_VERSION_MAJOR "1")
 set(OCPN_API_VERSION_MINOR "16")
+set(TP_COMMENT "  * Release for O5 using CI")											 
 
 set(PARENT "opencpn")
 
-#Used to set up a local webserver with git loaded, for testing purposes.
-set(GIT_REPOSITORY_SERVER "github.com")
+# The next line allows setup of a local webserver with git for testing purposes.
+# The default is shown below, but it is done in cmake/pluginconfigure.cmake now.
+# This default is needed to build locally and to build flatpak.
+#set(GIT_REPOSITORY_SERVER "github.com")
 
 #No longer needed, queried.
 #set(GIT_USER "rgleason")
 #set(GIT_REPOSITORY_NAME "watchdog_pi")
-# Set Cloudsmith upload repository suffix for each catalog
+# Specifies Cloudsmith upload repository suffix for each catalog
 set(PROD "prod")   #Standard Repos
 set(BETA "beta")   #Standard Repos
 set(ALPHA "alpha") #Standard Repos
@@ -84,14 +85,14 @@ set(ALPHA "alpha") #Standard Repos
 set(CLOUDSMITH_USER "opencpn")
 
 # Set if  Cloudsmith Base Repository name does not match your Git Repository name.
-# set(CLOUDSMITH_BASE_REPOSITORY "${GIT_REPOSITORY_NAME}")
+#set(CLOUDSMITH_BASE_REPOSITORY "opencpn-plugins") #Rick's customization
 # set(CLOUDSMITH_BASE_REPOSITORY "opencpn-plugins") #Rick's customization
 set(CLOUDSMITH_BASE_REPOSITORY "watchdog")  #without the pi
 
 # Set Plugin info-url, summary and description
 set(XML_INFO_URL "https://opencpn.org/OpenCPN/plugins/watchdog.html")
-set(XML_SUMMARY "Implement watchdog ability for opencpn")
-set(XML_DESCRIPTION "Multiple Configurable alarms for  changing conditions for boundaries, cog, landfall, ais, wind, nmea, weather, pypilot, wind, deadman, etc.")
+set(XML_SUMMARY ${SHORT_DESCRIPTION})
+set(XML_DESCRIPTION ${LONG_DESCRIPTION})
 
 ##
 ## ----- Modify above to include all the plugin details --------- ##
@@ -106,7 +107,7 @@ set(CMAKE_CXX_STANDARD 11)
 set(OpenGL_GL_PREFERENCE "LEGACY")
 # Don't use local version of GLU library
 set(USE_LOCAL_GLU FALSE)
-# Question still needed? on or off?
+
 #option(USE_GL "Enable OpenGL support" OFF)
 message(STATUS "${CMLOC}USE_GL: ${USE_GL}")
 
@@ -124,10 +125,12 @@ message(STATUS "${CMLOC}Build type: ${CMAKE_BUILD_TYPE}")
 
 project(${PACKAGE})
 
-## ----- The statement below is used to setup standard variables that are required by the CMAKE process - do not remove ----- ##
-#===========================================================
-INCLUDE("cmake/PluginSetup.cmake")
-#===========================================================
+set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake;")
+
+##=======================================
+include("PluginSetup")
+##=======================================
+##
 ## ----- The above is used to setup standard variables that are required by the CMAKE process - do not remove ----- ##
 ## ----- Modify section below if there are special requirements for the plugin ----- ##
 ##
@@ -136,13 +139,17 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 
 option(Plugin_CXX11 "Use c++11" OFF)
 
+##
 ## ----- Modify section above if there are special requirements for the plugin ----- ##
 ## ----- do not change next section - needed to configure build process ----- ##
-#===========================================================
-INCLUDE("cmake/PluginConfigure.cmake")
-#===========================================================
+##
+##=======================================
+include("PluginConfigure")
+##=======================================
+##
 ## ----- do not change section above - needed to configure build process ----- ##
-# ----- Change below to match project requirements for source, headers, etc. ----- ##
+## ----- Change below to match project requirements for source, headers, etc. ----- ##
+#
 
 add_definitions(-DUSE_S57)
 
@@ -216,21 +223,13 @@ endif(PI_JSON_SCHEMA_VALIDATOR)
 ##=============================================================
 # Modify/configure 'Include' Directories below for the Plugin
 ##=============================================================
-# include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude)
-# include_directories(BEFORE ${PROJECT_SOURCE_DIR}/extinclude)
-# include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/)
-# include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/wx/include)
-# include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude/wxcurl)
-# include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude/wxcurl/include)
-# include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnsrc/lz4)
-# include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnsrc/bitmaps)
 
-##================================================================================
-## Required to collect all the set( headers and SRCS  - Adjust as required
+##
+## Statement below is required to collect all the set( headers and SRCS  - Adjust as required
 ## This add_library  can be used in conditionals below.
-##================================================================================	
-#    SET(EXTSRC  ${EXTSRC}   etc   Can be in an if statement as below
-##================================================================================			
+##
+## SET(EXTSRC  ${EXTSRC}   etc   Can be in an if statement as below
+##		
 
 #INCLUDE_DIRECTORIES(BEFORE ${PROJECT_SOURCE_DIR}/src/libaudiofile)
 #INCLUDE_DIRECTORIES(BEFORE ${PROJECT_SOURCE_DIR}/src/plugingl)
@@ -241,8 +240,9 @@ INCLUDE_DIRECTORIES(api-16)
 # ----- Change above to match project requirements ----- ##
 #--------REMOVE LN 194 to LN 296 from Testplugin_pi---------------
 #------- Change below to match project requirements --------------#
-
+##==========================================================================
 ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRCS} ${HDRS} ${SRC_JSON} ${SRC_NMEA0183} )
+##==========================================================================
 
 add_subdirectory(libs/tinyxml)
 target_link_libraries(${PACKAGE_NAME} ocpn::tinyxml)
@@ -280,18 +280,24 @@ if(UNIX AND NOT APPLE)
     endif(PI_JSON_SCHEMA_VALIDATOR)
 endif(UNIX AND NOT APPLE)
 
-##================================================================================
+
 ## ----- Change above to match project requirements ----- ##
 #These are NOT used in Testplugin, used for other plugins
-#INCLUDE("cmake/PluginGL.cmake")
-#INCLUDE("cmake/PluginNMEA.cmake") #not for wxfax
-INCLUDE("cmake/PluginJSON.cmake")  #not for wxfax
+##=======================================
+#include("PluginGL")
+#INCLUDE("PluginNMEA") #not for wxfax
+include("PluginJSON")  #not for wxfax
+##=======================================
 
 ##
 ## ----- Change above to match project requirements ----- ##
+## ----- do not change next section - needed to configure build process ----- ##
 ##
-## ----- Do not change - needed to build app ----- ##
-#INCLUDE CMAKE #5,6 & 7 -----
-INCLUDE("cmake/PluginInstall.cmake")
-INCLUDE("cmake/PluginLocalization.cmake")
-INCLUDE("cmake/PluginPackage.cmake")
+##=======================================
+include("PluginInstall")
+include("PluginLocalization")
+include("PluginPackage")
+##=======================================
+##
+## ----- do not change section above - needed to configure build process ----- ##
+##

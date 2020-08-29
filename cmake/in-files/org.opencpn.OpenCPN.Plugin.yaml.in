@@ -20,20 +20,3 @@ modules:
        - type: git
          url: git://${GIT_REPOSITORY_SERVER}/${GIT_REPOSITORY}
          ${GIT_BRANCH_OR_TAG}: ${GIT_REPOSITORY_ITEM}
-
-  - name: bzip2
-    builddir: false
-    no-autogen: true
-    buildsystem: simple
-    build-commands: 
-       - make -f Makefile-libbz2_so
-       - cp libbz2.so.1* $FLATPAK_DEST/lib
-       - cp bzlib.h $FLATPAK_DEST/include
-    no-make-install: 1
-    sources:
-       - type: "archive"
-         url:  https://downloads.sourceforge.net/bzip2/bzip2-1.0.6.tar.gz
-         sha256: a2848f34fcd5d6cf47def00461fcb528a0484d8edef8208d6d2e2909dc61d9cd
-
-
-

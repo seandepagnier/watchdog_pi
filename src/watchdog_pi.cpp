@@ -249,13 +249,12 @@ wxString watchdog_pi::GetCommonName()
 
 wxString watchdog_pi::GetShortDescription()
 {
-    return _("Watchdog PlugIn for OpenCPN");
+    return _(PLUGIN_SHORT_DESCRIPTION);
 }
 
 wxString watchdog_pi::GetLongDescription()
 {
-    return _("Watchdog PlugIn for OpenCPN\n\
-Alarm user of changing conditions.");
+   return _(PLUGIN_LONG_DESCRIPTION);
 }
 
 int watchdog_pi::GetToolbarToolCount(void)
