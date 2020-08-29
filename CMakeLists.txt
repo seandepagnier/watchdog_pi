@@ -58,7 +58,7 @@ set(LONG_DESCRIPTION "Multiple Configurable alarms for  changing conditions for 
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "4")
 set(VERSION_PATCH "20")
-set(VERSION_TWEAK "10")
+set(VERSION_TWEAK "12")
 set(VERSION_DATE "8/29/2020")
 set(OCPN_MIN_VERSION "ov50")
 set(OCPN_API_VERSION_MAJOR "1")
@@ -109,6 +109,7 @@ set(OpenGL_GL_PREFERENCE "LEGACY")
 set(USE_LOCAL_GLU FALSE)
 
 #option(USE_GL "Enable OpenGL support" OFF)
+option(USE_GL "Enable OpenGL support" ON)  #only fix found for errors
 message(STATUS "${CMLOC}USE_GL: ${USE_GL}")
 
 if("${CMAKE_BUILD_TYPE}" STREQUAL "")
@@ -247,11 +248,18 @@ ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRCS} ${HDRS} ${SRC_JSON} ${SRC_NMEA0183} )
 add_subdirectory(libs/tinyxml)
 target_link_libraries(${PACKAGE_NAME} ocpn::tinyxml)
 
+add_subdirectory("libs/jsoncpp")
+target_link_libraries(${PACKAGE_NAME} ocpn::jsoncpp)
+
+add_subdirectory("libs/wxJSON")
+target_link_libraries(${PACKAGE_NAME} ocpn::wxjson)
+
 add_subdirectory(libs/bzip2)
 target_link_libraries(${PACKAGE_NAME} ocpn::bzip2)
 
 add_subdirectory(libs/nmea0183)
 target_link_libraries(${PACKAGE_NAME} ocpn::nmea0183)
+
 
 
 # +++++Section above is direct from Watchdog +++++++++++++##
@@ -285,8 +293,8 @@ endif(UNIX AND NOT APPLE)
 #These are NOT used in Testplugin, used for other plugins
 ##=======================================
 #include("PluginGL")
-#INCLUDE("PluginNMEA") #not for wxfax
-include("PluginJSON")  #not for wxfax
+#include("PluginNMEA") #not for wxfax
+#include("PluginJSON")  #not for wxfax  #commented out using libs
 ##=======================================
 
 ##
