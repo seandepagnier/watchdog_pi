@@ -9,27 +9,13 @@ if (NOT CMAKE_MODULE_PATH)
 endif ()
 
 SET(SRC
+    src/hexvalue.cpp
     src/LatLong.hpp
     src/latlong.cpp
-    src/long.cpp
-    src/nmea0183.cpp
-    src/nmea0183.hpp
-    src/Response.hpp
-    src/response.cpp
-    src/RMB.hpp
-    src/rmb.cpp
-    src/Sentence.hpp
-    src/sentence.cpp
-    src/talkerid.cpp
-    src/RMC.HPP
-    src/rmc.cpp
-    src/hexvalue.cpp
     src/lat.cpp
+    src/long.cpp
+
     src/expid.cpp
-    src/wpl.hpp
-    src/wpl.cpp
-    src/rte.hpp
-    src/rte.cpp
     src/hdt.hpp
     src/hdt.cpp
     src/hdg.hpp
@@ -38,8 +24,6 @@ SET(SRC
     src/hdm.cpp
     src/gll.hpp
     src/gll.cpp
-    src/vtg.hpp
-    src/vtg.cpp
     src/gga.hpp
     src/gga.cpp
     src/gsv.hpp
@@ -48,13 +32,35 @@ SET(SRC
     src/GPwpl.hpp
     src/apb.cpp
     src/apb.hpp
-    src/xte.cpp
-    src/xte.hpp
     src/mwd.cpp
     src/mwd.hpp
     src/mwv.cpp
     src/mwv.hpp
+    src/nmea0183.cpp
+    src/nmea0183.hpp
+    src/Response.hpp
+    src/response.cpp
 
+    src/rmb.cpp
+    src/RMB.hpp
+    src/rmc.cpp
+    src/RMC.HPP
+    src/rte.hpp
+    src/rte.cpp
+
+    src/Sentence.hpp
+    src/sentence.cpp
+    src/talkerid.cpp
+
+    src/vtg.hpp
+    src/vtg.cpp
+
+    src/wpl.hpp
+    src/wpl.cpp
+	
+    src/xte.cpp
+    src/xte.hpp
+ 
 )
 if (NOT wxWidgets_INCLUDE_DIRS)
     include(SimpleWxConfig)
