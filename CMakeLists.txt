@@ -58,8 +58,8 @@ set(LONG_DESCRIPTION "Multiple Configurable alarms for  changing conditions for 
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "4")
 set(VERSION_PATCH "20")
-set(VERSION_TWEAK "12")
-set(VERSION_DATE "8/29/2020")
+set(VERSION_TWEAK "13")
+set(VERSION_DATE "8/31/2020")
 set(OCPN_MIN_VERSION "ov50")
 set(OCPN_API_VERSION_MAJOR "1")
 set(OCPN_API_VERSION_MINOR "16")
@@ -104,9 +104,11 @@ set(CMAKE_MACOSX_RPATH "ON")  #from WD
 option(PLUGIN_USE_SVG "Use SVG graphics" ON)  
 set(CMAKE_CXX_STANDARD 11)
 # Prefer libGL.so to libOpenGL.so, see CMP0072
-set(OpenGL_GL_PREFERENCE "LEGACY")
+# don't think this does anything
+#set(OpenGL_GL_PREFERENCE "LEGACY")
 # Don't use local version of GLU library
-set(USE_LOCAL_GLU FALSE)
+# don't think this does anything
+#set(USE_LOCAL_GLU FALSE)
 
 #option(USE_GL "Enable OpenGL support" OFF)
 option(USE_GL "Enable OpenGL support" ON)  #only fix found for errors
@@ -203,23 +205,23 @@ SET(HDRS
 
 add_definitions(-DPLUGIN_USE_SVG)
 
-if(APPLE)
-    option(PI_JSON_SCHEMA_VALIDATOR "Use JSON Schema validator" OFF)
-else(APPLE)
-    option(PI_JSON_SCHEMA_VALIDATOR "Use JSON Schema validator" ON)
-endif(APPLE)
+#if(APPLE)
+#    option(PI_JSON_SCHEMA_VALIDATOR "Use JSON Schema validator" OFF)
+#else(APPLE)
+#    option(PI_JSON_SCHEMA_VALIDATOR "Use JSON Schema validator" ON)
+#endif(APPLE)
 
-if(PI_JSON_SCHEMA_VALIDATOR)
-    message(STATUS "${CMLOC}Using JSON Schema validation - warning this changes the 'flavour' of the executable and it may not be compatible with OpenCPN")
-    add_definitions(-DPI_JSON_SCHEMA_VALIDATOR)
-    message(STATUS "${CMLOC}Adding JSON Schema validation")
+#if(PI_JSON_SCHEMA_VALIDATOR)
+#    message(STATUS "${CMLOC}Using JSON Schema validation - warning this changes the 'flavour' of the executable and it may not be compatible with OpenCPN")
+#    add_definitions(-DPI_JSON_SCHEMA_VALIDATOR)
+#    message(STATUS "${CMLOC}Adding JSON Schema validation")
 
-    set(EXTSRC ${EXTSRC} extsrc/json-schema-validator/json-schema-draft7.json.cpp extsrc/json-schema-validator/json-uri.cpp extsrc/json-schema-validator/json-validator.cpp)
-    set(EXTINCLUDE ${EXTINCLUDE} extinclude/nlohmann/json.hpp extinclude/json-schema-validator/json-schema.hpp)
-    include_directories(BEFORE ${PROJECT_SOURCE_DIR}/extinclude/json-schema-validator)
-else(PI_JSON_SCHEMA_VALIDATOR)
-    message(STATUS "${CMLOC}Not using JSON Schema validation - warning invalid JSON 'may' cause unexpected crashes")
-endif(PI_JSON_SCHEMA_VALIDATOR)
+#    set(EXTSRC ${EXTSRC} extsrc/json-schema-validator/json-schema-draft7.json.cpp extsrc/json-schema-validator/json-uri.cpp extsrc/json-schema-validator/json-validator.cpp)
+#    set(EXTINCLUDE ${EXTINCLUDE} extinclude/nlohmann/json.hpp extinclude/json-schema-validator/json-schema.hpp)
+#    include_directories(BEFORE ${PROJECT_SOURCE_DIR}/extinclude/json-schema-validator)
+#else(PI_JSON_SCHEMA_VALIDATOR)
+#    message(STATUS "${CMLOC}Not using JSON Schema validation - warning invalid JSON 'may' cause unexpected crashes")
+#endif(PI_JSON_SCHEMA_VALIDATOR)
 
 ##=============================================================
 # Modify/configure 'Include' Directories below for the Plugin
@@ -267,26 +269,26 @@ target_link_libraries(${PACKAGE_NAME} ocpn::nmea0183)
 
 #JSON Validator: Every plugin that uses JSON for passing messages should use a validator.  A JSON validator is much like an XML validator, the validator allows the system to ignore non-conformant messages.  The JSON validator changes the OSABI flavor of the Linux executable so there is code to change it back.
 
-if(UNIX AND NOT APPLE)
-    if(PI_JSON_SCHEMA_VALIDATOR)
+# if(UNIX AND NOT APPLE)
+#    if(PI_JSON_SCHEMA_VALIDATOR)
         # Change OS/ABI to be UNIX - System V to make it run with OCPN
-        set(lib_name lib${PACKAGE_NAME}.so)
-        message(STATUS "${CMLOC}lib-name: ${lib_name}")
-        find_file(elfedit elfedit)
-        if(NOT (${elfedit} STREQUAL "elfedit-NOTFOUND"))
-            message(STATUS "${CMLOC}Will ensure OS/ABI is set to 0 to match OCPN")
-            add_custom_command(
-                TARGET ${PACKAGE_NAME}
-                POST_BUILD
-                WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-                DEPENDS ${PACKAGE_NAME}
-                COMMENT " Running post build action on ${lib_name}."
-                COMMAND sh -c 'elfedit --input-osabi=Linux --output-osabi=none ${lib_name} || (echo 0) ')
-        else(NOT (${elfedit} STREQUAL "elfedit-NOTFOUND"))
-            message(STATUS "${CMLOC}Cannot correct OS/ABI to match OCPN if it is generated incorrectly. Package binutils needed")
-        endif(NOT (${elfedit} STREQUAL "elfedit-NOTFOUND"))
-    endif(PI_JSON_SCHEMA_VALIDATOR)
-endif(UNIX AND NOT APPLE)
+#        set(lib_name lib${PACKAGE_NAME}.so)
+#        message(STATUS "${CMLOC}lib-name: ${lib_name}")
+#        find_file(elfedit elfedit)
+#        if(NOT (${elfedit} STREQUAL "elfedit-NOTFOUND"))
+#            message(STATUS "${CMLOC}Will ensure OS/ABI is set to 0 to match OCPN")
+#            add_custom_command(
+#                TARGET ${PACKAGE_NAME}
+#                POST_BUILD
+#                WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+#                DEPENDS ${PACKAGE_NAME}
+#                COMMENT " Running post build action on ${lib_name}."
+#                COMMAND sh -c 'elfedit --input-osabi=Linux --output-osabi=none ${lib_name} || (echo 0) ')
+#        else(NOT (${elfedit} STREQUAL "elfedit-NOTFOUND"))
+#            message(STATUS "${CMLOC}Cannot correct OS/ABI to match OCPN if it is generated incorrectly. Package binutils needed")
+#        endif(NOT (${elfedit} STREQUAL "elfedit-NOTFOUND"))
+#    endif(PI_JSON_SCHEMA_VALIDATOR)
+#endif(UNIX AND NOT APPLE)
 
 
 ## ----- Change above to match project requirements ----- ##
