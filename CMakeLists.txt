@@ -58,7 +58,7 @@ set(LONG_DESCRIPTION "Multiple Configurable alarms for  changing conditions for 
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "4")
 set(VERSION_PATCH "20")
-set(VERSION_TWEAK "13")
+set(VERSION_TWEAK "14")
 set(VERSION_DATE "8/31/2020")
 set(OCPN_MIN_VERSION "ov50")
 set(OCPN_API_VERSION_MAJOR "1")
@@ -111,7 +111,7 @@ set(CMAKE_CXX_STANDARD 11)
 #set(USE_LOCAL_GLU FALSE)
 
 #option(USE_GL "Enable OpenGL support" OFF)
-option(USE_GL "Enable OpenGL support" ON)  #only fix found for errors
+option(USE_GL "Enable OpenGL support" ON)  #Turn ON, only fix found for GL_texture2d, glDisable, GL_BLEND  errors
 message(STATUS "${CMLOC}USE_GL: ${USE_GL}")
 
 if("${CMAKE_BUILD_TYPE}" STREQUAL "")
@@ -250,8 +250,9 @@ ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRCS} ${HDRS} ${SRC_JSON} ${SRC_NMEA0183} )
 add_subdirectory(libs/tinyxml)
 target_link_libraries(${PACKAGE_NAME} ocpn::tinyxml)
 
-add_subdirectory("libs/jsoncpp")
-target_link_libraries(${PACKAGE_NAME} ocpn::jsoncpp)
+# add_subdirectory("libs/jsoncpp")
+# target_link_libraries(${PACKAGE_NAME} ocpn::jsoncpp)
+# trying pluginJason
 
 add_subdirectory("libs/wxJSON")
 target_link_libraries(${PACKAGE_NAME} ocpn::wxjson)
@@ -296,7 +297,7 @@ target_link_libraries(${PACKAGE_NAME} ocpn::nmea0183)
 ##=======================================
 #include("PluginGL")
 #include("PluginNMEA") #not for wxfax
-#include("PluginJSON")  #not for wxfax  #commented out using libs
+include("PluginJSON")  #not for wxfax  #commented out using libs
 ##=======================================
 
 ##
