@@ -32,7 +32,7 @@
 #include <wx/process.h>
 
 #include "json/json.h"
-#include "tinyxml/tinyxml.h"
+#include "tinyxml.h"
 #include "signalk_client.h"
 
 #include "watchdog_pi.h"

@@ -98,7 +98,7 @@ extern "C" DECL_EXP void destroy_pi(opencpn_plugin* p)
 watchdog_pi *g_watchdog_pi = NULL;
 
 watchdog_pi::watchdog_pi(void *ppimgr)
-    : opencpn_plugin_113(ppimgr)
+    : opencpn_plugin_116(ppimgr)
 {
     // Create the PlugIn icons
     initialize_images();
@@ -208,22 +208,30 @@ bool watchdog_pi::DeInit(void)
 
 int watchdog_pi::GetAPIVersionMajor()
 {
-    return MY_API_VERSION_MAJOR;
+
+    return OCPN_API_VERSION_MAJOR;
+
 }
 
 int watchdog_pi::GetAPIVersionMinor()
 {
-    return MY_API_VERSION_MINOR;
+
+ return OCPN_API_VERSION_MINOR;
+
 }
 
 int watchdog_pi::GetPlugInVersionMajor()
 {
+
     return PLUGIN_VERSION_MAJOR;
+
 }
 
 int watchdog_pi::GetPlugInVersionMinor()
 {
+
     return PLUGIN_VERSION_MINOR;
+
 }
 
 wxBitmap *watchdog_pi::GetPlugInBitmap()
@@ -233,18 +241,20 @@ wxBitmap *watchdog_pi::GetPlugInBitmap()
 
 wxString watchdog_pi::GetCommonName()
 {
-    return _("Watchdog");
+
+    // return _("Watchdog");
+	return _T(PLUGIN_COMMON_NAME);
+
 }
 
 wxString watchdog_pi::GetShortDescription()
 {
-    return _("Watchdog PlugIn for OpenCPN");
+    return _(PLUGIN_SHORT_DESCRIPTION);
 }
 
 wxString watchdog_pi::GetLongDescription()
 {
-    return _("Watchdog PlugIn for OpenCPN\n\
-Alarm user of changing conditions.");
+   return _(PLUGIN_LONG_DESCRIPTION);
 }
 
 int watchdog_pi::GetToolbarToolCount(void)
