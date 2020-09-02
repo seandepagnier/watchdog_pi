@@ -238,7 +238,9 @@ endif(PI_JSON_SCHEMA_VALIDATOR)
 #INCLUDE_DIRECTORIES(BEFORE ${PROJECT_SOURCE_DIR}/src/plugingl)
 INCLUDE_DIRECTORIES(api-16)
 
-
+if(UNIX)
+    add_definitions("-fPIC")
+endif(UNIX)
 
 # ----- Change above to match project requirements ----- ##
 #--------REMOVE LN 194 to LN 296 from Testplugin_pi---------------
