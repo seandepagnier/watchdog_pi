@@ -57,8 +57,8 @@ set(SHORT_DESCRIPTION "Implement watchdog ability for opencpn")
 set(LONG_DESCRIPTION "Multiple Configurable alarms for  changing conditions for boundaries, cog, landfall, ais, wind, nmea, weather, pypilot, wind, deadman, etc.")
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "4")
-set(VERSION_PATCH "20")
-set(VERSION_TWEAK "16")
+set(VERSION_PATCH "21")
+set(VERSION_TWEAK "0")
 set(VERSION_DATE "9/2/2020")
 set(OCPN_MIN_VERSION "ov50")
 set(OCPN_API_VERSION_MAJOR "1")
@@ -264,7 +264,6 @@ target_link_libraries(${PACKAGE_NAME} ocpn::bzip2)
 
 add_subdirectory(libs/nmea0183)
 target_link_libraries(${PACKAGE_NAME} ocpn::nmea0183)
-
 
 
 # +++++Section above is direct from Watchdog +++++++++++++##
