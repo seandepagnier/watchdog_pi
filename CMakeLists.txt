@@ -58,8 +58,8 @@ set(LONG_DESCRIPTION "Multiple Configurable alarms for  changing conditions for 
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "4")
 set(VERSION_PATCH "21")
-set(VERSION_TWEAK "3")
-set(VERSION_DATE "9/2/2020")
+set(VERSION_TWEAK "5")
+set(VERSION_DATE "9/4/2020")
 set(OCPN_MIN_VERSION "ov50")
 set(OCPN_API_VERSION_MAJOR "1")
 set(OCPN_API_VERSION_MINOR "16")
@@ -141,6 +141,7 @@ include("PluginSetup")
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
 option(Plugin_CXX11 "Use c++11" OFF)
+
 
 ##
 ## ----- Modify section above if there are special requirements for the plugin ----- ##
