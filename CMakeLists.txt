@@ -20,7 +20,7 @@
 ## ***
 #-----------------------------------------------------------------------------
 # Frontend2 Author: Jon Gough  
-# Frontend2: v1.0.132.1
+# Frontend2: v1.0.134.0
 # ---------------------------------------------------------------------------
 
 ## ----- When changing this file do NOT change the order in which sections occur        ----- ##
@@ -105,10 +105,10 @@ option(PLUGIN_USE_SVG "Use SVG graphics" ON)
 set(CMAKE_CXX_STANDARD 11)
 # Prefer libGL.so to libOpenGL.so, see CMP0072
 # don't think this does anything
-#set(OpenGL_GL_PREFERENCE "LEGACY")
+set(OpenGL_GL_PREFERENCE "LEGACY")
 # Don't use local version of GLU library
 # don't think this does anything
-#set(USE_LOCAL_GLU FALSE)
+set(USE_LOCAL_GLU FALSE)
 
 #option(USE_GL "Enable OpenGL support" OFF)
 option(USE_GL "Enable OpenGL support" ON)  #Turn ON, only fix found for GL_texture2d, glDisable, GL_BLEND  errors
@@ -122,7 +122,7 @@ endif("${CMAKE_BUILD_TYPE}" STREQUAL "")
 set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "" "Debug" "Release" "RelWithDebInfo" "MinSizeRel")
 message(STATUS "${CMLOC}Build type: ${CMAKE_BUILD_TYPE}")
 
-#
+##
 ## ----- The statements below are used to setup standard variables that are required by the CMAKE process - do not remove ----- ##
 ##
 
@@ -204,6 +204,10 @@ SET(HDRS
  )
 
 
+set(EXTSRC)
+set(EXTINCLUDE extinclude/nlohmann/json.hpp extinclude/ODAPI.h)
+
+							   
 add_definitions(-DPLUGIN_USE_SVG)
 
 if(APPLE)
@@ -237,7 +241,10 @@ endif(PI_JSON_SCHEMA_VALIDATOR)
 
 #INCLUDE_DIRECTORIES(BEFORE ${PROJECT_SOURCE_DIR}/src/libaudiofile)
 #INCLUDE_DIRECTORIES(BEFORE ${PROJECT_SOURCE_DIR}/src/plugingl)
-INCLUDE_DIRECTORIES(api-16)
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/src/plugingl)
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/extinclude)
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/extsrc)
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/api-16)
 
 if(UNIX)
     add_definitions("-fPIC")

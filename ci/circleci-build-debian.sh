@@ -23,9 +23,7 @@ if test -f "$EXTRA_LIBS"; then
         sudo apt-get install $line
     done < $EXTRA_LIBS
 fi
-
 mk-build-deps ../ci/control
-
 sudo apt-get --allow-unauthenticated install ./*all.deb  || :
 sudo apt-get --allow-unauthenticated install -f
 rm -f ./*all.deb
