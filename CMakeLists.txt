@@ -34,7 +34,6 @@
 
 set(CMLOC "CMakeLists: ")
 
-
 # define minimum cmake version
 cmake_minimum_required(VERSION 3.1.1)
 if(COMMAND cmake_policy)
@@ -55,10 +54,11 @@ set(PACKAGE_CONTACT "Sean d'Epagnier")
 set(PACKAGE "watchdog_pi")
 set(SHORT_DESCRIPTION "Implement watchdog ability for opencpn")
 set(LONG_DESCRIPTION "Multiple Configurable alarms for  changing conditions for boundaries, cog, landfall, ais, wind, nmea, weather, pypilot, wind, deadman, etc.")
+
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "4")
 set(VERSION_PATCH "21")
-set(VERSION_TWEAK "6")
+set(VERSION_TWEAK "8")
 set(VERSION_DATE "09/08/2020")
 set(OCPN_MIN_VERSION "ov50")
 set(OCPN_API_VERSION_MAJOR "1")
@@ -75,6 +75,7 @@ set(PARENT "opencpn")
 #No longer needed, queried.
 #set(GIT_USER "rgleason")
 #set(GIT_REPOSITORY_NAME "watchdog_pi")
+
 # Specifies Cloudsmith upload repository suffix for each catalog
 set(PROD "prod")   #Standard Repos
 set(BETA "beta")   #Standard Repos
@@ -101,6 +102,7 @@ set(BUNDLE_DATA FALSE)  #from wd
 set(CMAKE_MACOSX_RPATH "ON")  #from WD
 option(PLUGIN_USE_SVG "Use SVG graphics" ON)  
 set(CMAKE_CXX_STANDARD 11)
+
 # Prefer libGL.so to libOpenGL.so, see CMP0072
 # don't think this does anything
 set(OpenGL_GL_PREFERENCE "LEGACY")
@@ -141,7 +143,6 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 
 option(Plugin_CXX11 "Use c++11" OFF)
 
-
 ##
 ## ----- Modify section above if there are special requirements for the plugin ----- ##
 ## ----- do not change next section - needed to configure build process ----- ##
@@ -158,6 +159,7 @@ add_definitions(-DUSE_S57)
 
 # ----Remember to Add your project Set(SRCS and set(HDRS  etc..	
 # ++++++++++++++Section below is direct from Watchdog +++++++++##
+
 # see above option (PLUGIN_USE_SVG "Use SVG graphics" ON)  
 IF(WATCHDOG_USE_SVG)
   ADD_DEFINITIONS(-DWATCHDOG_USE_SVG)
@@ -202,7 +204,6 @@ SET(HDRS
             api-16/ocpn_plugin.h
  )
 
-
 set(EXTSRC)
 set(EXTINCLUDE extinclude/nlohmann/json.hpp extinclude/ODAPI.h)
 
@@ -243,9 +244,9 @@ endif(PI_JSON_SCHEMA_VALIDATOR)
 # Modify/configure 'Include' Directories below for the Plugin
 ##=============================================================
 
-#INCLUDE_DIRECTORIES(BEFORE ${PROJECT_SOURCE_DIR}/src/libaudiofile)
-#INCLUDE_DIRECTORIES(BEFORE ${PROJECT_SOURCE_DIR}/src/plugingl)
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/src/libaudiofile)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/src/plugingl)
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/include/GL)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/extinclude)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/extsrc)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/)
