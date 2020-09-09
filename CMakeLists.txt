@@ -33,7 +33,7 @@
 ##
 
 set(CMLOC "CMakeLists: ")
-set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+
 
 # define minimum cmake version
 cmake_minimum_required(VERSION 3.1.1)
@@ -58,8 +58,8 @@ set(LONG_DESCRIPTION "Multiple Configurable alarms for  changing conditions for 
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "4")
 set(VERSION_PATCH "21")
-set(VERSION_TWEAK "5")
-set(VERSION_DATE "9/4/2020")
+set(VERSION_TWEAK "6")
+set(VERSION_DATE "09/08/2020")
 set(OCPN_MIN_VERSION "ov50")
 set(OCPN_API_VERSION_MAJOR "1")
 set(OCPN_API_VERSION_MINOR "16")
@@ -86,10 +86,8 @@ set(CLOUDSMITH_USER "opencpn")
 
 # Set if  Cloudsmith Base Repository name does not match your Git Repository name.
 #set(CLOUDSMITH_BASE_REPOSITORY "opencpn-plugins") #Rick's customization
-# set(CLOUDSMITH_BASE_REPOSITORY "opencpn-plugins") #Rick's customization
 set(CLOUDSMITH_BASE_REPOSITORY "watchdog")  #without the pi
 
-# Set Plugin info-url, summary and description
 set(XML_INFO_URL "https://opencpn.org/OpenCPN/plugins/watchdog.html")
 set(XML_SUMMARY ${SHORT_DESCRIPTION})
 set(XML_DESCRIPTION ${LONG_DESCRIPTION})
@@ -111,7 +109,7 @@ set(OpenGL_GL_PREFERENCE "LEGACY")
 set(USE_LOCAL_GLU FALSE)
 
 #option(USE_GL "Enable OpenGL support" OFF)
-option(USE_GL "Enable OpenGL support" ON)  #Turn ON, only fix found for GL_texture2d, glDisable, GL_BLEND  errors
+option(USE_GL "Enable OpenGL support" OFF)  #Turn ON, only fix found for GL_texture2d, glDisable, GL_BLEND  errors
 message(STATUS "${CMLOC}USE_GL: ${USE_GL}")
 
 if("${CMAKE_BUILD_TYPE}" STREQUAL "")
@@ -128,7 +126,8 @@ message(STATUS "${CMLOC}Build type: ${CMAKE_BUILD_TYPE}")
 
 project(${PACKAGE})
 
-set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake;")
+#set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake;")
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 ##=======================================
 include("PluginSetup")
@@ -207,6 +206,17 @@ SET(HDRS
 set(EXTSRC)
 set(EXTINCLUDE extinclude/nlohmann/json.hpp extinclude/ODAPI.h)
 
+set(LIBSSRC libs/wxJSON/src/jsonreader.cpp libs/wxJSON/src/jsonval.cpp libs/wxJSON/src/jsonwriter.cpp)
+
+set(LIBHDRS
+    libs/GL/include/gl.h
+    libs/GL/include/gl_private.h
+    libs/GL/include/glext.h
+    libs/GL/include/glu.h
+    libs/wx/include/json_defs.h
+    libs/wx/include/jsonreader.h
+    libs/wx/include/jsonval.h
+    libs/wx/include/jsonwriter.h)
 							   
 add_definitions(-DPLUGIN_USE_SVG)
 
@@ -232,6 +242,18 @@ endif(PI_JSON_SCHEMA_VALIDATOR)
 # Modify/configure 'Include' Directories below for the Plugin
 ##=============================================================
 
+#INCLUDE_DIRECTORIES(BEFORE ${PROJECT_SOURCE_DIR}/src/libaudiofile)
+#INCLUDE_DIRECTORIES(BEFORE ${PROJECT_SOURCE_DIR}/src/plugingl)
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/src/plugingl)
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/extinclude)
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/extsrc)
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/)
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/wx/include)
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/api-16)
+
+if(UNIX)
+    add_definitions("-fPIC")
+endif(UNIX)
 ##
 ## Statement below is required to collect all the set( headers and SRCS  - Adjust as required
 ## This add_library  can be used in conditionals below.
@@ -239,22 +261,14 @@ endif(PI_JSON_SCHEMA_VALIDATOR)
 ## SET(EXTSRC  ${EXTSRC}   etc   Can be in an if statement as below
 ##		
 
-#INCLUDE_DIRECTORIES(BEFORE ${PROJECT_SOURCE_DIR}/src/libaudiofile)
-#INCLUDE_DIRECTORIES(BEFORE ${PROJECT_SOURCE_DIR}/src/plugingl)
-include_directories(BEFORE ${PROJECT_SOURCE_DIR}/src/plugingl)
-include_directories(BEFORE ${PROJECT_SOURCE_DIR}/extinclude)
-include_directories(BEFORE ${PROJECT_SOURCE_DIR}/extsrc)
-include_directories(BEFORE ${PROJECT_SOURCE_DIR}/api-16)
 
-if(UNIX)
-    add_definitions("-fPIC")
-endif(UNIX)
+
 
 # ----- Change above to match project requirements ----- ##
 #--------REMOVE LN 194 to LN 296 from Testplugin_pi---------------
 #------- Change below to match project requirements --------------#
 ##==========================================================================
-ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRCS} ${HDRS} ${SRC_JSON} ${SRC_NMEA0183} )
+ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRCS} ${HDRS} ${EXTSRC} ${LIBSSRC} ${SRC_JSON} ${SRC_NMEA0183} )
 ##==========================================================================
 
 add_subdirectory(libs/tinyxml)
