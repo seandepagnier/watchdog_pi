@@ -58,7 +58,7 @@ set(LONG_DESCRIPTION "Multiple Configurable alarms for  changing conditions for 
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "4")
 set(VERSION_PATCH "21")
-set(VERSION_TWEAK "8")
+set(VERSION_TWEAK "9")
 set(VERSION_DATE "09/09/2020")
 set(OCPN_MIN_VERSION "ov50")
 set(OCPN_API_VERSION_MAJOR "1")
@@ -208,7 +208,7 @@ set(EXTSRC)
 set(EXTINCLUDE extinclude/nlohmann/json.hpp extinclude/ODAPI.h)
 set(LIBSSRC libs/wxJSON/src/jsonreader.cpp libs/wxJSON/src/jsonval.cpp libs/wxJSON/src/jsonwriter.cpp)
 
-#added
+#added for android
 set(LIBHDRS
     libs/GL/gl.h
     libs/GL/gl_private.h
@@ -269,17 +269,18 @@ endif(UNIX)
 #--------REMOVE LN 194 to LN 296 from Testplugin_pi---------------
 #------- Change below to match project requirements --------------#
 ##==========================================================================
-ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRCS} ${HDRS} ${EXTSRC} ${LIBSSRC}  ${LIBHDRS} ${SRC_JSON} )
+ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRCS} ${HDRS} ${EXTSRC} ${LIBSSRC}  ${LIBHDRS} )
 ##==========================================================================
+#ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRCS} ${HDRS} ${EXTSRC} ${LIBSSRC}  ${LIBHDRS} ${SRC_JSON} )
 #ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRCS} ${HDRS} ${EXTSRC} ${LIBSSRC} ${SRC_JSON} ${SRC_NMEA0183} )
 #ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRCS} ${HDRS} ${SRC_JSON} ${SRC_NMEA0183} )
 
 add_subdirectory(libs/tinyxml)
 target_link_libraries(${PACKAGE_NAME} ocpn::tinyxml)
 
-add_subdirectory("libs/jsoncpp")
-target_link_libraries(${PACKAGE_NAME} ocpn::jsoncpp)
-# trying pluginJason
+#add_subdirectory("libs/jsoncpp")
+#target_link_libraries(${PACKAGE_NAME} ocpn::jsoncpp)
+# trying PluginJasonCmake
 
 #add_subdirectory("libs/wxJSON")
 #target_link_libraries(${PACKAGE_NAME} ocpn::wxjson)
@@ -287,9 +288,9 @@ target_link_libraries(${PACKAGE_NAME} ocpn::jsoncpp)
 add_subdirectory(libs/bzip2)
 target_link_libraries(${PACKAGE_NAME} ocpn::bzip2)
 
-add_subdirectory(libs/nmea0183)
-target_link_libraries(${PACKAGE_NAME} ocpn::nmea0183)
-
+#add_subdirectory(libs/nmea0183)
+#target_link_libraries(${PACKAGE_NAME} ocpn::nmea0183)
+#trying PluginNmeaCmake
 
 # +++++Section above is direct from Watchdog +++++++++++++##
 
@@ -321,8 +322,8 @@ endif(UNIX AND NOT APPLE)
 #These are NOT used in Testplugin, used for other plugins
 ##=======================================
 #include("PluginGL")
-#include("PluginNMEA") #not for wxfax
-#include("PluginJSON")  #not for wxfax  #commented out using libs
+include("PluginNMEA") #not for wxfax
+include("PluginJSON")  #not for wxfax  #commented out using libs
 ##=======================================
 
 ##
