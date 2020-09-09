@@ -158,7 +158,7 @@ add_definitions(-DUSE_S57)
 
 # ----Remember to Add your project Set(SRCS and set(HDRS  etc..	
 # ++++++++++++++Section below is direct from Watchdog +++++++++##
-
+# see above option (PLUGIN_USE_SVG "Use SVG graphics" ON)  
 IF(WATCHDOG_USE_SVG)
   ADD_DEFINITIONS(-DWATCHDOG_USE_SVG)
 ENDIF(WATCHDOG_USE_SVG)
@@ -208,6 +208,7 @@ set(EXTINCLUDE extinclude/nlohmann/json.hpp extinclude/ODAPI.h)
 
 set(LIBSSRC libs/wxJSON/src/jsonreader.cpp libs/wxJSON/src/jsonval.cpp libs/wxJSON/src/jsonwriter.cpp)
 
+#added
 set(LIBHDRS
     libs/GL/include/gl.h
     libs/GL/include/gl_private.h
@@ -274,8 +275,8 @@ ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRCS} ${HDRS} ${EXTSRC} ${LIBSSRC} ${SRC_JS
 add_subdirectory(libs/tinyxml)
 target_link_libraries(${PACKAGE_NAME} ocpn::tinyxml)
 
-# add_subdirectory("libs/jsoncpp")
-# target_link_libraries(${PACKAGE_NAME} ocpn::jsoncpp)
+add_subdirectory("libs/jsoncpp")
+target_link_libraries(${PACKAGE_NAME} ocpn::jsoncpp)
 # trying pluginJason
 
 add_subdirectory("libs/wxJSON")
