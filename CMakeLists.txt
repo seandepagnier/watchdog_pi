@@ -59,7 +59,7 @@ set(VERSION_MAJOR "2")
 set(VERSION_MINOR "4")
 set(VERSION_PATCH "21")
 set(VERSION_TWEAK "8")
-set(VERSION_DATE "09/08/2020")
+set(VERSION_DATE "09/09/2020")
 set(OCPN_MIN_VERSION "ov50")
 set(OCPN_API_VERSION_MAJOR "1")
 set(OCPN_API_VERSION_MINOR "16")
@@ -111,7 +111,7 @@ set(OpenGL_GL_PREFERENCE "LEGACY")
 set(USE_LOCAL_GLU FALSE)
 
 #option(USE_GL "Enable OpenGL support" OFF)
-option(USE_GL "Enable OpenGL support" OFF)  #Turn ON, only fix found for GL_texture2d, glDisable, GL_BLEND  errors
+option(USE_GL "Enable OpenGL support" ON)  #Turn ON, only fix found for GL_texture2d, glDisable, GL_BLEND  errors
 message(STATUS "${CMLOC}USE_GL: ${USE_GL}")
 
 if("${CMAKE_BUILD_TYPE}" STREQUAL "")
@@ -206,19 +206,18 @@ SET(HDRS
 
 set(EXTSRC)
 set(EXTINCLUDE extinclude/nlohmann/json.hpp extinclude/ODAPI.h)
-
 set(LIBSSRC libs/wxJSON/src/jsonreader.cpp libs/wxJSON/src/jsonval.cpp libs/wxJSON/src/jsonwriter.cpp)
 
 #added
 set(LIBHDRS
-    libs/GL/include/gl.h
-    libs/GL/include/gl_private.h
-    libs/GL/include/glext.h
-    libs/GL/include/glu.h
-    libs/wx/include/json_defs.h
-    libs/wx/include/jsonreader.h
-    libs/wx/include/jsonval.h
-    libs/wx/include/jsonwriter.h)
+    libs/GL/gl.h
+    libs/GL/gl_private.h
+    libs/GL/glext.h
+    libs/GL/glu.h
+    libs/wx/include/wx/json_defs.h
+    libs/wx/include/wx/jsonreader.h
+    libs/wx/include/wx/jsonval.h
+    libs/wx/include/wx/jsonwriter.h)
 							   
 add_definitions(-DPLUGIN_USE_SVG)
 
@@ -245,8 +244,8 @@ endif(PI_JSON_SCHEMA_VALIDATOR)
 ##=============================================================
 
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/src/libaudiofile)
-include_directories(BEFORE ${PROJECT_SOURCE_DIR}/src/plugingl)
-include_directories(BEFORE ${PROJECT_SOURCE_DIR}/include/GL)
+#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/src/plugingl)
+#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/include/GL)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/extinclude)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/extsrc)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/)
@@ -270,8 +269,10 @@ endif(UNIX)
 #--------REMOVE LN 194 to LN 296 from Testplugin_pi---------------
 #------- Change below to match project requirements --------------#
 ##==========================================================================
-ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRCS} ${HDRS} ${EXTSRC} ${LIBSSRC} ${SRC_JSON} ${SRC_NMEA0183} )
+ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRCS} ${HDRS} ${EXTSRC} ${LIBSSRC}  ${LIBHDRS} ${SRC_JSON} )
 ##==========================================================================
+#ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRCS} ${HDRS} ${EXTSRC} ${LIBSSRC} ${SRC_JSON} ${SRC_NMEA0183} )
+#ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRCS} ${HDRS} ${SRC_JSON} ${SRC_NMEA0183} )
 
 add_subdirectory(libs/tinyxml)
 target_link_libraries(${PACKAGE_NAME} ocpn::tinyxml)
@@ -280,8 +281,8 @@ add_subdirectory("libs/jsoncpp")
 target_link_libraries(${PACKAGE_NAME} ocpn::jsoncpp)
 # trying pluginJason
 
-add_subdirectory("libs/wxJSON")
-target_link_libraries(${PACKAGE_NAME} ocpn::wxjson)
+#add_subdirectory("libs/wxJSON")
+#target_link_libraries(${PACKAGE_NAME} ocpn::wxjson)
 
 add_subdirectory(libs/bzip2)
 target_link_libraries(${PACKAGE_NAME} ocpn::bzip2)
@@ -321,7 +322,7 @@ endif(UNIX AND NOT APPLE)
 ##=======================================
 #include("PluginGL")
 #include("PluginNMEA") #not for wxfax
-include("PluginJSON")  #not for wxfax  #commented out using libs
+#include("PluginJSON")  #not for wxfax  #commented out using libs
 ##=======================================
 
 ##
