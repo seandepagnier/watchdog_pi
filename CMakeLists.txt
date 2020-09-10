@@ -288,6 +288,12 @@ target_link_libraries(${PACKAGE_NAME} ocpn::tinyxml)
 add_subdirectory(libs/bzip2)
 target_link_libraries(${PACKAGE_NAME} ocpn::bzip2)
 
+#needed only if glshim project is included.
+if(QT_ANDROID)
+  target_link_libraries(${PACKAGE_NAME}  GL_static)
+endif(QT_ANDROID)  
+
+
 #add_subdirectory(libs/nmea0183)
 #target_link_libraries(${PACKAGE_NAME} ocpn::nmea0183)
 #trying PluginNmeaCmake
@@ -296,7 +302,7 @@ target_link_libraries(${PACKAGE_NAME} ocpn::bzip2)
 
 #JSON Validator: Every plugin that uses JSON for passing messages should use a validator.  A JSON validator is much like an XML validator, the validator allows the system to ignore non-conformant messages.  The JSON validator changes the OSABI flavor of the Linux executable so there is code to change it back.
 
- if(UNIX AND NOT APPLE)
+ if(UNIX AND NOT APPLE AND NOT QT_ANDROID)
     if(PI_JSON_SCHEMA_VALIDATOR)
        # Change OS/ABI to be UNIX - System V to make it run with OCPN
         set(lib_name lib${PACKAGE_NAME}.so)
@@ -315,7 +321,7 @@ target_link_libraries(${PACKAGE_NAME} ocpn::bzip2)
             message(STATUS "${CMLOC}Cannot correct OS/ABI to match OCPN if it is generated incorrectly. Package binutils needed")
         endif(NOT (${elfedit} STREQUAL "elfedit-NOTFOUND"))
     endif(PI_JSON_SCHEMA_VALIDATOR)
-endif(UNIX AND NOT APPLE)
+endif(UNIX AND NOT APPLE AND NOT QT_ANDROID)
 
 
 ## ----- Change above to match project requirements ----- ##
