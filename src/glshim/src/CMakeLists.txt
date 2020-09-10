@@ -2,7 +2,7 @@ include_directories(util)
 
 file(GLOB_RECURSE GL_SOURCES gl/*.c)
 
-if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+if(${CMAKE_SYSTEM_NAME} MATCHES "Linux" AND NOT QT_ANDROID)
     include_directories(glx)
     aux_source_directory(glx GLX_SOURCES)
     list(APPEND GL_SOURCES ${GLX_SOURCES})
