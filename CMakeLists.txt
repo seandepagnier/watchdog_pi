@@ -280,17 +280,18 @@ target_link_libraries(${PACKAGE_NAME} ocpn::tinyxml)
 
 #add_subdirectory("libs/jsoncpp")
 #target_link_libraries(${PACKAGE_NAME} ocpn::jsoncpp)
-# trying PluginJasonCmake
+# had errors,  trying PluginJasonCmake
 
 #add_subdirectory("libs/wxJSON")
 #target_link_libraries(${PACKAGE_NAME} ocpn::wxjson)
+# LIBSSRCS and LIBHDRS have wxJson, turning off module 
 
 add_subdirectory(libs/bzip2)
 target_link_libraries(${PACKAGE_NAME} ocpn::bzip2)
 
 #add_subdirectory(libs/nmea0183)
 #target_link_libraries(${PACKAGE_NAME} ocpn::nmea0183)
-#trying PluginNmeaCmake
+#had errors,  trying PluginNmeaCmake
 
 # +++++Section above is direct from Watchdog +++++++++++++##
 
