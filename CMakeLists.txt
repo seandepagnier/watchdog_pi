@@ -58,12 +58,11 @@ set(LONG_DESCRIPTION "Multiple Configurable alarms for  changing conditions for 
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "4")
 set(VERSION_PATCH "22")
-set(VERSION_TWEAK "0")
-set(VERSION_DATE "09/09/2020")
-set(OCPN_MIN_VERSION "ov50")
-set(OCPN_API_VERSION_MAJOR "1")
+set(VERSION_TWEAK "2")
+set(VERSION_DATE "10/21/2020")
+set(OCPN_MIN_VERSION "ov52 "1")
 set(OCPN_API_VERSION_MINOR "16")
-set(TP_COMMENT "  * Release for O5 using CI")											 
+set(TP_COMMENT "  * Release for O5.2 using CI")											 
 
 set(PARENT "opencpn")
 
@@ -127,8 +126,6 @@ message(STATUS "${CMLOC}Build type: ${CMAKE_BUILD_TYPE}")
 ##
 
 project(${PACKAGE})
-
-#set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake;")
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 ##=======================================
@@ -161,9 +158,16 @@ add_definitions(-DUSE_S57)
 # ++++++++++++++Section below is direct from Watchdog +++++++++##
 
 # see above option (PLUGIN_USE_SVG "Use SVG graphics" ON)  
-IF(WATCHDOG_USE_SVG)
+IF(PLUGIN_USE_SVG)
   ADD_DEFINITIONS(-DWATCHDOG_USE_SVG)
-ENDIF(WATCHDOG_USE_SVG)
+ENDIF(PLUGIN_USE_SVG)
+
+#IF(PLUGIN_USE_SVG)
+#    MESSAGE(STATUS "${CMLOC}SVG support enabled...")
+#    IF(NOT QT_ANDROID)
+#        ADD_DEFINITIONS(-DPLUGIN_USE_SVG)
+#    ENDIF(NOT QT_ANDROID)
+#ENDIF(PLUGIN_USE_SVG)
 
 SET(SRCS
             src/watchdog_pi.cpp
@@ -261,9 +265,6 @@ endif(UNIX)
 ##
 ## SET(EXTSRC  ${EXTSRC}   etc   Can be in an if statement as below
 ##		
-
-
-
 
 # ----- Change above to match project requirements ----- ##
 #--------REMOVE LN 194 to LN 296 from Testplugin_pi---------------

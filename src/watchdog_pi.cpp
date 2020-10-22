@@ -143,7 +143,7 @@ int watchdog_pi::Init(void)
 
     Alarm::LoadConfigAll();
 
-#ifdef WATCHDOG_USE_SVG
+#ifdef PLUGIN_USE_SVG
     m_leftclick_tool_id = InsertPlugInToolSVG(  "Watchdog" , _svg_watchdog, _svg_watchdog,
         _svg_watchdog, wxITEM_CHECK, _( "Watchdog" ),  "" , NULL, WATCHDOG_TOOL_POSITION, 0, this);
 #else
