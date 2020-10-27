@@ -10,11 +10,15 @@ endif ()
 
 SET(SRC
     src/hexvalue.cpp
+#    Not available in 0-nmea Lib
+#    src/dbt.hpp
+#    src/dbt.cpp
+#    src/dpt.hpp
+#    src/dpt.cpp
     src/LatLong.hpp
     src/latlong.cpp
     src/lat.cpp
     src/long.cpp
-
     src/expid.cpp
     src/hdt.hpp
     src/hdt.cpp
@@ -38,29 +42,24 @@ SET(SRC
     src/mwv.hpp
     src/nmea0183.cpp
     src/nmea0183.hpp
+#    src/nmea0183.h				   
     src/Response.hpp
     src/response.cpp
-
     src/rmb.cpp
     src/RMB.hpp
     src/rmc.cpp
     src/RMC.HPP
     src/rte.hpp
     src/rte.cpp
-
     src/Sentence.hpp
     src/sentence.cpp
     src/talkerid.cpp
-
     src/vtg.hpp
     src/vtg.cpp
-
     src/wpl.hpp
     src/wpl.cpp
-	
     src/xte.cpp
     src/xte.hpp
- 
 )
 if (NOT wxWidgets_INCLUDE_DIRS)
     include(SimpleWxConfig)

@@ -15,73 +15,82 @@ if (NOT CMAKE_MODULE_PATH)
 endif ()
 
 SET(SRC
-    src/dbt.cpp
-#    src/dbt.hpp
-    src/dpt.cpp
-#    src/dpt.hpp
-    src/expid.cpp
-    src/gga.cpp
-#    src/gga.hpp
-    src/gll.cpp
-#    src/gll.hpp
-    src/gsv.cpp
-#    src/gsv.hpp
-    src/hdg.cpp
-#    src/hdg.hpp
-    src/hdm.cpp
-#    src/hdm.hpp
-    src/hdt.cpp
-#    src/hdt.hpp
+#   Sentences available in O-nmea Lib
     src/hexvalue.cpp
+    src/dbt.hpp
+    src/dbt.cpp
+    src/dpt.hpp
+    src/dpt.cpp
+    src/LatLong.hpp
+    src/latlong.cpp
     src/lat.cpp
-    src/latlong.cpp			   
-#    src/LatLong.hpp
     src/long.cpp
-    src/mda.cpp
-#    src/mda.hpp
-    src/mta.cpp
-#    src/mta.hpp
-    src/mtw.cpp
-#    src/mtw.hpp
+    src/expid.cpp
+    src/hdt.hpp
+    src/hdt.cpp
+    src/hdg.hpp
+    src/hdg.cpp
+    src/hdm.hpp
+    src/hdm.cpp
+    src/gll.hpp
+    src/gll.cpp
+    src/gga.hpp
+    src/gga.cpp
+    src/gsv.hpp
+    src/gsv.cpp
+#   Not Available in watchdog nmea lib
+#    src/GPwpl.cpp
+#    src/GPwpl.hpp
+#    src/apb.cpp
+#    src/apb.hpp
     src/mwd.cpp
-#    src/mwd.hpp
+    src/mwd.hpp
     src/mwv.cpp
-#    src/mwv.hpp
+    src/mwv.hpp
     src/nmea0183.cpp
+    src/nmea0183.hpp
 #    src/nmea0183.h
-#    src/nmea0183.hpp
+    src/Response.hpp
     src/response.cpp
-#   src/Response.hpp
     src/rmb.cpp
-#    src/RMB.hpp
-    src/rmc.cpp			   
-#    src/RMC.HPP
-    src/rsa.cpp
-#    src/rsa.hpp
+    src/RMB.hpp
+    src/rmc.cpp
+    src/RMC.HPP
+    src/rte.hpp
     src/rte.cpp
-#    src/rte.hpp
-    src/SatInfo.h
+    src/Sentence.hpp
     src/sentence.cpp
-#    src/Sentence.hpp
     src/talkerid.cpp
-    src/vhw.cpp
-#    src/vhw.hpp
-    src/vlw.cpp
-#    src/vlw.hpp
+    src/vtg.hpp
     src/vtg.cpp
-#    src/vtg.hpp
-    src/vwr.cpp
-#    src/vwr.hpp
-    src/vwt.cpp
-#    src/vwt.hpp
+    src/wpl.hpp
     src/wpl.cpp
-#    src/wpl.hpp
+    src/xte.cpp
+    src/xte.hpp
+
+#   Sentences not available in O-nmea Lib
+#   Senetences neeeded for Watchdog to work
+    src/mda.hpp
+    src/mda.cpp
+    src/mta.hpp
+    src/mta.cpp
+    src/mtw.hpp
+    src/mtw.cpp
+    src/rsa.hpp
+    src/rsa.cpp
+    src/SatInfo.h
+    src/vhw.hpp
+    src/vhw.cpp
+    src/vlw.hpp
+    src/vlw.cpp
+    src/vwr.hpp
+    src/vwr.cpp
+    src/vwt.hpp
+    src/vwt.cpp
+    src/xdr.hpp
     src/xdr.cpp
-#    src/xdr.hpp
-	src/xte.cpp
-#    src/xte.hpp
+    src/zda.hpp
     src/zda.cpp
-#    src/zda.hpp
 )
 
 if (NOT wxWidgets_INCLUDE_DIRS)
