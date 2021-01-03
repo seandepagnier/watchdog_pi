@@ -55,7 +55,7 @@ set(LONG_DESCRIPTION "Multiple Configurable alarms for  changing conditions for 
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "4")
 set(VERSION_PATCH "22")
-set(VERSION_TWEAK "13")
+set(VERSION_TWEAK "14")
 set(VERSION_DATE "1/3/2021")
 set(OCPN_MIN_VERSION "ov50")
 set(OCPN_API_VERSION_MAJOR "1")
@@ -262,8 +262,8 @@ ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRCS} ${HDRS} ${EXTSRC}  ${SRC_NMEA0183})
 add_subdirectory(libs/tinyxml)
 target_link_libraries(${PACKAGE_NAME} ocpn::tinyxml)
 
-add_subdirectory("libs/jsoncpp")
-target_link_libraries(${PACKAGE_NAME} ocpn::jsoncpp)
+#add_subdirectory("libs/jsoncpp")
+#target_link_libraries(${PACKAGE_NAME} ocpn::jsoncpp)
 
 add_subdirectory("libs/wxJSON")
 target_link_libraries(${PACKAGE_NAME} ocpn::wxjson)
@@ -309,7 +309,7 @@ endif(UNIX AND NOT APPLE AND NOT QT_ANDROID)
 ##=======================================
 #include("PluginGL")
 include("PluginNMEA") #not for wxfax
-#include("PluginJSON")  #not for wxfax  #commented out using libs
+include("PluginJSON")  #not for wxfax  #commented out using libs
 ##=======================================
 ## ----- Change above to match project requirements ----- ##
 
