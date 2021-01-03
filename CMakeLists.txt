@@ -55,7 +55,7 @@ set(LONG_DESCRIPTION "Multiple Configurable alarms for  changing conditions for 
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "4")
 set(VERSION_PATCH "22")
-set(VERSION_TWEAK "14")
+set(VERSION_TWEAK "16")
 set(VERSION_DATE "1/3/2021")
 set(OCPN_MIN_VERSION "ov50")
 set(OCPN_API_VERSION_MAJOR "1")
@@ -190,13 +190,6 @@ SET(HDRS
 	)
 # left  src/jsoncpp in case needed	
 #SET(LIBSRC
-#            src/jsoncpp/json_reader.cpp
-#			src/jsoncpp/json_value.cpp
-#			src/jsoncpp/json_writer.cpp
-#            src/jsoncpp/json/reader.h
-#			src/jsoncpp/json/value.h
-#			src/jsoncpp/json/writer.h
-#			src/jsoncpp/json/assertions.h
 #			src/plugingl/pi_shaders.cpp
 #			src/plugingl/pidc.cpp
 #			src/plugingl/qtstylesheet.cpp
@@ -241,9 +234,6 @@ include_directories(BEFORE ${PROJECT_SOURCE_DIR}/extsrc)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/api-16)
 #include_directories(BEFORE ${PROJECT_SOURCE_DIR}/src/libaudiofile)
-###nclude_directories(BEFORE ${PROJECT_SOURCE_DIR}/src/jsoncpp/json)
-###include_directories(BEFORE ${PROJECT_SOURCE_DIR}/src/jsoncpp)
-###include_directories(BEFORE ${PROJECT_SOURCE_DIR}/src/jsoncpp/json)
 
 if(UNIX)
     add_definitions("-fPIC")
