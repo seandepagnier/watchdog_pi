@@ -19,17 +19,14 @@
 ## *   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                                       *
 ## ***
 #-----------------------------------------------------------------------------
-# Frontend2 Author: Jon Gough  
-# Frontend2: v1.0.134.0
+# Frontend2: v1.0.148.0    Frontend2 Author: Jon Gough  
 # ---------------------------------------------------------------------------
 
 ## ----- When changing this file do NOT change the order in which sections occur        ----- ##
 ## ----- Changes should only be made between the section blocks that identify where     ----- ##
 ## ----- these changes should be. The whole configuration process relies on this        ----- ##
 ## ----- sequence to be successful                                                      ----- ##
-
-##
-##----- Modify section below to include all the details for your plugin ----- ##
+## ----- Modify section below to include all the details for your plugin ----- ##
 ##
 
 set(CMLOC "CMakeLists: ")
@@ -58,37 +55,37 @@ set(LONG_DESCRIPTION "Multiple Configurable alarms for  changing conditions for 
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "4")
 set(VERSION_PATCH "22")
-set(VERSION_TWEAK "5")
-set(VERSION_DATE "10/22/2020")
+set(VERSION_TWEAK "13")
+set(VERSION_DATE "1/3/2021")
 set(OCPN_MIN_VERSION "ov50")
 set(OCPN_API_VERSION_MAJOR "1")
 set(OCPN_API_VERSION_MINOR "16")
-set(TP_COMMENT " * Release for O52 using CI")											 
+set(TP_COMMENT " Release for O52")											 
 
 set(PARENT "opencpn")
 
-# The next line allows setup of a local webserver with git for testing purposes.
-# The default is shown below, but it is done in cmake/pluginconfigure.cmake now.
-# This default is needed to build locally and to build flatpak.
-#set(GIT_REPOSITORY_SERVER "github.com")
+# The next line allows for setting up your own local webserver with git on it for testing purposes, the default is github.com
+# This line is turned on in pluginconfigure.cmake because the flatpak build and building locally depends on it.
+# set(GIT_REPOSITORY_SERVER "github.com")
 
 #No longer needed, queried.
 #set(GIT_USER "rgleason")
 #set(GIT_REPOSITORY_NAME "watchdog_pi")
 
-# Specifies Cloudsmith upload repository suffix for each catalog
-set(PROD "prod")   #Standard Repos
-set(BETA "beta")   #Standard Repos
-set(ALPHA "alpha") #Standard Repos
-
-# set(CLOUDSMITH_USER "sean-depagnier")
-# set(CLOUDSMITH_USER "rick-gleason")
-set(CLOUDSMITH_USER "opencpn")
+# Specifies Cloudsmith Upload repository suffix
+set(PROD "prod") # Standard Repos
+set(BETA "beta") # Standard Repos
+set(ALPHA "alpha") # Standard Repos
 
 # Set if  Cloudsmith Base Repository name does not match your Git Repository name.
 #set(CLOUDSMITH_BASE_REPOSITORY "opencpn-plugins") #Rick's customization
-set(CLOUDSMITH_BASE_REPOSITORY "watchdog")  #without the pi
+set(CLOUDSMITH_BASE_REPOSITORY "watchdog")  #without the _pi
 
+# Set the following to use OpenCPN cloudsmith repositories instead of own repositories
+set(CLOUDSMITH_USER "opencpn")
+#set(CLOUDSMITH_USER "rick-gleason")
+
+# Set Plugin info-url, summary and description									  
 set(XML_INFO_URL "https://opencpn.org/OpenCPN/plugins/watchdog.html")
 set(XML_SUMMARY ${SHORT_DESCRIPTION})
 set(XML_DESCRIPTION ${LONG_DESCRIPTION})
@@ -98,16 +95,17 @@ set(XML_DESCRIPTION ${LONG_DESCRIPTION})
 ## ----- Modify below for plugin special requirements------------ ##
 ##
 
-set(BUNDLE_DATA FALSE)  #from wd
-set(CMAKE_MACOSX_RPATH "ON")  #from WD
+# set(BUNDLE_DATA FALSE)  #from wd
+#set(CMAKE_MACOSX_RPATH "ON")  #from WD
 option(PLUGIN_USE_SVG "Use SVG graphics" ON)  
 set(CMAKE_CXX_STANDARD 11)
 
 # Prefer libGL.so to libOpenGL.so, see CMP0072
 # don't think this does anything
 set(OpenGL_GL_PREFERENCE "LEGACY")
+
 # Don't use local version of GLU library
-# don't think this does anything
+# I don't think this does anything
 set(USE_LOCAL_GLU FALSE)
 
 #option(USE_GL "Enable OpenGL support" OFF)
@@ -115,9 +113,8 @@ option(USE_GL "Enable OpenGL support" ON)  #Turn ON, only fix found for GL_textu
 message(STATUS "${CMLOC}USE_GL: ${USE_GL}")
 
 if("${CMAKE_BUILD_TYPE}" STREQUAL "")
-    set(CMAKE_BUILD_TYPE
-        "Release"
-        CACHE STRING "Choose the type of build" FORCE)
+    set(CMAKE_BUILD_TYPE "Release"
+	CACHE STRING "Choose the type of build" FORCE)
 endif("${CMAKE_BUILD_TYPE}" STREQUAL "")
 set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "" "Debug" "Release" "RelWithDebInfo" "MinSizeRel")
 message(STATUS "${CMLOC}Build type: ${CMAKE_BUILD_TYPE}")
@@ -127,12 +124,11 @@ message(STATUS "${CMLOC}Build type: ${CMAKE_BUILD_TYPE}")
 ##
 
 project(${PACKAGE})
-set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake;")
 
 ##=======================================
 include("PluginSetup")
 ##=======================================
-##
 ## ----- The above is used to setup standard variables that are required by the CMAKE process - do not remove ----- ##
 ## ----- Modify section below if there are special requirements for the plugin ----- ##
 ##
@@ -141,34 +137,28 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 
 option(Plugin_CXX11 "Use c++11" OFF)
 
-##
+
 ## ----- Modify section above if there are special requirements for the plugin ----- ##
 ## ----- do not change next section - needed to configure build process ----- ##
-##
-##=======================================
+#========================================================
 include("PluginConfigure")
-##=======================================
-##
+#========================================================
 ## ----- do not change section above - needed to configure build process ----- ##
 ## ----- Change below to match project requirements for source, headers, etc. ----- ##
-#
+
 
 add_definitions(-DUSE_S57)
 
-# ----Remember to Add your project Set(SRCS and set(HDRS  etc..	
-# ++++++++++++++Section below is direct from Watchdog +++++++++##
-
-# see above option (PLUGIN_USE_SVG "Use SVG graphics" ON)  
-IF(PLUGIN_USE_SVG)
-  ADD_DEFINITIONS(-DWATCHDOG_USE_SVG)
-ENDIF(PLUGIN_USE_SVG)
-
 #IF(PLUGIN_USE_SVG)
-#    MESSAGE(STATUS "${CMLOC}SVG support enabled...")
-#    IF(NOT QT_ANDROID)
-#        ADD_DEFINITIONS(-DPLUGIN_USE_SVG)
-#    ENDIF(NOT QT_ANDROID)
+ # ADD_DEFINITIONS(-DWATCHDOG_USE_SVG)
 #ENDIF(PLUGIN_USE_SVG)
+
+IF(PLUGIN_USE_SVG)
+    MESSAGE(STATUS "${CMLOC}SVG support enabled...")
+    IF(NOT QT_ANDROID)
+        ADD_DEFINITIONS(-DPLUGIN_USE_SVG)
+    ENDIF(NOT QT_ANDROID)
+ENDIF(PLUGIN_USE_SVG)
 
 SET(SRCS
             src/watchdog_pi.cpp
@@ -197,32 +187,32 @@ SET(HDRS
 			src/ODAPI.h
 			src/signalk_client.h
 			src/TexFont.h
-			src/watchdog_pi.h
-			src/WatchdogDialog.h
-			src/WatchdogPropertiesDialog.h
-			src/WatchdogUI.h
-			src/wddc.h
-			src/WeatherPanel.h
-			src/WindPanel.h
-			src/wxWTranslateCatalog.h
+	)
+# left  src/jsoncpp in case needed	
+#SET(LIBSRC
+#            src/jsoncpp/json_reader.cpp
+#			src/jsoncpp/json_value.cpp
+#			src/jsoncpp/json_writer.cpp
+#            src/jsoncpp/json/reader.h
+#			src/jsoncpp/json/value.h
+#			src/jsoncpp/json/writer.h
+#			src/jsoncpp/json/assertions.h
+#			src/plugingl/pi_shaders.cpp
+#			src/plugingl/pidc.cpp
+#			src/plugingl/qtstylesheet.cpp
+#			src/plugingl/TexFont.cpp
+#			src/tinyxml/tinyxml.cpp
+#			src/tinyxml/tinyxmlerror.cpp
+#			src/tinyxml/tinyxmlparser.cpp
+#    )
 
-            api-16/ocpn_plugin.h
- )
-
-set(EXTSRC)
-set(EXTINCLUDE extinclude/nlohmann/json.hpp extinclude/ODAPI.h)
-set(LIBSSRC libs/wxJSON/src/jsonreader.cpp libs/wxJSON/src/jsonval.cpp libs/wxJSON/src/jsonwriter.cpp)
-
-#added for android
-set(LIBHDRS
-    libs/GL/gl.h
-    libs/GL/gl_private.h
-    libs/GL/glext.h
-    libs/GL/glu.h
-    libs/wx/include/wx/json_defs.h
-    libs/wx/include/wx/jsonreader.h
-    libs/wx/include/wx/jsonval.h
-    libs/wx/include/wx/jsonwriter.h)
+#added for android  - removed these files aame are found in src/GL
+#set(LIBHDRS
+#    libs/GL/gl.h
+#    libs/GL/gl_private.h
+#    libs/GL/glext.h
+#    libs/GL/glu.h
+#     )
 							   
 add_definitions(-DPLUGIN_USE_SVG)
 
@@ -236,7 +226,6 @@ if(PI_JSON_SCHEMA_VALIDATOR)
     message(STATUS "${CMLOC}Using JSON Schema validation - warning this changes the 'flavour' of the executable and it may not be compatible with OpenCPN")
     add_definitions(-DPI_JSON_SCHEMA_VALIDATOR)
     message(STATUS "${CMLOC}Adding JSON Schema validation")
-
     set(EXTSRC ${EXTSRC} extsrc/json-schema-validator/json-schema-draft7.json.cpp extsrc/json-schema-validator/json-uri.cpp extsrc/json-schema-validator/json-validator.cpp)
     set(EXTINCLUDE ${EXTINCLUDE} extinclude/nlohmann/json.hpp extinclude/json-schema-validator/json-schema.hpp)
     include_directories(BEFORE ${PROJECT_SOURCE_DIR}/extinclude/json-schema-validator)
@@ -247,61 +236,49 @@ endif(PI_JSON_SCHEMA_VALIDATOR)
 ##=============================================================
 # Modify/configure 'Include' Directories below for the Plugin
 ##=============================================================
-
-include_directories(BEFORE ${PROJECT_SOURCE_DIR}/src/libaudiofile)
-#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/src/plugingl)
-#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/include/GL)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/extinclude)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/extsrc)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/)
-include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/wx/include)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/api-16)
+#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/src/libaudiofile)
+###nclude_directories(BEFORE ${PROJECT_SOURCE_DIR}/src/jsoncpp/json)
+###include_directories(BEFORE ${PROJECT_SOURCE_DIR}/src/jsoncpp)
+###include_directories(BEFORE ${PROJECT_SOURCE_DIR}/src/jsoncpp/json)
 
 if(UNIX)
     add_definitions("-fPIC")
 endif(UNIX)
-##
+
+## ----- Change above to match project requirements ----- ##
 ## Statement below is required to collect all the set( headers and SRCS  - Adjust as required
 ## This add_library  can be used in conditionals below.
-##
-## SET(EXTSRC  ${EXTSRC}   etc   Can be in an if statement as below
-##		
-
-# ----- Change above to match project requirements ----- ##
-#--------REMOVE LN 194 to LN 296 from Testplugin_pi---------------
-#------- Change below to match project requirements --------------#
 ##==========================================================================
-ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRCS} ${HDRS} ${EXTSRC} ${LIBSSRC}  ${LIBHDRS} )
+ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRCS} ${HDRS} ${EXTSRC}  ${SRC_NMEA0183})
 ##==========================================================================
-#ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRCS} ${HDRS} ${EXTSRC} ${LIBSSRC}  ${LIBHDRS} ${SRC_JSON} )
-#ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRCS} ${HDRS} ${EXTSRC} ${LIBSSRC} ${SRC_JSON} ${SRC_NMEA0183} )
+#ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRCS} ${HDRS} ${EXTSRC} ${LIBHDRS} ${SRC_JSON} ${SRC_NMEA0183})
 #ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRCS} ${HDRS} ${SRC_JSON} ${SRC_NMEA0183} )
+#ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRCS} ${HDRS} ${EXTSRC} ${LIBSSRC}  ${LIBHDRS} ${SRC_JSON} ${SRC_NMEA0183} )
 
 add_subdirectory(libs/tinyxml)
 target_link_libraries(${PACKAGE_NAME} ocpn::tinyxml)
 
-#add_subdirectory("libs/jsoncpp")
-#target_link_libraries(${PACKAGE_NAME} ocpn::jsoncpp)
-# had errors,  trying PluginJasonCmake
+add_subdirectory("libs/jsoncpp")
+target_link_libraries(${PACKAGE_NAME} ocpn::jsoncpp)
 
-#add_subdirectory("libs/wxJSON")
-#target_link_libraries(${PACKAGE_NAME} ocpn::wxjson)
-# LIBSSRCS and LIBHDRS have wxJson, turning off module 
+add_subdirectory("libs/wxJSON")
+target_link_libraries(${PACKAGE_NAME} ocpn::wxjson)
 
 add_subdirectory(libs/bzip2)
 target_link_libraries(${PACKAGE_NAME} ocpn::bzip2)
-
-#needed only if glshim project is included.
-if(QT_ANDROID)
-  target_link_libraries(${PACKAGE_NAME}  GL_static)
-endif(QT_ANDROID)  
-
 
 #add_subdirectory(libs/nmea0183)
 #target_link_libraries(${PACKAGE_NAME} ocpn::nmea0183)
 #had errors,  trying PluginNmeaCmake
 
-# +++++Section above is direct from Watchdog +++++++++++++##
+#needed only if src/glshim project should be included.
+if(QT_ANDROID)
+  target_link_libraries(${PACKAGE_NAME}  GL_static)
+endif(QT_ANDROID)  
 
 #JSON Validator: Every plugin that uses JSON for passing messages should use a validator.  A JSON validator is much like an XML validator, the validator allows the system to ignore non-conformant messages.  The JSON validator changes the OSABI flavor of the Linux executable so there is code to change it back.
 
@@ -332,18 +309,15 @@ endif(UNIX AND NOT APPLE AND NOT QT_ANDROID)
 ##=======================================
 #include("PluginGL")
 include("PluginNMEA") #not for wxfax
-include("PluginJSON")  #not for wxfax  #commented out using libs
+#include("PluginJSON")  #not for wxfax  #commented out using libs
 ##=======================================
-
-##
 ## ----- Change above to match project requirements ----- ##
+
+
 ## ----- do not change next section - needed to configure build process ----- ##
-##
 ##=======================================
 include("PluginInstall")
 include("PluginLocalization")
 include("PluginPackage")
 ##=======================================
-##
 ## ----- do not change section above - needed to configure build process ----- ##
-##
