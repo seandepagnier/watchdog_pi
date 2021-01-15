@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Feb 26 2019)
+// C++ code generated with wxFormBuilder (version 3.9.0 Sep 12 2020)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO *NOT* EDIT THIS FILE!
@@ -406,6 +406,28 @@ class NMEADataPanel : public wxPanel
 
 		NMEADataPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
 		~NMEADataPanel();
+
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class DepthPanel
+///////////////////////////////////////////////////////////////////////////////
+class DepthPanel : public wxPanel
+{
+	private:
+
+	protected:
+		wxStaticText* m_staticText51;
+		wxStaticText* m_staticText44;
+		wxChoice* m_cUnits;
+		wxStaticText* m_staticText64;
+
+	public:
+		wxChoice* m_cMode;
+		wxTextCtrl* m_tDepth;
+
+		DepthPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,300 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
+		~DepthPanel();
 
 };
 
