@@ -235,8 +235,13 @@ include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/api-16)
 #include_directories(BEFORE ${PROJECT_SOURCE_DIR}/src/libaudiofile)
 
+#if(UNIX)
+#    add_definitions("-fPIC")
+#endif(UNIX)
+
 if(UNIX)
-    add_definitions("-fPIC")
+  # Add this in lieu of add_definitions ("-fPIC")
+   set(CMAKE_POSITION_INDEPENDENT_CODE ON)   
 endif(UNIX)
 
 ## ----- Change above to match project requirements ----- ##
