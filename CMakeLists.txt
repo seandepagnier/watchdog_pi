@@ -187,6 +187,17 @@ SET(HDRS
 			src/ODAPI.h
 			src/signalk_client.h
 			src/TexFont.h
+			src/watchdog_pi.h
+			src/WatchdogDialog.h
+			src/WatchdogPropertiesDialog.h
+			src/WatchdogUI.h
+			src/wddc.h
+			src/WeatherPanel.h
+			src/WindPanel.h
+			src/wxWTranslateCatalog.h
+
+            api-16/ocpn_plugin.h
+ )			
 	)
 # left  src/jsoncpp in case needed	
 #SET(LIBSRC
