@@ -198,7 +198,7 @@ SET(HDRS
 
             api-16/ocpn_plugin.h
  )			
-	)
+
 # left  src/jsoncpp in case needed	
 #SET(LIBSRC
 #			src/plugingl/pi_shaders.cpp
