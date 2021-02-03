@@ -55,8 +55,8 @@ set(LONG_DESCRIPTION "Multiple Configurable alarms for  changing conditions for 
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "4")
 set(VERSION_PATCH "22")
-set(VERSION_TWEAK "187")
-set(VERSION_DATE "3/1/2021")
+set(VERSION_TWEAK "18")
+set(VERSION_DATE "3/3/2021")
 set(OCPN_MIN_VERSION "ov50")
 set(OCPN_API_VERSION_MAJOR "1")
 set(OCPN_API_VERSION_MINOR "16")
@@ -211,12 +211,15 @@ SET(HDRS
 #    )
 
 #added for android  - removed these files aame are found in src/GL
-#set(LIBHDRS
-#    libs/GL/gl.h
-#    libs/GL/gl_private.h
-#    libs/GL/glext.h
-#    libs/GL/glu.h
-#     )
+set(LIBHDRS
+    libs/GL/gl.h
+    libs/GL/gl_private.h
+    libs/GL/glext.h
+    libs/GL/glu.h
+    libs/wx/include/json_defs.h
+    libs/wx/include/jsonreader.h
+    libs/wx/include/jsonval.h
+    libs/wx/include/jsonwriter.h)
 							   
 add_definitions(-DPLUGIN_USE_SVG)
 
@@ -243,6 +246,13 @@ endif(PI_JSON_SCHEMA_VALIDATOR)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/extinclude)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/extsrc)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/)
+
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/wx/include)
+#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude/wxcurl)
+#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude/wxcurl/include)
+#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnsrc/lz4)
+#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnsrc/bitmaps)
+
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/api-16)
 #include_directories(BEFORE ${PROJECT_SOURCE_DIR}/src/libaudiofile)
 
@@ -285,6 +295,8 @@ target_link_libraries(${PACKAGE_NAME} ocpn::bzip2)
 if(QT_ANDROID)
   target_link_libraries(${PACKAGE_NAME}  GL_static)
 endif(QT_ANDROID)  
+
+add_definitions(-DTIXML_USE_STL)
 
 #JSON Validator: Every plugin that uses JSON for passing messages should use a validator.  A JSON validator is much like an XML validator, the validator allows the system to ignore non-conformant messages.  The JSON validator changes the OSABI flavor of the Linux executable so there is code to change it back.
 
