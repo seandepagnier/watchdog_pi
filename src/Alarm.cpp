@@ -2305,7 +2305,10 @@ public:
     
     bool ODVersionNewerThan(int major, int minor, int patch)
     {
-        if(g_ReceivedODVersionMessage == wxEmptyString) return false;
+        if(g_ReceivedODVersionMessage == wxEmptyString) {
+            GetODVersion();
+            if(g_ReceivedODVersionMessage == wxEmptyString) return false;
+        }
         if(g_ReceivedODVersionJSONMsg["Major"].asInt() > major) return true;
         if(g_ReceivedODVersionJSONMsg["Major"].asInt() == major &&
             g_ReceivedODVersionJSONMsg["Minor"].asInt() > minor) return true;
@@ -2320,6 +2323,7 @@ public:
         Json::Value jMsg;
         Json::FastWriter writer;
         wxString    MsgString;
+		if(g_ReceivedODVersionMessage != wxEmptyString) return;
         jMsg["Source"] = "WATCHDOG_PI";
         jMsg["Type"] = "Request";
         jMsg["Msg"] = "Version";
