@@ -49,7 +49,7 @@ SET(SRC
     src/mwv.hpp
     src/nmea0183.cpp
     src/nmea0183.hpp
-#    src/nmea0183.h
+    src/nmea0183.h
     src/Response.hpp
     src/response.cpp
     src/rmb.cpp
