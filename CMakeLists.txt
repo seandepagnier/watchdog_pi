@@ -19,7 +19,7 @@
 ## *   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                                       *
 ## ***
 #-----------------------------------------------------------------------------
-# Frontend2: v1.0.155.0    Frontend2 Author: Jon Gough  
+# Frontend2: v1.0.155.0   9.02/2021   Frontend2 Author: Jon Gough  
 # ---------------------------------------------------------------------------
 
 ## ----- When changing this file do NOT change the order in which sections occur        ----- ##
@@ -55,7 +55,7 @@ set(LONG_DESCRIPTION "Multiple Configurable alarms for  changing conditions for 
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "4")
 set(VERSION_PATCH "22")
-set(VERSION_TWEAK "22")
+set(VERSION_TWEAK "23")
 set(VERSION_DATE "24/2/2021") # DD/MM/YYYY format
 set(OCPN_MIN_VERSION "ov50")
 set(OCPN_API_VERSION_MAJOR "1")
@@ -173,7 +173,6 @@ SET(SRCS
             src/icons.cpp
             src/ODAPI.h
             src/wddc.cpp
-            src/TexFont.cpp
 	)
 	
 SET(HDRS
@@ -186,7 +185,6 @@ SET(HDRS
 			src/NewAlarmDialog.h
 			src/ODAPI.h
 			src/signalk_client.h
-			src/TexFont.h
 			src/watchdog_pi.h
 			src/WatchdogDialog.h
 			src/WatchdogPropertiesDialog.h
@@ -210,6 +208,19 @@ SET(HDRS
 #			src/tinyxml/tinyxmlparser.cpp
 #    )
 
+set(OCPNSRC ocpnsrc/TexFont.cpp)
+
+set(OCPNHDRS ocpninclude/ocpn_plugin.h ocpninclude/pluginmanager.h ocpninclude/TexFont.h)
+
+set(EXTSRC)
+
+set(EXTINCLUDE ${EXTINCLUDE} extinclude)
+set(EXTINCLUDE ${EXTINCLUDE} extinclude/ODAPI.h)
+
+set(LIBSSRC libs/wxJSON/src/jsonreader.cpp libs/wxJSON/src/jsonval.cpp libs/wxJSON/src/jsonwriter.cpp)
+
+
+
 #added for android  - removed these files aame are found in src/GL
 set(LIBHDRS
     libs/GL/gl.h
@@ -220,6 +231,8 @@ set(LIBHDRS
     libs/wx/include/jsonreader.h
     libs/wx/include/jsonval.h
     libs/wx/include/jsonwriter.h)
+
+
 							   
 add_definitions(-DPLUGIN_USE_SVG)
 
