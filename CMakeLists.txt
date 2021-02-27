@@ -303,8 +303,8 @@ target_link_libraries(${PACKAGE_NAME} ocpn::tinyxml)
 add_subdirectory(libs/bzip2)
 target_link_libraries(${PACKAGE_NAME} ocpn::bzip2)
 
-#add_subdirectory(libs/nmea0183)
-#target_link_libraries(${PACKAGE_NAME} ocpn::nmea0183)
+add_subdirectory(libs/nmea0183)
+target_link_libraries(${PACKAGE_NAME} ocpn::nmea0183)
 
 #add_subdirectory("libs/jsoncpp")
 #target_link_libraries(${PACKAGE_NAME} ocpn::jsoncpp)

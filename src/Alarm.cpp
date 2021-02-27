@@ -41,7 +41,7 @@
 #include "WeatherPanel.h"
 
 #include "AIS_Target_Info.h"
-#include "nmea0183/nmea0183.h"
+#include "nmea0183.h"
 #include "ODAPI.h"
 
 static double deg2rad(double deg)
