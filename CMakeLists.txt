@@ -55,7 +55,7 @@ set(LONG_DESCRIPTION "Multiple Configurable alarms for  changing conditions for 
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "4")
 set(VERSION_PATCH "22")
-set(VERSION_TWEAK "25")
+set(VERSION_TWEAK "26")
 set(VERSION_DATE "27/2/2021") # DD/MM/YYYY format
 set(OCPN_MIN_VERSION "ov50")
 set(OCPN_API_VERSION_MAJOR "1")
@@ -95,8 +95,8 @@ set(XML_DESCRIPTION ${LONG_DESCRIPTION})
 ## ----- Modify below for plugin special requirements------------ ##
 ##
 
-
 option(PLUGIN_USE_SVG "Use SVG graphics" ON)  
+
 set(CMAKE_CXX_STANDARD 11)
 
 # Use local version of GLU library
@@ -108,8 +108,10 @@ set(OpenGL_GL_PREFERENCE "LEGACY")
 # Don't use local version of GLU library
 # set(USE_LOCAL_GLU FALSE)
 
-option(USE_GL "Enable OpenGL support" ON)  
 #Turn ON, only fix found for GL_texture2d, glDisable, GL_BLEND  errors
+
+option(USE_GL "Enable OpenGL support" ON)
+
 message(STATUS "${CMLOC}USE_GL: ${USE_GL}")
 
 if("${CMAKE_BUILD_TYPE}" STREQUAL "")
@@ -145,7 +147,6 @@ include("PluginConfigure")
 #========================================================
 ## ----- do not change section above - needed to configure build process ----- ##
 ## ----- Change below to match project requirements for source, headers, etc. ----- ##
-
 
 add_definitions(-DUSE_S57)
 
@@ -283,7 +284,7 @@ INCLUDE_DIRECTORIES(api-16)
 if(UNIX)
   # Add this in lieu of add_definitions ("-fPIC")
    set(CMAKE_POSITION_INDEPENDENT_CODE ON)   
-endif(UNIX)																   
+endif(UNIX)
 
 ## Statement below is required to collect all the set( headers and SRCS  - Adjust as required
 ## This add_library  can be used in conditionals below.
@@ -309,8 +310,8 @@ target_link_libraries(${PACKAGE_NAME} ocpn::bzip2)
 #target_link_libraries(${PACKAGE_NAME} ocpn::jsoncpp)
 #had errors,  trying PluginNmeaCmake
 
-add_subdirectory("libs/wxJSON")
-target_link_libraries(${PACKAGE_NAME} ocpn::wxjson)
+#add_subdirectory("libs/wxJSON")
+#target_link_libraries(${PACKAGE_NAME} ocpn::wxjson)
 
 #needed only if src/glshim project should be included.
 if(QT_ANDROID)
@@ -347,7 +348,7 @@ endif(UNIX AND NOT APPLE AND NOT QT_ANDROID)
 #These are NOT used in Testplugin, used for other plugins
 ##=======================================
 #include("PluginGL")
-include("PluginNMEA") #not for wxfax
+#include("PluginNMEA") #not for wxfax
 include("PluginJSON")  #not for wxfax  #commented out using libs
 ##=======================================
 ## ----- Change above to match project requirements ----- ##
