@@ -27,4 +27,3 @@ src/wddc.h
 src/WeatherPanel.h
 src/WindPanel.h
 src/wxWTranslateCatalog.h
-api-16/ocpn_plugin.h
