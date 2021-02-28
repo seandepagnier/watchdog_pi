@@ -4,7 +4,7 @@ version: 2.1
 parameters:
     run_workflow_deploy:
         type: boolean
-        default: false
+        default: true
 
     run_build_armhf_stretch:
         type: boolean
