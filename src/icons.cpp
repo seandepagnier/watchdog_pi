@@ -33,6 +33,16 @@ void initialize_images(void)
 //
 //      fn.SetFullName(_T("watchdog_pi_toggled.svg"));
 //    _svg_watchdog_toggled = fn.GetFullPath();
+
+// =====
+
+//    wxFileName fn;
+//    fn.SetPath(*GetpSharedDataLocation());
+//    fn.AppendDir(_T("plugins"));
+//    fn.AppendDir(_T("watchdog_pi"));
+//    fn.AppendDir(_T("data"));
+//    fn.SetFullName(_T("watchdog_pi.svg"));
+//    _svg_watchdog = fn.GetFullPath();
 	
     wxFileName fn;
       fn.SetPath(GetPluginDataDir("watchdog_pi"));

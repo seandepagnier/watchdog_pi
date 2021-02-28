@@ -250,12 +250,14 @@ wxString watchdog_pi::GetCommonName()
 
 wxString watchdog_pi::GetShortDescription()
 {
-    return _("Watchdog PlugIn for OpenCPN");
+    return _(PLUGIN_LONG_DESCRIPTION);
+//    return _("Watchdog PlugIn for OpenCPN");
 }
 
 wxString watchdog_pi::GetLongDescription()
 {
-    return _("Watchdog PlugIn for OpenCPN\n\
+    return _(PLUGIN_LONG_DESCRIPTION);
+//   return _("Watchdog PlugIn for OpenCPN\n\
 Alarm user of changing conditions.");
 }
 
