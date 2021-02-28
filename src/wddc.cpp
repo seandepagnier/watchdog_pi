@@ -26,6 +26,7 @@
  */
 
 #include "wx/wxprec.h"
+#include <GL/gl.h>
 
 #ifndef  WX_PRECOMP
 #include "wx/wx.h"

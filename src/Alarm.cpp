@@ -2323,7 +2323,7 @@ public:
         Json::Value jMsg;
         Json::FastWriter writer;
         wxString    MsgString;
-		if(g_ReceivedODVersionMessage != wxEmptyString) return;
+        if(g_ReceivedODVersionMessage != wxEmptyString) return;
         jMsg["Source"] = "WATCHDOG_PI";
         jMsg["Type"] = "Request";
         jMsg["Msg"] = "Version";

@@ -43,7 +43,7 @@ enum {
     TEXTPOINT_DISPLAY_TEXT_SHOW_ON_ROLLOVER,
     TEXTPOINT_DISPLAY_TEXT_SHOW_NEVER,
     TEXTPOINT_DISPLAY_TEXT_SHOW_DEFAULT,
-    
+
     TEXTPOINT_DISPLAY_TEXT_SHOW_LAST
 };
 
@@ -56,7 +56,7 @@ enum {
     TEXT_RIGHT,
     TEXT_LEFT,
     TEXT_DEFAULT,
-    
+
     TEXT_POSTION_LAST
 };
 
@@ -201,11 +201,10 @@ public:
     static bool OD_DeleteBoundary( DeleteBoundary_t *pDB );
     static bool OD_DeleteBoundaryPoint( DeleteBoundaryPoint_t *pDBP );
     static bool OD_DeleteTextPoint( DeleteTextPoint_t *pDTP );
-    
 protected:
     
 private:
-    
+
 };
 
 typedef bool (*OD_FindPathByGUID) (wxString, wxString *, wxString *);
