@@ -54,9 +54,9 @@ set(LONG_DESCRIPTION "Multiple Configurable alarms for  changing conditions for 
 
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "4")
-set(VERSION_PATCH "22")
-set(VERSION_TWEAK "32")
-set(VERSION_DATE "27/2/2021") # DD/MM/YYYY format
+set(VERSION_PATCH "24")
+set(VERSION_TWEAK "0")
+set(VERSION_DATE "28/2/2021") # DD/MM/YYYY format
 set(OCPN_MIN_VERSION "ov50")
 set(OCPN_API_VERSION_MAJOR "1")
 set(OCPN_API_VERSION_MINOR "16")
@@ -68,18 +68,14 @@ set(PARENT "opencpn")
 #set(GIT_REPOSITORY_SERVER "github.com")
 # This line is turned on in pluginconfigure.cmake because the flatpak build and building locally depends on it.
 
-#No longer needed, queried.
-#set(GIT_USER "rgleason")
-#set(GIT_REPOSITORY_NAME "watchdog_pi")
-
 # Specifies Cloudsmith Upload repository suffix
-set(PROD "prod") # Standard Repos
-set(BETA "beta") # Standard Repos
-set(ALPHA "alpha") # Standard Repos
+set(PROD "prod")   #Standard Repos
+set(BETA "beta")   #Standard Repos
+set(ALPHA "alpha") #Standard Repos
 
-# Set if  Cloudsmith Base Repository name does not match your Git Repository name.
-#set(CLOUDSMITH_BASE_REPOSITORY "opencpn-plugins") #Rick's customization
-set(CLOUDSMITH_BASE_REPOSITORY "watchdog")  #without the _pi
+# Set if Cloudsmith Base Repository name does not match your Git Repository name.
+#set(CLOUDSMITH_BASE_REPOSITORY "${GIT_REPOSITORY_NAME}")
+set(CLOUDSMITH_BASE_REPOSITORY "watchdog")  #without the pi
 
 # Set the following to use OpenCPN cloudsmith repositories instead of own repositories
 set(CLOUDSMITH_USER "opencpn")
@@ -95,7 +91,7 @@ set(XML_DESCRIPTION ${LONG_DESCRIPTION})
 ## ----- Modify below for plugin special requirements------------ ##
 ##
 
-option(PLUGIN_USE_SVG "Use SVG graphics" ON)  
+option(PLUGIN_USE_SVG "Use SVG graphics" ON)
 
 set(CMAKE_CXX_STANDARD 11)
 
@@ -109,7 +105,6 @@ set(OpenGL_GL_PREFERENCE "LEGACY")
 # set(USE_LOCAL_GLU FALSE)
 
 #Turn ON, only fix found for GL_texture2d, glDisable, GL_BLEND  errors
-
 option(USE_GL "Enable OpenGL support" ON)
 
 message(STATUS "${CMLOC}USE_GL: ${USE_GL}")
@@ -189,6 +184,7 @@ SET(HDRS
 			src/NewAlarmDialog.h
 			src/ODAPI.h
 			src/signalk_client.h
+			src/TexFont.h
 			src/watchdog_pi.h
 			src/WatchdogDialog.h
 			src/WatchdogPropertiesDialog.h
@@ -197,8 +193,7 @@ SET(HDRS
 			src/WeatherPanel.h
 			src/WindPanel.h
 			src/wxWTranslateCatalog.h
-#            api-16/ocpn_plugin.h
- )			
+	)
 
 set(OCPNSRC ocpnsrc/TexFont.cpp)
 
@@ -244,24 +239,23 @@ else(APPLE)
     option(PI_JSON_SCHEMA_VALIDATOR "Use JSON Schema validator" ON)
 endif(APPLE)
 
-#if(PI_JSON_SCHEMA_VALIDATOR)
-#    message(STATUS "${CMLOC}Using JSON Schema validation - warning this changes the 'flavour' of the executable and it may not be compatible with OpenCPN")
-#    add_definitions(-DPI_JSON_SCHEMA_VALIDATOR)
-#    message(STATUS "${CMLOC}Adding JSON Schema validation")
-#
-#    set(EXTSRC ${EXTSRC} extsrc/json-schema-validator/json-schema-draft7.json.cpp extsrc/json-schema-validator/json-uri.cpp extsrc/json-schema-validator/json-validator.cpp)
-#    set(EXTINCLUDE ${EXTINCLUDE} extinclude/nlohmann/json.hpp extinclude/json-schema-validator/json-schema.hpp)
-#    include_directories(BEFORE ${PROJECT_SOURCE_DIR}/extinclude/json-schema-validator)
-#else(PI_JSON_SCHEMA_VALIDATOR)
-#    message(STATUS "${CMLOC}Not using JSON Schema validation - warning invalid JSON 'may' cause unexpected crashes")
-#endif(PI_JSON_SCHEMA_VALIDATOR)
+if(PI_JSON_SCHEMA_VALIDATOR)
+    message(STATUS "${CMLOC}Using JSON Schema validation - warning this changes the 'flavour' of the executable and it may not be compatible with OpenCPN")
+    add_definitions(-DPI_JSON_SCHEMA_VALIDATOR)
+    message(STATUS "${CMLOC}Adding JSON Schema validation")
 
+    set(EXTSRC ${EXTSRC} extsrc/json-schema-validator/json-schema-draft7.json.cpp extsrc/json-schema-validator/json-uri.cpp extsrc/json-schema-validator/json-validator.cpp)
+    set(EXTINCLUDE ${EXTINCLUDE} extinclude/nlohmann/json.hpp extinclude/json-schema-validator/json-schema.hpp)
+    include_directories(BEFORE ${PROJECT_SOURCE_DIR}/extinclude/json-schema-validator)
+else(PI_JSON_SCHEMA_VALIDATOR)
+    message(STATUS "${CMLOC}Not using JSON Schema validation - warning invalid JSON 'may' cause unexpected crashes")
+endif(PI_JSON_SCHEMA_VALIDATOR)
 
 ##=============================================================
 # Modify/configure 'Include' Directories below for the Plugin
 ##=============================================================
 
-
+#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/extsrc/mygdal)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnsrc/glu/include)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/${EXTINCLUDE})
@@ -322,7 +316,7 @@ endif(QT_ANDROID)
 
 #JSON Validator: Every plugin that uses JSON for passing messages should use a validator.  A JSON validator is much like an XML validator, the validator allows the system to ignore non-conformant messages.  The JSON validator changes the OSABI flavor of the Linux executable so there is code to change it back.
 
- if(UNIX AND NOT APPLE AND NOT QT_ANDROID)
+if(UNIX AND NOT APPLE AND NOT QT_ANDROID)
     if(PI_JSON_SCHEMA_VALIDATOR)
         # Change OS/ABI to be UNIX - System V to make it run with OCPN
         set(lib_name lib${PACKAGE_NAME}.so)
