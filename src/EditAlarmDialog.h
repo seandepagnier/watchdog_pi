@@ -24,9 +24,15 @@
  ***************************************************************************
  */
 
+#ifndef _EDITALARMDIALOG_H_
+#define _EDITALARMDIALOG_H_
+
 #include "WatchdogUI.h"
 
 class Alarm;
+
+void GetODVersion( void );
+bool ODVersionNewerThan(int major, int minor, int patch);
 
 class EditAlarmDialog : public EditAlarmDialogBase
 {
@@ -40,3 +46,5 @@ public:
 private:
     Alarm *m_alarm;
 };
+
+#endif //_EDITALARMDIALOG_H_

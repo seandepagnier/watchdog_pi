@@ -32,8 +32,6 @@
  * it is not robust and it is possible to crash OpenCPN if the values are not valid.
  * 
  */
-#ifndef ODJSONSCHEMAS_H
-#define ODJSONSCHEMAS_H
 
 static json jSchema = R"(
 {
@@ -46,24 +44,7 @@ static json jSchema = R"(
             "properties": {
                 "Msg": {
                     "description": "Message Name",
-                    "enum": ["Version",
-                        "GetAPIAddresses",
-                        "FindPathByGUID",
-                        "FindPointInAnyBoundary",
-                        "FindClosestBoundaryLineCrossing",
-                        "FindFirstBoundaryLineCrossing",
-                        "FindPointInBoundary",
-                        "FindPointInGuardZone",
-                        "BoundaryInformation",
-                        "CreateBoundaryPoint",
-                        "CreateBoundary",
-                        "CreateTextPoint",
-                        "DeleteBoundary",
-                        "DeleteBoundaryPoint",
-                        "DeleteTextPoint",
-                        "AddPointIcon",
-                        "DeletePointIcon"
-                    ]
+                    "enum": ["Version", "GetAPIAddresses", "CreateBoundaryPoint", "CreateBoundary", "CreateTextPoint", "DeleteTextPoint", "DeleteBoundaryPoint", "DeleteBoundary"]
                 },
                 "Type": {
                     "description": "Type of Message",
@@ -80,25 +61,6 @@ static json jSchema = R"(
             },
             "required": ["Msg", "Type", "Source", "MsgId"],
             "addtionalProperties": false
-        },
-        "LatLon": {
-            "description": "Used to describe Lat & Lon",
-            "type": "object",
-            "properties": {
-                "lat": {
-                    "description": "Latitude of Boundary Point",
-                    "type": "number",
-                    "minimum": -90,
-                    "maximum": 90
-                },
-                "lon": {
-                    "description": "Longitude of Boundary Point",
-                    "type": "number",
-                    "minimum": -180,
-                    "maximum": 180
-                }
-            },
-            "required": ["Lat", "Lon"]
         },
         "ODPoint": {
             "description": "Generic OD Point",
@@ -248,9 +210,6 @@ static json jSchema = R"(
             "description": "Used to delete an object",
             "type": "object",
             "properties": {
-            "items": {
-                "$ref": "#/definitions/LatLon"
-                },
                 "GUID": {
                     "description": "GUID of object",
                     "type": "string"
@@ -296,7 +255,7 @@ static json jSchema = R"(
                 },
                 "BoundaryType": {
                     "description": "Boundary Type",
-                    "enum": ["Exclusion","Inclusion","Neither","Any"]
+                    "enum": ["Exclusion","Inclusion","Neither"]
                 },
                 "Active": {
                     "description": "Is Boundary Active",
@@ -317,7 +276,7 @@ static json jSchema = R"(
                     "description": "Array of boundary points needed to define a boundary",
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/boundarypoint"
+                    "$ref": "#/definitions/boundarypoint"
                     },
                     "minItems": 3,
                     "additionalItems": false
@@ -327,18 +286,7 @@ static json jSchema = R"(
                 "BoundaryPoints", 
                 "BoundaryType"
             ]
-        },
-        "FindPointInBoundary": {
-            "description": "Used to find a Lat/Lon in a given Boundary",
-            "type": "object",
-            "properties": {
-                "items": {
-                    "$ref": "#/definitions/LatLon",
-                    "$ref": "#/definitions/ODObject"
-                    }
-            }
         }
-
     },
     "type": "object",
     "allOf": [
@@ -384,50 +332,9 @@ static json jSchema = R"(
             "then": {
                 "$ref": "#/definitions/ODObject"
             } 
-        },
-        {
-        "if": { "properties": {"Msg": {"const": "FindPathByGUID"}}
-            },
-            "then": {
-                "$ref": "#/definitions/ODObject"
-            }
-        },
-        {
-        "if": { "properties": {"Msg": {"const": "FindPointInBoundary"}}
-            },
-            "then": {
-                "$ref": "#/definitions/FindPointInBoundary"
-            }
-        },
-        {
-        "if": { "properties": {"Msg": {"const": "FindPointInAnyBoundary"}}
-            },
-            "then": {
-                "$ref": "#/definitions/LatLon",
-                "BoundaryType": {
-                    "description": "Boundary Type",
-                    "enum": ["Exclusion","Inclusion","Neither","Any"]
-                },
-                "required": [
-                    "BoundaryType"
-                ]
-            }
         }
-
+        
     ]
 }
 )"_json;
     
-/*
- *                 {
- *                    "BoundaryType": {
- *                        "description": "Boundary Type",
- *                        "enum": ["Exclusion","Inclusion","Neither","Any"]
- *                    },
- *                    "required": [
- *                        "BoundaryType"
- *                    ]
- *                }
- *
- */
-#endif // ODJSONSCHEMAS_H

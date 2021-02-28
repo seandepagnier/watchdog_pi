@@ -10,7 +10,6 @@ src/WatchdogUI.cpp
 src/icons.cpp
 src/ODAPI.h
 src/wddc.cpp
-src/TexFont.cpp
 src/AIS_Target_Info.h
 src/Alarm.h
 src/ConfigurationDialog.h
@@ -20,7 +19,6 @@ src/msvcdefs.h
 src/NewAlarmDialog.h
 src/ODAPI.h
 src/signalk_client.h
-src/TexFont.h
 src/watchdog_pi.h
 src/WatchdogDialog.h
 src/WatchdogPropertiesDialog.h
@@ -29,4 +27,3 @@ src/wddc.h
 src/WeatherPanel.h
 src/WindPanel.h
 src/wxWTranslateCatalog.h
-api-16/ocpn_plugin.h

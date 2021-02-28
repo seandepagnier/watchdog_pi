@@ -26,6 +26,7 @@
 
 #include <wx/wx.h>
 #include <wx/stdpaths.h>
+#include <GL/gl.h>
 
 #include "json/json.h"
 
@@ -144,8 +145,8 @@ int watchdog_pi::Init(void)
     Alarm::LoadConfigAll();
 
 #ifdef PLUGIN_USE_SVG
-    m_leftclick_tool_id = InsertPlugInToolSVG(  "Watchdog" , _svg_watchdog, _svg_watchdog,
-        _svg_watchdog, wxITEM_CHECK, _( "Watchdog" ),  "" , NULL, WATCHDOG_TOOL_POSITION, 0, this);
+    m_leftclick_tool_id = InsertPlugInToolSVG(  "Watchdog" , _svg_watchdog, _svg_watchdog_toggled,
+        _svg_watchdog_toggled, wxITEM_CHECK, _( "Watchdog" ),  "" , NULL, WATCHDOG_TOOL_POSITION, 0, this);
 #else
     m_leftclick_tool_id  = InsertPlugInTool
         ("", _img_watchdog, _img_watchdog, wxITEM_NORMAL,
@@ -241,17 +242,23 @@ wxBitmap *watchdog_pi::GetPlugInBitmap()
 
 wxString watchdog_pi::GetCommonName()
 {
+
+    // return _("Watchdog");
 	return _T(PLUGIN_COMMON_NAME);
+
 }
 
 wxString watchdog_pi::GetShortDescription()
 {
-    return _(PLUGIN_SHORT_DESCRIPTION);
+    return _(PLUGIN_LONG_DESCRIPTION);
+//    return _("Watchdog PlugIn for OpenCPN");
 }
 
 wxString watchdog_pi::GetLongDescription()
 {
-   return _(PLUGIN_LONG_DESCRIPTION);
+    return _(PLUGIN_LONG_DESCRIPTION);
+//   return _("Watchdog PlugIn for OpenCPN\n\
+Alarm user of changing conditions.");
 }
 
 int watchdog_pi::GetToolbarToolCount(void)

@@ -23,13 +23,42 @@ void initialize_images(void)
 	}
 
 #ifdef PLUGIN_USE_SVG
+//    wxFileName fn;
+//	   wxString tmp_path;
+//	   tmp_path = GetPluginDataDir("watchdog_pi");
+//	   fn.SetPath(tmp_path);
+//	   fn.AppendDir(_T("data"));
+//	   fn.SetFullName(_T("watchdog_pi.svg"));
+//       _svg_watchdog = fn.GetFullPath();
+//
+//      fn.SetFullName(_T("watchdog_pi_toggled.svg"));
+//    _svg_watchdog_toggled = fn.GetFullPath();
+
+// =====
+
+//    wxFileName fn;
+//    fn.SetPath(*GetpSharedDataLocation());
+//    fn.AppendDir(_T("plugins"));
+//    fn.AppendDir(_T("watchdog_pi"));
+//    fn.AppendDir(_T("data"));
+//    fn.SetFullName(_T("watchdog_pi.svg"));
+//    _svg_watchdog = fn.GetFullPath();
+	
     wxFileName fn;
-    fn.SetPath(*GetpSharedDataLocation());
-    fn.AppendDir(_T("plugins"));
-    fn.AppendDir(_T("watchdog_pi"));
-    fn.AppendDir(_T("data"));
-    fn.SetFullName(_T("watchdog_pi.svg"));
-    _svg_watchdog = fn.GetFullPath();
+      fn.SetPath(GetPluginDataDir("watchdog_pi"));
+      fn.AppendDir(_T("data"));
+
+      fn.SetFullName(_T("watchdog_pi.svg"));
+      _svg_watchdog = fn.GetFullPath();
+      wxLogMessage(_T("Loading toolbar icon: ") + _svg_watchdog); 
+
+//      fn.SetFullName(_T("watchdogy_pi_rollover.svg"));
+//      _svg_watchdog_rollover = fn.GetFullPath();
+//      wxLogMessage(_T("Loading toolbar icon: ") + _svg_watchdog_rollover); 
+
+      fn.SetFullName(_T("watchdog_pi_toggled.svg"));
+      _svg_watchdog_toggled = fn.GetFullPath();
+      wxLogMessage(_T("Loading toolbar icon: ") + _svg_watchdog_toggled); 
 #endif
 
 	return;

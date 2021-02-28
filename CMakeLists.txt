@@ -19,7 +19,7 @@
 ## *   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                                       *
 ## ***
 #-----------------------------------------------------------------------------
-# Frontend2: v1.0.148.0    Frontend2 Author: Jon Gough  
+# Frontend2: v1.0.155.0   9.02/2021   Frontend2 Author: Jon Gough  
 # ---------------------------------------------------------------------------
 
 ## ----- When changing this file do NOT change the order in which sections occur        ----- ##
@@ -55,8 +55,8 @@ set(LONG_DESCRIPTION "Multiple Configurable alarms for  changing conditions for 
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "4")
 set(VERSION_PATCH "22")
-set(VERSION_TWEAK "19")
-set(VERSION_DATE "3/4/2021")
+set(VERSION_TWEAK "32")
+set(VERSION_DATE "27/2/2021") # DD/MM/YYYY format
 set(OCPN_MIN_VERSION "ov50")
 set(OCPN_API_VERSION_MAJOR "1")
 set(OCPN_API_VERSION_MINOR "16")
@@ -65,8 +65,8 @@ set(TP_COMMENT " Release for O52")
 set(PARENT "opencpn")
 
 # The next line allows for setting up your own local webserver with git on it for testing purposes, the default is github.com
+#set(GIT_REPOSITORY_SERVER "github.com")
 # This line is turned on in pluginconfigure.cmake because the flatpak build and building locally depends on it.
-# set(GIT_REPOSITORY_SERVER "github.com")
 
 #No longer needed, queried.
 #set(GIT_USER "rgleason")
@@ -95,21 +95,23 @@ set(XML_DESCRIPTION ${LONG_DESCRIPTION})
 ## ----- Modify below for plugin special requirements------------ ##
 ##
 
-# set(BUNDLE_DATA FALSE)  #from wd
-#set(CMAKE_MACOSX_RPATH "ON")  #from WD
 option(PLUGIN_USE_SVG "Use SVG graphics" ON)  
+
 set(CMAKE_CXX_STANDARD 11)
 
+# Use local version of GLU library
+set(USE_LOCAL_GLU TRUE)
 # Prefer libGL.so to libOpenGL.so, see CMP0072
-# don't think this does anything
+
 set(OpenGL_GL_PREFERENCE "LEGACY")
 
 # Don't use local version of GLU library
-# I don't think this does anything
-set(USE_LOCAL_GLU FALSE)
+# set(USE_LOCAL_GLU FALSE)
 
-#option(USE_GL "Enable OpenGL support" OFF)
-option(USE_GL "Enable OpenGL support" ON)  #Turn ON, only fix found for GL_texture2d, glDisable, GL_BLEND  errors
+#Turn ON, only fix found for GL_texture2d, glDisable, GL_BLEND  errors
+
+option(USE_GL "Enable OpenGL support" ON)
+
 message(STATUS "${CMLOC}USE_GL: ${USE_GL}")
 
 if("${CMAKE_BUILD_TYPE}" STREQUAL "")
@@ -133,7 +135,7 @@ include("PluginSetup")
 ## ----- Modify section below if there are special requirements for the plugin ----- ##
 ##
 
-set(CMAKE_VERBOSE_MAKEFILE ON)
+set(CMAKE_VERBOSE_MAKEFILE "Activate verbose mode for make files" ON)
 
 option(Plugin_CXX11 "Use c++11" OFF)
 
@@ -146,8 +148,10 @@ include("PluginConfigure")
 ## ----- do not change section above - needed to configure build process ----- ##
 ## ----- Change below to match project requirements for source, headers, etc. ----- ##
 
-
 add_definitions(-DUSE_S57)
+
+# ----Remember to Add your project Set(SRCS and set(HDRS  etc..	
+# ++++++++++++++Section below is direct from Watchdog +++++++++##
 
 #IF(PLUGIN_USE_SVG)
  # ADD_DEFINITIONS(-DWATCHDOG_USE_SVG)
@@ -173,7 +177,6 @@ SET(SRCS
             src/icons.cpp
             src/ODAPI.h
             src/wddc.cpp
-            src/TexFont.cpp
 	)
 	
 SET(HDRS
@@ -186,7 +189,6 @@ SET(HDRS
 			src/NewAlarmDialog.h
 			src/ODAPI.h
 			src/signalk_client.h
-			src/TexFont.h
 			src/watchdog_pi.h
 			src/WatchdogDialog.h
 			src/WatchdogPropertiesDialog.h
@@ -195,9 +197,19 @@ SET(HDRS
 			src/WeatherPanel.h
 			src/WindPanel.h
 			src/wxWTranslateCatalog.h
-
-            api-16/ocpn_plugin.h
+#            api-16/ocpn_plugin.h
  )			
+
+set(OCPNSRC ocpnsrc/TexFont.cpp)
+
+set(OCPNHDRS ocpninclude/ocpn_plugin.h ocpninclude/pluginmanager.h ocpninclude/TexFont.h)
+
+set(EXTSRC)
+
+set(EXTINCLUDE ${EXTINCLUDE} extinclude)
+set(EXTINCLUDE ${EXTINCLUDE} extinclude/ODAPI.h)
+
+set(LIBSSRC libs/wxJSON/src/jsonreader.cpp libs/wxJSON/src/jsonval.cpp libs/wxJSON/src/jsonwriter.cpp)
 
 # left  src/jsoncpp in case needed	
 #SET(LIBSRC
@@ -220,6 +232,9 @@ set(LIBHDRS
     libs/wx/include/jsonreader.h
     libs/wx/include/jsonval.h
     libs/wx/include/jsonwriter.h)
+
+
+
 							   
 add_definitions(-DPLUGIN_USE_SVG)
 
@@ -233,76 +248,83 @@ endif(APPLE)
 #    message(STATUS "${CMLOC}Using JSON Schema validation - warning this changes the 'flavour' of the executable and it may not be compatible with OpenCPN")
 #    add_definitions(-DPI_JSON_SCHEMA_VALIDATOR)
 #    message(STATUS "${CMLOC}Adding JSON Schema validation")
+#
 #    set(EXTSRC ${EXTSRC} extsrc/json-schema-validator/json-schema-draft7.json.cpp extsrc/json-schema-validator/json-uri.cpp extsrc/json-schema-validator/json-validator.cpp)
 #    set(EXTINCLUDE ${EXTINCLUDE} extinclude/nlohmann/json.hpp extinclude/json-schema-validator/json-schema.hpp)
 #    include_directories(BEFORE ${PROJECT_SOURCE_DIR}/extinclude/json-schema-validator)
 #else(PI_JSON_SCHEMA_VALIDATOR)
- #   message(STATUS "${CMLOC}Not using JSON Schema validation - warning invalid JSON 'may' cause unexpected crashes")
+#    message(STATUS "${CMLOC}Not using JSON Schema validation - warning invalid JSON 'may' cause unexpected crashes")
 #endif(PI_JSON_SCHEMA_VALIDATOR)
+
 
 ##=============================================================
 # Modify/configure 'Include' Directories below for the Plugin
 ##=============================================================
-include_directories(BEFORE ${PROJECT_SOURCE_DIR}/extinclude)
-include_directories(BEFORE ${PROJECT_SOURCE_DIR}/extsrc)
+
+
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude)
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnsrc/glu/include)
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/${EXTINCLUDE})
+
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude/wxcurl)
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude/wxcurl/include)
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude/GL)
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnsrc/lz4)
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnsrc/bitmaps)
+
+#needed for watchdog, but not for ocpn_draw
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/include)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/)
-
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/wx/include)
-#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude/wxcurl)
-#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude/wxcurl/include)
-#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnsrc/lz4)
-#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnsrc/bitmaps)
+INCLUDE_DIRECTORIES(api-16)
 
-include_directories(BEFORE ${PROJECT_SOURCE_DIR}/api-16)
-#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/src/libaudiofile)
+## ----- Change above to match project requirements ----- ##
 
-#if(UNIX)
-#    add_definitions("-fPIC")
-#endif(UNIX)
-
+#needed to build Ubuntu!
 if(UNIX)
   # Add this in lieu of add_definitions ("-fPIC")
    set(CMAKE_POSITION_INDEPENDENT_CODE ON)   
 endif(UNIX)
 
-## ----- Change above to match project requirements ----- ##
 ## Statement below is required to collect all the set( headers and SRCS  - Adjust as required
 ## This add_library  can be used in conditionals below.
 ##==========================================================================
-ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRCS} ${HDRS} ${EXTSRC}  ${SRC_NMEA0183})
+ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRCS} ${HDRS} ${OCPNSRC} ${EXTSRC} ${LIBSSRC} ${SRC_JSON} ${SRC_NMEA0183})
 ##==========================================================================
-#ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRCS} ${HDRS} ${EXTSRC} ${LIBHDRS} ${SRC_JSON} ${SRC_NMEA0183})
+#ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRCS} ${HDRS} ${OCPNSRC} ${EXTSRC} ${LIBSRC} ${SRC_JSON} ${SRC_NMEA0183} ${LIBHDRS})
 #ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRCS} ${HDRS} ${SRC_JSON} ${SRC_NMEA0183} )
 #ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRCS} ${HDRS} ${EXTSRC} ${LIBSSRC}  ${LIBHDRS} ${SRC_JSON} ${SRC_NMEA0183} )
+
+add_definitions(-DTIXML_USE_STL)
 
 add_subdirectory(libs/tinyxml)
 target_link_libraries(${PACKAGE_NAME} ocpn::tinyxml)
 
-#add_subdirectory("libs/jsoncpp")
-#target_link_libraries(${PACKAGE_NAME} ocpn::jsoncpp)
-
-add_subdirectory("libs/wxJSON")
-target_link_libraries(${PACKAGE_NAME} ocpn::wxjson)
-
 add_subdirectory(libs/bzip2)
 target_link_libraries(${PACKAGE_NAME} ocpn::bzip2)
 
-#add_subdirectory(libs/nmea0183)
-#target_link_libraries(${PACKAGE_NAME} ocpn::nmea0183)
+add_subdirectory(libs/nmea0183)
+target_link_libraries(${PACKAGE_NAME} ocpn::nmea0183)
+
+#add_subdirectory("libs/jsoncpp")
+#target_link_libraries(${PACKAGE_NAME} ocpn::jsoncpp)
 #had errors,  trying PluginNmeaCmake
+
+#add_subdirectory("libs/wxJSON")
+#target_link_libraries(${PACKAGE_NAME} ocpn::wxjson)
 
 #needed only if src/glshim project should be included.
 if(QT_ANDROID)
   target_link_libraries(${PACKAGE_NAME}  GL_static)
 endif(QT_ANDROID)  
 
-add_definitions(-DTIXML_USE_STL)
+
 
 #JSON Validator: Every plugin that uses JSON for passing messages should use a validator.  A JSON validator is much like an XML validator, the validator allows the system to ignore non-conformant messages.  The JSON validator changes the OSABI flavor of the Linux executable so there is code to change it back.
 
  if(UNIX AND NOT APPLE AND NOT QT_ANDROID)
     if(PI_JSON_SCHEMA_VALIDATOR)
-       # Change OS/ABI to be UNIX - System V to make it run with OCPN
+        # Change OS/ABI to be UNIX - System V to make it run with OCPN
         set(lib_name lib${PACKAGE_NAME}.so)
         message(STATUS "${CMLOC}lib-name: ${lib_name}")
         find_file(elfedit elfedit)
@@ -326,7 +348,7 @@ endif(UNIX AND NOT APPLE AND NOT QT_ANDROID)
 #These are NOT used in Testplugin, used for other plugins
 ##=======================================
 #include("PluginGL")
-include("PluginNMEA") #not for wxfax
+#include("PluginNMEA") #not for wxfax
 include("PluginJSON")  #not for wxfax  #commented out using libs
 ##=======================================
 ## ----- Change above to match project requirements ----- ##
@@ -339,3 +361,9 @@ include("PluginLocalization")
 include("PluginPackage")
 ##=======================================
 ## ----- do not change section above - needed to configure build process ----- ##
+
+message(STATUS "${CMLOC}include directories: ")
+get_property(dirs DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY INCLUDE_DIRECTORIES)
+foreach(dir ${dirs})
+    message(STATUS "${CMLOC}dir='${dir}'")
+endforeach()
