@@ -4,31 +4,29 @@
 Watchdog Update (1.2.000) Complete Documentation overhaul, especially
 the “Boundary Alarm” section.
 
-Watchdog Update april 2020: update to Watchdog version 2.4.0 in OpenCPN
-5.0
+Watchdog v2.4.0 Update April 2020 for OpenCPN 5.0
 
 New alarms are:
-
 * Wind-alarm
 * Weather-alarm
 * Pypilot-alarm
 
 Also new: a checkbox “Alarm if no Data”.
 
-=== Links
+==== Links
 
 * Source:
-https://github.com/seandepagnier/watchdog_pi/releases[https:__github.com/seandepagnier/watchdog_pi/releases]]
+https://github.com/seandepagnier/watchdog_pi/releases[https://github.com/seandepagnier/watchdog_pi/releases]
 * Releases:
-[[https:__github.com/rgleason/watchdog_pi/releases/tag/v2.0.000|Windows
-Watchdog_pi Installer]]
+https://github.com/rgleason/watchdog_pi/releases/tag/v2.0.000[Windows
+Watchdog_pi Installer]
 * Forum:
 http://www.cruisersforum.com/forums/f134/watchdog-plugin-150313.html[CF
 Watchdog Thread]
 
-image:/image/s-wdpi-01-husky.png[s-wdpi-01-husky.png]
+image::s-wdpi-01-husky.png
 
-== What is Watchdog (WD) Plugin?
+=== What is Watchdog (WD) Plugin?
 
 Watchdog Plugin is a plugin for OpenCPN. This plugin is developed by
 Sean D'Epagnier and implements various configurable alarms alerting the
@@ -36,7 +34,8 @@ user about the changing conditions round the boat. Watchdog also
 implements a Deadman-alarm and an improved anchor alarm. Watchdog
 communicates with another very useful plug-in, called *OpenCPN*
 *link:/opencpn/opencpn_user_manual/plugins/safety/odraw1.4_pi[oDraw]
-Plugin*. That plugin is a tool to draw points, lines and shapes within
+Plugin*  (Note this link does not work yet Odraw docs not available yet) . 
+That plugin is a tool to draw points, lines and shapes within
 OpenCPN. These points, lines and shapes can be used in navigation, for
 instance to show electronic bearing lines (EBL), variable range markers
 (VRM), specific points (boundary-points) and specific areas
@@ -50,28 +49,27 @@ to alert you when another ship (AIS-target) enters a boundary.
 *Watchdog* will be referred to as *"WD-pi"* or *"WD".* +
 *OpenCPN Draw Plugin* will be referred to as *"Draw-pi"* or *"OD"*.
 
-Note: the plugin originally started life as "Watch**man**" but was later
-renamed to "Watch**dog**". The original name "Watchman" might still
-pop-up in some screens and menu's. +
+The plugin was originally named "Watch**man**" but was later
+renamed to "Watch**dog**" which might be used in some screens and menu's. +
 WD-pi requires Opencpn version 4.1.xxx or newer.
 
-* Contents:
+==== Contents:
 
-* link:#installation[Installation]
-* link:#what_does_watchdog_do[What does Watchdog do]
+* link: #installation[Installation]
+* link: #what_does_watchdog_do[What does Watchdog do]
 * link:#how_does_watchdog_alert_me[How does Watchdog alert me]
 * link:#standard_actionssetting_up_a_watchdog_alarm[Standard actions:
 Setting up a Watchdog Alarm]
 * link:#standard_actionssetting_up_the_alarm_actions[Standard actions:
 Setting up the Alarm Actions]
 * link:#landfall_alarm[Landfall Alarm]
-* link:#boundary_alarm[Boundary Alarm- Time, Distance, AIS Guard Zone & Inclusion)]
-* link:#boundaries_and_guard_zones[Boundaries and Guard Zones]  
-* link:#setting_up_a_gps_course_crosses_boundary_in_minutes_alarm[Setting up a GPS course crosses boundary in < ... minutes Alarm (Boundary Time)]
-* link:#setting_up_a_gps_fix_is_nm_from_boundary_​_alarm[Setting up a GPS fix is ... nm from boundary Alarm (Boundary Distance]
-* link:#ais_guard_zone_alarm_inclusion_alarm[AIS Guard Zone Alarm & Inclusion Alarm]
-* link:#setting_up_a_boundary_ais_guard_zone_alarm[Setting up a Boundary AIS Guard Zone Alarm]
-* link:#setting_up_an_inclusion_alarm[Setting up an Inclusion Alarm]
+  - link:#boundary_alarm[Boundary Alarm- Time, Distance, AIS Guard Zone & Inclusion)]
+  - link:#boundaries_and_guard_zones[Boundaries and Guard Zones]  
+  - link:#setting_up_a_gps_course_crosses_boundary_in_minutes_alarm[Setting up a GPS course crosses boundary in < ... minutes Alarm (Boundary Time)]
+  - link:#setting_up_a_gps_fix_is_nm_from_boundary_​_alarm[Setting up a GPS fix is ... nm from boundary Alarm (Boundary Distance]
+  - link:#ais_guard_zone_alarm_inclusion_alarm[AIS Guard Zone Alarm & Inclusion Alarm]
+  - link:#setting_up_a_boundary_ais_guard_zone_alarm[Setting up a Boundary AIS Guard Zone Alarm]
+  - link:#setting_up_an_inclusion_alarm[Setting up an Inclusion Alarm]
 * link:#combination_of_boundary_guard_zone_alarm_and_boundary_inclusion_alarm[Combination of Boundary Guard Zone Alarm & Boundary Inclusion Alarm]
 * link:#dynamic_guard_zones[Dynamic Guard Zones]
 * link:#anchor_alarm[Anchor Alarm]
@@ -84,14 +82,11 @@ Setting up the Alarm Actions]
 * link:#nmea_data_alarm[NMEA Data Alarm] (GPS & AIS)
 * link:#email_to_yourself[Email to yourself]
 
- +
-+++link:/watchdog[Back to top of page.]+++
+link: /watchdog[Back to top of page.]
 
-'''''
+== Installation
 
-=== Installation
-
-*A. Where to get WD-pi*
+=== A. Where to get WD-pi?
 
  +
 *Note*: In this section the instructions are specifically for WD-pi, but
@@ -104,15 +99,15 @@ Install and Enable].
 WD-pi can be downloaded from http://www.opencpn.org/index.html +
  +
 Click "*Downloads*" +
-image:/image/april-2020-001.png[april-2020-001.png,width=672,height=113]
+image::april-2020-001.png[april-2020-001.png,width=672,height=113]
 
 Click "*Plugins for OpenCPN 4.2 and up*"
 
-image:/image/april-2020-001b.png[april-2020-001b.png,width=757,height=176]
+image::april-2020-001b.png[april-2020-001b.png,width=757,height=176]
 
 Scroll down to the "*Safety*"-section and click "*WatchDog*"
 
-image:/image/april-2020-002.png[april-2020-002.png,width=314,height=148]
+image::april-2020-002.png[april-2020-002.png,width=314,height=148]
 
 Make sure you choose the file that is compatible with your
 computersystem. +
@@ -121,9 +116,9 @@ setup-package*.
 
 *Download* the file (double-click).
 
-image:/image/april-2020-003.png[april-2020-003.png,width=628,height=732]
+image::april-2020-003.png[april-2020-003.png,width=628,height=732]
 
-*B. How to install WD-pi*
+=== B. How to install WD-pi?
 
 **Note:**It's better to *close OpenCPN* before installing WD-pi.
 
@@ -136,50 +131,46 @@ Open the downloaded Setup-package (with "watchdog_pi" in the name and
 (and don’t mind that peculiar language you’ll see in some of them, it’s
 Dutch).
 
-image:/image/april-2020-wdpi240exe.png[april-2020-wdpi240exe.png]
+image::april-2020-wdpi240exe.png[april-2020-wdpi240exe.png]
 
-image:/image/april-2020-005.png[april-2020-005.png,width=414,height=313]
+image::april-2020-005.png[april-2020-005.png,width=414,height=313]
 
-image:/image/april-2020-006.png[april-2020-006.png,width=512,height=396]
+image::april-2020-006.png[april-2020-006.png,width=512,height=396]
 
-image:/image/april-2020-007.png[april-2020-007.png,width=512,height=396]
+image::april-2020-007.png[april-2020-007.png,width=512,height=396]
 
-image:/image/april-2020-008.png[april-2020-008.png,width=510,height=398]
+image::april-2020-008.png[april-2020-008.png,width=510,height=398]
 
-image:/image/april-2020-009.png[april-2020-009.png,width=511,height=395]
+image::april-2020-009.png[april-2020-009.png,width=511,height=395]
 
 That's it. But before you can actually *use* WD-pi, you first have to
 *enable* that plug-in in OpenCPN.
 
-*C. How to enable WD-pi*
+=== C. How to enable WD-pi?
 
 Open *OpenCPN*
 
 Click *Tools* - *Options*
 
-*image:/image/april-2020-010.png[april-2020-010.png,width=358,height=270]*
+*image::april-2020-010.png[april-2020-010.png,width=358,height=270]*
 
 Click *Plugins*
 
-image:/image/april-2020-011.png[april-2020-011.png,width=749,height=682]
+image::april-2020-011.png[april-2020-011.png,width=749,height=682]
 
 Scroll to Watchdog plugin and click *Enable*
 
-image:/image/april-2020-012.png[april-2020-012.png,width=741,height=294]
+image::april-2020-012.png[april-2020-012.png,width=741,height=294]
 
 Click *OK*
 
-image:/image/april-2020-013.png[april-2020-013.png,width=745,height=681]
+image::april-2020-013.png[april-2020-013.png,width=745,height=681]
 
 Now the Watchdog-icon should be visible in your OpenCPN toolbar
 
-image:/image/april-2020-014.png[april-2020-014.png,width=119,height=64]
+image::april-2020-014.png[april-2020-014.png,width=119,height=64]
 
- +
-+++link:/opencpn/opencpn_user_manual/plugins/safety/watchdog[Back to top
-of page.]+++
-
-==== What does Watchdog do?
+=== What does Watchdog do?
 
 Watchdog warns you -in a couple of specific situations- when you want to
 be warned.
@@ -198,11 +189,9 @@ following types of alarms:
 * Deadman Alarm
 * NMEA Data Alarm
 
- +
-+++link:/opencpn/opencpn_user_manual/plugins/safety/watchdog[Back to top
-of page.]+++
+Short descriptions of these alarms follow.
 
-==== Landfall Alarm -in short
+==== Landfall Alarm
 
 Landfall Alarm is meant to alert you when you are nearing land. Not very
 usefull when you are only sailing withing a couple of miles from your
@@ -210,7 +199,7 @@ marina but more aimed at the bigger trips involving vast stretches of
 water. Columbus would have liked it. The more extensive description of
 the alarm is here: +++link:#landfall_alarm[LANDFALL ALARM]+++.
 
-==== Boundary Alarm -in short
+==== Boundary Alarm
 
 See also
 
@@ -279,27 +268,30 @@ can also create a "Guard Zone". +
 A Guard Zone in O-Draw is a special kind of area that is not static, but
 moves with your own ship. +
 The more extensive description is here:
+
 +++link:#dynamic_guard_zones[DYNAMIC GUARD ZONES]+++.
 
-==== Anchor Alarm -in short
+==== Anchor Alarm
 
 Anchor Alarm is meant to alert you when your position changes more than
 a specific distance from a certain position (in short: when your anchor
 is dragging).
 
 The more extensive description of the alarm is here:
+
 +++link:#anchor_alarm[ANCHOR ALARM]+++.
 
-==== Course Alarm -in short
+==== Course Alarm
 
 Course Alarm is (of course) meant to alert you when you get off course.
 The problem with getting off course is that you might end up somewhere
 where you do not want to be (see "Boundary Alarm").
 
 The more extensive description of the alarm is here:
+
 +++link:#course_alarm[COURSE ALARM]+++.
 
-==== Speed Alarm -in short
+==== Speed Alarm
 
 Speed Alarm is meant to alert you when you are going slower than a
 certain set speed (*Underspeed*) or when you are going faster than a
@@ -312,7 +304,7 @@ soon in some lousy marina.
 The more extensive description of the alarm is here:
 +++link:#speed_alarm[SPEED ALARM]+++.
 
-==== Wind Alarm -in short
+==== Wind Alarm
 
 The wind-alarm can be set to warn you when the windspeed exceeds a given
 value, drops under a given value or changes direction.
@@ -332,7 +324,7 @@ haven.
 The more extensive description of the alarm is here:
 +++link:#weather_alarm[WEATHER ALARM]+++.
 
-==== Pypilot Alarm -in short
+==== Pypilot Alarm
 
 The Pypilot-alarm can be set to warn you when there is something wrong
 with your automatic steering gear (autopilot), driven by the Pypilot
@@ -341,7 +333,7 @@ plugin.
 The more extensive description of the alarm is here:
 +++link:#pypilot_alarm[PYPILOT ALARM]+++ .
 
-==== Deadman Alarm -in short
+==== Deadman Alarm
 
 Deadman Alarm is meant to alert you (or your crew) when the program
 suspects you to have fallen asleep, jumped overboard or simply passed
@@ -355,7 +347,7 @@ soon as any user action is taken, for instance a movement of the cursor
 The more extensive description of the alarm is here:
 +++link:#deadman_alarm[DEADMAN ALARM]+++.
 
-==== NMEA Data Alarm -in short
+==== NMEA Data Alarm
 
 NMEA Data Alarm is meant to alert you when OpenCPN loses NMEA-input.
 NMEA-data is information the program receives from various instruments.
@@ -384,7 +376,7 @@ You can set an alert in the form of a text-message that pops up on your
 screen …. (and yes, in that pop-up screen there's still evidence of the
 original name Watch__man__..)
 
-image:/image/s-wdpi-02.png[s-wdpi-02.png]
+image::s-wdpi-02.png[s-wdpi-02.png]
 
 A text-message is rather useless if you are not looking at your display.
 As the Deadman alarm is supposed to prevent you from falling asleep (or
@@ -393,7 +385,7 @@ is some form of (loud and bloody annoying!) noise.
 
 So Watchdog also enables you to set an acoustic alarm.
 
-image:/image/s-wdpi-03.png[s-wdpi-03.png]
+image::s-wdpi-03.png[s-wdpi-03.png]
 
 You can use any sound you like, as long as it is a *".wav" file.*
 
@@ -413,7 +405,7 @@ suits you better. Like for instance a computer that actually says
 "*Warning! Boundary!*" when the Boundary-alarm sounds and "*Warning!
 Anchor!*" when your anchor is dragging. _ _
 
-===== Play Watchdog Warnings with "Sound" checked
+==== Play Watchdog Warnings with "Sound" checked
 
 In a "Edit Alarm" Menu browse to
 '%localappdata"\watchdog_pi\data\Warnings\Warning Boundary.wav'
@@ -427,7 +419,7 @@ C:\Users\Rick\AppData\Local\opencpn\plugins\watchdog_pi\data\Warnings
 and pick an appropriate Warning. Then "Test" to confirm the path is
 correct.. _ _
 
-===== Play Watchdog Warning files from "Command" using a sound command line utility
+==== Play Watchdog Warning files from "Command" using a sound command line utility
 
 Another way to play Watchdog Warnings with "Sound" unchecked and
 "Command" checked. Then try these examples using Powershell for Win OS:
@@ -445,7 +437,7 @@ then [add the appropriate filename] OR
 C:\Users\[user]\AppData\Local\opencpn\plugins\watchdog_pi\data\Warnings
 [appropriate file name] </code>
 
-image:/image/s-wdpi-04.png[s-wdpi-04.png]
+image::s-wdpi-04.png[s-wdpi-04.png]
 
 And if you really want a Watchdog that barks, well….. then find yourself
 a wav-file of a barking dog (not recommended though; if you are anchored
@@ -464,17 +456,13 @@ pub…..
 
 And hey, on our mobile phone we receive an email from a loved-one!
 
-image:/image/s-wdpi-04b.png[s-wdpi-04b.png]
+image::s-wdpi-04b.png[s-wdpi-04b.png]
 
 How this email-trick is done, is explained in
 "*link:#email_to_yourself[Email to yourself]*" at the end of this
 manual.
 
- +
-+++link:/opencpn/opencpn_user_manual/plugins/safety/watchdog[Back to top
-of page.]+++
 
-'''''
 
 ==== Standard actions: Setting up a Watchdog Alarm
 
@@ -483,19 +471,19 @@ these 4 initial steps to set up a new Watchdog Alarm:
 
 Step 1. Click "*Watchdog*" in the OpenCPN Toolbar
 
-image:/image/april-2020-014.png[april-2020-014.png,width=119,height=64]
+image::april-2020-014.png[april-2020-014.png,width=119,height=64]
 
 *Step 2*. The "Watchdog Window" opens. If no alarms are set, it will be
 a rather empty screen.
 
-image:/image/april-2020-015.png[april-2020-015.png,width=494,height=148]
+image::april-2020-015.png[april-2020-015.png,width=494,height=148]
 
 Place the cursor in that empty screen. A mouse-click will give you a
 pull-down menu.
 
 *Step 3*. Click "*New*"
 
-image:/image/april-2020-018.png[april-2020-018.png,width=500,height=259]
+image::april-2020-018.png[april-2020-018.png,width=500,height=259]
 
 *Step 4*. The "New Alarm Window" opens. It shows the various types of
 alarms.
@@ -508,7 +496,7 @@ in mind. In Linux Mint it works better. In the Linux-version of OpenCPN
 and Watchdog you can adjust the size of the window so that all options
 are shown.
 
-image:/image/april-2020-019.png[april-2020-019.png,width=516,height=357]
+image::april-2020-019.png[april-2020-019.png,width=516,height=357]
 
 (The next steps involve clicking the desired alarm and clicking "*OK*")
 
@@ -527,7 +515,7 @@ of page.]+++
 When setting up a new Watchdog-alarm, you will come across the “*Edit
 Alarm*” window.
 
-image:/image/april-2020-021.png[april-2020-021.png,width=414,height=467]
+image::april-2020-021.png[april-2020-021.png,width=414,height=467]
 
 In that window there is a part (normally the uppermost part) that is
 specific for that type of alarm, but there is also a part that is the
@@ -542,7 +530,7 @@ instance: GPS for position, speed and course, digital wind-sensor,
 digital sensors for air-pressure, temperature and humidity,an
 AIS-receiver or transponder etc.
 
-image:/image/april-2020-alarm-action-01.png[april-2020-alarm-action-01.png]
+image::april-2020-alarm-action-01.png[april-2020-alarm-action-01.png]
 
 If that box is checked, the alarm will be activated when the data-stream
 is interrupted.
@@ -609,7 +597,7 @@ from land.
 
 For most sailors the usefulness of such an alert is obvious.
 
-image:/image/s-wdpi-09.png[s-wdpi-09.png]
+image::s-wdpi-09.png[s-wdpi-09.png]
 
 "*Hoorah and up she rises!*" More info: go to
 "https://www.gov.uk/government/organisations/marine-accident-investigation-branch[MAIB]"
@@ -626,11 +614,11 @@ Looking at this basic coastline chart WD will assume we are not close
 enough to the coastline to trigger the Landfall alarm. So, WD stays
 quiet.
 
-image:/image/s-wdpi-10.png[s-wdpi-10.png]
+image::s-wdpi-10.png[s-wdpi-10.png]
 
 When he really should have barked!
 
-image:/image/s-wdpi-11.png[s-wdpi-11.png]
+image::s-wdpi-11.png[s-wdpi-11.png]
 
 Therefore it would be advisable to use the 224mb(unzipped), most
 detailed, *GSHHS High Resolution Background Map*. It can be downloaded
@@ -638,7 +626,7 @@ using the ChartDownloader, see
 https://opencpn.org/wiki/dokuwiki/doku.php?id=opencpn:opencpn_user_manual:charts:chart_sources#high_resolution_background_map[High
 Resolution Background Map].
 
-image:/image/s-wdpi-12.png[s-wdpi-12.png]
+image::s-wdpi-12.png[s-wdpi-12.png]
 
 Stay on the safe side and set landfall-alarm for a distance well
 offshore. Landfall-alarm is not meant for close-quarters navigation.
@@ -648,7 +636,7 @@ screenshots.
 
 Set up a new Watchdog-alarm and pick "Landfall".
 
-image:/image/s-wdpi-13_0.png[s-wdpi-13_0.png]
+image::s-wdpi-13_0.png[s-wdpi-13_0.png]
 
 Click "OK". The "Edit Alarm" window pops up. In the Edit Alarm window
 you can choose between "GPS course crosses land in less than … minutes"
@@ -657,17 +645,17 @@ or "GPS fix is less than …. nm from coastline".
 Here we've chosen "GPS fix is less than 5 nm from coastline". Tick the
 rest of the boxes and click "OK".
 
-image:/image/s-wdpi-14.png[s-wdpi-14.png]
+image::s-wdpi-14.png[s-wdpi-14.png]
 
 The Watchdog Configuration window shows the alarm.
 
-image:/image/s-wdpi-15.png[s-wdpi-15.png]
+image::s-wdpi-15.png[s-wdpi-15.png]
 
 Now your Landfall alarm is ready to be used.
 
 Just make sure the "Alarm On/Alarm Off" box is ticked (set).
 
-image:/image/s-wdpi-16.png[s-wdpi-16.png]
+image::s-wdpi-16.png[s-wdpi-16.png]
 
  +
 +++link:/opencpn/opencpn_user_manual/plugins/safety/watchdog[Back to top
@@ -751,16 +739,16 @@ You can create Boundaries in *Draw-pi* (not Watchdog) by clicking
 "*Create Boundary*" and Guard-Zones by clicking "*Create Guard Zone*".
 It's all explained in the Draw-pi section of this manual.
 
-image:/image/watchdog_19056_create_boundary.jpg[watchdog_19056_create_boundary.jpg]
+image::watchdog_19056_create_boundary.jpg[watchdog_19056_create_boundary.jpg]
 
-image:/image/watchdog_19056_create_guard_zone.jpg[watchdog_19056_create_guard_zone.jpg]
+image::watchdog_19056_create_guard_zone.jpg[watchdog_19056_create_guard_zone.jpg]
 
 *Boundary Types* +
 In the "Boundary Properties" tab (this is still in *Draw-pi*) you can
 assign a "Boundary Type" to each Boundary or Boundary Point (BP). You
 can choose "*Exclusion*", "*Inclusion*" or "*Neither*"
 
-image:/image/s-wdpi-19.png[s-wdpi-19.png]
+image::s-wdpi-19.png[s-wdpi-19.png]
 
 *Note*: *In WD you can set the alarm for every kind of boundary*. So,
 you can set alarms that get triggered when you get in (or too close to)
@@ -801,7 +789,7 @@ In this screenshot we show you the different types of boundaries.
 * Fourth row: three boundary points. From left to right, "inclusion",
 "exclusion"and "neither".
 
-image:/image/s-wdpi-20.png[s-wdpi-20.png]
+image::s-wdpi-20.png[s-wdpi-20.png]
 
 OK, now you know what types of boundaries there are.
 
@@ -827,7 +815,7 @@ You can set the time between 0 and 1000 minutes. 0 minutes is quite
 useless and 1000 minutes (more than 16 hours) is maybe a bit much.
 
 In this example we have used 20 minutes. +
-image:/image/watchdog_19056_boundary_time.jpg[watchdog_19056_boundary_time.jpg]
+image::watchdog_19056_boundary_time.jpg[watchdog_19056_boundary_time.jpg]
 
 In the Watchdog "*Edit Alarm*" window, you can select "*Boundary Type*"
 and "*Boundary State*".
@@ -865,7 +853,7 @@ machines.
 Don't forget to set the *Alarm Actions* ("Sound", "Message Box" etc. as
 described in "Standard actions: Setting up the Alarm Actions").
 
-image:/image/watchdog_19056_alarm_action.jpg[watchdog_19056_alarm_action.jpg]
+image::watchdog_19056_alarm_action.jpg[watchdog_19056_alarm_action.jpg]
 
 Click "*OK*".
 
@@ -876,12 +864,12 @@ Options).
 As long as we are more than 20 minutes away from a boundary, Watchdog
 will remain silent.
 
-image:/image/watchdog_19056_boundary_time_01.jpg[watchdog_19056_boundary_time_01.jpg]
+image::watchdog_19056_boundary_time_01.jpg[watchdog_19056_boundary_time_01.jpg]
 
 But as soon as we are less than 20 minutes away from a boundary, the
 alarm will be triggered.
 
-image:/image/watchdog_19056_boundary_time_02.jpg[watchdog_19056_boundary_time_02.jpg]
+image::watchdog_19056_boundary_time_02.jpg[watchdog_19056_boundary_time_02.jpg]
 
  +
 +++link:/opencpn/opencpn_user_manual/plugins/safety/watchdog[Back to top
@@ -905,7 +893,7 @@ to be honest, neither can we…).
 In this example we have chosen 0.01 nm (18,5 meters) to a boundary ("GPS
 fix is < 0.01 nm from boundary).
 
-image:/image/watchdog_19056_boundary_edit_alarm_top.jpg[watchdog_19056_boundary_edit_alarm_top.jpg]
+image::watchdog_19056_boundary_edit_alarm_top.jpg[watchdog_19056_boundary_edit_alarm_top.jpg]
 
 *Note*: In this example we have a *boundary of the type "exclusion"* (a
 hatch-pattern on the inside).
@@ -923,14 +911,14 @@ boundary in < …. minutes") for the effects of ticking the different
 
 Don't forget to set the *Alarm Action* and click *OK*.
 
-image:/image/watchdog_19056_alarm_action.jpg[watchdog_19056_alarm_action.jpg]
+image::watchdog_19056_alarm_action.jpg[watchdog_19056_alarm_action.jpg]
 
 *Now lets see if it works….*
 
 As long as the distance to a boundary is more than 0.01 nm, the alarm
 remains silent.
 
-image:/image/watchdog_19056_boundary_outside.jpg[watchdog_19056_boundary_outside.jpg]
+image::watchdog_19056_boundary_outside.jpg[watchdog_19056_boundary_outside.jpg]
 
 But as soon as we get within a distance of 0.01 nm of a boundary, the
 alarm is triggered +
@@ -938,16 +926,16 @@ The alarm will also show the name and description of the boundary you
 are getting too close to. +
 For this example that name is "Testboundary-01-Exclusion-STAY OUT".
 
-image:/image/watchdog_19056_boundary_edit_out_alarm.jpg[watchdog_19056_boundary_edit_out_alarm.jpg].
+image::watchdog_19056_boundary_edit_out_alarm.jpg[watchdog_19056_boundary_edit_out_alarm.jpg].
 
 This goes also for the inner side of the boundary.
 
 Closer than 0.01 nm from the boundary perimeter? Alarm. +
-image:/image/watchdog_19056_boundary_edit_in_alarm.jpg[watchdog_19056_boundary_edit_in_alarm.jpg]
+image::watchdog_19056_boundary_edit_in_alarm.jpg[watchdog_19056_boundary_edit_in_alarm.jpg]
 
 More than 0.01 nm from the perimeter? +
 The alarm stops. +
-image:/image/watchdog_19056_boundary_inside.jpg[watchdog_19056_boundary_inside.jpg]
+image::watchdog_19056_boundary_inside.jpg[watchdog_19056_boundary_inside.jpg]
 
 Watchdog did warn you, but if you still decide to go on, she (yes,
 Watchdog is a bitch…. ;-) ) will assume that you know what you are
@@ -994,16 +982,16 @@ on a boundary, do a right-mouseclick and copy the GUID. Then, in the
 Watchdog Edit Alarm-window, you can paste the GUID in the field Boundary
 GUID or Guard Zone GUID.
 
-image:/image/watchdog_19056_bdguid_01.jpg[watchdog_19056_bdguid_01.jpg]
+image::watchdog_19056_bdguid_01.jpg[watchdog_19056_bdguid_01.jpg]
 
 Make sure you do "Copy GUID" *before* editing the Watchdog Alarm.
 
-image:/image/watchdog_19056_boundary_gz.jpg[watchdog_19056_boundary_gz.jpg]
+image::watchdog_19056_boundary_gz.jpg[watchdog_19056_boundary_gz.jpg]
 
 Alternatively, when the “own ship” icon is within the boundary, you can
 click “*Get Boundary GUID*”.
 
-image:/image/watchdog_19056_getguid.jpg[watchdog_19056_getguid.jpg]
+image::watchdog_19056_getguid.jpg[watchdog_19056_getguid.jpg]
 
 *Note*: this method does not always work. In such cases: use the
 “copy-paste” method.
@@ -1020,16 +1008,16 @@ of page.]+++
 
 Select “*AIS Guard Zone*”
 
-image:/image/watchdog_19056_boundary_gz.jpg[watchdog_19056_boundary_gz.jpg]
+image::watchdog_19056_boundary_gz.jpg[watchdog_19056_boundary_gz.jpg]
 
 *Edit the alarm* so that the alarm will be coupled to the boundary you
 want to be guarded.
 
-image:/image/watchdog_19056_bd_gz_01.jpg[watchdog_19056_bd_gz_01.jpg]
+image::watchdog_19056_bd_gz_01.jpg[watchdog_19056_bd_gz_01.jpg]
 
 Don't forget to set the *Alarm Action* and click *OK*.
 
-image:/image/watchdog_19056_alarm_action.jpg[watchdog_19056_alarm_action.jpg]
+image::watchdog_19056_alarm_action.jpg[watchdog_19056_alarm_action.jpg]
 
 *Now lets see if it works….*
 
@@ -1040,24 +1028,24 @@ triggered.
 The other ship (green icon) is not (yet) in the Guard Zone Boundary:
 alarm not triggered (yet).
 
-image:/image/watchdog_19056_bd_gz_notg.jpg[watchdog_19056_bd_gz_notg.jpg]
+image::watchdog_19056_bd_gz_notg.jpg[watchdog_19056_bd_gz_notg.jpg]
 
 The ship enters the Guard Zone Boundary: Guard Zone Alarm is triggered
 (and shows ships name and MMSI-number).
 
-image:/image/watchdog_19056_bd_gz_tg_01.jpg[watchdog_19056_bd_gz_tg_01.jpg]
+image::watchdog_19056_bd_gz_tg_01.jpg[watchdog_19056_bd_gz_tg_01.jpg]
 
 And the text in the Watchdog window turns *red* and says “*AIS Target in
 zone*”
 
-image:/image/watchdog_19056_bd_gz_targetinzone.jpg[watchdog_19056_bd_gz_targetinzone.jpg]
+image::watchdog_19056_bd_gz_targetinzone.jpg[watchdog_19056_bd_gz_targetinzone.jpg]
 
 As soon as the ship leaves the Guard Zone Boundary: Alarm is not
 triggered anymore. +
 The text in the Watchdog Window turns back to black and says “*No AIS
 targets found in zone*”.
 
-image:/image/watchdog_19056_notargetinzone-02.jpg[watchdog_19056_notargetinzone-02.jpg]
+image::watchdog_19056_notargetinzone-02.jpg[watchdog_19056_notargetinzone-02.jpg]
 
 *The Boundary AIS Guard Zone Alarm works!*
 
@@ -1081,26 +1069,26 @@ want to "stay inside" of. +
 In this example it is a boundary with GUID
 6372ffff-7f0e-4a64-9e6c-dfd303620000
 
-image:/image/watchdog_19056_bd_inclusion_01.jpg[watchdog_19056_bd_inclusion_01.jpg]
+image::watchdog_19056_bd_inclusion_01.jpg[watchdog_19056_bd_inclusion_01.jpg]
 
 Don't forget to set the *Alarm Action* and click *OK*. +
-image:/image/watchdog_19056_alarm_action.jpg[watchdog_19056_alarm_action.jpg]
+image::watchdog_19056_alarm_action.jpg[watchdog_19056_alarm_action.jpg]
 
 *Now lets see if it works….*
 
 The own ship is inside the boundary. Watchdog watches over you and wants
 you to stay "included". +
 Well, in this case everything is just fine. Watchdog stays silent. +
-image:/image/watchdog_19056_bd_inclusion_inside.jpg[watchdog_19056_bd_inclusion_inside.jpg]
+image::watchdog_19056_bd_inclusion_inside.jpg[watchdog_19056_bd_inclusion_inside.jpg]
 
 The text in the Watchdog window stays black. +
-image:/image/watchdog_19056_inclusion_inside_02.jpg[watchdog_19056_inclusion_inside_02.jpg]
+image::watchdog_19056_inclusion_inside_02.jpg[watchdog_19056_inclusion_inside_02.jpg]
 
 But as soon as our ship leaves the boundary, Watchdog alerts us! +
-image:/image/watchdog_19056_inclusion_outside.jpg[watchdog_19056_inclusion_outside.jpg]
+image::watchdog_19056_inclusion_outside.jpg[watchdog_19056_inclusion_outside.jpg]
 
 And the text in the Watchdog window turns red. +
-image:/image/watchdog_19056_inclusion_outside_02.jpg[watchdog_19056_inclusion_outside_02.jpg]
+image::watchdog_19056_inclusion_outside_02.jpg[watchdog_19056_inclusion_outside_02.jpg]
 
 *The "Boundary Inclusion" alarm works!*
 
@@ -1129,7 +1117,7 @@ You can activate one of the two alarms, both of them or none of them.
 
 In this screenshot both alarms are activated.
 
-image:/image/watchdog_19056_bd_gz-combined.jpg[watchdog_19056_bd_gz-combined.jpg]
+image::watchdog_19056_bd_gz-combined.jpg[watchdog_19056_bd_gz-combined.jpg]
 
  +
 +++link:/opencpn/opencpn_user_manual/plugins/safety/watchdog[Back to top
@@ -1164,35 +1152,35 @@ First we set up a GZ.
 
 Open the Draw Toolbar
 
-image:/image/wdpi-gz-001.jpg[wdpi-gz-001.jpg]
+image::wdpi-gz-001.jpg[wdpi-gz-001.jpg]
 
 Click "Create GZ"
 
-image:/image/watchdog_19056_create_guard_zone.jpg[watchdog_19056_create_guard_zone.jpg]
+image::watchdog_19056_create_guard_zone.jpg[watchdog_19056_create_guard_zone.jpg]
 
 Set the first point of the GZ roughly abeam on the port side.
 
-image:/image/watchdog_19056_gz_003a.jpg[watchdog_19056_gz_003a.jpg]
+image::watchdog_19056_gz_003a.jpg[watchdog_19056_gz_003a.jpg]
 
 Set the second point a bit above and to the right of the first point
 (+++clockwise+++).
 
-image:/image/watchdog_19056_gz_004a.jpg[watchdog_19056_gz_004a.jpg]
+image::watchdog_19056_gz_004a.jpg[watchdog_19056_gz_004a.jpg]
 
 The result is some kind of wedge-shaped GZ.
 
-image:/image/wdpi-gz-005.jpg[wdpi-gz-005.jpg]
+image::wdpi-gz-005.jpg[wdpi-gz-005.jpg]
 
 Now you should fine-tune that GZ. Click on the GZ and open the
 "Properties" tab.
 
-image:/image/wdpi-gz-006.jpg[wdpi-gz-006.jpg]
+image::wdpi-gz-006.jpg[wdpi-gz-006.jpg]
 
 Give your GZ a recognizable name and description. Choose the Colours and
 Line Width you prefer and fill in the required angles and distances. See
 the example.
 
-image:/image/wdpi-gz-007.jpg[wdpi-gz-007.jpg]
+image::wdpi-gz-007.jpg[wdpi-gz-007.jpg]
 
 Note: the *first* distance is the distance *closest* to the boat. Make
 sure this distance is bigger than 0. In this example the first distance
@@ -1214,12 +1202,12 @@ Now we'll put it to the test.
 
 The _Highland Challenger_ is closing in on our portside.
 
-image:/image/wdpi-gz-008a.jpg[wdpi-gz-008a.jpg]
+image::wdpi-gz-008a.jpg[wdpi-gz-008a.jpg]
 
 but as soon as she challenges our "slice of pie", Watchdog starts to
 alert us!
 
-image:/image/wdpi-gz-009a.jpg[wdpi-gz-009a.jpg]
+image::wdpi-gz-009a.jpg[wdpi-gz-009a.jpg]
 
 Some other examples:
 
@@ -1229,11 +1217,11 @@ four range rings around our own ship are set 0.25 NMi apart. _Eurocargo
 Genova_ is approaching on our port bow. Still more than 1.5 miles away,
 but she's a big one and doing almost 20 knots.
 
-image:/image/wdpi-gz-010.jpg[wdpi-gz-010.jpg]
+image::wdpi-gz-010.jpg[wdpi-gz-010.jpg]
 
 Luckily we've set up our GZ alarm.
 
-image:/image/wdpi-gz-011.jpg[wdpi-gz-011.jpg]
+image::wdpi-gz-011.jpg[wdpi-gz-011.jpg]
 
 *A "Tri-colour" GZ.*
 
@@ -1246,7 +1234,7 @@ rotate with the ship's heading, they could be used to see at one glance
 whether another ship is in your red, green or white sector (also handy
 to remind some of us that "starboard is green and port is red"…..).
 
-image:/image/wdpi-gz-012.jpg[wdpi-gz-012.jpg]
+image::wdpi-gz-012.jpg[wdpi-gz-012.jpg]
 
 In this example the sectors range from 0.10 to 0.25 Nmi from our ship.
 This is how these three GZ's (Guardzone Port, Guardzone Starboard and
@@ -1254,15 +1242,15 @@ Guardzone Stern) are set up:
 
 The red sector:
 
-image:/image/wdpi-gz-013.jpg[wdpi-gz-013.jpg]
+image::wdpi-gz-013.jpg[wdpi-gz-013.jpg]
 
 The green sector:
 
-image:/image/wdpi-gz-014.jpg[wdpi-gz-014.jpg]
+image::wdpi-gz-014.jpg[wdpi-gz-014.jpg]
 
 The white sector:
 
-image:/image/wdpi-gz-015.jpg[wdpi-gz-015.jpg]
+image::wdpi-gz-015.jpg[wdpi-gz-015.jpg]
 
 Note that the white sector is set by defining the first angle as 112.50
 and the second angle as -112.50 this covers an arc of 135 degrees (360 -
@@ -1270,18 +1258,18 @@ and the second angle as -112.50 this covers an arc of 135 degrees (360 -
 
 _Arco Axe_ is sneaking up on us. GZ "Stern" is activated.
 
-image:/image/wdpi-gz-016.jpg[wdpi-gz-016.jpg]
+image::wdpi-gz-016.jpg[wdpi-gz-016.jpg]
 
 We really don't want _Arco Axe_ (or any other axe for that matter….) to
 hit us in the behind but before she can become a pain in the ass,
 Watchdog spots her and alerts us.
 
-image:/image/wdpi-gz-017.jpg[wdpi-gz-017.jpg]
+image::wdpi-gz-017.jpg[wdpi-gz-017.jpg]
 
 You can set up multiple Dynamic Guard Zones and set the alarms for one,
 some or all of these zones.
 
-image:/image/wdpi-gz-018.jpg[wdpi-gz-018.jpg]
+image::wdpi-gz-018.jpg[wdpi-gz-018.jpg]
 
 (Dynamic) Guard Zone Alarms are in some ways similar to the "AIS
 Collision Alarm" you can set in OpenCPN (Options-Ships-AIS Targets-CPA
@@ -1302,13 +1290,13 @@ position.
 The pictures are self-explaining (or at least supposed to be).Set up a
 new watchdog alarm and pick "Anchor"
 
-image:/image/s-wdpi-49_0.png[s-wdpi-49_0.png]
+image::s-wdpi-49_0.png[s-wdpi-49_0.png]
 
 In the "Edit Alarm" window, the latitude and longitude (Lat and Lon) of
 your ship wil be shown (or to be precise: the Lat and Lon of the "your
 ship" cursor, so make sure you have a GPS fix!).
 
-image:/image/s-wdpi-50.png[s-wdpi-50.png]
+image::s-wdpi-50.png[s-wdpi-50.png]
 
 Radius can be set to whatever you like but "0 meters" will of course
 result in an unwanted amount of alarms. In this example radius is set to
@@ -1316,13 +1304,13 @@ result in an unwanted amount of alarms. In this example radius is set to
 the radius of 50 meters from the specified position, the alarm is not
 triggered and the circle showing that radius has a green edge.
 
-image:/image/s-wdpi-51.png[s-wdpi-51.png]
+image::s-wdpi-51.png[s-wdpi-51.png]
 
 Moving the boat more than the pre-set radius (in this case 50 meters),
 triggers the alarm. The green edge turns red. The text in the WD window
 turns red and shows the distance from the specified position.
 
-image:/image/s-wdpi-52.png[s-wdpi-52.png]
+image::s-wdpi-52.png[s-wdpi-52.png]
 
 *To Stop False Alarms (Hints):*
 
@@ -1366,7 +1354,7 @@ Setting the Course-alarm is explained step-by-step by these screenshots.
 
 Set up a new watchdog alarm and pick "Course"
 
-image:/image/s-wdpi-53_0.png[s-wdpi-53_0.png]
+image::s-wdpi-53_0.png[s-wdpi-53_0.png]
 
 You can set the alarm for, for "Port" only, for "Starboard" only or for
 "Port or Starboard".
@@ -1376,7 +1364,7 @@ port. Choose "Starboard" if you only want to be alarmed when you go too
 far to starboard. Choose "Port or Starboard" if you want to be alarmed
 when you go either too far to port or too far to starboard.
 
-image:/image/s-wdpi-54.png[s-wdpi-54.png]
+image::s-wdpi-54.png[s-wdpi-54.png]
 
 Choose how many degrees you want as margin before the alarm is
 triggered. You can specify the desired course either manually (enter the
@@ -1389,16 +1377,16 @@ degrees to port or more than 20 degrees to starboard from a course of
 
 After you are finished editing the alarm, click "OK".
 
-image:/image/s-wdpi-55.png[s-wdpi-55.png]
+image::s-wdpi-55.png[s-wdpi-55.png]
 
 The "Course Alarm" shows up in the Watchdog Configuration window. Click
 "OK".
 
-image:/image/s-wdpi-56.png[s-wdpi-56.png]
+image::s-wdpi-56.png[s-wdpi-56.png]
 
 Watchdog shows your COG (in this example 168 degrees).
 
-image:/image/s-wdpi-57.png[s-wdpi-57.png]
+image::s-wdpi-57.png[s-wdpi-57.png]
 
 Tick the checkbox (if it isn't ticked yet). Watchdog "Course Alarm" is
 now activated and wil alert you if your course is not between 115 and
@@ -1407,7 +1395,7 @@ now activated and wil alert you if your course is not between 115 and
 In the screenshot below the course is somewhere around 005 degrees. As
 that is (way) off course, the alarm is triggered.
 
-image:/opencpn/manual/plugins/watchdog/s-wdpi-58.png[s-wdpi-58.png]
+image::/opencpn/manual/plugins/watchdog/s-wdpi-58.png[s-wdpi-58.png]
 
  +
 +++link:/opencpn/opencpn_user_manual/plugins/safety/watchdog[Back to top
@@ -1425,7 +1413,7 @@ Setting the Speed-alarm is explained step-by-step by these screenshots.
 
 Set up a new watchdog alarm and pick "Speed"
 
-image:/image/s-wdpi-59_0.png[s-wdpi-59_0.png]
+image::s-wdpi-59_0.png[s-wdpi-59_0.png]
 
 In this example the alarm is set for "Underspeed" and the limit is set
 to 5 knots. In other words: you want to have an alarm as soon as your
@@ -1440,27 +1428,27 @@ In this example the slider is set to 60 seconds. Now Watchdog will only
 trigger the alarm when your *average speed, measured over a period of 60
 seconds*, will be below 5 knots.
 
-image:/image/s-wdpi-60-0.png[s-wdpi-60-0.png]
+image::s-wdpi-60-0.png[s-wdpi-60-0.png]
 
-image:/image/s-wdpi-61-0.png[s-wdpi-61-0.png]
+image::s-wdpi-61-0.png[s-wdpi-61-0.png]
 
 In this example the boat's average speed over 60 seconds was 0.6 knots
 and the limit was set to 5.0 knots. Watchdog shows you "*0.6 < 5.0*"
 (0.6 is less than 5.0).
 
-image:/image/s-wdpi-62-0.png[s-wdpi-62-0.png]
+image::s-wdpi-62-0.png[s-wdpi-62-0.png]
 
 Here we have set **two **speed-alarms. One for **Underspeed **and one
 for *Overspeed*.
 
-image:/image/s-wdpi-62-01.png[s-wdpi-62-01.png]
+image::s-wdpi-62-01.png[s-wdpi-62-01.png]
 
 In this screenshot the limit was still 5.0 knots, but the boat's average
 speed over 60 seconds was 0.3 knots. The "Underspeed" alarm was
 triggered and the text turned red. The "Overspeed" alarm did not get
 triggered and that text remained black.
 
-image:/image/s-wdpi-62-02.png[s-wdpi-62-02.png]
+image::s-wdpi-62-02.png[s-wdpi-62-02.png]
 
  +
 +++link:/opencpn/opencpn_user_manual/plugins/safety/watchdog[Back to top
@@ -1484,7 +1472,7 @@ sensors + gps) +
 3) True Absolute - wind would feel if boat stopped and faced north
 (requires wind sensors + gps + compass)
 
-image:/image/april-2020-025.png[april-2020-025.png]
+image::april-2020-025.png[april-2020-025.png]
 
 +++link:/opencpn/opencpn_user_manual/plugins/safety/watchdog[Back to top
 of page.]+++
@@ -1498,9 +1486,9 @@ air temperature, sea temperature, relative humidity and humidity. This
 is of course only possible if there are (digital) sensors for these
 parameters connected to OpenCPN.
 
-image:/image/april-2020-weather-alarm-001.png[april-2020-weather-alarm-001.png]
+image::april-2020-weather-alarm-001.png[april-2020-weather-alarm-001.png]
 
-image:/image/april-2020-weather-alarm-002.png[april-2020-weather-alarm-002.png]
+image::april-2020-weather-alarm-002.png[april-2020-weather-alarm-002.png]
 
 For the region of North Sea and Baltic Sea (40 - 60 degrees N) this
 table can be used as an indication:
@@ -1572,13 +1560,13 @@ https://opencpn.org/wiki/dokuwiki/doku.php?id=opencpn:opencpn_user_manual:plugin
 In Watchdog there are several options to warn you for possible problems
 in the soft- or hardware of the Pypilot autopilot.
 
-image:/image/april-2020-031.png[april-2020-031.png]
+image::april-2020-031.png[april-2020-031.png]
 
-image:/image/april-2020-033.png[april-2020-033.png]
+image::april-2020-033.png[april-2020-033.png]
 
-image:/image/april-2020-030.png[april-2020-030.png]
+image::april-2020-030.png[april-2020-030.png]
 
-image:/image/april-2020-032.png[april-2020-032.png]
+image::april-2020-032.png[april-2020-032.png]
 
 +++link:/opencpn/opencpn_user_manual/plugins/safety/watchdog[Back to top
 of page.]+++
@@ -1603,15 +1591,15 @@ screenshots.
 
 Set up a new watchdog alarm and pick "Deadman"
 
-image:/image/s-wdpi-63_0.png[s-wdpi-63_0.png]
+image::s-wdpi-63_0.png[s-wdpi-63_0.png]
 
-image:/image/s-wdpi-64.png[s-wdpi-64.png]
+image::s-wdpi-64.png[s-wdpi-64.png]
 
-image:/image/s-wdpi-65.png[s-wdpi-65.png]
+image::s-wdpi-65.png[s-wdpi-65.png]
 
 Once set, the clock starts ticking.
 
-image:/image/s-wdpi-66.png[s-wdpi-66.png]
+image::s-wdpi-66.png[s-wdpi-66.png]
 
  +
 +++link:/opencpn/opencpn_user_manual/plugins/safety/watchdog[Back to top
@@ -1632,7 +1620,7 @@ and your AIS receiver.
 In this picture there is a set-up with a GPS receiver and a AIS receiver
 connected to OpenCPN. Here the GPS is on COM21 and the AIS on COM16.
 
-image:/image/s-wdpi-67.png[s-wdpi-67.png]
+image:: s-wdpi-67.png[s-wdpi-67.png]
 
 *NMEA and your position.* +
 For a chart-plotting program like OpenCPN the most important type of
@@ -1661,17 +1649,17 @@ the GPS fix is lost for more than 10 seconds.
 
 Set up a new watchdog alarm, choose "NMEA Data" and click "OK"
 
-image:/image/s-wdpi-68_0.png[s-wdpi-68_0.png]
+image::s-wdpi-68_0.png[s-wdpi-68_0.png]
 
 Standard "$GPGGA" is set. Set timer to "at least every 10 seconds" and
 tick the other boxes as per the screenshot below. Click "OK"
 
-image:/image/s-wdpi-69.png[s-wdpi-69.png]
+image::s-wdpi-69.png[s-wdpi-69.png]
 
 Now you have your NMEA-alarm set. It will be triggered 10 seconds after
 OpenCPN stops receiving GGA-sentences.
 
-image:/image/s-wdpi-70.png[s-wdpi-70.png]
+image::s-wdpi-70.png[s-wdpi-70.png]
 
 *NMEA and the position of other ships* +
 NMEA-data can not only show you where you are, they can also show where
@@ -1689,19 +1677,19 @@ as the GPS alarm but AIS data (from other ships) always begin with
 You can add a new NMEA-alarm (see the previous steps) but now you fill
 in *!AIVDM*
 
-image:/image/s-wdpi-71.png[s-wdpi-71.png]
+image::s-wdpi-71.png[s-wdpi-71.png]
 
 The result is two NMEA Data-alarms (one for GPS fix and one for
 AIS-data)
 
-image:/image/s-wdpi-72.png[s-wdpi-72.png]
+image::s-wdpi-72.png[s-wdpi-72.png]
 
 The upper NMEA Data alarm is the AIS-alarm. The lower NMEA Data alarm is
 the GPS alarm.
 
 Each alarm can be switched on or off.
 
-image:/image/s-wdpi-73.png[s-wdpi-73.png]
+image::s-wdpi-73.png[s-wdpi-73.png]
 
 ==== EMAIL TO YOURSELF
 
@@ -1712,7 +1700,7 @@ this example that file is stored in the root of our computer (C:\) but
 of course you can put in anywhere, as long as you tell Watchdog where to
 find it.
 
-image:/image/s-wdpi-04aa.png[s-wdpi-04aa.png]
+image::s-wdpi-04aa.png[s-wdpi-04aa.png]
 
 Sending emails from the command prompt can be done with a small tool
 called "Send-It-Quiet". More info:
@@ -1742,7 +1730,7 @@ anchor is dragging!*"
 
 The result when the anchor alarm gets triggered…
 
-image:/image/s-wdpi-04b.png[s-wdpi-04b.png]
+image::s-wdpi-04b.png[s-wdpi-04b.png]
 
 *Note* Of course this only works when you can actually email from the
 computer OpenCPN is installed on! This example is tested on a Windows 7
