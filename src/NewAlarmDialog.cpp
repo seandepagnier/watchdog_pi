@@ -31,6 +31,7 @@ NewAlarmDialog::NewAlarmDialog(wxWindow* parent)
     : NewAlarmDialogBase(parent)
 {
     m_lAlarmType->InsertColumn(0, _T(""));
+    m_lAlarmType->InsertItem(DEPTH, _("Depth"));
     m_lAlarmType->InsertItem(ANCHOR,   _("Anchor"));
     m_lAlarmType->InsertItem(COURSE,   _("Course"));
     m_lAlarmType->InsertItem(SPEED,    _("Speed"));

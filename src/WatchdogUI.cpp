@@ -437,6 +437,79 @@ EditAlarmDialogBase::~EditAlarmDialogBase()
 
 }
 
+
+DepthPanel::DepthPanel(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name) : wxPanel(parent, id, pos, size, style, name)
+{
+	wxStaticBoxSizer* sbSizer7;
+	sbSizer7 = new wxStaticBoxSizer(new wxStaticBox(this, wxID_ANY, _("Depth Alarm")), wxVERTICAL);
+
+	wxFlexGridSizer* fgSizer14;
+	fgSizer14 = new wxFlexGridSizer(0, 3, 0, 0);
+	fgSizer14->SetFlexibleDirection(wxBOTH);
+	fgSizer14->SetNonFlexibleGrowMode(wxFLEX_GROWMODE_SPECIFIED);
+
+	m_staticText51 = new wxStaticText(sbSizer7->GetStaticBox(), wxID_ANY, _("Type"), wxDefaultPosition, wxDefaultSize, 0);
+	m_staticText51->Wrap(-1);
+	fgSizer14->Add(m_staticText51, 0, wxALL, 5);
+
+	wxString m_cModeChoices[] = { _("Minimum Depth"), _("Depth Decreasing"), _("Maximum Depth"), _("Depth Increasing") };
+	int m_cModeNChoices = sizeof(m_cModeChoices) / sizeof(wxString);
+	m_cMode = new wxChoice(sbSizer7->GetStaticBox(), wxID_ANY, wxDefaultPosition, wxDefaultSize, m_cModeNChoices, m_cModeChoices, 0);
+	m_cMode->SetSelection(0);
+	fgSizer14->Add(m_cMode, 0, wxALL, 5);
+
+
+	fgSizer14->Add(0, 0, 1, wxEXPAND, 5);
+
+	m_staticText44 = new wxStaticText(sbSizer7->GetStaticBox(), wxID_ANY, _("Depth"), wxDefaultPosition, wxDefaultSize, 0);
+	m_staticText44->Wrap(-1);
+	fgSizer14->Add(m_staticText44, 0, wxALL, 5);
+
+	m_tDepth = new wxTextCtrl(sbSizer7->GetStaticBox(), wxID_ANY, _("1"), wxDefaultPosition, wxDefaultSize, 0);
+#ifdef __WXGTK__
+	if (!m_tDepth->HasFlag(wxTE_MULTILINE))
+	{
+		m_tDepth->SetMaxLength(10);
+	}
+#else
+	m_tDepth->SetMaxLength(10);
+#endif
+	fgSizer14->Add(m_tDepth, 0, wxALL, 5);
+
+	wxString m_cUnitsChoices[] = { _("Meters"), _("Feet") };
+	int m_cUnitsNChoices = sizeof(m_cUnitsChoices) / sizeof(wxString);
+	m_cUnits = new wxChoice(sbSizer7->GetStaticBox(), wxID_ANY, wxDefaultPosition, wxDefaultSize, m_cUnitsNChoices, m_cUnitsChoices, 0);
+	m_cUnits->SetSelection(0);
+	fgSizer14->Add(m_cUnits, 0, wxALL, 5);
+
+
+	sbSizer7->Add(fgSizer14, 1, wxEXPAND, 5);
+
+	wxFlexGridSizer* fgSizer45;
+	fgSizer45 = new wxFlexGridSizer(0, 2, 0, 0);
+	fgSizer45->AddGrowableCol(0);
+	fgSizer45->AddGrowableRow(0);
+	fgSizer45->SetFlexibleDirection(wxBOTH);
+	fgSizer45->SetNonFlexibleGrowMode(wxFLEX_GROWMODE_SPECIFIED);
+
+	m_staticText64 = new wxStaticText(sbSizer7->GetStaticBox(), wxID_ANY, _("Alarm will trigger if less than the minimum depth, or greater than maximum depth.\n\nAlarm will trigger if increasing/decreasing at the depth in units per second over the last 10 seconds."), wxDefaultPosition, wxDefaultSize, 0);
+	m_staticText64->Wrap(-1);
+	fgSizer45->Add(m_staticText64, 0, wxALL | wxEXPAND, 5);
+
+
+	sbSizer7->Add(fgSizer45, 1, wxEXPAND, 5);
+
+
+	this->SetSizer(sbSizer7);
+	this->Layout();
+}
+
+DepthPanel::~DepthPanel()
+{
+}
+
+
+
 AnchorPanel::AnchorPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) : wxPanel( parent, id, pos, size, style, name )
 {
 	wxFlexGridSizer* fgSizer24;

@@ -218,6 +218,30 @@ class EditAlarmDialogBase : public wxDialog
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/// Class DepthPanel
+///////////////////////////////////////////////////////////////////////////////
+class DepthPanel : public wxPanel
+{
+private:
+
+protected:
+	wxStaticText* m_staticText51;
+	wxStaticText* m_staticText44;
+	
+	wxStaticText* m_staticText64;
+
+public:
+	wxChoice* m_cUnits;
+	wxChoice* m_cMode;
+	wxTextCtrl* m_tDepth;
+
+	DepthPanel(wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(500, 300), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString);
+	~DepthPanel();
+
+};
+
+
+///////////////////////////////////////////////////////////////////////////////
 /// Class AnchorPanel
 ///////////////////////////////////////////////////////////////////////////////
 class AnchorPanel : public wxPanel
