@@ -55,6 +55,184 @@ static double rad2deg(double rad)
 }
 
 ///////// The Alarm classes /////////
+class DepthAlarm : public Alarm
+{
+public:
+	DepthAlarm() : Alarm(true), m_Mode(MINIMUM), m_dDepth(5) {
+		m_depth = m_depthrate = NAN;
+		m_pri_depth = 99;
+	}
+
+	wxString Type() { return _("Depth"); }
+
+	wxString GetStatus() {
+		wxString s;
+		if (wxIsNaN(m_depth))			
+			s = "N/A";
+		else {
+			wxString fmt("%.1f");
+			double d = (m_Mode == INCREASING || m_Mode == DECREASING) ? DepthRate() : Depth();
+			s = wxString::Format(fmt + (d < m_dDepth ? " < " : " > ") + fmt, d, m_dDepth);
+
+			//wxMessageBox(s);
+		}
+		//wxMessageBox(s);
+		return s;
+	}
+
+	bool Test() {
+		double depth = Depth();
+		if (wxIsNaN(depth))
+			return m_bNoData;
+
+		switch (m_Mode) {
+		case MINIMUM:
+			return m_dDepth > depth;
+		case DECREASING:
+			return m_dDepth > DepthRate();
+		case MAXIMUM:
+			return m_dDepth < depth;
+		case INCREASING:
+			return m_dDepth < DepthRate();
+		}
+		return false;
+	}
+
+	wxWindow *OpenPanel(wxWindow *parent) {
+		DepthPanel *panel = new DepthPanel(parent);
+		panel->m_cMode->SetSelection((int)m_Mode);
+		panel->m_tDepth->SetValue(wxString::Format("%f", m_dDepth));
+		//panel->m_sliderSOGAverageNumber->SetValue(m_iAverageTime);
+		return panel;
+	}
+
+	void SavePanel(wxWindow *p) {
+		DepthPanel *panel = (DepthPanel*)p;
+		m_Mode = (Mode)panel->m_cMode->GetSelection();
+		panel->m_tDepth->GetValue().ToDouble(&m_dDepth);		
+		m_iUnits = panel->m_cUnits->GetSelection();
+
+		//m_iAverageTime = panel->m_sliderSOGAverageNumber->GetValue();
+	}
+
+	void LoadConfig(TiXmlElement *e) {
+		const char *mode = e->Attribute("Mode");
+		if (!strcasecmp(mode, "Minimum")) m_Mode = MINIMUM;
+		else if (!strcasecmp(mode, "Decreasing")) m_Mode = DECREASING;
+		else if (!strcasecmp(mode, "Maximum")) m_Mode = MAXIMUM;
+		else if (!strcasecmp(mode, "Increasing")) m_Mode = INCREASING;
+		else wxLogMessage("Watchdog: " + wxString(_("invalid Depth mode")) + ": "
+			+ wxString::FromUTF8(mode));
+
+		e->Attribute("Depth", &m_dDepth);
+		e->Attribute("Units", &m_iUnits);
+
+		//m_iAverageTime = 10;
+		//e->Attribute("AverageTime", &m_iAverageTime);
+	}
+
+	void SaveConfig(TiXmlElement *c) {
+		c->SetAttribute("Type", "Depth");
+		switch (m_Mode) {
+		case MINIMUM:
+			c->SetAttribute("Mode", "Minimum");
+			break;
+		case DECREASING:
+			c->SetAttribute("Mode", "Decreasing");
+			break;
+		case MAXIMUM:
+			c->SetAttribute("Mode", "Maximum");
+			break;
+		case INCREASING:
+			c->SetAttribute("Mode", "Increasing");
+			break;
+		}
+
+		c->SetDoubleAttribute("Depth", m_dDepth);
+		c->SetAttribute("Units", m_iUnits);
+		//c->SetAttribute("AverageTime", m_iAverageTime);
+	}
+
+	void NMEAString(const wxString &string) {
+		wxString str = string;
+		NMEA0183 nmea;
+		double depth = NAN;
+		nmea << str;
+
+
+
+		if (!nmea.PreParse()) {			
+			return;
+		}
+
+		if (m_pri_depth >= 4 && nmea.LastSentenceIDReceived == "DBT" && nmea.Parse()) {
+			m_pri_depth = 4;
+			depth = NAN;
+			if (!wxIsNaN(nmea.Dbt.DepthMeters)) {
+				depth = nmea.Dbt.DepthMeters;
+				wxString d = wxString::Format("%f", depth);
+
+			}
+			else if (!wxIsNaN(nmea.Dbt.DepthFeet))
+				depth = nmea.Dbt.DepthFeet * 0.3048;
+			else if (!wxIsNaN(nmea.Dbt.DepthFathoms))
+				depth = nmea.Dbt.DepthFathoms * 1.82880;
+			else
+				return;
+		} 
+
+		if (m_pri_depth >= 3 && nmea.LastSentenceIDReceived == "DPT" && nmea.Parse()) {
+			m_pri_depth = 3;
+			depth = nmea.Dpt.DepthMeters;
+
+			{
+				if (!wxIsNaN(nmea.Dpt.OffsetFromTransducerMeters)) {
+					depth += nmea.Dpt.OffsetFromTransducerMeters;					
+				}
+			}
+		}
+		else
+			return;
+
+
+       if (depth != NAN) {
+
+			wxDateTime now = wxDateTime::UNow();
+			m_depthrate = 1000.0*(depth - m_depth) /
+				(now - m_lastdepthtime).GetMilliseconds().ToLong();
+
+			m_lastdepthtime = now;
+			m_depth = depth;
+
+		}
+
+
+	}
+private:
+	double Depth() {
+		wxDateTime now = wxDateTime::UNow();
+		if ((now - m_lastdepthtime).GetMilliseconds() > 20000)
+			m_depth = m_depthrate = 0; // invalid if older than 10s (20s)
+
+		return m_depth * (m_iUnits == METERS ? 1 : 3.281);
+	}
+
+	double DepthRate() {
+		return m_depthrate * (m_iUnits == METERS ? 1 : 3.281);
+	}
+
+	enum Mode { MINIMUM, DECREASING, MAXIMUM, INCREASING } m_Mode;
+	enum Units { METERS, FEET } m_Units;
+	double  m_dDepth;
+	int     m_iUnits;
+
+	double m_depth, m_depthrate;
+	wxDateTime m_lastdepthtime;
+	int m_pri_depth = 3;
+};
+
+
+
 class AnchorAlarm : public Alarm
 {
 public:
@@ -2654,6 +2832,7 @@ void Alarm::LoadConfigAll()
                 continue;
             Alarm *alarm;
             if(!strcasecmp(type, "Anchor")) alarm = Alarm::NewAlarm(ANCHOR);
+			else if(!strcasecmp(type, "Depth")) alarm = Alarm::NewAlarm(DEPTH);
             else if(!strcasecmp(type, "Course")) alarm = Alarm::NewAlarm(COURSE);
             else if(!strcasecmp(type, "Speed")) alarm = Alarm::NewAlarm(SPEED);
             else if(!strcasecmp(type, "Wind")) alarm = Alarm::NewAlarm(WIND);
@@ -2728,6 +2907,7 @@ Alarm *Alarm::NewAlarm(enum AlarmType type)
     Alarm *alarm;
     switch(type) {
     case ANCHOR:   alarm = new AnchorAlarm;   break;
+	case DEPTH:   alarm = new DepthAlarm;   break;
     case COURSE:   alarm = new CourseAlarm;   break;
     case SPEED:    alarm = new SpeedAlarm;    break;
     case WIND:     alarm = new WindAlarm;     break;
