@@ -168,11 +168,10 @@ class NewAlarmDialogBase : public wxDialog
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnDoubleClick( wxMouseEvent& event ) { event.Skip(); }
 
-
 	public:
 		wxListCtrl* m_lAlarmType;
 
-		NewAlarmDialogBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("New Alarm"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 200,300 ), long style = wxDEFAULT_DIALOG_STYLE );
+		NewAlarmDialogBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("New Alarm"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1), long style = wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER);
 		~NewAlarmDialogBase();
 
 };

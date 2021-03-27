@@ -293,13 +293,13 @@ NewAlarmDialogBase::NewAlarmDialogBase( wxWindow* parent, wxWindowID id, const w
 	m_sdbSizer3->AddButton( m_sdbSizer3Cancel );
 	m_sdbSizer3->Realize();
 
-	fgSizer40->Add( m_sdbSizer3, 1, wxEXPAND, 5 );
-
+    fgSizer40->Add( m_sdbSizer3, 1, wxALL | wxEXPAND, 5 );
 
 	this->SetSizer( fgSizer40 );
 	this->Layout();
 
 	this->Centre( wxBOTH );
+    fgSizer40->Fit(this);
 
 	// Connect Events
 	m_lAlarmType->Connect( wxEVT_LEFT_DCLICK, wxMouseEventHandler( NewAlarmDialogBase::OnDoubleClick ), NULL, this );
