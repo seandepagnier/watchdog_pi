@@ -11,7 +11,7 @@ parameters:
         default: true
     run_build_armhf_buster:
         type: boolean
-        default: true
+        default: false
     run_build_armhf_bionic_64:
         type: boolean
         default: true
@@ -50,10 +50,10 @@ parameters:
         default: true
     run_build_android_arm64:
         type: boolean
-        default: true
+        default: false
     run_build_android_armhf:
         type: boolean
-        default: true
+        default: false
 
 orbs:
     cloudsmith: cloudsmith/cloudsmith@1.0.4
