@@ -23,6 +23,9 @@ else(NOT ${PACKAGE} MATCHES "(.*)_pi")
 endif(NOT ${PACKAGE} MATCHES "(.*)_pi")
 string(TOUPPER "${PACKAGE}" TITLE_NAME)
 
+# add library for use later
+add_library(${PACKAGE_NAME} SHARED)
+
 project(${PACKAGE} VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}.${VERSION_TWEAK})
 message(STATUS "${CMLOC}PROJECT_VERSION: ${PROJECT_VERSION}")
 
@@ -164,7 +167,7 @@ if(NOT WIN32 AND NOT QT_ANDROID)
                 set(PACKAGE_DEPS "opencpn")
                 if(CMAKE_SIZEOF_VOID_P MATCHES "8")
                     set(ARCH "x86_64")
-                    set(LIB_INSTALL_DIR "lib")
+                    set(LIB_INSTALL_DIR "lib64")
                 else(CMAKE_SIZEOF_VOID_P MATCHES "8")
                     set(ARCH "i386")
                     set(LIB_INSTALL_DIR "lib")

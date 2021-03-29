@@ -38,15 +38,25 @@ docker exec -ti $DOCKER_CONTAINER_ID /bin/bash -xec \
 # Run build script
 rm -f build.sh
 if [ "$BUILD_ENV" = "raspbian" ]; then
-    cat > build.sh << "EOF"
-    install_packages git cmake build-essential cmake gettext wx-common libgtk2.0-dev libwxgtk3.0-dev libbz2-dev libcurl4-openssl-dev libexpat1-dev libcairo2-dev libarchive-dev liblzma-dev libexif-dev lsb-release
+    if [ "$OCPN_TARGET" = "buster-armhf" ]; then
+        cat > build.sh << "EOF"
+        # cmake 3.16 has a bug that stops the build to use an older version
+        install_packages cmake=3.13.4-1 cmake-data=3.13.4-1
 EOF
+    else
+        cat > build.sh << "EOF1"
+        install_packages cmake cmake-data
+EOF1
+    fi
+    cat >> build.sh << "EOF2"
+    install_packages git build-essential devscripts equivs gettext wx-common libgtk2.0-dev libwxbase3.0-dev libwxgtk3.0-dev libbz2-dev libcurl4-openssl-dev libexpat1-dev libcairo2-dev libarchive-dev liblzma-dev libexif-dev lsb-release
+EOF2
 else
-    cat > build.sh << "EOF"
+    cat > build.sh << "EOF3"
     apt-get -qq update
     apt-get -y install --no-install-recommends \
-    git cmake build-essential cmake gettext wx-common libgtk2.0-dev libwxgtk3.0-dev libbz2-dev libcurl4-openssl-dev libexpat1-dev libcairo2-dev libarchive-dev liblzma-dev libexif-dev lsb-release
-EOF
+    git cmake build-essential gettext wx-common libgtk2.0-dev libwxbase3.0-dev libwxgtk3.0-dev libbz2-dev libcurl4-openssl-dev libexpat1-dev libcairo2-dev libarchive-dev liblzma-dev libexif-dev lsb-release
+EOF3
 fi
 
 cat build.sh
