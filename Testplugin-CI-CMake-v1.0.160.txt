@@ -1,0 +1,142 @@
+This is destined eventually for the antora/asciidoc   manuals folder in github/testpluging_pi\manual\testplugin\modules\ROOT\pages  or somewhere else I think.
+
+Instructions to PI Developers to use CI CMake by Jon Gough
+
+1. Software needed
+   See Compiling for your OS
+   Git bash from Git GUI (Windows) Required.
+   Winmerge (Windows) very useful.
+   Linux tools are in the OS already.        
+
+2. Service Accounts Required (Free opensource) Login with Github 
+   Github Account: Plugin Code Repository (essential) 
+   Circleci Account: Build Service 
+   Appveyor Account: Build Service for Windows
+   Cloudsmith Account: Deploy Service, tarball, metadata, package repository
+   Github.com/opencpn/plugins: Plugin Manager Catalog Repository
+   Refer to the graphic diagram for the process. 
+ 
+3. Basic Local Github Setup
+   A. Make a local working branch of your remote plugin. Update your local github/<plugin> from the remote repository.  From local github/<plugin> master branch, git checkout -b master-cmake
+   B. From your remote github (after you have forked the remote jongough/Testplugin repository) make a PR from jongough master and merge it into your master. 
+   C. From local,  cd documents/github/testplugin_pi  then  git pull origin (or upstream) master to update locally.
+   D. From local in bash cd watchdog_pi  make sure you are in master-cmake branch  
+   E. From local using WinMerge open a comparison between testplugin_pi and watchdog_pi
+   F.Now you're ready to update the plugin. Please note not all environments will work immediately because the plugin code inevitably needs to be updated and adjusted to these more current standards.
+
+4. Folders unique to the PI which should not be changed (some may not exist)
+    build,
+	data,
+	include,
+	po (language),
+	src,   (normally has TexFont.h file)
+	forms,
+	manuals/<plugin> Documentation
+	ui
+
+5. Folders copied from Testplugin to the github/<plugin> to be identical.
+    circleci,
+	buildosx,
+	buildwin,
+	ci,
+	cmake,
+	extinclude,
+	extsrc,
+	libs  (also all libs/<subdir, leave other existing)
+    libs/ocpn-api with ocpn_plugin.h, opencpn.lib (msvc), libopencpn.dll (mingw)
+    ocpnsrc      glu and Texfont.cpp
+    ocpninclude  GL (4 files) + TexFont.h  Are other files needed?
+
+6.  Copy files from Testplugin to github/<plugin> 
+    travis.yml,
+	appveyor.yml
+
+7. Remove folder and files
+    api-16
+    buildandroid (maybe) which are bdbcat and may not be needed.
+	include  watchdog may have an android/datectrl.h file may not be needed 
+	
+8.  Edit the CMakeLists.txt file appropriately and carefully to build locally.
+    It is best to follow the form of Testplugin where possible, modifying entries for the specific plugin.
+	The CMakeLists.txt has explanatory notations for the PI Dev's modifications.
+	    
+    Remove these lines if they exist.
+      set(LIBSSRC libs/wxJSON/src/jsonreader.cpp libs/wxJSON/src/jsonval.cpp libs/wxJSON/src/jsonwriter.cpp)
+	  
+	For example moving src/jsoncpp and src/nmea0183 to libs/<sub-dir> format involved the following:  
+
+    Add these lines (Note: Order is important and affects building)
+      include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude)
+      include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/jsoncpp)
+      include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/nmea0183/src)
+	  
+	The watchdog order in this section is now
+		# include_directories(BEFORE ${PROJECT_SOURCE_DIR}/include)  #maybe needed for android datectrl.h?
+		include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude)
+		include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnsrc/glu/include)
+		include_directories(BEFORE ${PROJECT_SOURCE_DIR}/${EXTINCLUDE_DIR})
+		include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/)
+		include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/wx/include)
+		include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/jsoncpp)
+		include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/nmea0183/src)
+
+    Remove other lines that are no longer current such as
+	  include_directories(BEFORE ${PROJECT_SOURCE_DIR}/src/jsoncpp)
+      include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/wxJSON)  (then removed)
+	
+    Remove  ${SRC_JSON}  and  ${SRC_NMEA0183}  from
+        target_sources(${PACKAGE_NAME} PUBLIC ${SRCS} ${HDRS} ${OCPNSRC} ${EXTSRC} ${LIBSSRC} )
+
+    Added   add_subdirectory  and target_link_libraries
+        add_subdirectory(libs/nmea0183)
+        target_link_libraries(${PACKAGE_NAME} ocpn::nmea0183)
+
+    Added cmake/SimpleWxConfig.cmake  file
+    Fixed  libs/nmea0183/CMakeLists.txt file
+
+    Commented out  special cmake files that did the same thing and now not needed
+        #include("PluginNMEA") #not for wxfax
+        #include("PluginJSON")  #not for wxfax  #commented out using libs
+
+    Commented out Ubuntu #if(UNIX) In lieu of "-fPIC" 
+	    #set(CMAKE_POSITION_INDEPENDENT_CODE ON)  
+
+    Moved wxjson/wx/json_defs.h, jsonreader.h, jsonval.h, jsonwriter.h to be under libs, then removed these files.
+
+    Moved src/jsoncpp/ (17 files with similar files as 4 above) to libs/jsoncpp/include/json/ and libs/jsoncpp/src
+
+    Edited and fixed libs/jsoncpp/CMakeLists.txt to work.
+	In pluginsetup.cmake added src/TexFont.h to the list.
+
+Questions	
+	In CMakeLists.txt SET(SRC..add src/signalk.cpp?
+	In pluginsetup.cmake should we add signalk.h back into the list?
+	In CmakeLists.txt why able to remove #set(CMAKE_POSITION_INDEPENDENT_CODE ON)?
+	In ocpninclude -Does watchdog need this directory? Can't we remove it?
+        - pluginsetup.cmake is using src/TexFont.h
+		- libs/GL exists (Can't we use this? See next item.)
+		- CMakeLists  remove this? 
+			include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude)
+    In CMakeLists should I remove or keep 
+		- set(LIBHDRS libs/GL/gl.h libs/GL/gl_private.h libs/GL/glext.h libs/GL/glu.h)
+		- Remove or keep ${LIBHDRS} from target line?
+		- or should we add
+	In ocpnsrc there is opnsrc/glu folder and TexFont.cpp Can ocpnsrc be removed?
+        - libs/glu exists (do not know if it is the same, as you made changes to this area.
+		- perhaps copy ocpnsrc/glu to libs/glu?
+        - src/TexFont.cpp could be moved to src
+		- src/TextFont.cpp added to CMakeLists.txt list SET(SRCs ,,,
+        - change CMakeLists.txt
+			include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnsrc/glu/include)
+			to  include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/glu/include)?		
+    In libs can I remove libs/bzip2 safely?
+	How would I fix the tinyxml -fPic error in xenial and trusty builds?
+		#if(UNIX)
+		# Add this in lieu of add_definitions ("-fPIC")
+		#   set(CMAKE_POSITION_INDEPENDENT_CODE ON)  
+		#endif(UNIX)
+    How can I fix the android builds? Should I ask bdbcat? His ci scripts are not being used.
+		Can buildandroid folder be removed now without affecting? - no
+		Can leftover include/android/wx/datectrl.h be moved, deleted or not? -no
+
+ 

@@ -19,7 +19,7 @@
 ## *   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                                       *
 ## ***
 #-----------------------------------------------------------------------------
-# Frontend2: v1.0.160.0   9.02/2021   Frontend2 Author: Jon Gough  
+# CI-CMake: v1.0.160.0   9.02/2021   CI-CMake Author: Jon Gough  
 # ---------------------------------------------------------------------------
 
 ## ----- When changing this file do NOT change the order in which sections occur        ----- ##
@@ -54,9 +54,9 @@ set(LONG_DESCRIPTION "Multiple Configurable alarms for  changing conditions for 
 
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "4")
-set(VERSION_PATCH "26")
-set(VERSION_TWEAK "3")
-set(VERSION_DATE "29/3/2021") # DD/MM/YYYY format
+set(VERSION_PATCH "27")
+set(VERSION_TWEAK "0")
+set(VERSION_DATE "30/3/2021") # DD/MM/YYYY format
 set(OCPN_MIN_VERSION "ov50")
 set(OCPN_API_VERSION_MAJOR "1")
 set(OCPN_API_VERSION_MINOR "16")
@@ -124,7 +124,7 @@ set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 ##=======================================
 include("PluginSetup")
 ##=======================================
-## ----- The above is used to setup standard variables that are required by the CMAKE process - do not remove ----- ##
+## ----- Above is used to setup CMAKE required standard variables - do not remove ----- ##
 ## ----- Modify section below if there are special requirements for the plugin ----- ##
 ##
 
@@ -145,10 +145,6 @@ add_definitions(-DUSE_S57)
 
 # ----Remember to Add your project Set(SRCS and set(HDRS  etc..	
 # ++++++++++++++Section below is direct from Watchdog +++++++++##
-
-#IF(PLUGIN_USE_SVG)
- # ADD_DEFINITIONS(-DWATCHDOG_USE_SVG)
-#ENDIF(PLUGIN_USE_SVG)
 
 IF(PLUGIN_USE_SVG)
     MESSAGE(STATUS "${CMLOC}SVG support enabled...")
@@ -208,10 +204,6 @@ set(LIBHDRS
     libs/GL/gl_private.h
     libs/GL/glext.h
     libs/GL/glu.h
-#    libs/wx/include/wx/json_defs.h
-#    libs/wx/include/wx/jsonreader.h
-#    libs/wx/include/wx/jsonval.h
-#    libs/wx/include/wx/jsonwriter.h
 )
 
 add_definitions(-DPLUGIN_USE_SVG)
@@ -231,7 +223,6 @@ if(PI_JSON_SCHEMA_VALIDATOR)
 
     set(EXTSRC ${EXTSRC} extsrc/json-schema-validator/json-schema-draft7.json.cpp extsrc/json-schema-validator/json-uri.cpp extsrc/json-schema-validator/json-validator.cpp)
     set(EXTINCLUDE_DIR ${EXTINCLUDE_DIR} extinclude/nlohmann extinclude)
-    #include_directories(BEFORE ${PROJECT_SOURCE_DIR}/extinclude/json-schema-validator)
 
 else(PI_JSON_SCHEMA_VALIDATOR)
     message(STATUS "${CMLOC}Not using JSON Schema validation - warning invalid JSON 'may' cause unexpected crashes")
@@ -241,19 +232,13 @@ endif(PI_JSON_SCHEMA_VALIDATOR)
 # Modify/configure 'Include' Directories below for the Plugin
 ##=============================================================
 
-# include_directories(BEFORE ${PROJECT_SOURCE_DIR}/include)
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/include)  #maybe needed for android datectrl.h?
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude)
-# include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnsrc)  #added to fix TexFont.cpp error, did not fix it
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnsrc/glu/include)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/${EXTINCLUDE_DIR})
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/wx/include)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/jsoncpp)
-#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude/wxcurl)
-#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude/wxcurl/include)
-#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnsrc/lz4)
-#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnsrc/bitmaps)
-#INCLUDE_DIRECTORIES(api-16)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/nmea0183/src)
 
 #==============================
@@ -304,7 +289,6 @@ add_definitions(-DTIXML_USE_STL)
 #turned off
 #add_subdirectory(libs/nmea0183)
 #target_link_libraries(${PACKAGE_NAME} ocpn::nmea0183)
-
 
 #off anyway
 #add_subdirectory("libs/jsoncpp")
