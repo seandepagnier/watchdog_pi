@@ -203,8 +203,6 @@ set(EXTINCLUDE
     extinclude/ODJSONSchemas.h
 )
 
-set(LIBSSRC libs/wxJSON/src/jsonreader.cpp libs/wxJSON/src/jsonval.cpp libs/wxJSON/src/jsonwriter.cpp)
-
 set(LIBHDRS
     libs/GL/gl.h
     libs/GL/gl_private.h
@@ -250,14 +248,13 @@ include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnsrc/glu/include)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/${EXTINCLUDE_DIR})
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/wx/include)
-include_directories(BEFORE ${PROJECT_SOURCE_DIR}/src/jsoncpp)
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/jsoncpp)
 #include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude/wxcurl)
 #include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude/wxcurl/include)
 #include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnsrc/lz4)
 #include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnsrc/bitmaps)
 #INCLUDE_DIRECTORIES(api-16)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/nmea0183/src)
-include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/wxJSON)
 
 #==============================
 target_sources(${PACKAGE_NAME} PUBLIC ${SRCS} ${HDRS} ${OCPNSRC} ${EXTSRC} ${LIBSSRC} )
@@ -267,9 +264,11 @@ if(NOT OCPN_FLATPAK_CONFIG)
     # Build environment not available when flatpak is being configured so following statements will not work
     message(STATUS "${CMLOC}Adding target link libraries to ${PACKAGE_NAME}")
 
+    add_subdirectory(libs/jsoncpp)
     add_subdirectory(libs/nmea0183)
     add_subdirectory(libs/tinyxml)
 
+    target_link_libraries(${PACKAGE_NAME} ocpn::jsoncpp)
     target_link_libraries(${PACKAGE_NAME} ocpn::nmea0183)
     target_link_libraries(${PACKAGE_NAME} ocpn::tinyxml)
 endif(NOT OCPN_FLATPAK_CONFIG)
