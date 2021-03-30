@@ -18,7 +18,6 @@ src/icons.h
 src/msvcdefs.h
 src/NewAlarmDialog.h
 src/ODAPI.h
-src/signalk_client.h
 src/TexFont.h
 src/watchdog_pi.h
 src/WatchdogDialog.h
@@ -28,3 +27,4 @@ src/wddc.h
 src/WeatherPanel.h
 src/WindPanel.h
 src/wxWTranslateCatalog.h
+src/TexFont.h
