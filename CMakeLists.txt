@@ -55,8 +55,8 @@ set(LONG_DESCRIPTION "Multiple Configurable alarms for  changing conditions for 
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "4")
 set(VERSION_PATCH "26")
-set(VERSION_TWEAK "2")
-set(VERSION_DATE "28/3/2021") # DD/MM/YYYY format
+set(VERSION_TWEAK "3")
+set(VERSION_DATE "29/3/2021") # DD/MM/YYYY format
 set(OCPN_MIN_VERSION "ov50")
 set(OCPN_API_VERSION_MAJOR "1")
 set(OCPN_API_VERSION_MINOR "16")
@@ -244,28 +244,33 @@ endif(PI_JSON_SCHEMA_VALIDATOR)
 ##=============================================================
 
 # include_directories(BEFORE ${PROJECT_SOURCE_DIR}/include)
-# include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude)
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude)
 # include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnsrc)  #added to fix TexFont.cpp error, did not fix it
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnsrc/glu/include)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/${EXTINCLUDE_DIR})
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/wx/include)
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/src/jsoncpp)
 #include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude/wxcurl)
 #include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude/wxcurl/include)
 #include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnsrc/lz4)
 #include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnsrc/bitmaps)
 #INCLUDE_DIRECTORIES(api-16)
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/nmea0183/src)
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/wxJSON)
 
 #==============================
-target_sources(${PACKAGE_NAME} PUBLIC ${SRCS} ${HDRS} ${OCPNSRC} ${EXTSRC} ${LIBSSRC} ${SRC_JSON} ${SRC_NMEA0183} )
+target_sources(${PACKAGE_NAME} PUBLIC ${SRCS} ${HDRS} ${OCPNSRC} ${EXTSRC} ${LIBSSRC} )
 #===============================
 
 if(NOT OCPN_FLATPAK_CONFIG)
     # Build environment not available when flatpak is being configured so following statements will not work
     message(STATUS "${CMLOC}Adding target link libraries to ${PACKAGE_NAME}")
 
+    add_subdirectory(libs/nmea0183)
     add_subdirectory(libs/tinyxml)
 
+    target_link_libraries(${PACKAGE_NAME} ocpn::nmea0183)
     target_link_libraries(${PACKAGE_NAME} ocpn::tinyxml)
 endif(NOT OCPN_FLATPAK_CONFIG)
 
@@ -347,8 +352,8 @@ endif(UNIX AND NOT APPLE AND NOT QT_ANDROID)
 #These are NOT used in Testplugin, used for other plugins
 ##=======================================
 #include("PluginGL")
-include("PluginNMEA") #not for wxfax
-include("PluginJSON")  #not for wxfax  #commented out using libs
+#include("PluginNMEA") #not for wxfax
+#include("PluginJSON")  #not for wxfax  #commented out using libs
 ##=======================================
 ## ----- Change above to match project requirements ----- ##
 ## ----- do not change next section - needed to configure build process ----- ##
