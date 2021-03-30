@@ -54,7 +54,7 @@ set(LONG_DESCRIPTION "Multiple Configurable alarms for  changing conditions for 
 
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "4")
-set(VERSION_PATCH "27")
+set(VERSION_PATCH "28")
 set(VERSION_TWEAK "0")
 set(VERSION_DATE "30/3/2021") # DD/MM/YYYY format
 set(OCPN_MIN_VERSION "ov50")
