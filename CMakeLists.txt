@@ -55,7 +55,7 @@ set(LONG_DESCRIPTION "Multiple Configurable alarms for  changing conditions for 
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "4")
 set(VERSION_PATCH "28")
-set(VERSION_TWEAK "0")
+set(VERSION_TWEAK "1")
 set(VERSION_DATE "30/3/2021") # DD/MM/YYYY format
 set(OCPN_MIN_VERSION "ov50")
 set(OCPN_API_VERSION_MAJOR "1")
@@ -186,10 +186,12 @@ SET(HDRS
 			src/WeatherPanel.h
 			src/WindPanel.h
 			src/wxWTranslateCatalog.h
-			src/TexFont.h
 	)
 
-set(OCPNSRC ocpnsrc/TexFont.cpp)
+#TexFont.cpp has to be here have not found a way to move it to src/ 
+set(OCPNSRC ocpnsrc/TexFont.cpp)  e
+# also src/TexFont.h has to exist
+# also ocpninclude/TexFont.h is not used. 
 
 set(EXTSRC
 )
@@ -199,12 +201,12 @@ set(EXTINCLUDE
     extinclude/ODJSONSchemas.h
 )
 
-set(LIBHDRS
-    libs/GL/gl.h
-    libs/GL/gl_private.h
-    libs/GL/glext.h
-    libs/GL/glu.h
-)
+#set(LIBHDRS
+#    libs/GL/gl.h
+#    libs/GL/gl_private.h
+#    libs/GL/glext.h
+#    libs/GL/glu.h
+#)
 
 add_definitions(-DPLUGIN_USE_SVG)
 
@@ -233,8 +235,9 @@ endif(PI_JSON_SCHEMA_VALIDATOR)
 ##=============================================================
 
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/include)  #maybe needed for android datectrl.h?
-include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude)
-include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnsrc/glu/include)
+#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude)
+#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnsrc/glu/include)
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/glu/include)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/${EXTINCLUDE_DIR})
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/wx/include)

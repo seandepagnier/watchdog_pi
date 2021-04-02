@@ -27,4 +27,3 @@ src/wddc.h
 src/WeatherPanel.h
 src/WindPanel.h
 src/wxWTranslateCatalog.h
-src/TexFont.h

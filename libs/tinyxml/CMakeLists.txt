@@ -10,6 +10,13 @@ set (SRC
   src/tinyxmlparser.cpp
   include/tinyxml.h
 )
+
+#needed to build Ubuntu!
+if(UNIX)
+  # Add this in lieu of add_definitions ("-fPIC")
+   set(CMAKE_POSITION_INDEPENDENT_CODE ON)   
+endif(UNIX)
+
 add_library(TINYXML STATIC ${SRC})
 target_compile_definitions(TINYXML PUBLIC -DTIXML_USE_STL)
 set_property(TARGET TINYXML PROPERTY COMPILE_FLAGS "${OBJ_VISIBILITY}")
