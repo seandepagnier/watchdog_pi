@@ -5,7 +5,7 @@ site:
 
 content:
   sources:
-    - url: ~/documents/github/watchdog_pi
+    - url: ~/documents/github/watchdog_pi/manual/
       branches: master
       edit_url: true
 ui:
