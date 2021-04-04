@@ -1,4 +1,4 @@
 name: watchdog
-title: Watchdog Manual
+title: Watchdog
 version: '0.1'
 start_page: ROOT:watchdog.adoc 

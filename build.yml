@@ -1,5 +1,5 @@
 site:
-  title: Watchdog Plugin Manual
+  title: Watchdog Manual
   url: https://leamas.github.io/ocpn-manuals/
   start_page:  watchdog:ROOT:watchdog.adoc
 

@@ -1,11 +1,11 @@
 site:
-  title: Watchdog Plugin Manual
+  title: Watchdog Manual
   url: https://leamas.github.io/ocpn-manuals/
-  start_page:  watchdog:ROOT:watchdog.adoc
+  start_page:  ROOT:watchdog.adoc
 
 content:
-  sources:
-    - url: ~/documents/github/watchdog_pi/manual/
+  sources:a
+    - url:  ~/documents/github/watchdog_pi
       branches: master
       edit_url: true
 ui:
