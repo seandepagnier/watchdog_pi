@@ -1,4 +1,6 @@
 build/
 buildwin/
 .directory
+bldloc.yml
+build-loc.yml
 po/POTFILES.in.test
