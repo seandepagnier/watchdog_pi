@@ -4,25 +4,29 @@ image::s-wdpi-01-husky.png[watchdog,60,60]
 
 == Version & Changes
 
-Developer: Sean D'Epagnier +
-Maintainers: Rick Gleason, Jon Gough and the Plugin Team +
+* Developer: Sean D'Epagnier
+* Maintainer: Rick Gleason, Jon Gough and the Plugin Team
 
 Watchdog v2.4.24 for OpenCPN v5.4.2 was updated March 2021 and requires Opencpn v4.1.xxx or newer. 
 This plugin now works with the new Plugin Manager integrated installation for multiple environments. 
 
 New alarms are:
 
-link:#_10_depth_alarm[Depth Alarm] +
-link:#_11_wind_alarm[Wind Alarm] +
-link:#_12_weather_alarm[Weather Alarm] +
-link:#_13_pypilot_alarm[Pypilot Alarm] +
-link:#_15_nmea_data_alarm[NMEA No Data Alarm] +
+----
+link:#_10_depth_alarm[Depth Alarm]
+link:#_11_wind_alarm[Wind Alarm]
+link:#_12_weather_alarm[Weather Alarm]
+link:#_13_pypilot_alarm[Pypilot Alarm]
+link:#_15_nmea_data_alarm[NMEA No Data Alarm]
+----
 
 == Links
 
-Source: https://github.com/seandepagnier/watchdog_pi/releases[Github Source] +
-Releases: https://github.com/rgleason/watchdog_pi/releases/tag/v2.0.000[Github Releases] +
-Forum: http://www.cruisersforum.com/forums/f134/watchdog-plugin-150313.html[Cruiser's Forum Watchdog Thread] +
+----
+Source: https://github.com/seandepagnier/watchdog_pi/releases[Github Source]
+Releases: https://github.com/rgleason/watchdog_pi/releases/tag/v2.0.000[Github Releases]
+Forum: http://www.cruisersforum.com/forums/f134/watchdog-plugin-150313.html[Cruiser's Forum Watchdog Thread]
+----
 
 == What is Watchdog (WD)?
 

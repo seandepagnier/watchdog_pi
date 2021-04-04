@@ -2,7 +2,7 @@ site:
   title: OpenCPN Plugins Manual
   ### the 404 page and sitemap files only get generated when the url property is seto
   url: https://rasbats.github.io/ocpn-user-plugins-manual/
-  start_page: watchdog:ROOT:watchdog.adoc
+  start_page: watchdog:ROOT:watchog.adoc
 
 content:
   sources:
