@@ -424,7 +424,9 @@ NMEA-data is information the program receives from various instruments.
 Most well-known NMEA-data is from GPS receivers and AIS receivers.
 NMEA Data Alarm is crucial if you want to rely on instruments for position, course and speed or AIS! 
 In short: if NMEA input is lost a significant part of OpenCPN is lost.
-The more extensive description of the alarm is here: link:#_15_nmea_data_alarm[NMEA DATA ALARM].
+The more extensive description of the alarm is here: 
+
+link:#_15_nmea_data_alarm[NMEA DATA ALARM].
 
 == ALARMS
 
@@ -1162,7 +1164,7 @@ Each Data type would have its own unique interpretation and is defined in the NM
 Examples of devices that communicate via NMEA-data with your computer are your GPS receiver and your AIS receiver.
 In this picture there is a set-up with a GPS receiver and a AIS receiver connected to OpenCPN. Here the GPS is on COM21 and the AIS on COM16.
 
-image:: s-wdpi-67.png[s-wdpi-67.png]
+image::s-wdpi-67.png[s-wdpi-67.png]
 
 *NMEA and your position.* +
 
