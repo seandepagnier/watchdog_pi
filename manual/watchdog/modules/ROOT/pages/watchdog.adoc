@@ -5,7 +5,7 @@ image::s-wdpi-01-husky.png[watchdog,60,60]
 == Version & Changes
 
 Developer: Sean D'Epagnier +
-Maintainers: Rick Gleason, Jon Gough and the Plugin Team +
+Maintainers: Rick Gleason, Jon Gough, Roel Smidt and the Plugin Team +
 
 Watchdog v2.4.24 for OpenCPN v5.4.2 was updated March 2021 and requires Opencpn v4.1.xxx or newer. 
 This plugin now works with the new Plugin Manager integrated installation for multiple environments. 

@@ -164,34 +164,32 @@ SET(SRCS
             src/signalk_client.cpp
             src/WatchdogUI.cpp
             src/icons.cpp
-            src/ODAPI.h
             src/wddc.cpp
 	)
 	
 SET(HDRS
-  	        src/AIS_Target_Info.h
-			src/Alarm.h
-			src/ConfigurationDialog.h
-			src/EditAlarmDialog.h
-			src/icons.h
-			src/msvcdefs.h
-			src/NewAlarmDialog.h
-			src/ODAPI.h
-			src/TexFont.h
-			src/watchdog_pi.h
-			src/WatchdogDialog.h
-			src/WatchdogPropertiesDialog.h
-			src/WatchdogUI.h
-			src/wddc.h
-			src/WeatherPanel.h
-			src/WindPanel.h
-			src/wxWTranslateCatalog.h
+  	        include/AIS_Target_Info.h
+			include/Alarm.h
+			include/ConfigurationDialog.h
+			include/EditAlarmDialog.h
+			include/icons.h
+			include/msvcdefs.h
+			include/NewAlarmDialog.h
+            include/signalk_client.h
+			include/TexFont.h
+			include/watchdog_pi.h
+			include/WatchdogDialog.h
+			include/WatchdogPropertiesDialog.h
+			include/WatchdogUI.h
+			include/wddc.h
+			include/WeatherPanel.h
+			include/WindPanel.h
+			include/wxWTranslateCatalog.h
 	)
 
-# TexFont.cpp has to be here have not found a way to move it to src 
+# TexFont.cpp has to be here it will not compile
 set(OCPNSRC ocpnsrc/TexFont.cpp)
-# also src/TexFont.h has to exist
-# also ocpninclude/TexFont.h is not used. 
+# also src/TexFont.h has to exist AND ocpninclude/TexFont.h is not needed. 
 
 set(EXTSRC
 )
@@ -200,13 +198,6 @@ set(EXTINCLUDE
     extinclude/ODAPI.h
     extinclude/ODJSONSchemas.h
 )
-
-#set(LIBHDRS
-#    libs/GL/gl.h
-#    libs/GL/gl_private.h
-#    libs/GL/glext.h
-#    libs/GL/glu.h
-#)
 
 add_definitions(-DPLUGIN_USE_SVG)
 
@@ -234,9 +225,9 @@ endif(PI_JSON_SCHEMA_VALIDATOR)
 # Modify/configure 'Include' Directories below for the Plugin
 ##=============================================================
 
-include_directories(BEFORE ${PROJECT_SOURCE_DIR}/include)  #maybe needed for android datectrl.h?
-#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude)
-#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnsrc/glu/include)
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/include)
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude)
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnsrc/glu/include)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/glu/include)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/${EXTINCLUDE_DIR})
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/)
