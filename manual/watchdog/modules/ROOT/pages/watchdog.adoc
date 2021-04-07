@@ -1,4 +1,4 @@
-= WATCHDOG: Navigaton Alarms
+= WATCHDOG: Navigation Alarms
 
 image::s-wdpi-01-husky.png[watchdog,60,60]
 
