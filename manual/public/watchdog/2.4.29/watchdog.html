@@ -1,0 +1,2291 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>WATCHDOG: Navigation Alarms :: Watchdog Manual</title>
+    <link rel="canonical" href="https://localhost:8080/watchdog/2.4.29/watchdog.html">
+    <meta name="generator" content="Antora 2.3.4">
+    <link rel="stylesheet" href="../../_/css/site.css">
+    <script>var uiRootPath = '../../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://localhost:8080">Watchdog Manual</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="#">Home</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Products</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Product A</a>
+            <a class="navbar-item" href="#">Product B</a>
+            <a class="navbar-item" href="#">Product C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Services</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Service A</a>
+            <a class="navbar-item" href="#">Service B</a>
+            <a class="navbar-item" href="#">Service C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Resources</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Resource A</a>
+            <a class="navbar-item" href="#">Resource B</a>
+            <a class="navbar-item" href="#">Resource C</a>
+          </div>
+        </div>
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="#">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="watchdog" data-version="2.4.29">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-explore is-active" data-panel="explore">
+  <div class="context">
+    <span class="title">Watchdog</span>
+    <span class="version">2.4.29</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="watchdog.html">Watchdog</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="watchdog.html">2.4.29</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="watchdog.html" class="home-link is-current"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+</nav>
+  <div class="edit-this-page"><a href="file:///C:/Users/Rick/documents/github/watchdog_pi/manual/watchdog/modules/ROOT/pages/watchdog.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">WATCHDOG: Navigation Alarms</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="imageblock">
+<div class="content">
+<img src="_images/s-wdpi-01-husky.png" alt="watchdog" width="60" height="60">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_version_changes"><a class="anchor" href="#_version_changes"></a>Version &amp; Changes</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Developer: Sean D&#8217;Epagnier<br>
+Maintainers: Rick Gleason, Jon Gough, Roel Smidt and the Plugin Team<br></p>
+</div>
+<div class="paragraph">
+<p>Watchdog v2.4.24 for OpenCPN v5.4.2 was updated March 2021 and requires Opencpn v4.1.xxx or newer.
+This plugin now works with the new Plugin Manager integrated installation for multiple environments.</p>
+</div>
+<div class="paragraph">
+<p>New alarms are:</p>
+</div>
+<div class="paragraph">
+<p><a href="#_10_depth_alarm">Depth Alarm</a><br>
+<a href="#_11_wind_alarm">Wind Alarm</a><br>
+<a href="#_12_weather_alarm">Weather Alarm</a><br>
+<a href="#_13_pypilot_alarm">Pypilot Alarm</a><br>
+<a href="#_15_nmea_data_alarm">NMEA No Data Alarm</a><br></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_links"><a class="anchor" href="#_links"></a>Links</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Source: <a href="https://github.com/seandepagnier/watchdog_pi/releases">Github Source</a><br>
+Releases: <a href="https://github.com/rgleason/watchdog_pi/releases/tag/v2.0.000">Github Releases</a><br>
+Forum: <a href="http://www.cruisersforum.com/forums/f134/watchdog-plugin-150313.html">Cruiser&#8217;s Forum Watchdog Thread</a><br></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_what_is_watchdog_wd"><a class="anchor" href="#_what_is_watchdog_wd"></a>What is Watchdog (WD)?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Watchdog Plugin,implements various configurable alarms to alert regarding changing conditions on the boat. Included are a Deadman-alarm, improved anchor alarm and Depth alarm.</p>
+</div>
+<div class="paragraph">
+<p>Watchdog communicates with another very useful plug-in, called  <a href="https://opencpn.org/wiki/dokuwiki/doku.php?id=opencpn:opencpn_user_manual:plugins:safety:odraw1.6_pi">Ocpn_Draw</a>.
+Ocpn_Draw is used to draw points, lines and shapes, guard zones and boundaries which can be used in navigation to show</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Electronic bearing lines (EBL)</p>
+</li>
+<li>
+<p>Variable range markers  (VRM)</p>
+</li>
+<li>
+<p>Specific points (Boundary-points)</p>
+</li>
+<li>
+<p>Specific areas (Boundaries)</p>
+</li>
+<li>
+<p>Special boundary which moves with the boat (Guard Zone)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>These features of the oDraw-plugin can be used in Watchdog.
+Watchdog can alert you when your own ship</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>enters (or gets too close to) or</p>
+</li>
+<li>
+<p>leaves (or gets too far away from)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>one or more of these stationary Boundaries.
+Watchdog can also provide an alert when another ship (AIS-target) enters a Guard Zone Boundary(moving with your ship).
+Watchdog and Ocpn_Draw work together using boundary identifiers called GUID to provide some very useful alarms.</p>
+</div>
+<div class="paragraph">
+<p><strong>Watchdog</strong> will be referred to as <strong>"WD-pi"</strong> or <strong>"WD".</strong><br>
+<strong>OpenCPN Draw Plugin</strong> will be referred to as <strong>"Draw-pi"</strong> or <strong>"OD"</strong>.</p>
+</div>
+<div class="paragraph">
+<p>The plugin was originally named "Watch<strong>man</strong>" but was later renamed to "Watch<strong>dog</strong>" which might seen in some screens and menu&#8217;s.<br></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_installation"><a class="anchor" href="#_installation"></a>INSTALLATION</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_a_how_to_get_wd_pi"><a class="anchor" href="#_a_how_to_get_wd_pi"></a>A. How to get WD_pi?</h3>
+<div class="paragraph">
+<p>The easiest way to get Watchdog_pi is to use OpenCPN PI Package Installer and go to Options, Plugins and update the Master Plugin Catalog. You should find an icon to download the most current version of Watchdog_pi that works in your environment. Once the plugins downloads successfully, you will need to install it and then enable it with the checkbox.</p>
+</div>
+<div class="paragraph">
+<p>The second best way is to download a PI Package Installer (Windows .exe, Linux .deb or MacOS .pkg) from the  <a href="https://www.opencpn.org">OpenCPN website, to download Watchdog</a></p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/april-2020-001.png" alt="april-2020-001.png" width="672" height="113">
+</div>
+</div>
+<div class="paragraph">
+<p>Then Click "<strong>Downloads</strong>"</p>
+</div>
+<div class="paragraph">
+<p>These instructions are specifically for WD-pi, however the OpenCPN Manual has more general information using this older method in
+<a href="https://opencpn.org/wiki/dokuwiki/doku.php?id=opencpn:opencpn_user_manual:plugins:install_and_enable">Plugin Download, Install and Enable</a>.</p>
+</div>
+<div class="paragraph">
+<p>Click "<strong>Plugins for OpenCPN 4.2 and up</strong>"</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/april-2020-001b.png" alt="april-2020-001b.png" width="757" height="176">
+</div>
+</div>
+<div class="paragraph">
+<p>Scroll down to the "<strong>Safety</strong>" section and click "<strong>WatchDog</strong>"</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/april-2020-002.png" alt="april-2020-002.png" width="314" height="148">
+</div>
+</div>
+<div class="paragraph">
+<p>Choose the file compatible with your computer.
+These examples are for Windows, so we choose the <strong>Windows setup-package</strong>.
+<strong>Download</strong> the file (double-click).</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/april-2020-003.png" alt="april-2020-003.png" width="628" height="732">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_b_how_to_install_wd_pi"><a class="anchor" href="#_b_how_to_install_wd_pi"></a>B. How to install WD_pi?</h3>
+<div class="paragraph">
+<p>It&#8217;s better to <strong>close OpenCPN</strong> before installing WD-pi.
+We assume you know where to find the files you download from the Internet.
+Open the downloaded Plugin Package Installer (watchdog_pi[version].exe) and install the plugin following these screenshots (don’t mind the dutch).</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/april-2020-wdpi240exe.png" alt="april-2020-wdpi240exe.png">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/april-2020-005.png" alt="april-2020-005.png" width="414" height="313">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/april-2020-006.png" alt="april-2020-006.png" width="512" height="396">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/april-2020-007.png" alt="april-2020-007.png" width="512" height="396">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/april-2020-008.png" alt="april-2020-008.png" width="510" height="398">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/april-2020-009.png" alt="april-2020-009.png" width="511" height="395">
+</div>
+</div>
+<div class="paragraph">
+<p>Then before using WD-pi <strong>enable</strong> the plug-in.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_c_how_to_enable_wd_pi"><a class="anchor" href="#_c_how_to_enable_wd_pi"></a>C. How to enable WD-pi?</h3>
+<div class="paragraph">
+<p>Open <strong>OpenCPN</strong>, Click <strong>Tools</strong> - <strong>Options</strong></p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/april-2020-010.png" alt="april-2020-010.png" width="358" height="270">
+</div>
+</div>
+<div class="paragraph">
+<p>Click <strong>Plugins</strong></p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/april-2020-011.png" alt="april-2020-011.png" width="749" height="682">
+</div>
+</div>
+<div class="paragraph">
+<p>Scroll to Watchdog plugin and click <strong>Enable</strong></p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/april-2020-012.png" alt="april-2020-012.png" width="741" height="294">
+</div>
+</div>
+<div class="paragraph">
+<p>Click <strong>OK</strong></p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/april-2020-013.png" alt="april-2020-013.png" width="745" height="681">
+</div>
+</div>
+<div class="paragraph">
+<p>Now the Watchdog-icon should be visible in your OpenCPN toolbar</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/april-2020-014.png" alt="april-2020-014.png" width="119" height="64">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_d_what_does_wd_do"><a class="anchor" href="#_d_what_does_wd_do"></a>D. What does WD do?</h3>
+<div class="paragraph">
+<p>Watchdog warns you -in a couple of specific situations- when you want to be warned.
+Watchdog has the following alarms:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#_1_landfall_alarm">Landfall Alarm</a></p>
+</li>
+<li>
+<p><a href="#_2_boundary_alarm">Boundary Alarm</a></p>
+</li>
+<li>
+<p><a href="#_6_dynamic_guard_zones">Guard Zone Alarm</a></p>
+</li>
+<li>
+<p><a href="#_7_anchor_alarm">Anchor Alarm</a></p>
+</li>
+<li>
+<p><a href="#_8_course_alarm">Course Alarm</a></p>
+</li>
+<li>
+<p><a href="#_9_speed_alarm">Speed Alarm</a></p>
+</li>
+<li>
+<p><a href="#_10_depth_alarm">Depth Alarm</a></p>
+</li>
+<li>
+<p><a href="#_11_wind_alarm">Wind Alarm</a></p>
+</li>
+<li>
+<p><a href="#_12_weather_alarm">Weather Alarm</a></p>
+</li>
+<li>
+<p><a href="#_13_pypilot_alarm">Pypilot Alarm</a></p>
+</li>
+<li>
+<p><a href="#_14_deadman_alarm">Deadman Alarm</a></p>
+</li>
+<li>
+<p><a href="#_15_nmea_data_alarm">NMEA No Data Alarm</a></p>
+</li>
+<li>
+<p><a href="#_16_email_alert">Email Alert</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_f_how_can_wd_alert_me"><a class="anchor" href="#_f_how_can_wd_alert_me"></a>F. How can WD alert me?</h3>
+<div class="paragraph">
+<p>Does it bark?  Yes, that is possible. But maybe you want to choose something else.</p>
+</div>
+<div class="paragraph">
+<p>You can set an alert in the form of a text-message that pops up on your screen …. (in the pop-up screen there&#8217;s still evidence of the original name Watch<em>man</em>..)</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/s-wdpi-02.png" alt="s-wdpi-02.png">
+</div>
+</div>
+<div class="paragraph">
+<p>A text-message is rather useless if you are not looking at your display.
+The Deadman alarm prevents the watchman from falling asleep (or wakes up) so this alert is logically a loud noise.
+So Watchdog also enables you to set an acoustic alarm.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/s-wdpi-03.png" alt="s-wdpi-03.png">
+</div>
+</div>
+<div class="paragraph">
+<p>You can use any sound you like, as long as it is a <strong>".wav" file.</strong></p>
+</div>
+<div class="paragraph">
+<p>Examples:<br>
+If you want to brush up on your Morse-code, you can set Morse-code YYY (Yankee = "My anchor is dragging") as sound for anchorwatch-alarm and Morse-code UUU (Uniform = "You are running into danger") as the sound for Boundary and Land-fall-alarm.
+You can generate these sounds yourself dead-simple on the website  <a href="http://morsecode.scphillips.com/translator.html">Morse Code Translator</a>.
+Just type whatever you want, adjust pitch and speed to your liking and save as .wav files in /OpenCPN/sounds).</p>
+</div>
+<div class="paragraph">
+<p>If your only reaction to hearing the beeps of Morse code is "Ah, the pizza in the microwave is ready!" then maybe a more direct approach suits you better. Perhaps a computer that actually says "<strong>Warning! Boundary!</strong>" when the Boundary-alarm sounds and "<strong>Warning!
+Anchor!</strong>" when your anchor is dragging.</p>
+</div>
+<div class="sect3">
+<h4 id="_play_wd_warnings_with_sound_checked"><a class="anchor" href="#_play_wd_warnings_with_sound_checked"></a>Play WD Warnings with "Sound" checked</h4>
+<div class="paragraph">
+<p>In a "Edit Alarm" Menu browse to  '%localappdata"\watchdog_pi\data\Warnings\Warning Boundary.wav'</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>%localappdata\opencpn\plugins\watchdog_pi\data\Warnings
+OR
+C:\Users\Rick\AppData\Local\opencpn\plugins\watchdog_pi\data\Warnings</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>and pick an appropriate Warning. Then "Test" to confirm the path is correct.. _ _</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_play_wd_warnings_from_command"><a class="anchor" href="#_play_wd_warnings_from_command"></a>Play WD Warnings from Command</h4>
+<div class="paragraph">
+<p>Use a sound command line utility to play sound files.
+Another way to play Watchdog Warnings with "Sound" unchecked and "Command" checked. Then try these examples using Powershell for Win OS:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>powershell -c (New-Object Media.SoundPlayer 'C:\Program Files
+(x86)\OpenCPN 5.2.4+6b314e6\sounds\2bells.wav').PlaySync(); &lt;/code&gt; OR
+&lt;code&gt; powershell -c (New-Object Media.SoundPlayer
+'C:\Users\Rick\AppData\Local\opencpn\plugins\watchdog_pi\data\Warnings\Warning
+Boundary.wav').PlaySync();</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The paths are:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>%localappdata%\opencpn\plugins\watchdog_pi\data\Warnings\ and
+then [add the appropriate filename] OR
+C:\Users\[user]\AppData\Local\opencpn\plugins\watchdog_pi\data\Warnings
+[appropriate file name]</pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/s-wdpi-04.png" alt="s-wdpi-04.png">
+</div>
+</div>
+<div class="paragraph">
+<p>If you really want a Watchdog that barks, then find a wav-file of a barking dog, it might start every dog nearby to join in.
+Apart from pop-up screens and all kinds of sounds, you can also let Watchdog execute a <strong>computer command.</strong>
+That can be any computer command.
+To name just a few options: Start a pdf-document with pre-defined messages in "Seaspeak" or any other language you need to have a conversation with the skipper of that monstrosity that is About to collide with you.</p>
+</div>
+<div class="paragraph">
+<p>Or imagine your boat anchored in the bay and you sitting ashore in the pub…..
+And hey, on our mobile phone we receive an email from a loved-one!</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/s-wdpi-04b.png" alt="s-wdpi-04b.png">
+</div>
+</div>
+<div class="paragraph">
+<p>How this email-trick is done, is explained in  "<strong><a href="#_16_email_alert">Email Alert to yourself</a></strong>" at the end of this manual.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_g_typical_setup_of_alarm"><a class="anchor" href="#_g_typical_setup_of_alarm"></a>G. Typical Setup of Alarm</h3>
+<div class="paragraph">
+<p>When Watchdog is installed and in the OpenCPN Toolbar, follow these 4 initial steps to set up a new Watchdog Alarm:</p>
+</div>
+<div class="paragraph">
+<p><strong>Step 1</strong>. Click "<strong>Watchdog</strong>" in the OpenCPN Toolbar*</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/april-2020-014.png" alt="april-2020-014.png" width="119" height="64">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Step 2</strong>. The "Watchdog Window" opens. If no alarms are set, it will be a rather empty screen.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/april-2020-015.png" alt="april-2020-015.png" width="494" height="148">
+</div>
+</div>
+<div class="paragraph">
+<p>Place the cursor in that empty screen. A mouse-click will give you a pull-down menu.</p>
+</div>
+<div class="paragraph">
+<p><strong>Step 3</strong>. Click "<strong>New</strong>"</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/april-2020-018.png" alt="april-2020-018.png" width="500" height="259">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Step 4</strong>. The "New Alarm Window" opens. It shows the various types of alarms.</p>
+</div>
+<div class="paragraph">
+<p>Note: This window might still have a small bug. I cannot adjust it’s size and so the text in the “Cancel”-button is just “anc”…..</p>
+</div>
+<div class="paragraph">
+<p>This manual was written with the Windows-version of OpenCPN and Watchdog.
+In Linux Mint it works better. In the Linux-version of OpenCPN and Watchdog you can adjust the size of the window so that all options are shown.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/april-2020-019.png" alt="april-2020-019.png" width="516" height="357">
+</div>
+</div>
+<div class="paragraph">
+<p>(The next steps involve clicking the desired alarm and clicking "<strong>OK</strong>")
+<strong>NOTE</strong>: These 4 initial steps are the same for each alarm.
+In the rest of this tutorial these steps will not be repeated but will be referred to as "set up a new Watchdog-alarm".</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_h_typical_setup_of_alarm_details"><a class="anchor" href="#_h_typical_setup_of_alarm_details"></a>H. Typical Setup of Alarm Details</h3>
+<div class="paragraph">
+<p>When setting up a new Watchdog-alarm, you will come across the “<strong>Edit Alarm</strong>” window.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/april-2020-021.png" alt="april-2020-021.png" width="414" height="467">
+</div>
+</div>
+<div class="paragraph">
+<p>In that window there is a part (normally the uppermost part) that is specific for that type of alarm, but there is also a part that is the same for every type of alarm. It is the “<strong>Alarm Action</strong>” part.</p>
+</div>
+<div class="paragraph">
+<p><strong>Important</strong>:</p>
+</div>
+<div class="paragraph">
+<p>In several alarms you’ll see in the "Alarm Action" part a checkbox
+“<strong>Alarm if no Data</strong>”. That is because most WD-alarms are based upon
+information (“data”) your computer is getting from other devices. For
+instance: GPS for position, speed and course, digital wind-sensor,
+digital sensors for air-pressure, temperature and humidity,an
+AIS-receiver or transponder etc.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/april-2020-alarm-action-01.png" alt="april-2020-alarm-action-01.png">
+</div>
+</div>
+<div class="paragraph">
+<p>If that box is checked, the alarm will be activated when the data-stream
+is interrupted.</p>
+</div>
+<div class="paragraph">
+<p>For instance: anchor alarm is set to be activated when you drift more
+than 50 metres from your position. Your position is given by your
+GPS-receiver. If the “Alarm if no Data”-checkbox is checked and the GPS
+stops working, //the alarm will be activated, ////<strong>even if your ship
+has’nt drifted at all</strong> /<em>/.</em></p>
+</div>
+<div class="paragraph">
+<p>That checkbox is an important safety-feature because it will warn you
+when one of your instruments has gone on the blink and has stopped
+sending it’s information!</p>
+</div>
+<div class="paragraph">
+<p>In the Edit Alarm-window you can tell Watchdog what you want it to do. A
+brief explanation:</p>
+</div>
+<div class="paragraph">
+<p><strong>Sound</strong><br>
+Alert you by playing the soundfile (.wav-file) you have entered (use the
+“<strong>Browse</strong>” button to point WD to that file).</p>
+</div>
+<div class="paragraph">
+<p><strong>Command</strong><br>
+Execute a computer command (type the command in the box next to
+“command”).</p>
+</div>
+<div class="paragraph">
+<p><strong>Message Box</strong><br>
+Show a pop-up Textbox with “ALARM”.</p>
+</div>
+<div class="paragraph">
+<p><strong>Repeat Alarm after seconds</strong><br>
+Gives the opportunity to order WD to repeat the alarm after a set time
+(in this example that time is set to “60 seconds”).</p>
+</div>
+<div class="paragraph">
+<p><strong>Automatically Reset</strong><br>
+Means that when the alarm is triggered, the alarm will be reset to await the next “cause for alarm”.</p>
+</div>
+<div class="paragraph">
+<p><strong>Graphics Enabled</strong><br>
+Means that WD will show you something on screen, relating to the alarm.
+For instance the radius of the anchor-alarm you have set.</p>
+</div>
+<div class="paragraph">
+<p><strong>Test</strong><br>
+Means that you can test if the alarm works yes or no.</p>
+</div>
+<div class="paragraph">
+<p><strong>Information</strong><br>
+Means that … well, try that button for yourself and you&#8217;ll see.</p>
+</div>
+<div class="paragraph">
+<p>If you do not understand the function of the buttons “<strong>OK</strong>” and/or “<strong>Cancel</strong>”: sell your computer!</p>
+</div>
+<div class="paragraph">
+<p>First the various types of alarms are briefly explained. After that each type of alarm is explained in (a bit) more detail.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_alarm_summary"><a class="anchor" href="#_alarm_summary"></a>ALARM SUMMARY</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Short Alarm Descriptions below.</p>
+</div>
+<div class="sect2">
+<h3 id="_landfall_alarm"><a class="anchor" href="#_landfall_alarm"></a>Landfall Alarm</h3>
+<div class="paragraph">
+<p>Landfall Alarm alerts when own ship nears land.
+Most useful for long voyages with vast stretches of water.
+More extensive description of the alarm  <a href="#_1_landfall_alarm">LANDFALL ALARM</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_boundary_alarm"><a class="anchor" href="#_boundary_alarm"></a>Boundary Alarm</h3>
+<div class="paragraph">
+<p>See also  <a href="https://opencpn.org/wiki/dokuwiki/doku.php?id=opencpn:opencpn_user_manual:plugins:plugin_messaging">Plugin Messaging between ODraw, Watchdog and Weather_routing.</a></p>
+</div>
+<div class="paragraph">
+<p>Boundary Alarm alerts when own ship&#8217;s position relative to a Boundary is not within ranges set or when about to sail into a "restricted area".</p>
+</div>
+<div class="paragraph">
+<p>The manual for Boundary Alarm is a bit more complex than the other sections. That is because:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>there can be <strong>different types of boundaries</strong> (made with the plugin <strong>O-DRAW</strong>) and</p>
+</li>
+<li>
+<p>there can be <strong>different types of boundary-alarms</strong> (made with <strong>WATCHDOG</strong>).</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>With Watchdog you can make 4 different types of boundary-alarms:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>GPS course</strong>-alarm warns when <strong>course and speed</strong> will cross the perimeter (border) of a boundary in less than the specified <strong>time</strong>.<br>
+In this manual this type of alarm is also referred to as "Boundary-time".</p>
+</li>
+<li>
+<p><strong>GPS fix</strong>-alarm warns when <strong>position</strong> from the perimeter (border) of a boundary is less than the given <strong>distance</strong>.<br>
+In this manual this type of alarm is also referred to as "Boundary-distance".</p>
+</li>
+<li>
+<p><strong>Inclusion</strong>-alarm warns when <strong>own ship</strong> is <strong>outside</strong> a given boundary.</p>
+</li>
+<li>
+<p>AIS <strong>Guard Zone</strong>-alarm warns when <strong>other ships</strong> are <strong>inside</strong> a given boundary.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Boundary-alarms of the type <strong>GPS course</strong>, <strong>GPS fix</strong> and <strong>Inclusion</strong> are related to the position (and speed and course) of your own ship and are fed by the data from your <strong>GPS</strong> receiver.</p>
+</div>
+<div class="paragraph">
+<p><strong>Note</strong>: "<strong>Inclusion Alarm</strong>" might be a bit confusing because "inclusion" means "beïng inside or included in a boundary".
+The "Inclusion Alarm" is not intended to alarm when own ship  gets <em>inside</em> a boundary. On the contrary, it is intended to alarm when own ship  gets <em>outside</em> the boundary.<br>
+In earlier versions of Watchdog this alarm was called "Anchor Watch Boundary GUID".
+But as Watchdog also has a dedicated "Anchor Watch" alarm, the name was changed into "Inclusion" Alarm.<br>
+To avoid "inclusion-confusion" 8-O , just keep in mind that the "Inclusion Alarm" is keeping an eye on you to make sure your "own ship" stay "included" in the boundary."</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_guard_zone_alarm"><a class="anchor" href="#_guard_zone_alarm"></a>Guard Zone Alarm</h3>
+<div class="paragraph">
+<p>A Boundary alarm of the type AIS <strong>Guard Zone</strong> is triggered by the data from other ships, as received by your <strong>AIS</strong> receiver.</p>
+</div>
+<div class="paragraph">
+<p>The difference with the "normal" AIS alarm (warn me when a ship comes within a given distance from "own ship") is that the Watchdog Boundary
+Guard Zone alarm gets triggered when a ship enters a specific area (like for instance the entrance to that secluded spot you thought to have for just you and your spouse/friend/secretary/…).</p>
+</div>
+<div class="paragraph">
+<p>The more extensive description of the alarm is here: <a href="#_2_boundary_alarm">BOUNDARY ALARM</a>.</p>
+</div>
+<div class="paragraph">
+<p><strong>Note</strong>: in Watchdog you can set a "Guard Zone" alarm but in O-Draw you can also create a "Guard Zone".<br>
+A Guard Zone in O-Draw is a special kind of area that is not static, but moves with your own ship.<br>
+The more extensive description is here:  <a href="#_6_dynamic_guard_zones">DYNAMIC GUARD ZONES</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_anchor_alarm"><a class="anchor" href="#_anchor_alarm"></a>Anchor Alarm</h3>
+<div class="paragraph">
+<p>Anchor Alarm alerts when your position changes more than a specific distance from a certain position (when your anchor
+is dragging).
+The more extensive description of the alarm is here:  <a href="#_7_anchor_alarm">ANCHOR ALARM</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_course_alarm"><a class="anchor" href="#_course_alarm"></a>Course Alarm</h3>
+<div class="paragraph">
+<p>Course Alarm is alerts when "own ship" gets off course.
+The more extensive description of the alarm is here: <a href="#_3_course_alarm">COURSE ALARM</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_speed_alarm"><a class="anchor" href="#_speed_alarm"></a>Speed Alarm</h3>
+<div class="paragraph">
+<p>Speed Alarm alerts when boat speed drops below a set speed (<strong>Underspeed</strong>) or when boat speed has increased above a set speed (<strong>Overspeed</strong>), both can be problematical.
+The more extensive description of the alarm is here: <a href="#_9_speed_alarm">SPEED ALARM</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_wind_alarm"><a class="anchor" href="#_wind_alarm"></a>Wind Alarm</h3>
+<div class="paragraph">
+<p>The wind-alarm can be set to warn when the windspeed exceeds a given value, drops under a given value or changes direction.
+The more extensive description of the alarm is here: <a href="#_11_wind_alarm">WIND ALARM</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_depth_alarm"><a class="anchor" href="#_depth_alarm"></a>Depth Alarm</h3>
+<div class="paragraph">
+<p>Depth alerts when depth is less than a user set depth.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_weather_alarm"><a class="anchor" href="#_weather_alarm"></a>Weather Alarm</h3>
+<div class="paragraph">
+<p>Weather-alarm alerts when there are changes in barometric pressure, air temperature, sea temperature, relative humidity and humidity.
+Which helps to decide what to wear, foul-weather or bathing suit, and of course to decide when to head for a safe haven.
+The more extensive description of the alarm is here: <a href="#_12_weather_alarm">WEATHER ALARM</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_pypilot_alarm"><a class="anchor" href="#_pypilot_alarm"></a>Pypilot Alarm</h3>
+<div class="paragraph">
+<p>The Pypilot-alarm alerts when something is wrong with your automatic steering gear (autopilot), driven by the Pypilot plugin.
+The more extensive description of the alarm is here: <a href="#_13_pypilot_alarm">PYPILOT ALARM</a> .</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_deadman_alarm"><a class="anchor" href="#_deadman_alarm"></a>Deadman Alarm</h3>
+<div class="paragraph">
+<p>Deadman Alarm alerts when there is no keyboard activity (fallen asleep, jumped overboard or simply passed away).
+The alert occurs after a given amount of time the program still has not experienced any input, to be sure there is still someone on watch.
+The Deadman alarm stops as soon as any user action is taken, for instance a movement of the cursor (mouse).
+The more extensive description of the alarm is here: <a href="#_14_deadman_alarm">DEADMAN ALARM</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_nmea_data_alarm"><a class="anchor" href="#_nmea_data_alarm"></a>NMEA Data Alarm</h3>
+<div class="paragraph">
+<p>NMEA Data Alarm alerts hen OpenCPN loses NMEA-input.
+NMEA-data is information the program receives from various instruments.
+Most well-known NMEA-data is from GPS receivers and AIS receivers.
+NMEA Data Alarm is crucial if you want to rely on instruments for position, course and speed or AIS!
+In short: if NMEA input is lost a significant part of OpenCPN is lost.
+The more extensive description of the alarm is here:</p>
+</div>
+<div class="paragraph">
+<p><a href="#_15_nmea_data_alarm">NMEA DATA ALARM</a>.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_alarms"><a class="anchor" href="#_alarms"></a>ALARMS</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_1_landfall_alarm"><a class="anchor" href="#_1_landfall_alarm"></a>1. LANDFALL ALARM</h3>
+<div class="paragraph">
+<p>Landfall-alarm is meant to alert you when you get within a set distance from land.
+For most sailors the usefulness of such an alert is obvious.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/s-wdpi-09.png" alt="s-wdpi-09.png">
+</div>
+</div>
+<div class="paragraph">
+<p>"<strong>Hoorah and up she rises!</strong>" More info: go to
+"https://www.gov.uk/government/organisations/marine-accident-investigation-branch[MAIB]"
+and search for "Lysblink Seaways".</p>
+</div>
+<div class="paragraph">
+<p><strong>Important</strong>: the alarm operates in relation to the coastline as it is programmed into your vector charts! OpenCPN comes with a worldwide
+background map, displayed if no charts are available for an area.
+<strong>Note</strong>: these two screenshots illustrate that the coastline in that basic background map can be quite different from the real thing!
+Looking at this basic coastline chart WD will assume we are not close enough to the coastline to trigger the Landfall alarm.
+So, WD stays quiet.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/s-wdpi-10.png" alt="s-wdpi-10.png">
+</div>
+</div>
+<div class="paragraph">
+<p>When he really should have barked!</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/s-wdpi-11.png" alt="s-wdpi-11.png">
+</div>
+</div>
+<div class="paragraph">
+<p>Therefore it would be advisable to use the 224mb(unzipped), most detailed, <strong>GSHHS High Resolution Background Map</strong>. It can be downloaded
+using the ChartDownloader, see  <a href="https://opencpn.org/wiki/dokuwiki/doku.php?id=opencpn:opencpn_user_manual:charts:chart_sources#high_resolution_background_map">High
+Resolution Background Map</a>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/s-wdpi-12.png" alt="s-wdpi-12.png">
+</div>
+</div>
+<div class="paragraph">
+<p>Stay on the safe side and set landfall-alarm for a distance well offshore. Landfall-alarm is not meant for close-quarters navigation.</p>
+</div>
+<div class="paragraph">
+<p><strong>Setting the Landfall-alarm</strong> is explained step-by-step by these screenshots.
+Set up a new Watchdog-alarm and pick "Landfall".</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/s-wdpi-13_0.png" alt="s-wdpi-13_0.png">
+</div>
+</div>
+<div class="paragraph">
+<p>Click "OK". The "Edit Alarm" window pops up. In the Edit Alarm window you can choose between "GPS course crosses land in less than … minutes" or "GPS fix is less than …. nm from coastline".
+Here we&#8217;ve chosen "GPS fix is less than 5 nm from coastline".
+Tick the rest of the boxes and click "OK".</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/s-wdpi-14.png" alt="s-wdpi-14.png">
+</div>
+</div>
+<div class="paragraph">
+<p>The Watchdog Configuration window shows the alarm.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/s-wdpi-15.png" alt="s-wdpi-15.png">
+</div>
+</div>
+<div class="paragraph">
+<p>Now your Landfall alarm is ready to be used.</p>
+</div>
+<div class="paragraph">
+<p>Just make sure the "Alarm On/Alarm Off" box is ticked (set).</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/s-wdpi-16.png" alt="s-wdpi-16.png">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_2_boundary_alarm"><a class="anchor" href="#_2_boundary_alarm"></a>2. BOUNDARY ALARM</h3>
+<div class="paragraph">
+<p>Watchdog communicates with another very useful plug-in, called <strong>"OpenCPN ODraw Plugin"</strong>.
+That plugin is a tool to draw geo-referenced points, lines and shapes within OpenCPN.
+These points, lines and shapes can be used in navigation, for instance to show specific points or areas (Boundaries), electronic bearing lines (EBL) and variable range markers (VRM).
+<strong>Watchdog</strong> will be referred to as "WD-pi" or "WD".
+<strong>OpenCPN Draw Plugin</strong> will be referred to as "Ocpn-Draw", "ODraw-pi" or "OD".</p>
+</div>
+<div class="paragraph">
+<p>This section of the Watchdog-manual is a bit more complex than the other sections because:</p>
+</div>
+<div class="paragraph">
+<p>With <strong>O-DRAW</strong> you can make 4 different <strong>types</strong> of <strong>boundary</strong>.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Boundary-type "<strong>inclusion</strong>"</p>
+</li>
+<li>
+<p>Boundary-type "<strong>exclusion</strong>"</p>
+</li>
+<li>
+<p>Boundary-type "<strong>neither</strong>"<br></p>
+</li>
+<li>
+<p><strong>Guard Zone</strong> a special kind of boundary:</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>With <strong>WATCHDOG</strong> you can make 4 different <strong>types</strong> of Boundary-<strong>alarms</strong>.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>GPS course</strong> crosses boundary in less than … minutes</p>
+</li>
+<li>
+<p><strong>GPS fix</strong> is less than … nautical miles from boundary</p>
+</li>
+<li>
+<p><strong>Inclusion Alarm</strong>, Boundary GUID …..</p>
+</li>
+<li>
+<p><strong>AIS Guard Zone</strong>, Boundary GUID …..</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>There can be several combinations of boundary type and boundary alarm.<br>
+Before we continue, an explanation of these 4 different types of alarms is needed.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>GPS course</strong>-alarm warns you when your <strong>course and speed</strong> will make you cross the perimeter (border) of a boundary in less than the specified <strong>time</strong>. In this manual this type of alarm is also referred to as "Boundary-time".</p>
+</li>
+<li>
+<p><strong>GPS fix</strong>-alarm warns you when your <strong>position</strong> from the perimeter (border) of a boundary is less than the given <strong>distance</strong>. In this manual this type of alarm is also referred to as "Boundary-distance".</p>
+</li>
+<li>
+<p><strong>Inclusion</strong>-alarm warns you when <strong>you</strong> are <strong>outside</strong> a given boundary (a bit like "Anchor Alarm").</p>
+</li>
+<li>
+<p>AIS <strong>Guard Zone</strong>-alarm warns you when <strong>other ships</strong> are <strong>inside</strong> a given boundary.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>WD and OD are independent plugins but the two can work together by passing and receiving messages.</p>
+</div>
+<div class="paragraph">
+<p>For the alarms, when WD needs boundary information, WD asks OD, via a message, whether a Lat/Lon is inside a boundary. WD can add further
+requirements asking for boundaries in a particular state and a particular type. Both the state and type are the same as what OD uses,
+i.e. Active/Inactive and Exclusion/Inclusion/Neither, or the inclusive  "Any" (meaning any type and/or any state, not being as selective).</p>
+</div>
+<div class="sect3">
+<h4 id="_boundaries_guard_zones"><a class="anchor" href="#_boundaries_guard_zones"></a>Boundaries &amp; Guard Zones</h4>
+<div class="paragraph">
+<p>To fully benefit from the capabilities of the WD Boundary Alarms, we need to understand the "Boundaries" made by OD.
+For a full explanation, see the chapter  <a href="/opencpn/opencpn_user_manual/plugins/safety/odraw1.4_pi">OCPN Draw</a>  in the manual.</p>
+</div>
+<div class="paragraph">
+<p>You can create Boundaries in (OD) <strong>Ocpn_Draw-pi</strong> (not Watchdog) by clicking "<strong>Create Boundary</strong>" and Guard-Zones by clicking "<strong>Create Guard Zone</strong>", explained in the Draw-pi section of this manual.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/watchdog_19056_create_boundary.jpg" alt="watchdog_19056_create_boundary.jpg">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/watchdog_19056_create_guard_zone.jpg" alt="watchdog_19056_create_guard_zone.jpg">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Boundary Types</strong><br>
+In Ocpn_Draw_pi (OD)</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Create a boundary</p>
+</li>
+<li>
+<p>In "Boundary Properties" tab, assign a "Boundary Type" to each Boundary or Boundary Point (BP)</p>
+</li>
+<li>
+<p>Choose "<strong>Exclusion</strong>", "<strong>Inclusion</strong>" or "<strong>Neither</strong>"</p>
+</li>
+</ol>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/s-wdpi-19.png" alt="s-wdpi-19.png">
+</div>
+</div>
+<div class="paragraph">
+<p>In WD set the alarm type for every kind of boundary.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Set alarms that are triggered when own ship gets too close to a boundary of type "Exclusion",</p>
+</li>
+<li>
+<p>Set alarms triggered when own ship gets too close to an  "Inclusion" boundary or a "Neither" setting.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>The most logical boundaries use is</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>"Inclusion" boundaries are like a play pen, "OK to be inside",</p>
+</li>
+<li>
+<p>"Exclusion" boundaries are fencing an area out and "not OK to be inside"</p>
+</li>
+<li>
+<p>"Neither" boundaries are just good to be alerted when crossed.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The message from each type of boundary is:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Exclusion</strong> "Don’t come near or inside." BOAT KEEP OUT</p>
+</li>
+<li>
+<p><strong>Inclusion</strong> "Stay inside."  KEEP BOAT INSIDE.</p>
+</li>
+<li>
+<p><strong>Neither</strong> Location is not important, Alert when crossing is important.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Each Boundary Type is graphically represented in a specific way.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Exclusion:</strong> a hatched pattern <strong>inside</strong> the area.</p>
+</li>
+<li>
+<p><strong>Inclusion:</strong> a hatched zone on the <strong>outside </strong>of the boundary.</p>
+</li>
+<li>
+<p><strong>Neither:</strong>   <strong>no</strong> hatch (just a line).</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Boundaries can be any shape, size and color you like, for color its logical to use red ("danger") for
+boundaries of the type "exclusion" and something green("safe") for  boundaries of the type "inclusion".</p>
+</div>
+<div class="paragraph">
+<p>This screenshot shows the different types of boundaries.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Top row: two boundaries of the type "inclusion"</p>
+</li>
+<li>
+<p>Second row: three boundaries of the type "exclusion"</p>
+</li>
+<li>
+<p>Third row: two boundaries of the type "neither"</p>
+</li>
+<li>
+<p>Fourth row: three boundary points. From left to right, "inclusion", "exclusion"and "neither".</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/s-wdpi-20.png" alt="s-wdpi-20.png">
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_3_gps_course_xs_boundary"><a class="anchor" href="#_3_gps_course_xs_boundary"></a>3. GPS COURSE x&#8217;s Boundary</h3>
+<div class="paragraph">
+<p>Setting up a "GPS COURSE CROSSES BOUNDARY IN &lt; &#8230;&#8203;.MINUTES" ALARM</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Set up a new Watchdog-alarm</strong> and pick “<strong>Boundary</strong>”.</p>
+</li>
+<li>
+<p>Select <strong>"GPS course crosses boundary in &lt; …. minutes"</strong></p>
+</li>
+<li>
+<p><strong>Edit the alarm</strong> so that the alarm will be triggered when course and speed will bring you in less than (your choice) minutes to a boundary.</p>
+</li>
+<li>
+<p>You can set the time between 0 and 1000 minutes. 0 minutes is quite useless and 1000 minutes (more than 16 hours) is maybe a bit much.</p>
+</li>
+<li>
+<p>In this example we have used 20 minutes.</p>
+</li>
+</ol>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/watchdog_19056_boundary_time.jpg" alt="watchdog_19056_boundary_time.jpg">
+</div>
+</div>
+<div class="paragraph">
+<p>In the Watchdog "<strong>Edit Alarm</strong>" window, you can select "<strong>Boundary Type</strong>" and "<strong>Boundary State</strong>".</p>
+</div>
+<div class="paragraph">
+<p>In this example "<strong>Any</strong>" and "<strong>Active</strong>" are ticked.<br>
+The result is that the alarm will look at <strong>all active</strong> boundaries, no matter what the type is.</p>
+</div>
+<div class="paragraph">
+<p>Regarding the <strong>type</strong> of the boundary: If you&#8217;d like the alarm to react to<br>
+<strong>any</strong> boundary, no matter what the type is, select "<strong>Any</strong>".<br>
+<strong>only</strong> to boundaries of the type "<strong>Exclusion</strong>", select "<strong>Exclusion</strong>".<br>
+<strong>only</strong> to boundaries of the type "<strong>Inclusion</strong>", select "<strong>Inclusion</strong>".<br>
+<strong>only</strong> to boundaries of the type "<strong>Neither</strong>", select "<strong>Neither</strong>".</p>
+</div>
+<div class="paragraph">
+<p>Regarding the <strong>state</strong> of the boundary: If you&#8217;d like the alarm to react to<br>
+<strong>any</strong> boundary, no matter what the state is, select "<strong>Any</strong>".<br>
+<strong>only</strong> to <strong>active</strong> boundaries, select "<strong>Active</strong>".<br>
+<strong>only</strong> to <strong>inactive</strong> boundaries, select "<strong>Inactive</strong>".</p>
+</div>
+<div class="paragraph">
+<p><strong>Note</strong>: as from WD version 1.9025 the "Edit Alarm" window for Boundary alarm also shows a slider to allow the user to select the frequency of checking.</p>
+</div>
+<div class="paragraph">
+<p>It defaults to 3 seconds (the current Watchdog default), but can be set from 1 to 120 seconds. The longer the check the better for low powered machines.</p>
+</div>
+<div class="paragraph">
+<p>Don&#8217;t forget to set the <strong>Alarm Actions</strong> ("Sound", "Message Box" etc. as described in "Standard actions: Setting up the Alarm Actions").</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/watchdog_19056_alarm_action.jpg" alt="watchdog_19056_alarm_action.jpg">
+</div>
+</div>
+<div class="paragraph">
+<p>Click "<strong>OK</strong>".</p>
+</div>
+<div class="paragraph">
+<p>To illustrate the working of the alarm, in this example we have set the COG Predictor Length to 20 minutes (via Options-Ships-Own Ship-Display Options).</p>
+</div>
+<div class="paragraph">
+<p>As long as we are more than 20 minutes away from a boundary, Watchdog will remain silent.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/watchdog_19056_boundary_time_01.jpg" alt="watchdog_19056_boundary_time_01.jpg">
+</div>
+</div>
+<div class="paragraph">
+<p>But as soon as we are less than 20 minutes away from a boundary, the alarm will be triggered.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/watchdog_19056_boundary_time_02.jpg" alt="watchdog_19056_boundary_time_02.jpg">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_4_gps_fix_nm_from_boundary"><a class="anchor" href="#_4_gps_fix_nm_from_boundary"></a>4. GPS FIX NM from Boundary</h3>
+<div class="paragraph">
+<p>Setting up a "GPS FIX IS &lt; …… NM FROM BOUNDARY"​ ALARM</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Set up a new Watchdog-alarm</strong> ​ and pick “<strong>Boundary</strong>”.</p>
+</li>
+<li>
+<p>Select <strong>"GPS fix is &lt; …..nm from boundary"​</strong></p>
+</li>
+<li>
+<p><strong>Edit the alarm</strong> ​ so that the alarm will be triggered when the GPS fix indicates that the boat is less than the minimum distance from a boundary.<br></p>
+</li>
+<li>
+<p>Entering a distance of "<strong>0</strong>", the alarm will <strong>not</strong> work because that is "<strong>a distance of less than 0 nm</strong>"</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>In this example we have chosen 0.01 nm (18,5 meters) to a boundary ("GPS fix is &lt; 0.01 nm from boundary).</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/watchdog_19056_boundary_edit_alarm_top.jpg" alt="watchdog_19056_boundary_edit_alarm_top.jpg">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Note</strong>: In this example we have a <strong>boundary of the type "exclusion"</strong> (a hatch-pattern on the inside).
+In the Watchdog "<strong>Edit Alarm</strong>" window, you can select "<strong>Boundary Type</strong>" and "<strong>Boundary State</strong>".</p>
+</div>
+<div class="paragraph">
+<p>In this example "<strong>Exclusion</strong>" and "<strong>Active</strong>" are ticked with the result that the alarm will <strong>only</strong> consider "Exclusion" and "Active" boundaries.</p>
+</div>
+<div class="paragraph">
+<p>(See also the previous section ("Setting up a GPS course crosses boundary in &lt; …. minutes") for the effects of ticking the different "Boundary Type" and "Boundary State"-buttons).</p>
+</div>
+<div class="paragraph">
+<p>Don&#8217;t forget to set the <strong>Alarm Action</strong> and click <strong>OK</strong>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/watchdog_19056_alarm_action.jpg" alt="watchdog_19056_alarm_action.jpg">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Now lets see if it works….</strong></p>
+</div>
+<div class="paragraph">
+<p>As long as the distance to a boundary is more than 0.01 nm, the alarm remains silent.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/watchdog_19056_boundary_outside.jpg" alt="watchdog_19056_boundary_outside.jpg">
+</div>
+</div>
+<div class="paragraph">
+<p>But as soon as we get within a distance of 0.01 nm of a boundary, the alarm is triggered<br>
+The alarm will also show the name and description of the boundary you are getting too close to.<br>
+For this example that name is "Testboundary-01-Exclusion-STAY OUT".</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/watchdog_19056_boundary_edit_out_alarm.jpg" alt="watchdog_19056_boundary_edit_out_alarm.jpg">
+</div>
+</div>
+<div class="paragraph">
+<p>This goes also for the inner side of the boundary.</p>
+</div>
+<div class="paragraph">
+<p>Closer than 0.01 nm from the boundary perimeter? Alarm.<br></p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/watchdog_19056_boundary_edit_in_alarm.jpg" alt="watchdog_19056_boundary_edit_in_alarm.jpg">
+</div>
+</div>
+<div class="paragraph">
+<p>More than 0.01 nm from the perimeter?<br>
+The alarm stops.<br></p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/watchdog_19056_boundary_inside.jpg" alt="watchdog_19056_boundary_inside.jpg">
+</div>
+</div>
+<div class="paragraph">
+<p>Watchdog did warn you, but if you still decide to go on, she (yes, Watchdog is a bitch…. ;-) ) will assume that you know what you are doing.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_5_ais_guard_inclusion"><a class="anchor" href="#_5_ais_guard_inclusion"></a>5. AIS GUARD &amp; Inclusion</h3>
+<div class="paragraph">
+<p>A Boundary alarm of the type “<strong>Inclusion Alarm</strong>” is meant to alert you when your own ship gets outside a specific boundary.<br>
+The alarm is related to the position of <strong>your own ship</strong> and is fed by the NMEA-data from your <strong>GPS</strong> receiver.</p>
+</div>
+<div class="paragraph">
+<p>A Boundary alarm of the type “<strong>Guard Zone</strong>” is meant to alert you when one or more other ships are inside a specific boundary.<br>
+“Guard Zone” is related to the position of <strong>other ships</strong> and is fed by the NMEA-data from your <strong>AIS</strong> receiver.<br>
+"Guard Zone" will also be shortened to "<strong>GZ</strong>".</p>
+</div>
+<div class="paragraph">
+<p><strong>NOTE</strong>: “other ships” are only ships that actually transmit AIS data and whose AIS-data are actually received by your AIS receiver!<br>
+<strong>Ships that do not transmit AIS-data (or AIS-data your AIS receiver does not receive) are not “seen” by WD!</strong></p>
+</div>
+<div class="paragraph">
+<p>Keep this in mind, especially as you might encounter ships that <strong>should</strong> send out AIS-signals, <strong>but don&#8217;t do so</strong> because their transmitter is switched off on purpose (like fishing vessels that want to keep their favourite fishing tracks hidden from others!)</p>
+</div>
+<div class="sect3">
+<h4 id="_guids"><a class="anchor" href="#_guids"></a>GUID&#8217;s</h4>
+<div class="paragraph">
+<p>To let Watchdog know what specific boundary it has to guard, you have to specify the “<strong>GUID</strong>” of that boundary.
+GUID stands for “globally unique identifier” and is a unique reference number used as an identifier in computer software.
+GUIDs are displayed as 32 hexadecimal digits with groups separated by hyphens.</p>
+</div>
+<div class="paragraph">
+<p>Example: 2a980000-5098-4787-ac4f-e05b47e7ffff<br></p>
+</div>
+<div class="paragraph">
+<p>To enter the GUID of a Boundary or BP in WD, you place your mouse-cursor on a boundary, do a right-mouseclick and copy the GUID.
+Then, in the Watchdog Edit Alarm-window, you can paste the GUID in the field Boundary GUID or Guard Zone GUID.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/watchdog_19056_bdguid_01.jpg" alt="watchdog_19056_bdguid_01.jpg">
+</div>
+</div>
+<div class="paragraph">
+<p>Make sure you do "Copy GUID" <strong>before</strong> editing the Watchdog Alarm.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/watchdog_19056_boundary_gz.jpg" alt="watchdog_19056_boundary_gz.jpg">
+</div>
+</div>
+<div class="paragraph">
+<p>Alternatively, when the “own ship” icon is within the boundary, you can click “<strong>Get Boundary GUID</strong>”.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/watchdog_19056_getguid.jpg" alt="watchdog_19056_getguid.jpg">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Note</strong>: this method does not always work. In such cases: use the “copy-paste” method.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_setting_up_a_boundary_ais_guard_zone_alarm"><a class="anchor" href="#_setting_up_a_boundary_ais_guard_zone_alarm"></a>Setting up a Boundary AIS Guard Zone Alarm</h4>
+<div class="paragraph">
+<p><strong>Set up a new Watchdog-alarm</strong> and pick “<strong>Boundary</strong>”.</p>
+</div>
+<div class="paragraph">
+<p>Select “<strong>AIS Guard Zone</strong>”</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/watchdog_19056_boundary_gz.jpg" alt="watchdog_19056_boundary_gz.jpg">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Edit the alarm</strong> so that the alarm will be coupled to the boundary you want to be guarded.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/watchdog_19056_bd_gz_01.jpg" alt="watchdog_19056_bd_gz_01.jpg">
+</div>
+</div>
+<div class="paragraph">
+<p>Don&#8217;t forget to set the <strong>Alarm Action</strong> and click <strong>OK</strong>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/watchdog_19056_alarm_action.jpg" alt="watchdog_19056_alarm_action.jpg">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Now lets see if it works….</strong></p>
+</div>
+<div class="paragraph">
+<p>As soon as the feed from your AIS receiver shows that an AIS-target (=“another ship”) enters the specified Guard Zone Boundary, the alarm gets triggered.
+The other ship (green icon) is not (yet) in the Guard Zone Boundary:  alarm not triggered (yet).</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/watchdog_19056_bd_gz_notg.jpg" alt="watchdog_19056_bd_gz_notg.jpg">
+</div>
+</div>
+<div class="paragraph">
+<p>The ship enters the Guard Zone Boundary: Guard Zone Alarm is triggered (and shows ships name and MMSI-number).</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/watchdog_19056_bd_gz_tg_01.jpg" alt="watchdog_19056_bd_gz_tg_01.jpg">
+</div>
+</div>
+<div class="paragraph">
+<p>And the text in the Watchdog window turns <strong>red</strong> and says “<strong>AIS Target in zone</strong>”</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/watchdog_19056_bd_gz_targetinzone.jpg" alt="watchdog_19056_bd_gz_targetinzone.jpg">
+</div>
+</div>
+<div class="paragraph">
+<p>As soon as the ship leaves the Guard Zone Boundary: Alarm is not triggered anymore.<br>
+The text in the Watchdog Window turns back to black and says “<strong>No AIS targets found in zone</strong>”.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/watchdog_19056_notargetinzone-02.jpg" alt="watchdog_19056_notargetinzone-02.jpg">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>The Boundary AIS Guard Zone Alarm works!</strong></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_setting_up_an_inclusion_alarm"><a class="anchor" href="#_setting_up_an_inclusion_alarm"></a>Setting up an Inclusion Alarm</h4>
+<div class="paragraph">
+<p>Setting up a Boundary Inclusion Alarm is similar to setting up a Boundary Guard Zone alarm. But instead of "Guard Zone" you click
+“Inclusion Alarm” and you put the GUID of the “Inclusion Alarm" Boundary in the field next to “Boundary GUID”.</p>
+</div>
+<div class="paragraph">
+<p><strong>Set up a new Watchdog-alarm</strong> and pick “<strong>Boundary</strong>”.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Select “<strong>Inclusion Alarm</strong>”</p>
+</li>
+<li>
+<p><strong>Edit the alarm</strong> so that the alarm will be coupled to the boundary you want to "stay inside" of.</p>
+</li>
+<li>
+<p>In this example it is a boundary with GUID 6372ffff-7f0e-4a64-9e6c-dfd303620000</p>
+</li>
+</ol>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/watchdog_19056_bd_inclusion_01.jpg" alt="watchdog_19056_bd_inclusion_01.jpg">
+</div>
+</div>
+<div class="paragraph">
+<p>Don&#8217;t forget to set the <strong>Alarm Action</strong> and click <strong>OK</strong>.<br></p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/watchdog_19056_alarm_action.jpg" alt="watchdog_19056_alarm_action.jpg">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Now lets see if it works….</strong></p>
+</div>
+<div class="paragraph">
+<p>The own ship is inside the boundary. Watchdog watches over you and wants you to stay "included".<br>
+Well, in this case everything is just fine. Watchdog stays silent.<br></p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/watchdog_19056_bd_inclusion_inside.jpg" alt="watchdog_19056_bd_inclusion_inside.jpg">
+</div>
+</div>
+<div class="paragraph">
+<p>The text in the Watchdog window stays black.<br></p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/watchdog_19056_inclusion_inside_02.jpg" alt="watchdog_19056_inclusion_inside_02.jpg">
+</div>
+</div>
+<div class="paragraph">
+<p>But as soon as our ship leaves the boundary, Watchdog alerts us!<br></p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/watchdog_19056_inclusion_outside.jpg" alt="watchdog_19056_inclusion_outside.jpg">
+</div>
+</div>
+<div class="paragraph">
+<p>And the text in the Watchdog window turns red.<br></p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/watchdog_19056_inclusion_outside_02.jpg" alt="watchdog_19056_inclusion_outside_02.jpg">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>The "Boundary Inclusion" alarm works!</strong></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_combination_of_boundary_guard_zone_alarm_and_boundary_inclusion_alarm"><a class="anchor" href="#_combination_of_boundary_guard_zone_alarm_and_boundary_inclusion_alarm"></a>Combination of Boundary Guard Zone Alarm and Boundary Inclusion Alarm.</h4>
+<div class="paragraph">
+<p>It is possible to assign a Boundary Guard Zone Alarm and a Boundary Inclusion Alarm to one and the same boundary.<br>
+That means that you can let Watchdog alert you:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>when another ship enters your “safe” anchoring area</p>
+</li>
+<li>
+<p>when you are drifting out of that area.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>To achieve this, you use in the Boundary Guard Zone Alarm the same GUID as in the Boundary Inclusion Alarm.
+You can activate one of the two alarms, both of them or none of them.
+In this screenshot both alarms are activated.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/watchdog_19056_bd_gz-combined.jpg" alt="watchdog_19056_bd_gz-combined.jpg">
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_6_dynamic_guard_zones"><a class="anchor" href="#_6_dynamic_guard_zones"></a>6. DYNAMIC GUARD ZONES</h3>
+<div class="paragraph">
+<p>The plugin "<strong>Ocpn_Draw</strong>" was invaluable to begin with, but got even better when it was updated with the possibility to draw a Guard Zone <strong>that
+moves with our own ship!</strong>
+Guard Zones differ from normal Boundaries, they move with your own ship and can rotate with the ships heading or with the ship&#8217;s course over the ground. Let&#8217;s call them "<strong>Dynamic Guard Zones</strong>".</p>
+</div>
+<div class="paragraph">
+<p>As oDraw works hand in glove with WATCHDOG, these new features in oDraw  also affect the way WATCHDOG can be used.
+Here are some examples. In these examples "Guard Zone" is shortened to "GZ".</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s assume that our ship has a blind spot. A blind spot is an area around the ship that cannot be directly observed by the helms(wo)man.
+In this example the blind spot is on the port side and extends from 70 to 90 degrees.
+We want to be alerted if any ship (AIS-target that is) enters that blind spot. We can set up Watchdog to do that for us.</p>
+</div>
+<div class="paragraph">
+<p>First set up a GZ  Guard Zone.
+Open the Draw Toolbar</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/wdpi-gz-001.jpg" alt="wdpi-gz-001.jpg">
+</div>
+</div>
+<div class="paragraph">
+<p>Click "Create GZ"</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/watchdog_19056_create_guard_zone.jpg" alt="watchdog_19056_create_guard_zone.jpg">
+</div>
+</div>
+<div class="paragraph">
+<p>Set the first point of the GZ roughly abeam on the port side.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/watchdog_19056_gz_003a.jpg" alt="watchdog_19056_gz_003a.jpg">
+</div>
+</div>
+<div class="paragraph">
+<p>Set the second point a bit above and to the right of the first point (clockwise).</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/watchdog_19056_gz_004a.jpg" alt="watchdog_19056_gz_004a.jpg">
+</div>
+</div>
+<div class="paragraph">
+<p>The result is some kind of wedge-shaped GZ.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/wdpi-gz-005.jpg" alt="wdpi-gz-005.jpg">
+</div>
+</div>
+<div class="paragraph">
+<p>Now you should fine-tune that GZ. Click on the GZ and open the "Properties" tab.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/wdpi-gz-006.jpg" alt="wdpi-gz-006.jpg">
+</div>
+</div>
+<div class="paragraph">
+<p>Give your GZ a recognizable name and description. Choose the Colours and  Line Width you prefer and fill in the required angles and distances.
+See the example.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/wdpi-gz-007.jpg" alt="wdpi-gz-007.jpg">
+</div>
+</div>
+<div class="paragraph">
+<p>Note: the <strong>first</strong> distance is the distance <strong>closest</strong> to the boat. Make
+sure this distance is bigger than 0. In this example the first distance
+is set to 0.01 NMi or 18.52 meters. The <strong>second</strong> distance is the
+<strong>greatest</strong> distance from the boat. In this example that distance is set
+to 1.25 NMi.</p>
+</div>
+<div class="paragraph">
+<p>As the blind spot extends from 70 to 90 degrees portside, we set the
+first angle to -95 (- is port, + is starboard) and the second angle to
+-70. The result is a wedge-shaped GZ that starts at 0.01 NMi, extends to
+1.25 NMi and covers 15 degrees.</p>
+</div>
+<div class="paragraph">
+<p><strong>Make sure you put a checkmark at "Rotate with Boat"!!</strong></p>
+</div>
+<div class="paragraph">
+<p>The next step is to set up a Watchdog Guard Zone Alarm for that GZ. <strong>The
+steps to do that are described earlier in this manual.</strong></p>
+</div>
+<div class="paragraph">
+<p>Now we&#8217;ll put it to the test.</p>
+</div>
+<div class="paragraph">
+<p>The <em>Highland Challenger</em> is closing in on our portside.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/wdpi-gz-008a.jpg" alt="wdpi-gz-008a.jpg">
+</div>
+</div>
+<div class="paragraph">
+<p>but as soon as she challenges our "slice of pie", Watchdog starts to
+alert us!</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/wdpi-gz-009a.jpg" alt="wdpi-gz-009a.jpg">
+</div>
+</div>
+<div class="paragraph">
+<p>Some other examples:</p>
+</div>
+<div class="paragraph">
+<p><strong>A GZ that extends from 90 degrees Port to 90 degrees starboard.</strong><br>
+The outer perimeter is 1.50 NMi, the inner perimeter is 1.25 NMi. The
+four range rings around our own ship are set 0.25 NMi apart. <em>Eurocargo
+Genova</em> is approaching on our port bow. Still more than 1.5 miles away,
+but she&#8217;s a big one and doing almost 20 knots.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/wdpi-gz-010.jpg" alt="wdpi-gz-010.jpg">
+</div>
+</div>
+<div class="paragraph">
+<p>Luckily we&#8217;ve set up our GZ alarm.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/wdpi-gz-011.jpg" alt="wdpi-gz-011.jpg">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>A "Tri-colour" GZ.</strong></p>
+</div>
+<div class="paragraph">
+<p>Here we have three GZ&#8217;s around the ship.
+One (red) covering the 112.5 degree arc that coincides with the port navigation light, one (green) covering the 112.5 degree arc that coincides with the starboard navigation light and one (white) covering the 135 degree arc that coincides with the stern light.
+As all of these GZ&#8217;s are set up to rotate with the ship&#8217;s heading, they could be used to see at one glance whether another ship is in your red, green or white sector (also handy to remind some of us that "starboard is green and port is red"…..).</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/wdpi-gz-012.jpg" alt="wdpi-gz-012.jpg">
+</div>
+</div>
+<div class="paragraph">
+<p>In this example the sectors range from 0.10 to 0.25 Nmi from our ship.
+This is how these three GZ&#8217;s (Guardzone Port, Guardzone Starboard and Guardzone Stern) are set up:</p>
+</div>
+<div class="paragraph">
+<p>The red sector:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/wdpi-gz-013.jpg" alt="wdpi-gz-013.jpg">
+</div>
+</div>
+<div class="paragraph">
+<p>The green sector:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/wdpi-gz-014.jpg" alt="wdpi-gz-014.jpg">
+</div>
+</div>
+<div class="paragraph">
+<p>The white sector:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/wdpi-gz-015.jpg" alt="wdpi-gz-015.jpg">
+</div>
+</div>
+<div class="paragraph">
+<p>Note that the white sector is set by defining the first angle as 112.50 and the second angle as -112.50 this covers an arc of 135 degrees (360-225).</p>
+</div>
+<div class="paragraph">
+<p><em>Arco Axe</em> is sneaking up on us. GZ "Stern" is activated.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/wdpi-gz-016.jpg" alt="wdpi-gz-016.jpg">
+</div>
+</div>
+<div class="paragraph">
+<p>We really don&#8217;t want <em>Arco Axe</em> (or any other axe for that matter….) to hit us in the behind but before she can become a pain in the ass, Watchdog spots her and alerts us.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/wdpi-gz-017.jpg" alt="wdpi-gz-017.jpg">
+</div>
+</div>
+<div class="paragraph">
+<p>You can set up multiple Dynamic Guard Zones and set the alarms for one, some or all of these zones.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/wdpi-gz-018.jpg" alt="wdpi-gz-018.jpg">
+</div>
+</div>
+<div class="paragraph">
+<p>(Dynamic) Guard Zone Alarms are in some ways similar to the "AIS Collision Alarm" you can set in OpenCPN (Options-Ships-AIS Targets-CPA Calculation). But they are more versatile.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_7_anchor_alarm"><a class="anchor" href="#_7_anchor_alarm"></a>7. ANCHOR ALARM</h3>
+<div class="paragraph">
+<p>The Anchor Alarm does not belong to the catgory "Boundary" as it is not related to a boundary. The Anchor Alarm is related to a specific position.</p>
+</div>
+<div class="paragraph">
+<p>The pictures are self-explaining (or at least supposed to be).Set up a new watchdog alarm and pick "Anchor</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/s-wdpi-49_0.png" alt="s-wdpi-49_0.png">
+</div>
+</div>
+<div class="paragraph">
+<p>In the "Edit Alarm" window, the latitude and longitude (Lat and Lon) of your ship wil be shown (or to be precise: the Lat and Lon of the "your ship" cursor, so make sure you have a GPS fix!).</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/s-wdpi-50.png" alt="s-wdpi-50.png">
+</div>
+</div>
+<div class="paragraph">
+<p>Radius can be set to whatever you like but "0 meters" will of course result in an unwanted amount of alarms. In this example radius is set to 50 meters. Click "OK".
+Then the alarm is enabled and the boat is within the radius of 50 meters from the specified position, the alarm is not triggered and the circle showing that radius has a green edge.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/s-wdpi-51.png" alt="s-wdpi-51.png">
+</div>
+</div>
+<div class="paragraph">
+<p>Moving the boat more than the pre-set radius (in this case 50 meters), triggers the alarm. The green edge turns red. The text in the WD window
+turns red and shows the distance from the specified position.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/s-wdpi-52.png" alt="s-wdpi-52.png">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>To Stop False Alarms (Hints):</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Set the Anchor Alert at the same time and place as the Anchor! - As close as possible.</p>
+</li>
+<li>
+<p>Set the radius a little larger.</p>
+</li>
+<li>
+<p>Make sure you have set the anchor properly so it is not dragging and there is adequate scope.</p>
+</li>
+<li>
+<p>Anchor out of kelp in good holding ground.</p>
+</li>
+<li>
+<p>Change your anchor location, shallower or deeper, different bottom.</p>
+</li>
+<li>
+<p>Check your GPS NMEA data stream to see if the GPS signal is reasonably constant.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>To check your GPS Data Stream</strong><br>
+In the NMEA debug window, do you see changes in the GPS receiver position reported by RMC or GLL messages? You can save this stream as a file using the VDR plugin and inspect it with a Text Editor.
+Make sure there is no change in position reported by GPS receiver. Look at the RMC lines. The lat and lon fields are constant. EG: "3348.0358" and "15116.9019".
+You will need to watch these values for a longer time to see change. Of course, if you cycle the power on the GPS receiver, you may see a change, particularly if the receiver selects a different set of satellites to calculate the position.
+When this happens, by the way, it is a reminder of the essential limit of GPS positional accuracy.
+You are getting 3 digits of precision, implying around 6 feet of accuracy.
+But consumer-grade GPS is generally not repeatably accurate to 6 ft.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_8_course_alarm"><a class="anchor" href="#_8_course_alarm"></a>8. COURSE ALARM</h3>
+<div class="paragraph">
+<p>Course Alarm is (of course) meant to alert you when you get off course.
+The problem with getting off course is that you might end up somewhere
+where you do not want to be.</p>
+</div>
+<div class="paragraph">
+<p>Setting the Course-alarm is explained step-by-step by these screenshots.</p>
+</div>
+<div class="paragraph">
+<p>Set up a new watchdog alarm and pick "Course"</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/s-wdpi-53_0.png" alt="s-wdpi-53_0.png">
+</div>
+</div>
+<div class="paragraph">
+<p>You can set the alarm for, for "Port" only, for "Starboard" only or for
+"Port or Starboard".</p>
+</div>
+<div class="paragraph">
+<p>Choose "Port" if you only want to be alarmed when you go too far to
+port. Choose "Starboard" if you only want to be alarmed when you go too
+far to starboard. Choose "Port or Starboard" if you want to be alarmed
+when you go either too far to port or too far to starboard.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/s-wdpi-54.png" alt="s-wdpi-54.png">
+</div>
+</div>
+<div class="paragraph">
+<p>Choose how many degrees you want as margin before the alarm is triggered. You can specify the desired course either manually (enter the
+desired course yourself) or by clicking "Current Course". In that case Watchdog enters your present COG, as received from your GPS.</p>
+</div>
+<div class="paragraph">
+<p>In this example Watchdog will start barking when you wander more than 20 degrees to port or more than 20 degrees to starboard from a course of 135 degrees.</p>
+</div>
+<div class="paragraph">
+<p>After you are finished editing the alarm, click "OK".</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/s-wdpi-55.png" alt="s-wdpi-55.png">
+</div>
+</div>
+<div class="paragraph">
+<p>The "Course Alarm" shows up in the Watchdog Configuration window. Click "OK".</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/s-wdpi-56.png" alt="s-wdpi-56.png">
+</div>
+</div>
+<div class="paragraph">
+<p>Watchdog shows your COG (in this example 168 degrees).</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/s-wdpi-57.png" alt="s-wdpi-57.png">
+</div>
+</div>
+<div class="paragraph">
+<p>Tick the checkbox (if it isn&#8217;t ticked yet). Watchdog "Course Alarm" is now activated and wil alert you if your course is not between 115 and
+155 degrees (135 plus or minus 20 degrees).</p>
+</div>
+<div class="paragraph">
+<p>In the screenshot below the course is somewhere around 005 degrees.
+As that is (way) off course, the alarm is triggered.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/opencpn/manual/plugins/watchdog/s-wdpi-58.png" alt="s-wdpi-58.png">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_9_speed_alarm"><a class="anchor" href="#_9_speed_alarm"></a>9. SPEED ALARM</h3>
+<div class="paragraph">
+<p>Speed-alarm is meant to alert you when your SOG gets below (Underspeed) or above (Overspeed) a specific speed. You can set a limit. That limit
+is the speed, in knots, you don&#8217;t want to get below or above.</p>
+</div>
+<div class="paragraph">
+<p>Setting the Speed-alarm is explained step-by-step by these screenshots.</p>
+</div>
+<div class="paragraph">
+<p>Set up a new watchdog alarm and pick "Speed"</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/s-wdpi-59_0.png" alt="s-wdpi-59_0.png">
+</div>
+</div>
+<div class="paragraph">
+<p>In this example the alarm is set for "Underspeed" and set to 5 knots, because you want an alert when speed drops below 5 knots.
+However when riding bigger waves, speed can increase momentarily when surfing and and decrease on reaching the bottom.
+In such cases the Speed Alarm might get triggered with every wave.
+To prevent alarm cycling, set Watchdog to <strong>average</strong> your speed. You can set a slider from 1 second to 120 seconds.</p>
+</div>
+<div class="paragraph">
+<p>In this example the slider is set to 60 seconds. Now Watchdog will only trigger the alarm when your <strong>average speed, measured over a period of 60
+seconds</strong>, will be below 5 knots.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/s-wdpi-60-0.png" alt="s-wdpi-60-0.png">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/s-wdpi-61-0.png" alt="s-wdpi-61-0.png">
+</div>
+</div>
+<div class="paragraph">
+<p>In this example the boat&#8217;s average speed over 60 seconds was 0.6 knots and the limit was set to 5.0 knots. Watchdog shows you "<strong>0.6 &lt; 5.0</strong>" (0.6 is less than 5.0).</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/s-wdpi-62-0.png" alt="s-wdpi-62-0.png">
+</div>
+</div>
+<div class="paragraph">
+<p>Here we have set <strong>two </strong>speed-alarms. One for <strong>Underspeed </strong>and one for <strong>Overspeed</strong>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/s-wdpi-62-01.png" alt="s-wdpi-62-01.png">
+</div>
+</div>
+<div class="paragraph">
+<p>In this screenshot the limit was still 5.0 knots, but the boat&#8217;s average speed over 60 seconds was 0.3 knots.
+The "Underspeed" alarm was triggered and the text turned red. The "Overspeed" alarm did not get triggered and that text remained black.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/s-wdpi-62-02.png" alt="s-wdpi-62-02.png">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_10_depth_alarm"><a class="anchor" href="#_10_depth_alarm"></a>10. DEPTH ALARM</h3>
+<div class="paragraph">
+<p>Complete this</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_11_wind_alarm"><a class="anchor" href="#_11_wind_alarm"></a>11. WIND ALARM</h3>
+<div class="paragraph">
+<p>The wind-alarm has three <strong>modes</strong>: Under Speed, Over Speed and Direction.
+So the alarm can be set to warn you when the windvelocity exceeds a
+given value (Over Speed), drops under a given velocity (Under Speed) or
+changes direction.</p>
+</div>
+<div class="paragraph">
+<p>Wind-alarm also has three <strong>types</strong>:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Apparent - measured from moving boat (requires only wind sensors)</p>
+</li>
+<li>
+<p>True Relative - wind would feel like if boat stopped (requires windsensors + gps)</p>
+</li>
+<li>
+<p>True Absolute - wind would feel if boat stopped and faced north (requires wind sensors + gps + compass)</p>
+</li>
+</ol>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/april-2020-025.png" alt="april-2020-025.png">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_12_weather_alarm"><a class="anchor" href="#_12_weather_alarm"></a>12. WEATHER ALARM</h3>
+<div class="paragraph">
+<p>The Weather-alarm can be used to warn you for changes in airpressure, air temperature, sea temperature, relative humidity and humidity. This
+is of course only possible if there are (digital) sensors for these parameters connected to OpenCPN.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/april-2020-weather-alarm-001.png" alt="april-2020-weather-alarm-001.png">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/april-2020-weather-alarm-002.png" alt="april-2020-weather-alarm-002.png">
+</div>
+</div>
+<div class="paragraph">
+<p>For the region of North Sea and Baltic Sea (40 - 60 degrees N) this table can be used as an indication:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">air-pressure change in hPa per hour</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">air-pressure change in hPa per 3 hours</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">expected windspeed in Bf</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">+1,3 to +2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">+4 to +6</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6-7</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">+2 to +3</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">+6 to +9</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8-9</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">more than +3</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">+10 or more</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10 or more</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-1 to -2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-3 to -6</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6-7</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">more than -2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">more than -6</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8-12</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Note: In subtropic and tropic regions some of the above rules may not be valid at all! In tradewind- zones you should observe the daily
+variations: are they still present? If not: possible gale is to be expected.</p>
+</div>
+<div class="paragraph">
+<p>Let’s say you want to be warned when the barometer drops more than 1,3 hPa per hour.</p>
+</div>
+<div class="paragraph">
+<p>1 hectopascal (hPa) is equal to 100 millibar (mBar). So 1,3 hPa per hour = 130 mBar per hour or 130 mBar per 3600 seconds.</p>
+</div>
+<div class="paragraph">
+<p>The setting in the WD-Weather-alarm would then be:
+Variable: Barometer  Rate
+Type: Decreasing
+Value: 130 mBar
+In Last: 3600 Seconds</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre> +
+*weathertips:* +
+Rapid pressure drop with no or almost no wind: sudden increase of windspeed / gale possible without any other sign! Weather front with
+rain coming before wind comes up: stronger winds are to be expected.
+Wind coming before rain: wind will probably not increase.</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_13_pypilot_alarm"><a class="anchor" href="#_13_pypilot_alarm"></a>13. PYPILOT ALARM</h3>
+<div class="paragraph">
+<p>Watchdog can be used in conjunction with the free software autopilot
+"Pypilot", wich is a separate plugin for OpenCPN.</p>
+</div>
+<div class="paragraph">
+<p>For more information on Pypilot, see the (separate) manual that can be
+found in <strong>"OpenCPN User Manual" - "Plugins" - "Other" - "Pypilot
+Autopilot"</strong>:</p>
+</div>
+<div class="paragraph">
+<p><a href="https://opencpn.org/wiki/dokuwiki/doku.php?id=opencpn:opencpn_user_manual:plugins:other:pypilot" class="bare">https://opencpn.org/wiki/dokuwiki/doku.php?id=opencpn:opencpn_user_manual:plugins:other:pypilot</a></p>
+</div>
+<div class="paragraph">
+<p>In Watchdog there are several options to warn you for possible problems
+in the soft- or hardware of the Pypilot autopilot.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/april-2020-031.png" alt="april-2020-031.png">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/april-2020-033.png" alt="april-2020-033.png">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/april-2020-030.png" alt="april-2020-030.png">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/april-2020-032.png" alt="april-2020-032.png">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_14_deadman_alarm"><a class="anchor" href="#_14_deadman_alarm"></a>14. DEADMAN ALARM</h3>
+<div class="paragraph">
+<p>Deadman Alarm alerts you (or your crew) when the watchman has fallen asleep, jumped overboard, after a set period of time the program has not had any user input.
+The objective is to assure someone is on watch.
+The Deadman alarm stops as soon as any action is taken, (movement of the mouse cursor). The only logical kind of alert for "Deadman" is some form of loud anannoying sound.</p>
+</div>
+<div class="paragraph">
+<p>Setting the Deadman-alarm is explained step-by-step by these screenshots. Set up a new watchdog alarm and pick "Deadman"</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/s-wdpi-63_0.png" alt="s-wdpi-63_0.png">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/s-wdpi-64.png" alt="s-wdpi-64.png">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/s-wdpi-65.png" alt="s-wdpi-65.png">
+</div>
+</div>
+<div class="paragraph">
+<p>Once set, the clock starts ticking.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/s-wdpi-66.png" alt="s-wdpi-66.png">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_15_nmea_data_alarm"><a class="anchor" href="#_15_nmea_data_alarm"></a>15. NMEA DATA ALARM</h3>
+<div class="paragraph">
+<p>In Watchdog you can set NMEA-data-alarms. NMEA stands for National Marine Electronics Association.
+NMEA data consists of sentences, the first word of which, called a data type, defines the interpretation of the rest of the sentence.
+Each Data type would have its own unique interpretation and is defined in the NMEA standard.
+Examples of devices that communicate via NMEA-data with your computer are your GPS receiver and your AIS receiver.
+In this picture there is a set-up with a GPS receiver and a AIS receiver connected to OpenCPN. Here the GPS is on COM21 and the AIS on COM16.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/s-wdpi-67.png" alt="s-wdpi-67.png">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>NMEA and your position.</strong><br></p>
+</div>
+<div class="paragraph">
+<p>OpenCPN&#8217;s most important type of NMEA data is position, provided by your GPS receiver.
+Without receiving GPS data, OpenCPN loses own ship&#8217;s actual position.
+When GPS NMEA-data to OpenCPN stops, chartplotting and navigation stops.
+Own Ship might sail into a Boundary Area marked "exclusion", but the alarm won&#8217;t be triggered.
+Similar failures could occur with an Anchor Alarm. Dragging anchor will not trigger the alarm.
+It&#8217;s important to know when GPS fix is lost.
+GPS data is received as a data type beginning with "<strong>$</strong>" and the letters "<strong>GP</strong>".
+The most important NMEA data streams include the GGA sentence which provides the current Fix data, the RMC which provides the minimum GPS sentences information, and the GSA which provides the Satellite status data.</p>
+</div>
+<div class="paragraph">
+<p>So, if OpenCPN receives <strong>$GPGGA</strong>, that means it receives a fix from your GPS.</p>
+</div>
+<div class="paragraph">
+<p><strong>Setting up a Watchdog-NMEA-alarm (GPS)</strong><br>
+Set up a Watchdog-NMEA-alarm that warns when the GPS fix is lost for more than 10 seconds.</p>
+</div>
+<div class="paragraph">
+<p>Set up a new watchdog alarm, choose "NMEA Data" and click "OK</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/s-wdpi-68_0.png" alt="s-wdpi-68_0.png">
+</div>
+</div>
+<div class="paragraph">
+<p>Standard "$GPGGA" is set. Set timer to "at least every 10 seconds" and  tick the other boxes as per the screenshot below. Click "OK"</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/s-wdpi-69.png" alt="s-wdpi-69.png">
+</div>
+</div>
+<div class="paragraph">
+<p>Now the NMEA-alarm set, and will be triggered 10 seconds after OpenCPN stops receiving GGA-sentences.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/s-wdpi-70.png" alt="s-wdpi-70.png">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>NMEA and the position of other ships</strong><br>
+NMEA-data shows own ship location and where other ships are located (AIS), what their name, callsign, SOG and COG are etc.
+Good to have this data for a rendezvous or if you wish to avoid a collision.
+These kind of data are received via an AIS receiver.</p>
+</div>
+<div class="paragraph">
+<p><strong>Multiple NMEA alarms</strong><br>
+You can set a separate alarm for the loss of AIS data. It works the same as the GPS alarm but AIS data (from other ships) always begin with !AIVDM (don&#8217;t forget the exclamation-mark).</p>
+</div>
+<div class="paragraph">
+<p><strong>Setting up a Watchdog-NMEA-alarm (GPS)</strong><br>
+You can add a new NMEA-alarm (see the previous steps) but now you fill in <strong>!AIVDM</strong></p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/s-wdpi-71.png" alt="s-wdpi-71.png">
+</div>
+</div>
+<div class="paragraph">
+<p>The result is two NMEA Data-alarms (one for GPS fix and one for AIS-data)</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/s-wdpi-72.png" alt="s-wdpi-72.png">
+</div>
+</div>
+<div class="paragraph">
+<p>The upper NMEA Data alarm is the AIS-alarm. The lower NMEA Data alarm is the GPS alarm.</p>
+</div>
+<div class="paragraph">
+<p>Each alarm can be switched on or off.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/s-wdpi-73.png" alt="s-wdpi-73.png">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_16_email_alert"><a class="anchor" href="#_16_email_alert"></a>16. EMAIL ALERT</h3>
+<div class="paragraph">
+<p>You can order Watchdog to execute a computer command.
+For example lets get Watchdog to send us an email in case our anchor drags.
+We have stored that command in a file we made and called <strong>AnchorAlarm.bat</strong>.
+In this example that file is stored in the root of our computer (C:\)
+but of course you can put in anywhere, as long as you tell Watchdog where to find it.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/s-wdpi-04aa.png" alt="s-wdpi-04aa.png">
+</div>
+</div>
+<div class="paragraph">
+<p>Sending emails from the command prompt can be done with a small tool called "Send-It-Quiet". More info: <a href="http://commandlinesendmail.blogspot.nl/" class="bare">http://commandlinesendmail.blogspot.nl/</a></p>
+</div>
+<div class="paragraph">
+<p>Example of the file AnchorAlarm.bat (in this example Send-It-Quiet is installed in E:\Tools\senditquiet\senditquiet)</p>
+</div>
+<div class="paragraph">
+<p>Lets say:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>You are Blackbeard</p>
+</li>
+<li>
+<p>Your emailadress is <strong>blackbeard@gmail.com</strong></p>
+</li>
+<li>
+<p>Your Gmail username is <strong>blackbeard</strong></p>
+</li>
+<li>
+<p>Your Gmail password is <strong>1loveGold2</strong>.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>You want the program to send an email to yourself with the subject <strong>ANCHOR ALARM</strong> and the message <strong>This is your ship.
+You stupid fool, come back here! My anchor is dragging!</strong></p>
+</div>
+<div class="paragraph">
+<p>The batchfile would then be:</p>
+</div>
+<div class="paragraph">
+<p>E:\Tools\senditquiet\senditquiet\senditquiet.exe -s smtp.gmail.com -port 587 -u <strong>blackbeard@gmail.com</strong> -protocol ssl -p <strong>1loveGold2</strong> -f  <strong>blackbeard@gmail.com</strong> -t <strong>blackbeard@gmail.com</strong> -subject "<strong>ANCHOR ALARM</strong>" -body "<strong>This is your ship. You stupid fool, come back here! My anchor is dragging!</strong>"</p>
+</div>
+<div class="paragraph">
+<p>The result when the anchor alarm gets triggered…</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/s-wdpi-04b.png" alt="s-wdpi-04b.png">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Note</strong> Of course this only works when you can actually email from the computer OpenCPN is installed on! This example is tested on a Windows 7 PC with Internet connection and a Gmail-account.</p>
+</div>
+<div class="paragraph">
+<p>If, after reading all of the above, you still wonder why Watchdog could
+be of any use for navigation, we strongly advise you to sell your boat.</p>
+</div>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script src="../../_/js/site.js"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
