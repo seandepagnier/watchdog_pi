@@ -54,7 +54,7 @@ set(LONG_DESCRIPTION "Multiple Configurable alarms for  changing conditions for 
 
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "4")
-set(VERSION_PATCH "29")
+set(VERSION_PATCH "30")
 set(VERSION_TWEAK "0")
 set(VERSION_DATE "2/4/2021") # DD/MM/YYYY format
 set(OCPN_MIN_VERSION "ov50")
@@ -189,7 +189,7 @@ SET(HDRS
 
 # TexFont.cpp has to be here it will not compile
 set(OCPNSRC ocpnsrc/TexFont.cpp)
-# also src/TexFont.h has to exist AND ocpninclude/TexFont.h is not needed. 
+# also src/TexFont.h has to exist AND ocpnhdrs/TexFont.h is not needed. 
 
 set(EXTSRC
 )
@@ -226,12 +226,13 @@ endif(PI_JSON_SCHEMA_VALIDATOR)
 ##=============================================================
 
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/include)
-include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude)
+# include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnhdrs)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnsrc/glu/include)
-include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/glu/include)
+# include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/glu/include)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/${EXTINCLUDE_DIR})
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/)
-include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/wx/include)
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/GL)
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/wx/include/wx)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/jsoncpp)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/nmea0183/src)
 
