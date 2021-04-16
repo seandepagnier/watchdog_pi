@@ -2,12 +2,13 @@
 
 image::s-wdpi-01-husky.png[watchdog,60,60]
 
-== Version & Changes
-
 Developer: Sean D'Epagnier +
 Maintainers: Rick Gleason, Jon Gough, Roel Smidt and the Plugin Team +
+PI Manager Workflow: Testplugin
 
-Watchdog v2.4.24 for OpenCPN v5.4.2 was updated March 2021 and requires Opencpn v4.1.xxx or newer. 
+== Version & Changes
+
+Watchdog v2.4.29 for OpenCPN v5.4.2 was updated March 2021 and requires Opencpn v4.1.xxx or newer. 
 This plugin now works with the new Plugin Manager integrated installation for multiple environments. 
 
 New alarms are:
@@ -20,8 +21,9 @@ link:#_15_nmea_data_alarm[NMEA No Data Alarm] +
 
 == Links
 
-Source: https://github.com/seandepagnier/watchdog_pi/releases[Github Source] +
-Releases: https://github.com/rgleason/watchdog_pi/releases/tag/v2.0.000[Github Releases] +
+Source: https://github.com/seandepagnier/watchdog_pi +
+Maintained Source: https://github.com/rgleason/watchdog_pi +
+Packaged Releases: https://github.com/rgleason/watchdog_pi/releases/tag/v2.0.000[Github Releases] +
 Forum: http://www.cruisersforum.com/forums/f134/watchdog-plugin-150313.html[Cruiser's Forum Watchdog Thread] +
 
 == What is Watchdog (WD)?

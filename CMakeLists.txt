@@ -19,7 +19,7 @@
 ## *   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                                       *
 ## ***
 #-----------------------------------------------------------------------------
-# CI-CMake: v1.0.160.0   9.02/2021   CI-CMake Author: Jon Gough  
+# CI-CMake: v1.0.160.0   9.02/2021   CI-CMake Author: Jon Gough
 # ---------------------------------------------------------------------------
 
 ## ----- When changing this file do NOT change the order in which sections occur        ----- ##
@@ -30,7 +30,7 @@
 ##
 
 set(CMLOC "CMakeLists: ")
-
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 # define minimum cmake version
 cmake_minimum_required(VERSION 3.1.1)
 if(COMMAND cmake_policy)
@@ -64,24 +64,28 @@ set(TP_COMMENT "  * Release for O5 using CI")
 
 set(PARENT "opencpn")
 
-# The next line allows for setting up your own local webserver with git on it for testing purposes, the default is github.com
+#
+#Used to set up a local webserver with git loaded, for testing purposes.
+#Now set in plugin configure, needed to build flatpak, also locally.
 #set(GIT_REPOSITORY_SERVER "github.com")
-# This line is turned on in pluginconfigure.cmake because the flatpak build and building locally depends on it.
 
-# Specifies Cloudsmith Upload repository suffix
+#No longer needed, queried.
+# set(GIT_USER "rgleason")
+# set(GIT_REPOSITORY_NAME "weather_routing_pi")
+
+## Specifies Cloudsmith upload repository suffix for each catalog
 set(PROD "prod")   #Standard Repos
 set(BETA "beta")   #Standard Repos
 set(ALPHA "alpha") #Standard Repos
 
-# Set if Cloudsmith Base Repository name does not match your Git Repository name.
-#set(CLOUDSMITH_BASE_REPOSITORY "${GIT_REPOSITORY_NAME}")
-set(CLOUDSMITH_BASE_REPOSITORY "watchdog")  #without the pi
-
-# Set the following to use OpenCPN cloudsmith repositories instead of own repositories
 set(CLOUDSMITH_USER "opencpn")
 #set(CLOUDSMITH_USER "rick-gleason")
 
-# Set Plugin info-url, summary and description									  
+# Set if Cloudsmith Base Repository name does not match your Git Repository name.
+#set(CLOUDSMITH_BASE_REPOSITORY "${GIT_REPOSITORY_NAME}")
+set(CLOUDSMITH_BASE_REPOSITORY "watchdog")  #without the pi
+# Set the following to use OpenCPN cloudsmith repositories instead of own repositories
+# Set Plugin info-url, summary and description
 set(XML_INFO_URL "https://opencpn.org/OpenCPN/plugins/watchdog.html")
 set(XML_SUMMARY ${SHORT_DESCRIPTION})
 set(XML_DESCRIPTION ${LONG_DESCRIPTION})
@@ -143,7 +147,7 @@ include("PluginConfigure")
 
 add_definitions(-DUSE_S57)
 
-# ----Remember to Add your project Set(SRCS and set(HDRS  etc..	
+# ----Remember to Add your project Set(SRCS and set(HDRS  etc..
 # ++++++++++++++Section below is direct from Watchdog +++++++++##
 
 IF(PLUGIN_USE_SVG)
@@ -166,7 +170,7 @@ SET(SRCS
             src/icons.cpp
             src/wddc.cpp
 	)
-	
+
 SET(HDRS
   	        include/AIS_Target_Info.h
 			include/Alarm.h
@@ -189,7 +193,7 @@ SET(HDRS
 
 # TexFont.cpp has to be here it will not compile
 set(OCPNSRC ocpnsrc/TexFont.cpp)
-# also src/TexFont.h has to exist AND ocpnhdrs/TexFont.h is not needed. 
+# also src/TexFont.h has to exist AND ocpnhdrs/TexFont.h is not needed.
 
 set(EXTSRC
 )
@@ -259,7 +263,7 @@ endif(NOT OCPN_FLATPAK_CONFIG)
 #needed to build Ubuntu!
 #if(UNIX)
   # Add this in lieu of add_definitions ("-fPIC")
-#   set(CMAKE_POSITION_INDEPENDENT_CODE ON)   
+#   set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 #endif(UNIX)
 
 ## Statement below is required to collect all the set( headers and SRCS  - Adjust as required
@@ -299,11 +303,13 @@ add_definitions(-DTIXML_USE_STL)
 #turned off
 #if(QT_ANDROID)
 #  target_link_libraries(${PACKAGE_NAME}  GL_static)
-#endif(QT_ANDROID)  
+#endif(QT_ANDROID)
 
 
-#JSON Validator: Every plugin that uses JSON for passing messages should use a validator.  A JSON validator is much like an XML validator, the validator allows the system to ignore non-conformant messages.  The JSON validator changes the OSABI flavor of the Linux executable so there is code to change it back.
-
+# -------------------------------------------
+#  PI_JSON SCHEMA VALIDATOR  From Testplugin
+# -------------------------------------------
+# Plugin using JSON for passing messages can optionally use a validator. The validator  allows the system to ignore non-conformant messages. (Watchdog, Weather_routing, Squiddio)
 if(UNIX AND NOT APPLE AND NOT QT_ANDROID)
     if(PI_JSON_SCHEMA_VALIDATOR)
         # Change OS/ABI to be UNIX - System V to make it run with OCPN
