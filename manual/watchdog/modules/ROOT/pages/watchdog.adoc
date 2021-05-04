@@ -25,6 +25,7 @@ Source: https://github.com/seandepagnier/watchdog_pi +
 Maintained Source: https://github.com/rgleason/watchdog_pi +
 Packaged Releases: https://github.com/rgleason/watchdog_pi/releases/tag/v2.0.000[Github Releases] +
 Forum: http://www.cruisersforum.com/forums/f134/watchdog-plugin-150313.html[Cruiser's Forum Watchdog Thread] +
+Downloads: https://opencpn.org/OpenCPN/plugins/weatherroute.html
 
 == What is Watchdog (WD)?
 

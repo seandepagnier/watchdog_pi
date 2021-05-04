@@ -21,7 +21,8 @@
 #-----------------------------------------------------------------------------
 # CI-CMake: v1.0.160.0   9.02/2021   CI-CMake Author: Jon Gough
 # ---------------------------------------------------------------------------
-
+## buildCI:yes useODAPI:yes validateJSON:yes
+##
 ## ----- When changing this file do NOT change the order in which sections occur        ----- ##
 ## ----- Changes should only be made between the section blocks that identify where     ----- ##
 ## ----- these changes should be. The whole configuration process relies on this        ----- ##
@@ -55,8 +56,8 @@ set(LONG_DESCRIPTION "Multiple Configurable alarms for  changing conditions for 
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "4")
 set(VERSION_PATCH "30")
-set(VERSION_TWEAK "2")
-set(VERSION_DATE "10/4/2021") # DD/MM/YYYY format
+set(VERSION_TWEAK "3")
+set(VERSION_DATE "04/5/2021") # DD/MM/YYYY format
 set(OCPN_MIN_VERSION "ov50")
 set(OCPN_API_VERSION_MAJOR "1")
 set(OCPN_API_VERSION_MINOR "16")
