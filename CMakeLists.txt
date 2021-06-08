@@ -51,13 +51,13 @@ set(TITLE_NAME "Watchdog")
 set(PACKAGE_CONTACT "Sean d'Epagnier")
 set(PACKAGE "watchdog_pi")
 set(SHORT_DESCRIPTION "Implement watchdog ability for opencpn")
-set(LONG_DESCRIPTION "Multiple Configurable alarms for  changing conditions for boundaries, cog, landfall, ais, wind, nmea, weather, pypilot, wind, deadman, etc.")
+set(LONG_DESCRIPTION "Set alarms for changing conditions, boundaries, cog, landfall, ais, wind, nmea, weather, pypilot, wind, deadman...")
 
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "4")
 set(VERSION_PATCH "30")
-set(VERSION_TWEAK "3")
-set(VERSION_DATE "04/5/2021") # DD/MM/YYYY format
+set(VERSION_TWEAK "5")
+set(VERSION_DATE "08/06/2021") # DD/MM/YYYY format
 set(OCPN_MIN_VERSION "ov50")
 set(OCPN_API_VERSION_MAJOR "1")
 set(OCPN_API_VERSION_MINOR "16")

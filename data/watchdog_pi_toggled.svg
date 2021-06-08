@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
+   xmlns:osb="http://www.openswatchbook.org/uri/2009/osb"
    xmlns:dc="http://purl.org/dc/elements/1.1/"
    xmlns:cc="http://creativecommons.org/ns#"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -26,7 +27,16 @@
     </rdf:RDF>
   </metadata>
   <defs
-     id="defs3086" />
+     id="defs3086">
+    <linearGradient
+       id="linearGradient3003"
+       osb:paint="solid">
+      <stop
+         style="stop-color:#646464;stop-opacity:1;"
+         offset="0"
+         id="stop3001" />
+    </linearGradient>
+  </defs>
   <sodipodi:namedview
      showguides="false"
      pagecolor="#ffffff"
@@ -37,17 +47,17 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1920"
-     inkscape:window-height="1011"
+     inkscape:window-width="1568"
+     inkscape:window-height="1033"
      id="namedview3084"
      showgrid="false"
-     inkscape:zoom="1.6421381"
-     inkscape:cx="250.27755"
-     inkscape:cy="295.61974"
-     inkscape:window-x="-9"
-     inkscape:window-y="-9"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="g3205"
+     inkscape:zoom="1.591716"
+     inkscape:cx="255.5"
+     inkscape:cy="176.02301"
+     inkscape:window-x="139"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1"
      inkscape:document-rotation="0" />
   <g
      style="display:inline;opacity:0"
@@ -55,19 +65,21 @@
      id="layer1"
      inkscape:groupmode="layer">
     <rect
-       sodipodi:insensitive="true"
        y="0"
        x="-0.60896218"
        height="505.414"
        width="510.68695"
        id="rect2411"
-       style="display:inline;opacity:1;fill:#ffb380;fill-opacity:0;stroke-width:1.00157" />
+       style="display:inline;opacity:1;mix-blend-mode:normal;fill:#0000ff;fill-opacity:1;fill-rule:nonzero;stroke-width:1.002;stroke-miterlimit:4;stroke-dasharray:none"
+       inkscape:label="rect2411" />
   </g>
   <g
+     sodipodi:insensitive="true"
      style="display:inline;opacity:1"
      id="g3205"
      inkscape:groupmode="layer">
     <path
+       sodipodi:insensitive="true"
        inkscape:label="path2416"
        transform="matrix(0.99722644,0.07442734,-0.05457873,0.99850947,0,0)"
        style="display:inline;fill:#ffe680;fill-rule:evenodd;stroke-width:1.03582"
@@ -84,7 +96,7 @@
        d="M 264.22154,486.18373 A 247.04895,248.68495 0 0 1 22.728784,237.45153 247.04895,248.68495 0 0 1 264.44032,-11.065231 247.04895,248.68495 0 0 1 516.59128,226.70867 247.04895,248.68495 0 0 1 285.99829,485.71002" />
     <path
        sodipodi:insensitive="true"
-       style="display:inline;fill:#ad9d99"
+       style="display:inline;fill:#8a9d99;fill-opacity:1"
        d="m 411.396,184.986 c 10.656,8.004 20.436,27.314 -2.39,29.1 -45.479,12.175 -76.4,23.742 -124.554,13.205 -46.44,-26.4 -94.157,47.14 -68,63.013 11.445,3.776 25.31,1.248 37.54,2.498 137.184,-35.576 203.437,97.65 30.659,201.285 C 28.6403,117.081 149.52,-16.7115 411.396,184.986 Z"
        id="path3217"
        inkscape:connector-curvature="0"
@@ -130,7 +142,7 @@
        d="M 0.243154,437 C 3.8916,409.228 -11.0654,371.173 20.1259,353.178 c 16.6872,-11.092 35.7408,-43.533 49.224,-42.84 12.0296,22.48 34.0951,60.547 3.2411,77.784 -26.5312,2.634 -44.1133,26.283 -25.2596,49.269 11.8024,24.423 28.507,45.944 43.3654,68.506 -28.5025,-1.02 -69.473,6.791 -90.695079,-3.22 0.080271,-21.642 0.160543,-43.285 0.24081,-64.927 z"
        id="path3920" />
     <path
-       style="display:inline;fill:#221e1c"
+       style="display:inline;fill:#221e1c;fill-opacity:1"
        d="m 182,341.483 c -21.824,-17.456 -29.229,-47.566 -35.532,-73.43 1.099,-29.686 -12.361,-55.234 -30.827,-75.727 -1.459,-25.971 23.892,-41.539 34.396,-63.042 16.208,-23.674 35.27431,-59.739631 52.11331,-82.965831 -1.112,24.5838 -15.87885,75.447011 15.65715,84.877911 22.75,-10.191 23.88454,-34.48468 48.96854,-43.39708 21.575,-22.2457 50.97,-22.3655 73.94,-2.2595 32.27,13.8908 24.47,54.0143 -7.7,61.6528 -22.838,18.087 -34.817,48.616 -63.504,61.253 -30.355,18.688 -67.065,42.732 -68.441,82.34 -3.946,16.19 17.03,65.605 -19.062,50.702 z"
        id="path3207"
        inkscape:connector-curvature="0"
