@@ -19,7 +19,7 @@
 ## *   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                                       *
 ## ***
 #-----------------------------------------------------------------------------
-# CI-CMake: v1.0.160.0   9.02/2021   CI-CMake Author: Jon Gough
+# CI-CMake: v1.0.168.0   08/06/2021   CI-CMake Author: Jon Gough
 # ---------------------------------------------------------------------------
 ## buildCI:yes useODAPI:yes validateJSON:yes
 ##
@@ -31,7 +31,7 @@
 ##
 
 set(CMLOC "CMakeLists: ")
-set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+
 # define minimum cmake version
 cmake_minimum_required(VERSION 3.1.1)
 if(COMMAND cmake_policy)
@@ -56,8 +56,8 @@ set(LONG_DESCRIPTION "Set alarms for changing conditions, boundaries, cog, landf
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "4")
 set(VERSION_PATCH "30")
-set(VERSION_TWEAK "5")
-set(VERSION_DATE "08/06/2021") # DD/MM/YYYY format
+set(VERSION_TWEAK "6")
+set(VERSION_DATE "09/06/2021") # DD/MM/YYYY format
 set(OCPN_MIN_VERSION "ov50")
 set(OCPN_API_VERSION_MAJOR "1")
 set(OCPN_API_VERSION_MINOR "16")
@@ -211,7 +211,7 @@ set(EXTINCLUDE_DIR ${EXTINCLUDE_DIR} extinclude libs/ocpn-api/)
 if(APPLE)
     option(PI_JSON_SCHEMA_VALIDATOR "Use JSON Schema validator" OFF)
 else(APPLE)
-    option(PI_JSON_SCHEMA_VALIDATOR "Use JSON Schema validator" OFF)
+    option(PI_JSON_SCHEMA_VALIDATOR "Use JSON Schema validator" ON)
 endif(APPLE)
 
 if(PI_JSON_SCHEMA_VALIDATOR)
@@ -221,7 +221,7 @@ if(PI_JSON_SCHEMA_VALIDATOR)
 
     set(EXTSRC ${EXTSRC} extsrc/json-schema-validator/json-schema-draft7.json.cpp extsrc/json-schema-validator/json-uri.cpp extsrc/json-schema-validator/json-validator.cpp)
     set(EXTINCLUDE_DIR ${EXTINCLUDE_DIR} extinclude/nlohmann extinclude)
-
+    #include_directories(BEFORE ${PROJECT_SOURCE_DIR}/extinclude/json-schema-validator)
 else(PI_JSON_SCHEMA_VALIDATOR)
     message(STATUS "${CMLOC}Not using JSON Schema validation - warning invalid JSON 'may' cause unexpected crashes")
 endif(PI_JSON_SCHEMA_VALIDATOR)
@@ -236,6 +236,13 @@ include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnsrc/glu/include)
 # include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/glu/include)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/${EXTINCLUDE_DIR})
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/)
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/ocpn-api)
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/wx/include)
+
+#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/wxJSON/include)
+#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude/wxcurl)
+#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude/wxcurl/include)
+
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/GL)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/wx/include/wx)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/jsoncpp)
@@ -342,6 +349,11 @@ endif(UNIX AND NOT APPLE AND NOT QT_ANDROID)
 ##=======================================
 ## ----- Change above to match project requirements ----- ##
 ## ----- do not change next section - needed to configure build process ----- ##
+
+# Needed for android builds
+if(QT_ANDROID)
+    include_directories(BEFORE ${qt_android_include})
+endif(QT_ANDROID)
 
 include("PluginInstall")
 include("PluginLocalization")
