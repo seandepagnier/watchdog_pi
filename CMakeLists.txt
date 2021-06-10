@@ -151,12 +151,6 @@ add_definitions(-DUSE_S57)
 # ----Remember to Add your project Set(SRCS and set(HDRS  etc..
 # ++++++++++++++Section below is direct from Watchdog +++++++++##
 
-IF(PLUGIN_USE_SVG)
-    MESSAGE(STATUS "${CMLOC}SVG support enabled...")
-    IF(NOT QT_ANDROID)
-        ADD_DEFINITIONS(-DPLUGIN_USE_SVG)
-    ENDIF(NOT QT_ANDROID)
-ENDIF(PLUGIN_USE_SVG)
 
 SET(SRCS
             src/watchdog_pi.cpp
@@ -204,6 +198,19 @@ set(EXTINCLUDE
     extinclude/ODJSONSchemas.h
 )
 
+
+set(LIBSSRC libs/wxJSON/src/jsonreader.cpp libs/wxJSON/src/jsonval.cpp libs/wxJSON/src/jsonwriter.cpp)
+
+set(LIBHDRS
+    libs/GL/gl.h
+    libs/GL/gl_private.h
+    libs/GL/glext.h
+    libs/GL/glu.h
+    libs/wx/include/json_defs.h
+    libs/wx/include/jsonreader.h
+    libs/wx/include/jsonval.h
+    libs/wx/include/jsonwriter.h)
+
 add_definitions(-DPLUGIN_USE_SVG)
 
 set(EXTINCLUDE_DIR ${EXTINCLUDE_DIR} extinclude libs/ocpn-api/)
@@ -231,7 +238,7 @@ endif(PI_JSON_SCHEMA_VALIDATOR)
 ##=============================================================
 
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/include)
-# include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnhdrs)
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnsrc/glu/include)
 # include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/glu/include)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/${EXTINCLUDE_DIR})
