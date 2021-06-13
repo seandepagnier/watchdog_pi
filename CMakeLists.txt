@@ -215,24 +215,6 @@ add_definitions(-DPLUGIN_USE_SVG)
 
 set(EXTINCLUDE_DIR ${EXTINCLUDE_DIR} extinclude libs/ocpn-api/)
 
-if(APPLE)
-    option(PI_JSON_SCHEMA_VALIDATOR "Use JSON Schema validator" OFF)
-else(APPLE)
-    option(PI_JSON_SCHEMA_VALIDATOR "Use JSON Schema validator" ON)
-endif(APPLE)
-
-if(PI_JSON_SCHEMA_VALIDATOR)
-    message(STATUS "${CMLOC}Using JSON Schema validation - warning this changes the 'flavour' of the executable and it may not be compatible with OpenCPN")
-    add_definitions(-DPI_JSON_SCHEMA_VALIDATOR)
-    message(STATUS "${CMLOC}Adding JSON Schema validation")
-
-    set(EXTSRC ${EXTSRC} extsrc/json-schema-validator/json-schema-draft7.json.cpp extsrc/json-schema-validator/json-uri.cpp extsrc/json-schema-validator/json-validator.cpp)
-    set(EXTINCLUDE_DIR ${EXTINCLUDE_DIR} extinclude/nlohmann extinclude)
-    #include_directories(BEFORE ${PROJECT_SOURCE_DIR}/extinclude/json-schema-validator)
-else(PI_JSON_SCHEMA_VALIDATOR)
-    message(STATUS "${CMLOC}Not using JSON Schema validation - warning invalid JSON 'may' cause unexpected crashes")
-endif(PI_JSON_SCHEMA_VALIDATOR)
-
 ##=============================================================
 # Modify/configure 'Include' Directories below for the Plugin
 ##=============================================================
@@ -242,7 +224,7 @@ include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnsrc/glu/include)
 # include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/glu/include)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/${EXTINCLUDE_DIR})
-include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/)
+#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/ocpn-api)
 #include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/wx/include)
 
@@ -258,6 +240,12 @@ include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/nmea0183/src)
 #==============================
 target_sources(${PACKAGE_NAME} PUBLIC ${SRCS} ${HDRS} ${OCPNSRC} ${EXTSRC} ${LIBSSRC} )
 #===============================
+
+# Needed for android builds
+if(QT_ANDROID)
+    include_directories(BEFORE ${qt_android_include})
+    include_directories( ${CMAKE_SOURCE_DIR}/extinclude/GLES2)
+endif(QT_ANDROID)
 
 if(NOT OCPN_FLATPAK_CONFIG)
     # Build environment not available when flatpak is being configured so following statements will not work
@@ -321,32 +309,6 @@ add_definitions(-DTIXML_USE_STL)
 #endif(QT_ANDROID)
 
 
-# -------------------------------------------
-#  PI_JSON SCHEMA VALIDATOR  From Testplugin
-# -------------------------------------------
-# Plugin using JSON for passing messages can optionally use a validator. The validator  allows the system to ignore non-conformant messages. (Watchdog, Weather_routing, Squiddio)
-if(UNIX AND NOT APPLE AND NOT QT_ANDROID)
-    if(PI_JSON_SCHEMA_VALIDATOR)
-        # Change OS/ABI to be UNIX - System V to make it run with OCPN
-        set(lib_name lib${PACKAGE_NAME}.so)
-        message(STATUS "${CMLOC}lib-name: ${lib_name}")
-        find_file(elfedit elfedit)
-        if(NOT (${elfedit} STREQUAL "elfedit-NOTFOUND"))
-            message(STATUS "${CMLOC}Will ensure OS/ABI is set to 0 to match OCPN")
-            add_custom_command(
-                TARGET ${PACKAGE_NAME}
-                POST_BUILD
-                WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-                DEPENDS ${PACKAGE_NAME}
-                COMMENT " Running post build action on ${lib_name}."
-                COMMAND sh -c 'elfedit --input-osabi=Linux --output-osabi=none ${lib_name} || (echo 0) ')
-        else(NOT (${elfedit} STREQUAL "elfedit-NOTFOUND"))
-            message(STATUS "${CMLOC}Cannot correct OS/ABI to match OCPN if it is generated incorrectly. Package binutils needed")
-        endif(NOT (${elfedit} STREQUAL "elfedit-NOTFOUND"))
-    endif(PI_JSON_SCHEMA_VALIDATOR)
-endif(UNIX AND NOT APPLE AND NOT QT_ANDROID)
-
-
 ## ----- Change above to match project requirements ----- ##
 #These are NOT used in Testplugin, used for other plugins
 ##=======================================
@@ -356,11 +318,6 @@ endif(UNIX AND NOT APPLE AND NOT QT_ANDROID)
 ##=======================================
 ## ----- Change above to match project requirements ----- ##
 ## ----- do not change next section - needed to configure build process ----- ##
-
-# Needed for android builds
-if(QT_ANDROID)
-    include_directories(BEFORE ${qt_android_include})
-endif(QT_ANDROID)
 
 include("PluginInstall")
 include("PluginLocalization")

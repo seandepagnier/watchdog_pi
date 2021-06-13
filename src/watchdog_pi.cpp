@@ -257,8 +257,9 @@ wxString watchdog_pi::GetShortDescription()
 wxString watchdog_pi::GetLongDescription()
 {
     return _(PLUGIN_LONG_DESCRIPTION);
-//   return _("Watchdog PlugIn for OpenCPN\n\
+/*   return _("Watchdog PlugIn for OpenCPN\n\
 Alarm user of changing conditions.");
+*/
 }
 
 int watchdog_pi::GetToolbarToolCount(void)
