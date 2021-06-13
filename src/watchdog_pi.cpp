@@ -592,6 +592,7 @@ void watchdog_pi::ShowConfigurationDialog( wxWindow* )
     m_ConfigurationDialog->Show();
 }
 
+/*
 wxString watchdog_pi::StandardPath()
 {
     wxStandardPathsBase& std_path = wxStandardPathsBase::Get();
@@ -627,6 +628,21 @@ wxString watchdog_pi::StandardPath()
     stdPath += s; // is this necessary?
     return stdPath;
 }
+*/
+
+wxString watchdog_pi::StandardPath()
+{
+            wxString s = wxFileName::GetPathSeparator();
+            wxString stdPath  = *GetpPrivateApplicationDataLocation();
+            stdPath += s + _T("plugins");
+            if (!wxDirExists(stdPath))
+              wxMkdir(stdPath);
+            stdPath += s + _T("watchdog");
+        	if (!wxDirExists(stdPath))
+        		wxMkdir(stdPath);
+            return stdPath;
+ }
+
 
 double watchdog_pi::Declination()
 {

@@ -56,8 +56,8 @@ set(LONG_DESCRIPTION "Set alarms for changing conditions, boundaries, cog, landf
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "4")
 set(VERSION_PATCH "30")
-set(VERSION_TWEAK "6")
-set(VERSION_DATE "09/06/2021") # DD/MM/YYYY format
+set(VERSION_TWEAK "7")
+set(VERSION_DATE "13/06/2021") # DD/MM/YYYY format
 set(OCPN_MIN_VERSION "ov50")
 set(OCPN_API_VERSION_MAJOR "1")
 set(OCPN_API_VERSION_MINOR "16")
@@ -206,10 +206,10 @@ set(LIBHDRS
     libs/GL/gl_private.h
     libs/GL/glext.h
     libs/GL/glu.h
-    libs/wx/include/json_defs.h
-    libs/wx/include/jsonreader.h
-    libs/wx/include/jsonval.h
-    libs/wx/include/jsonwriter.h)
+    libs/wxJSON/include/json_defs.h
+    libs/wxJSON/include/jsonreader.h
+    libs/wxJSON/include/jsonval.h
+    libs/wxJSON/include/jsonwriter.h)
 
 add_definitions(-DPLUGIN_USE_SVG)
 
@@ -244,14 +244,14 @@ include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnsrc/glu/include)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/${EXTINCLUDE_DIR})
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/ocpn-api)
-include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/wx/include)
+#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/wx/include)
 
-#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/wxJSON/include)
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/wxJSON/include)
 #include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude/wxcurl)
 #include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude/wxcurl/include)
 
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/GL)
-include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/wx/include/wx)
+#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/wx/include/wx)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/jsoncpp)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/nmea0183/src)
 
