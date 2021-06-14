@@ -175,7 +175,6 @@ SET(HDRS
 			include/msvcdefs.h
 			include/NewAlarmDialog.h
             include/signalk_client.h
-			include/TexFont.h
 			include/watchdog_pi.h
 			include/WatchdogDialog.h
 			include/WatchdogPropertiesDialog.h
@@ -213,7 +212,7 @@ set(LIBHDRS
 
 add_definitions(-DPLUGIN_USE_SVG)
 
-set(EXTINCLUDE_DIR ${EXTINCLUDE_DIR} extinclude libs/ocpn-api/)
+set(EXTINCLUDE_DIR ${EXTINCLUDE_DIR} extinclude)
 
 ##=============================================================
 # Modify/configure 'Include' Directories below for the Plugin
@@ -223,8 +222,7 @@ include_directories(BEFORE ${PROJECT_SOURCE_DIR}/include)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnsrc/glu/include)
 # include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/glu/include)
-include_directories(BEFORE ${PROJECT_SOURCE_DIR}/${EXTINCLUDE_DIR})
-#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/)
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/ocpn-api)
 #include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/wx/include)
 
@@ -236,6 +234,8 @@ include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/GL)
 #include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/wx/include/wx)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/jsoncpp)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/nmea0183/src)
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude)
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/${EXTINCLUDE_DIR})
 
 #==============================
 target_sources(${PACKAGE_NAME} PUBLIC ${SRCS} ${HDRS} ${OCPNSRC} ${EXTSRC} ${LIBSSRC} )
@@ -244,7 +244,6 @@ target_sources(${PACKAGE_NAME} PUBLIC ${SRCS} ${HDRS} ${OCPNSRC} ${EXTSRC} ${LIB
 # Needed for android builds
 if(QT_ANDROID)
     include_directories(BEFORE ${qt_android_include})
-    include_directories( ${CMAKE_SOURCE_DIR}/extinclude/GLES2)
 endif(QT_ANDROID)
 
 if(NOT OCPN_FLATPAK_CONFIG)
