@@ -89,7 +89,6 @@ if [ "$CIRCLECI" ] || [ "$TRAVIS" ]; then
         elif apt-get --version 2>&1 >/dev/null; then
             COUNTER=0
             sudo apt install software-properties-common
-#            sudo add-apt-repository ppa:deadsnakes/ppa -y
             sudo apt update
             sudo apt install -y python3.7
             sudo rm /usr/bin/python3
@@ -105,10 +104,6 @@ if [ "$CIRCLECI" ] || [ "$TRAVIS" ]; then
             done
             sudo python3 -m pip install --upgrade pip
             sudo python3 -m pip install -q cloudsmith-cli
-    #    else
-    #        sudo -H python3 -m ensurepip
-    #        sudo -H python3 -m pip install -q setuptools
-    #        sudo -H python3 -m pip install -q cloudsmith-cli
         fi
     fi
 fi

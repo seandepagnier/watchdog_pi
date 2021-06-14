@@ -31,6 +31,10 @@
 
 #include <vector>
 
+#ifdef USE_ANDROID_GLES2
+#include <gl2.h>
+#endif
+
 #ifdef ocpnUSE_GL
 #ifdef __WXMSW__
 #include <GL/glu.h>

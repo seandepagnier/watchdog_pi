@@ -27,7 +27,6 @@
 
 #include "wx/wxprec.h"
 
-
 #ifdef __WXMSW__
 #include "GL/gl.h"            // local copy for Windows
 #include <GL/glu.h>

@@ -83,7 +83,6 @@ SET(SRC_NMEA0183
 #    ENDIF(_wx_selected_config MATCHES "androideabi-qt")
 #ENDIF(DEFINED _wx_selected_config)
 
-
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 add_library(NMEA0183 STATIC ${SRC_NMEA0183})
