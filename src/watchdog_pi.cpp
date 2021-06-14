@@ -149,8 +149,9 @@ int watchdog_pi::Init(void)
                                                 _svg_watchdog_toggled, wxITEM_CHECK, _( "Watchdog" ),  "" , NULL, WATCHDOG_TOOL_POSITION, 0, this);
     #else
     m_leftclick_tool_id  = InsertPlugInTool
-    ("", _img_watchdog, _img_watchdog, wxITEM_NORMAL,
+  ("", _img_watchdog, _img_watchdog, wxITEM_NORMAL,
      _("Watchdog"), "", NULL, WATCHDOG_TOOL_POSITION, 0, this);
+   
     #endif
 
     m_PropertiesDialog = NULL;
@@ -251,15 +252,11 @@ wxString watchdog_pi::GetCommonName()
 wxString watchdog_pi::GetShortDescription()
 {
     return _(PLUGIN_LONG_DESCRIPTION);
-    //    return _("Watchdog PlugIn for OpenCPN");
 }
 
 wxString watchdog_pi::GetLongDescription()
 {
     return _(PLUGIN_LONG_DESCRIPTION);
-    /*   return _("Watchdog PlugIn for OpenCPN\n\
-     * Alarm user of changing conditions.");
-     */
 }
 
 int watchdog_pi::GetToolbarToolCount(void)
