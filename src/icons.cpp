@@ -23,15 +23,6 @@ void initialize_images(void)
 	}
 
 #ifdef PLUGIN_USE_SVG
-//    wxFileName fn;
-//	   wxString tmp_path;
-//	   tmp_path = GetPluginDataDir("watchdog_pi");
-//	   fn.SetPath(tmp_path);
-//	   fn.AppendDir(_T("data"));
-//	   fn.SetFullName(_T("watchdog_pi.svg"));
-//       _svg_watchdog = fn.GetFullPath();
-//      fn.SetFullName(_T("watchdog_pi_toggled.svg"));
-//    _svg_watchdog_toggled = fn.GetFullPath();
 	
     wxFileName fn;
       fn.SetPath(GetPluginDataDir("watchdog_pi"));

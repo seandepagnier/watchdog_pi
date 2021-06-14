@@ -2816,9 +2816,10 @@ void Alarm::RenderAll(wdDC &dc, PlugIn_ViewPort &vp)
 
 void Alarm::LoadConfigAll()
 {
-    wxString configuration = watchdog_pi::StandardPath() + "WatchdogConfiguration.xml";
+//    wxString configuration = watchdog_pi::StandardPath() + "WatchdogConfiguration.xml";
     TiXmlDocument doc;
-
+    wxString s = wxFileName::GetPathSeparator();
+	wxString configuration = watchdog_pi::StandardPath() + s + "WatchdogConfiguration.xml";
     if(!doc.LoadFile(configuration.mb_str())) {
         wxLogMessage("Watchdog: " + wxString(_("Failed to read")) + ": " + configuration);
         return;
@@ -2878,7 +2879,11 @@ void Alarm::SaveConfigAll()
         root->LinkEndChild(c);
     }
 
-    wxString configuration = watchdog_pi::StandardPath() + "WatchdogConfiguration.xml";
+//    wxString configuration = watchdog_pi::StandardPath() + "WatchdogConfiguration.xml";
+
+    wxString s = wxFileName::GetPathSeparator();
+    wxString configuration = watchdog_pi::StandardPath() + s + "WatchdogConfiguration.xml";
+
     if(!doc.SaveFile(configuration.mb_str()))
         wxLogMessage("Watchdog: " + wxString(_("failed to save")) + ": " + configuration);
 }

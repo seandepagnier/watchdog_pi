@@ -17,7 +17,6 @@ include/icons.h
 include/msvcdefs.h
 include/NewAlarmDialog.h
 include/signalk_client.h
-include/TexFont.h
 include/watchdog_pi.h
 include/WatchdogDialog.h
 include/WatchdogPropertiesDialog.h
