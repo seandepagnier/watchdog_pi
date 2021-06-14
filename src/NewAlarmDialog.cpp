@@ -24,39 +24,23 @@
  ***************************************************************************
  */
 
-#include "WatchdogUI.h"
+#include "watchdog_pi.h"
+#include "NewAlarmDialog.h"
 
-#ifdef __WXMSW__
-#include "GL/gl.h"            // local copy for Windows
-#include <GL/glu.h>
-#else
-
-#ifdef USE_ANDROID_GLES2
-#include <gl2.h>
-#endif
-
-#ifndef __OCPN__ANDROID__
-#include <GL/gl.h>
-#include <GL/glu.h>
-#else
-#include "qopengl.h"                  // this gives us the qt runtime gles2.h
-#include "GL/gl_private.h"
-#endif
-#endif
-
-
-class watchdog_pi;
-
-class ConfigurationDialog : public ConfigurationDialogBase
+NewAlarmDialog::NewAlarmDialog(wxWindow* parent)
+    : NewAlarmDialogBase(parent)
 {
-public:
-    ConfigurationDialog( watchdog_pi &_watchdog_pi, wxWindow* parent);
-
-    void OnEnabled( wxCommandEvent& event );
-    void OnFont( wxFontPickerEvent& event );
-
-private:
-    void OnInformation( wxCommandEvent& event );
-
-    watchdog_pi &m_watchdog_pi;
-};
+    m_lAlarmType->InsertColumn(0, _T(""));
+    m_lAlarmType->InsertItem(ANCHOR,   _("Anchor"));
+    m_lAlarmType->InsertItem(DEPTH, _("Depth"));
+    m_lAlarmType->InsertItem(COURSE,   _("Course"));
+    m_lAlarmType->InsertItem(SPEED,    _("Speed"));
+    m_lAlarmType->InsertItem(WIND,     _("Wind"));
+    m_lAlarmType->InsertItem(WEATHER,  _("Weather"));
+    m_lAlarmType->InsertItem(DEADMAN,  _("Deadman"));
+    m_lAlarmType->InsertItem(NMEADATA, _("NMEA Data"));
+    m_lAlarmType->InsertItem(LANDFALL, _("Landfall"));
+    m_lAlarmType->InsertItem(BOUNDARY, _("Boundary Alarm"));
+    m_lAlarmType->InsertItem(PYPILOT, _("pypilot Alarm"));
+    m_lAlarmType->SetColumnWidth(0, wxLIST_AUTOSIZE);
+}
