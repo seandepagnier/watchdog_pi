@@ -12,11 +12,6 @@ endif ()
 set(SAVE_CMLOC_NMEA0183 ${CMLOC})
 set(CMLOC "CMakeLists_NMEA0183: ")
 
-# add_library(_NMEA0183 INTERFACE)
-# add_library(ocpn::nmea0183 ALIAS _nmea)
-
-# find_package(nmea0183)
-
 if (NOT CMAKE_MODULE_PATH)
   set (CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../cmake)
 endif ()

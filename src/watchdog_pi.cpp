@@ -108,7 +108,7 @@ watchdog_pi::watchdog_pi(void *ppimgr)
     m_lasttimerfix.FixTime = m_lastfix.FixTime = 0;
     m_sog = m_cog = m_hdm = 0;
     m_declination = NAN;
-    
+
     g_ReceivedPathGUIDMessage = wxEmptyString;
     g_ReceivedBoundaryTimeMessage = wxEmptyString;
     g_ReceivedBoundaryDistanceMessage = wxEmptyString;
@@ -120,7 +120,7 @@ watchdog_pi::watchdog_pi(void *ppimgr)
     g_GuardZoneName = wxEmptyString;
     g_GuardZoneDescription = wxEmptyString;
     g_GuardZoneGUID = wxEmptyString;
-    
+
     g_AISTarget.m_dLat = 0.;
     g_AISTarget.m_dLon = 0.;
     g_AISTarget.m_dSOG = 0.;
@@ -152,15 +152,15 @@ int watchdog_pi::Init(void)
         ("", _img_watchdog, _img_watchdog, wxITEM_NORMAL,
          _("Watchdog"), "", NULL, WATCHDOG_TOOL_POSITION, 0, this);
 #endif
-    
+
     m_PropertiesDialog = NULL;
     m_Timer.Connect(wxEVT_TIMER, wxTimerEventHandler
                     ( watchdog_pi::OnTimer ), NULL, this);
     m_Timer.Start(3000);
-    
+
     m_WatchdogDialog = new WatchdogDialog(*this, GetOCPNCanvasWindow());
     m_ConfigurationDialog = new ConfigurationDialog(*this, m_WatchdogDialog);
-        
+
     wxIcon icon;
     icon.CopyFromBitmap(*_img_watchdog);
     m_WatchdogDialog->SetIcon(icon);
@@ -198,10 +198,10 @@ bool watchdog_pi::DeInit(void)
         m_WatchdogDialog = NULL;
         m_ConfigurationDialog = NULL;
     }
-    
+
     m_Timer.Stop();
     m_Timer.Disconnect(wxEVT_TIMER, wxTimerEventHandler( watchdog_pi::OnTimer ), NULL, this);
-    
+
     RemovePlugInTool(m_leftclick_tool_id);
 
     return true;
@@ -251,14 +251,11 @@ wxString watchdog_pi::GetCommonName()
 wxString watchdog_pi::GetShortDescription()
 {
     return _(PLUGIN_LONG_DESCRIPTION);
-//    return _("Watchdog PlugIn for OpenCPN");
 }
 
 wxString watchdog_pi::GetLongDescription()
 {
     return _(PLUGIN_LONG_DESCRIPTION);
-//   return _("Watchdog PlugIn for OpenCPN\n\
-Alarm user of changing conditions.");
 }
 
 int watchdog_pi::GetToolbarToolCount(void)
@@ -271,12 +268,12 @@ void watchdog_pi::ShowPreferencesDialog( wxWindow* parent )
     //dlgShow = false;
     if( NULL == m_PropertiesDialog )
         m_PropertiesDialog = new WatchdogPropertiesDialog( parent );
-    
+
     m_PropertiesDialog->ShowModal();
-    
+
     delete m_PropertiesDialog;
     m_PropertiesDialog = NULL;
-    
+
 }
 
 void watchdog_pi::SetColorScheme(PI_ColorScheme cs)
@@ -293,7 +290,7 @@ void watchdog_pi::RearrangeWindow()
         return;
 
     SetColorScheme(PI_ColorScheme());
-    
+
     m_WatchdogDialog->Fit();
 }
 
@@ -381,7 +378,7 @@ void watchdog_pi::OnTimer( wxTimerEvent & )
             // wait 60 seconds from startup because of slowness to receive first nmea message
             m_sog = m_cog = m_hdm = NAN;
     }
-    
+
     m_lasttimerfix = m_lastfix;
 }
 
@@ -411,7 +408,7 @@ void watchdog_pi::SetPluginMessage(wxString &message_id, wxString &message_body)
     // construct a JSON parser
     Json::Reader reader;
     bool        bFail = false;
-    
+
     if(message_id == "WATCHDOG_PI") {
         // now read the JSON text and store it in the 'root' structure
         // check for errors before retreiving values...
@@ -419,31 +416,31 @@ void watchdog_pi::SetPluginMessage(wxString &message_id, wxString &message_body)
             wxLogMessage(wxString("watchdog_pi: Error parsing JSON message: ") + reader.getFormattedErrorMessages() + " : " + message_body );
             return;
         }
-        
+
         if(!root.isMember( "Source")) {
             // Originator
             wxLogMessage( "No Source found in message" );
             bFail = true;
         }
-        
+
         if(!root.isMember( "Msg")) {
             // Message identifier
             wxLogMessage( "No Msg found in message" );
             bFail = true;
         }
-        
+
         if(!root.isMember( "Type")) {
             // Message type, orig or resp
             wxLogMessage( "No Type found in message" );
             bFail = true;
         }
-        
+
         if(!root.isMember( "MsgId")) {
             // Unique (?) Msg number/identifier
             wxLogMessage( "No MsgNo found in message" );
             bFail = true;
         }
-        
+
         if(!bFail) {
             if(root["Type"].asString() == "Response" && root["Source"].asString() == "OCPN_DRAW_PI") {
                 if(root["Msg"].asString() == "FindPathByGUID" ) {
@@ -542,7 +539,7 @@ void watchdog_pi::SetPluginMessage(wxString &message_id, wxString &message_body)
             wxLogMessage( "No Ship Name found in message" );
             bFail = true;
         }
-        
+
         if(!bFail) {
             if(root["Type"].asString() == "Information" && root["Source"].asString() == "AIS_Decoder") {
                 g_ReceivedAISJSONMsg = root;
