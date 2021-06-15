@@ -21,7 +21,7 @@
 #-----------------------------------------------------------------------------
 # CI-CMake: v1.0.168.0   08/06/2021   CI-CMake Author: Jon Gough
 # ---------------------------------------------------------------------------
-## buildCI:yes useODAPI:yes validateJSON:yes
+## buildCI:yes useODAPI:yes validateJSON:no
 ##
 ## ----- When changing this file do NOT change the order in which sections occur        ----- ##
 ## ----- Changes should only be made between the section blocks that identify where     ----- ##
@@ -56,8 +56,8 @@ set(LONG_DESCRIPTION "Set alarms for changing conditions, boundaries, cog, landf
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "4")
 set(VERSION_PATCH "31")
-set(VERSION_TWEAK "0")
-set(VERSION_DATE "14/06/2021") # DD/MM/YYYY format
+set(VERSION_TWEAK "1")
+set(VERSION_DATE "15/06/2021") # DD/MM/YYYY format
 set(OCPN_MIN_VERSION "ov50")
 set(OCPN_API_VERSION_MAJOR "1")
 set(OCPN_API_VERSION_MINOR "16")
@@ -196,7 +196,6 @@ set(EXTINCLUDE
     extinclude/ODJSONSchemas.h
 )
 
-
 set(LIBSSRC libs/wxJSON/src/jsonreader.cpp libs/wxJSON/src/jsonval.cpp libs/wxJSON/src/jsonwriter.cpp)
 
 set(LIBHDRS
@@ -224,21 +223,21 @@ include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnsrc/glu/include)
 # include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/glu/include)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/ocpn-api)
-#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/wx/include)
-
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/wxJSON/include)
 #include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude/wxcurl)
 #include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude/wxcurl/include)
-
-#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/wx/include/wx)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/jsoncpp)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/nmea0183/src)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/${EXTINCLUDE_DIR})
 
-#==============================
+## Statement below is required to collect all the set( headers and SRCS  - Adjust as required
+## This add_library  can be used in conditionals below.
+#==========================================================================
 target_sources(${PACKAGE_NAME} PUBLIC ${SRCS} ${HDRS} ${OCPNSRC} ${EXTSRC} ${LIBSSRC} )
-#===============================
+#=========================================================================
+#ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRCS} ${HDRS} ${OCPNSRC} ${EXTSRC} ${LIBSRC} ${SRC_JSON} ${SRC_NMEA0183} ${LIBHDRS})
+
 
 # Needed for android builds
 if(QT_ANDROID)
@@ -261,20 +260,6 @@ endif(NOT OCPN_FLATPAK_CONFIG)
 
 ## ----- Change above to match project requirements ----- ##
 
-#needed to build Ubuntu!
-#if(UNIX)
-  # Add this in lieu of add_definitions ("-fPIC")
-#   set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-#endif(UNIX)
-
-## Statement below is required to collect all the set( headers and SRCS  - Adjust as required
-## This add_library  can be used in conditionals below.
-##==========================================================================
-#  ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRCS} ${HDRS} ${OCPNSRC} ${EXTSRC} ${LIBSSRC} ${SRC_JSON} ${SRC_NMEA0183})
-##==========================================================================
-#ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRCS} ${HDRS} ${OCPNSRC} ${EXTSRC} ${LIBSRC} ${SRC_JSON} ${SRC_NMEA0183} ${LIBHDRS})
-#ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRCS} ${HDRS} ${SRC_JSON} ${SRC_NMEA0183} )
-#ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRCS} ${HDRS} ${EXTSRC} ${LIBSSRC}  ${LIBHDRS} ${SRC_JSON} ${SRC_NMEA0183} )
 
 add_definitions(-DTIXML_USE_STL)
 
@@ -300,11 +285,6 @@ add_definitions(-DTIXML_USE_STL)
 #target_link_libraries(${PACKAGE_NAME} ocpn::wxjson)
 
 #needed only if src/glshim project should be included.
-
-#turned off
-#if(QT_ANDROID)
-#  target_link_libraries(${PACKAGE_NAME}  GL_static)
-#endif(QT_ANDROID)
 
 
 ## ----- Change above to match project requirements ----- ##
