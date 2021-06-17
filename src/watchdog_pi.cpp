@@ -631,7 +631,7 @@ void watchdog_pi::ShowConfigurationDialog( wxWindow* )
 wxString watchdog_pi::StandardPath()
 {
     wxString s = wxFileName::GetPathSeparator();
-    wxString stdPath  = *GetpPrivateApplicationDataLocation();
+    wxString stdPath(*GetpPrivateApplicationDataLocation());
     stdPath += s + _T("plugins");
     if (!wxDirExists(stdPath))
         wxMkdir(stdPath);
