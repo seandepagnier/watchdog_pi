@@ -55,9 +55,9 @@ set(LONG_DESCRIPTION "Set alarms for changing conditions, boundaries, cog, landf
 
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "4")
-set(VERSION_PATCH "31")
-set(VERSION_TWEAK "1")
-set(VERSION_DATE "15/06/2021") # DD/MM/YYYY format
+set(VERSION_PATCH "32")
+set(VERSION_TWEAK "0")
+set(VERSION_DATE "23/06/2021") # DD/MM/YYYY format
 set(OCPN_MIN_VERSION "ov50")
 set(OCPN_API_VERSION_MAJOR "1")
 set(OCPN_API_VERSION_MINOR "16")
@@ -185,8 +185,8 @@ SET(HDRS
 	)
 
 # TexFont.cpp has to be here it will not compile
-set(OCPNSRC ocpnsrc/TexFont.cpp)
 # also src/TexFont.h has to exist AND ocpnhdrs/TexFont.h is not needed.
+set(OCPNSRC ocpnsrc/TexFont.cpp)
 
 set(EXTSRC
 )
@@ -212,7 +212,6 @@ add_definitions(-DPLUGIN_USE_SVG)
 
 set(EXTINCLUDE_DIR ${EXTINCLUDE_DIR} extinclude)
 
-
 ##=============================================================
 # Modify/configure 'Include' Directories below for the Plugin
 ##=============================================================
@@ -220,12 +219,9 @@ set(EXTINCLUDE_DIR ${EXTINCLUDE_DIR} extinclude)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/include)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnsrc/glu/include)
-# include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/glu/include)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/ocpn-api)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/wxJSON/include)
-#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude/wxcurl)
-#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude/wxcurl/include)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/jsoncpp)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/nmea0183/src)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude)
@@ -236,7 +232,6 @@ include_directories(BEFORE ${PROJECT_SOURCE_DIR}/${EXTINCLUDE_DIR})
 #==========================================================================
 target_sources(${PACKAGE_NAME} PUBLIC ${SRCS} ${HDRS} ${OCPNSRC} ${EXTSRC} ${LIBSSRC} )
 #=========================================================================
-#ADD_LIBRARY(${PACKAGE_NAME} SHARED ${SRCS} ${HDRS} ${OCPNSRC} ${EXTSRC} ${LIBSRC} ${SRC_JSON} ${SRC_NMEA0183} ${LIBHDRS})
 
 
 # Needed for android builds
@@ -262,30 +257,6 @@ endif(NOT OCPN_FLATPAK_CONFIG)
 
 
 add_definitions(-DTIXML_USE_STL)
-
-#turned off
-#add_subdirectory(libs/tinyxml)
-#target_link_libraries(${PACKAGE_NAME} ocpn::tinyxml)
-
-#turned off
-#add_subdirectory(libs/bzip2)
-#target_link_libraries(${PACKAGE_NAME} ocpn::bzip2)
-
-#turned off
-#add_subdirectory(libs/nmea0183)
-#target_link_libraries(${PACKAGE_NAME} ocpn::nmea0183)
-
-#off anyway
-#add_subdirectory("libs/jsoncpp")
-#target_link_libraries(${PACKAGE_NAME} ocpn::jsoncpp)
-#had errors,  trying PluginNmeaCmake
-
-#off anyway
-#add_subdirectory("libs/wxJSON")
-#target_link_libraries(${PACKAGE_NAME} ocpn::wxjson)
-
-#needed only if src/glshim project should be included.
-
 
 ## ----- Change above to match project requirements ----- ##
 #These are NOT used in Testplugin, used for other plugins
