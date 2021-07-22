@@ -56,7 +56,7 @@ set(LONG_DESCRIPTION "Set alarms for changing conditions, boundaries, cog, landf
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "4")
 set(VERSION_PATCH "32")
-set(VERSION_TWEAK "1")
+set(VERSION_TWEAK "2")
 set(VERSION_DATE "22/07/2021") # DD/MM/YYYY format
 set(OCPN_MIN_VERSION "ov50")
 set(OCPN_API_VERSION_MAJOR "1")
@@ -231,10 +231,14 @@ include_directories(BEFORE ${PROJECT_SOURCE_DIR}/${EXTINCLUDE_DIR})
 
 ## Statement below is required to collect all the set( headers and SRCS  - Adjust as required
 ## This add_library  can be used in conditionals below.
-#==========================================================================
+#======================================================================================
 target_sources(${PACKAGE_NAME} PUBLIC ${SRCS} ${HDRS} ${OCPNSRC} ${EXTSRC} ${LIBSSRC} )
-#=========================================================================
+#=======================================================================================
 
+# Needed for android builds
+if(QT_ANDROID)
+    include_directories(BEFORE ${qt_android_include})
+endif(QT_ANDROID)
 
 
 if(NOT OCPN_FLATPAK_CONFIG)
@@ -250,8 +254,6 @@ if(NOT OCPN_FLATPAK_CONFIG)
     target_link_libraries(${PACKAGE_NAME} ocpn::tinyxml)
 endif(NOT OCPN_FLATPAK_CONFIG)
 
-
-
 add_definitions(-DTIXML_USE_STL)
 
 # Not doing JSON_SCHEMA_VALIDATOR
@@ -266,15 +268,13 @@ add_definitions(-DTIXML_USE_STL)
 ## ----- Change above to match project requirements ----- ##
 ## ----- do not change next section - needed to configure build process ----- ##
 
-# Needed for android builds
-if(QT_ANDROID)
-    include_directories(BEFORE ${qt_android_include})
-endif(QT_ANDROID)
 
 # Needed for all builds
+##=======================================
 include("PluginInstall")
 include("PluginLocalization")
 include("PluginPackage")
+##=======================================
 
 ##
 ## ----- do not change section above - needed to configure build process ----- ##
