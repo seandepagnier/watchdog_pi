@@ -36,20 +36,13 @@
 #define COLS_GLYPHS 16
 #define ROWS_GLYPHS ((NUM_GLYPHS / COLS_GLYPHS)+1)
 
-#ifndef DECL_EXP
-#ifdef __WXMSW__
-#  define DECL_EXP     __declspec(dllexport)
-#else
-#  define DECL_EXP
-#endif
-#endif
 
 struct TexGlyphInfo {
     int x, y, width, height;
     float advance;
 };
 
-class DECL_EXP TexFont {
+class TexFont {
 public:
     TexFont();
     ~TexFont();
@@ -78,5 +71,11 @@ private:
     int m_maxglyphh;
     bool m_built;
     
+    float m_dx;
+    float m_dy;
+    wxColor m_color;
 };
+
+TexFont *GetTexFont(wxFont *key);
+
 #endif  //guard
