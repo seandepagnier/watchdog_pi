@@ -19,7 +19,7 @@
 ## *   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                                       *
 ## ***
 #-----------------------------------------------------------------------------
-# CI-CMake: v1.0.168.0   08/06/2021   CI-CMake Author: Jon Gough
+# CI-CMake: v1.0.174.0   22/07/2021  # DD/MM/YYYY format  CI-CMake Author: Jon Gough
 # ---------------------------------------------------------------------------
 ## buildCI:yes useODAPI:yes validateJSON:no
 ##
@@ -56,8 +56,8 @@ set(LONG_DESCRIPTION "Set alarms for changing conditions, boundaries, cog, landf
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "4")
 set(VERSION_PATCH "32")
-set(VERSION_TWEAK "0")
-set(VERSION_DATE "23/06/2021") # DD/MM/YYYY format
+set(VERSION_TWEAK "1")
+set(VERSION_DATE "22/07/2021") # DD/MM/YYYY format
 set(OCPN_MIN_VERSION "ov50")
 set(OCPN_API_VERSION_MAJOR "1")
 set(OCPN_API_VERSION_MINOR "16")
@@ -210,11 +210,13 @@ set(LIBHDRS
 
 add_definitions(-DPLUGIN_USE_SVG)
 
-set(EXTINCLUDE_DIR ${EXTINCLUDE_DIR} extinclude)
+set(EXTINCLUDE_DIR ${EXTINCLUDE_DIR} extinclude libs/ocpn-api/)
 
 ##=============================================================
 # Modify/configure 'Include' Directories below for the Plugin
 ##=============================================================
+
+# Not doing JSON_SCHEMA_VALIDATOR
 
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/include)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude)
@@ -234,10 +236,6 @@ target_sources(${PACKAGE_NAME} PUBLIC ${SRCS} ${HDRS} ${OCPNSRC} ${EXTSRC} ${LIB
 #=========================================================================
 
 
-# Needed for android builds
-if(QT_ANDROID)
-    include_directories(BEFORE ${qt_android_include})
-endif(QT_ANDROID)
 
 if(NOT OCPN_FLATPAK_CONFIG)
     # Build environment not available when flatpak is being configured so following statements will not work
@@ -253,10 +251,10 @@ if(NOT OCPN_FLATPAK_CONFIG)
 endif(NOT OCPN_FLATPAK_CONFIG)
 
 
-## ----- Change above to match project requirements ----- ##
-
 
 add_definitions(-DTIXML_USE_STL)
+
+# Not doing JSON_SCHEMA_VALIDATOR
 
 ## ----- Change above to match project requirements ----- ##
 #These are NOT used in Testplugin, used for other plugins
@@ -268,6 +266,12 @@ add_definitions(-DTIXML_USE_STL)
 ## ----- Change above to match project requirements ----- ##
 ## ----- do not change next section - needed to configure build process ----- ##
 
+# Needed for android builds
+if(QT_ANDROID)
+    include_directories(BEFORE ${qt_android_include})
+endif(QT_ANDROID)
+
+# Needed for all builds
 include("PluginInstall")
 include("PluginLocalization")
 include("PluginPackage")
