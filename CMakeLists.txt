@@ -56,8 +56,8 @@ set(LONG_DESCRIPTION "Set alarms for changing conditions, boundaries, cog, landf
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "4")
 set(VERSION_PATCH "32")
-set(VERSION_TWEAK "2")
-set(VERSION_DATE "22/07/2021") # DD/MM/YYYY format
+set(VERSION_TWEAK "3")
+set(VERSION_DATE "28/07/2021") # DD/MM/YYYY format
 set(OCPN_MIN_VERSION "ov50")
 set(OCPN_API_VERSION_MAJOR "1")
 set(OCPN_API_VERSION_MINOR "16")
@@ -219,6 +219,7 @@ set(EXTINCLUDE_DIR ${EXTINCLUDE_DIR} extinclude libs/ocpn-api/)
 # Not doing JSON_SCHEMA_VALIDATOR
 
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/include)
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/extinclude)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnsrc/glu/include)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs)
