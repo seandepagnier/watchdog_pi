@@ -19,7 +19,7 @@
 ## *   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                                       *
 ## ***
 #-----------------------------------------------------------------------------
-# CI-CMake: v1.0.168.0   08/06/2021   CI-CMake Author: Jon Gough
+# CI-CMake: v1.0.174.0   22/07/2021  # DD/MM/YYYY format  CI-CMake Author: Jon Gough
 # ---------------------------------------------------------------------------
 ## buildCI:yes useODAPI:yes validateJSON:no
 ##
@@ -56,8 +56,8 @@ set(LONG_DESCRIPTION "Set alarms for changing conditions, boundaries, cog, landf
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "4")
 set(VERSION_PATCH "32")
-set(VERSION_TWEAK "0")
-set(VERSION_DATE "23/06/2021") # DD/MM/YYYY format
+set(VERSION_TWEAK "3")
+set(VERSION_DATE "28/07/2021") # DD/MM/YYYY format
 set(OCPN_MIN_VERSION "ov50")
 set(OCPN_API_VERSION_MAJOR "1")
 set(OCPN_API_VERSION_MINOR "16")
@@ -216,6 +216,8 @@ set(EXTINCLUDE_DIR ${EXTINCLUDE_DIR} extinclude)
 # Modify/configure 'Include' Directories below for the Plugin
 ##=============================================================
 
+# Not doing JSON_SCHEMA_VALIDATOR
+
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/include)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnsrc/glu/include)
@@ -229,14 +231,15 @@ include_directories(BEFORE ${PROJECT_SOURCE_DIR}/${EXTINCLUDE_DIR})
 
 ## Statement below is required to collect all the set( headers and SRCS  - Adjust as required
 ## This add_library  can be used in conditionals below.
-#==========================================================================
+#======================================================================================
 target_sources(${PACKAGE_NAME} PUBLIC ${SRCS} ${HDRS} ${OCPNSRC} ${EXTSRC} ${LIBSSRC} )
-#=========================================================================
-
+#=======================================================================================
 
 # Needed for android builds
+
 if(QT_ANDROID)
     include_directories(BEFORE ${qt_android_include})
+    include_directories( ${CMAKE_SOURCE_DIR}/extinclude/GLES2)
 endif(QT_ANDROID)
 
 if(NOT OCPN_FLATPAK_CONFIG)
@@ -252,11 +255,9 @@ if(NOT OCPN_FLATPAK_CONFIG)
     target_link_libraries(${PACKAGE_NAME} ocpn::tinyxml)
 endif(NOT OCPN_FLATPAK_CONFIG)
 
-
-## ----- Change above to match project requirements ----- ##
-
-
 add_definitions(-DTIXML_USE_STL)
+
+# Not doing JSON_SCHEMA_VALIDATOR
 
 ## ----- Change above to match project requirements ----- ##
 #These are NOT used in Testplugin, used for other plugins
@@ -268,9 +269,13 @@ add_definitions(-DTIXML_USE_STL)
 ## ----- Change above to match project requirements ----- ##
 ## ----- do not change next section - needed to configure build process ----- ##
 
+
+# Needed for all builds
+##=======================================
 include("PluginInstall")
 include("PluginLocalization")
 include("PluginPackage")
+##=======================================
 
 ##
 ## ----- do not change section above - needed to configure build process ----- ##
