@@ -528,9 +528,9 @@ i.e. Active/Inactive and Exclusion/Inclusion/Neither, or the inclusive  "Any" (m
 ==== Boundaries & Guard Zones
 
 To fully benefit from the capabilities of the WD Boundary Alarms, we need to understand the "Boundaries" made by OD. 
-For a full explanation, see the chapter  link:/opencpn/opencpn_user_manual/plugins/safety/odraw1.4_pi[OCPN Draw]  in the manual.
+For a full explanation, see the Ocpn-Draw_pi in the manual.
 
-You can create Boundaries in (OD) *Ocpn_Draw-pi* (not Watchdog) by clicking "*Create Boundary*" and Guard-Zones by clicking "*Create Guard Zone*", explained in the Draw-pi section of this manual.
+You can create Boundaries in (OD) *Ocpn_Draw_pi* (not Watchdog) by clicking "*Create Boundary*" and Guard-Zones by clicking "*Create Guard Zone*", explained in the Draw-pi section of this manual.
 
 image::watchdog_19056_create_boundary.jpg[watchdog_19056_create_boundary.jpg]
 
