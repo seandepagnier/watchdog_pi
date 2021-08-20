@@ -173,7 +173,7 @@ You can use any sound you like, as long as it is a *".wav" file.*
 
 Examples: +
 If you want to brush up on your Morse-code, you can set Morse-code YYY (Yankee = "My anchor is dragging") as sound for anchorwatch-alarm and Morse-code UUU (Uniform = "You are running into danger") as the sound for Boundary and Land-fall-alarm. 
-You can generate these sounds yourself dead-simple on the website  http://morsecode.scphillips.com/translator.html[Morse Code Translator]. 
+You can generate these sounds yourself dead-simple on the website  https://morsecode.world/international/translator.html[Morse Code Translator]. 
 Just type whatever you want, adjust pitch and speed to your liking and save as .wav files in /OpenCPN/sounds).
 
 If your only reaction to hearing the beeps of Morse code is "Ah, the pizza in the microwave is ready!" then maybe a more direct approach suits you better. Perhaps a computer that actually says "*Warning! Boundary!*" when the Boundary-alarm sounds and "*Warning!
@@ -365,6 +365,8 @@ In earlier versions of Watchdog this alarm was called "Anchor Watch Boundary GUI
 But as Watchdog also has a dedicated "Anchor Watch" alarm, the name was changed into "Inclusion" Alarm. +
 To avoid "inclusion-confusion" 8-O , just keep in mind that the "Inclusion Alarm" is keeping an eye on you to make sure your "own ship" stay "included" in the boundary."
 
+The more extensive description of the alarm is here: link:#_2_boundary_alarm[BOUNDARY ALARM].
+
 === Guard Zone Alarm
 
 A Boundary alarm of the type AIS *Guard Zone* is triggered by the data from other ships, as received by your *AIS* receiver.
@@ -387,21 +389,25 @@ The more extensive description of the alarm is here:  link:#_7_anchor_alarm[ANCH
 === Course Alarm
 
 Course Alarm is alerts when "own ship" gets off course.
-The more extensive description of the alarm is here: link:#_3_course_alarm[COURSE ALARM].
+The more extensive description of the alarm is here: link:#_8_course_alarm[COURSE ALARM].
 
 === Speed Alarm
 
 Speed Alarm alerts when boat speed drops below a set speed (*Underspeed*) or when boat speed has increased above a set speed (*Overspeed*), both can be problematical.
-The more extensive description of the alarm is here: link:#_9_speed_alarm[SPEED ALARM].
+The more extensive description of the alarm is here: 
+link:#_9_speed_alarm[SPEED ALARM].
 
 === Wind Alarm
 
 The wind-alarm can be set to warn when the windspeed exceeds a given value, drops under a given value or changes direction.
-The more extensive description of the alarm is here: link:#_11_wind_alarm[WIND ALARM].
+The more extensive description of the alarm is here: 
+link:#_11_wind_alarm[WIND ALARM].
 
 === Depth Alarm
 
 Depth alerts when depth is less than a user set depth.
+The more extensive description of the alarm is here: link:#_10_depth_alarm[DEPTH ALARM].
+
 
 === Weather Alarm
 
@@ -1017,7 +1023,7 @@ Tick the checkbox (if it isn't ticked yet). Watchdog "Course Alarm" is now activ
 In the screenshot below the course is somewhere around 005 degrees. 
 As that is (way) off course, the alarm is triggered.
 
-image::/opencpn/manual/plugins/watchdog/s-wdpi-58.png[s-wdpi-58.png]
+image::s-wdpi-58.png[s-wdpi-58.png]
 
  
 === 9. SPEED ALARM
@@ -1059,7 +1065,7 @@ image::s-wdpi-62-02.png[s-wdpi-62-02.png]
 
 === 10. DEPTH ALARM
 
-Complete this
+Complete the detail and screenshots for this.
 
 === 11. WIND ALARM
 
