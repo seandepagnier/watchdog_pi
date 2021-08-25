@@ -32,8 +32,9 @@ Current OpenCPN Downloads Page: https://cloudsmith.io/~opencpn/repos/
 
 Watchdog Plugin,implements various configurable alarms to alert regarding changing conditions on the boat. Included are a Deadman-alarm, improved anchor alarm and Depth alarm.  
 
-Watchdog communicates with another very useful plug-in, called  https://opencpn.org/wiki/dokuwiki/doku.php?id=opencpn:opencpn_user_manual:plugins:safety:odraw1.6_pi[Ocpn_Draw].
-Ocpn_Draw is used to draw points, lines and shapes, guard zones and boundaries which can be used in navigation to show 
+Watchdog communicates with another very useful plug-in, called
+xref:odraw::odraw.adoc[OCPN Draw]. OCPN Draw is used to draw points, lines
+and shapes, guard zones and boundaries which can be used in navigation to show
 
 * Electronic bearing lines (EBL)
 * Variable range markers  (VRM)
@@ -69,7 +70,7 @@ image::april-2020-001.png[april-2020-001.png,width=672,height=113]
 Then Click "*Downloads*"
 
 These instructions are specifically for WD-pi, however the OpenCPN Manual has more general information using this older method in 
-https://opencpn.org/wiki/dokuwiki/doku.php?id=opencpn:opencpn_user_manual:plugins:install_and_enable[Plugin Download, Install and Enable].
+xref:opencpn-plugins:misc:plugin-install.adoc[Plugin Download, Install and Enable].
 
 
 Click "*Plugins for OpenCPN 4.2 and up*"
@@ -464,8 +465,7 @@ When he really should have barked!
 image::s-wdpi-11.png[s-wdpi-11.png]
 
 Therefore it would be advisable to use the 224mb(unzipped), most detailed, *GSHHS High Resolution Background Map*. It can be downloaded
-using the ChartDownloader, see  https://opencpn.org/wiki/dokuwiki/doku.php?id=opencpn:opencpn_user_manual:charts:chart_sources#high_resolution_background_map[High
-Resolution Background Map].
+using the xref:opencpn-plugins:chart_downloader_tab:chart_downloader_tab.adoc[Chart Downloader]
 
 image::s-wdpi-12.png[s-wdpi-12.png]
 
@@ -1127,11 +1127,8 @@ Wind coming before rain: wind will probably not increase.
 Watchdog can be used in conjunction with the free software autopilot
 "Pypilot", wich is a separate plugin for OpenCPN.
 
-For more information on Pypilot, see the (separate) manual that can be
-found in *"OpenCPN User Manual" - "Plugins" - "Other" - "Pypilot
-Autopilot"*:
-
-https://opencpn.org/wiki/dokuwiki/doku.php?id=opencpn:opencpn_user_manual:plugins:other:pypilot
+For more information on Pypilot, see the (separate)
+xref:pypilot::index.adoc[Pypilot manual]
 
 In Watchdog there are several options to warn you for possible problems
 in the soft- or hardware of the Pypilot autopilot.
