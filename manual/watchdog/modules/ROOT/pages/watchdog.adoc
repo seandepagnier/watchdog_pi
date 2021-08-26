@@ -340,7 +340,8 @@ More extensive description of the alarm  link:#_1_landfall_alarm[LANDFALL ALARM]
 
 === Boundary Alarm
 
-See also  https://opencpn.org/wiki/dokuwiki/doku.php?id=opencpn:opencpn_user_manual:plugins:plugin_messaging[Plugin Messaging between ODraw, Watchdog and Weather_routing.]
+See also  xref:opencpn-plugins:misc:draw-messaging.adoc[Plugin Messaging
+between ODraw, Watchdog and Weather_routing.]
 
 Boundary Alarm alerts when own ship's position relative to a Boundary is not within ranges set or when about to sail into a "restricted area".
 
