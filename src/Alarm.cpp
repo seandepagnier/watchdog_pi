@@ -33,7 +33,7 @@
 
 #include "json/json.h"
 #include "tinyxml.h"
-#include "signalk_client.h"
+#include "pypilot_client.h"
 
 #include "watchdog_pi.h"
 #include "WatchdogDialog.h"
@@ -2549,10 +2549,10 @@ private:
 };
 
 
-class pypilotAlarm : virtual public Alarm, virtual public SignalKClient
+class pypilotAlarm : virtual public Alarm, virtual public pypilotClient
 {
 public:
-    pypilotAlarm() : SignalKClient(false, false),
+    pypilotAlarm() : pypilotClient(false, false),
                      m_bNoConnection(true),
                      m_bOverTemperature(true), m_bOverCurrent(false),
                      m_bNoIMU(true), m_bNoMotorController(true),
@@ -2561,8 +2561,7 @@ public:
                      m_bEndOfTravel(false), m_bLostMode(false),
                      m_bServoSaturated(false),
                      m_bPowerConsumption(false), m_dPowerConsumption(10),
-                     m_bCourseError(false), m_dCourseError(20),
-                     m_host("192.168.14.1")
+                     m_bCourseError(false), m_dCourseError(20)
         {
             // give 10 seconds to at startup before connection failure
             m_startTime = wxDateTime::UNow() + wxTimeSpan::Seconds(10);
@@ -2620,7 +2619,7 @@ public:
     void OnTimer(wxTimerEvent &tEvent) {
         Alarm::OnTimer( tEvent );
         if(!connected()) {
-            connect(m_host);
+            connect(g_watchdog_pi->m_pypilot_host);
             return;
         }
 
@@ -2646,18 +2645,19 @@ public:
         if(!connected())
             return;
 
-        std::map<std::string, bool> watchlist;
-        if(m_bNoConnection)              watchlist["imu.loopfreq"]     = true;
+        std::map<std::string, double> watchlist;
+        double period = 0.5;
+        if(m_bNoConnection)              watchlist["imu.loopfreq"]     = period;
         if(m_bOverTemperature || m_bOverCurrent || m_bDriverTimeout
            || m_bEndOfTravel || m_bServoSaturated)
-            watchlist["servo.flags"] = true;
-        if(m_bNoIMU)              watchlist["imu.loopfreq"]     = true;
-        if(m_bNoMotorController)       watchlist["servo.controller"] = true;
-        if(m_bNoRudderFeedback)   watchlist["servo.rudder"]     = true;
-        if(m_bNoMotorTemperature) watchlist["servo.motor_temp"] = true;
-        if(m_bLostMode)           watchlist["ap.lost_mode"]     = true;
-        if(m_bPowerConsumption)   watchlist["servo.watts"]      = true;
-        if(m_bCourseError)        watchlist["ap.heading_error"] = true;
+            watchlist["servo.flags"] = period;
+        if(m_bNoIMU)              watchlist["imu.loopfreq"]     = period;
+        if(m_bNoMotorController)       watchlist["servo.controller"] = 0;
+        if(m_bNoRudderFeedback)   watchlist["servo.rudder"]     = period;
+        if(m_bNoMotorTemperature) watchlist["servo.motor_temp"] = period;
+        if(m_bLostMode)           watchlist["ap.lost_mode"]     = period;
+        if(m_bPowerConsumption)   watchlist["servo.watts"]      = period;
+        if(m_bCourseError)        watchlist["ap.heading_error"] = period;
 
         update_watchlist(watchlist);
     }
@@ -2686,7 +2686,6 @@ public:
         panel->m_sPowerConsumption->SetValue(m_dPowerConsumption);
         panel->m_cbCourseError->SetValue(m_bCourseError);
         panel->m_sCourseError->SetValue(m_dCourseError);
-        panel->m_cHost->SetValue(m_host);
         return panel;
     }
 
@@ -2707,7 +2706,6 @@ public:
         m_dPowerConsumption = panel->m_sPowerConsumption->GetValue();
         m_bCourseError = panel->m_cbCourseError->GetValue();
         m_dCourseError = panel->m_sCourseError->GetValue();
-        m_host = panel->m_cHost->GetValue().BeforeFirst(' ');
 
         UpdateWatchlist();
     }
@@ -2728,7 +2726,6 @@ public:
         e->Attribute("PowerConsumptionWatts", &m_dPowerConsumption);
         e->QueryBoolAttribute("CourseError", &m_bCourseError);
         e->Attribute("CourseErrorDegrees", &m_dCourseError);
-        m_host = e->Attribute("Host");
 
         UpdateWatchlist();
     }
@@ -2750,7 +2747,6 @@ public:
         c->SetDoubleAttribute("PowerConsumptionWatts", m_dPowerConsumption);
         c->SetAttribute("CourseError", m_bCourseError);
         c->SetDoubleAttribute("CourseErrorDegrees", m_dCourseError);
-        c->SetAttribute("Host", m_host);
     }
     
 private:
@@ -2765,7 +2761,6 @@ private:
     double m_dPowerConsumption;
     bool m_bCourseError;
     double m_dCourseError;
-    wxString m_host;
 
     wxDateTime m_startTime, m_lastMessageTime;
 };

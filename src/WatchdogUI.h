@@ -36,7 +36,6 @@
 #include <wx/slider.h>
 #include <wx/radiobox.h>
 #include <wx/statline.h>
-#include <wx/combobox.h>
 #include <wx/notebook.h>
 
 #include "wxWTranslateCatalog.h"
@@ -518,7 +517,6 @@ class pypilotPanel : public wxPanel
 
 
 	public:
-		wxComboBox* m_cHost;
 		wxCheckBox* m_cbNoConnection;
 		wxCheckBox* m_cbOverTemperature;
 		wxCheckBox* m_cbOverCurrent;

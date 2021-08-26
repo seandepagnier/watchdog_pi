@@ -164,43 +164,43 @@ IF(WATCHDOG_USE_SVG)
 ENDIF(WATCHDOG_USE_SVG)
 
 SET(SRCS
-            src/watchdog_pi.cpp
-            src/WatchdogDialog.cpp
-            src/WatchdogPropertiesDialog.cpp
-            src/ConfigurationDialog.cpp
-            src/NewAlarmDialog.cpp
-            src/EditAlarmDialog.cpp
-            src/Alarm.cpp
-            src/signalk_client.cpp
-            src/WatchdogUI.cpp
-            src/icons.cpp
-            src/ODAPI.h
-            src/wddc.cpp
-            src/TexFont.cpp
-	)
+  src/watchdog_pi.cpp
+  src/WatchdogDialog.cpp
+  src/WatchdogPropertiesDialog.cpp
+  src/ConfigurationDialog.cpp
+  src/NewAlarmDialog.cpp
+  src/EditAlarmDialog.cpp
+  src/Alarm.cpp
+  src/pypilot_client.cpp
+  src/WatchdogUI.cpp
+  src/icons.cpp
+  src/ODAPI.h
+  src/wddc.cpp
+  src/TexFont.cpp
+  )
 	
 SET(HDRS
-  	        src/AIS_Target_Info.h
-			src/Alarm.h
-			src/ConfigurationDialog.h
-			src/EditAlarmDialog.h
-			src/icons.h
-			src/msvcdefs.h
-			src/NewAlarmDialog.h
-			src/ODAPI.h
-			src/signalk_client.h
-			src/TexFont.h
-			src/watchdog_pi.h
-			src/WatchdogDialog.h
-			src/WatchdogPropertiesDialog.h
-			src/WatchdogUI.h
-			src/wddc.h
-			src/WeatherPanel.h
-			src/WindPanel.h
-			src/wxWTranslateCatalog.h
+  src/AIS_Target_Info.h
+  src/Alarm.h
+  src/ConfigurationDialog.h
+  src/EditAlarmDialog.h
+  src/icons.h
+  src/msvcdefs.h
+  src/NewAlarmDialog.h
+  src/ODAPI.h
+  src/pypilot_client.h
+  src/TexFont.h
+  src/watchdog_pi.h
+  src/WatchdogDialog.h
+  src/WatchdogPropertiesDialog.h
+  src/WatchdogUI.h
+  src/wddc.h
+  src/WeatherPanel.h
+  src/WindPanel.h
+  src/wxWTranslateCatalog.h
 
-            api-16/ocpn_plugin.h
- )
+  api-16/ocpn_plugin.h
+  )
 
 
 add_definitions(-DPLUGIN_USE_SVG)

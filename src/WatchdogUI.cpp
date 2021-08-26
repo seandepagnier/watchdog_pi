@@ -1278,24 +1278,6 @@ pypilotPanel::pypilotPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos,
 	wxStaticBoxSizer* sbSizer10;
 	sbSizer10 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Host") ), wxVERTICAL );
 
-	wxFlexGridSizer* fgSizer47;
-	fgSizer47 = new wxFlexGridSizer( 0, 2, 0, 0 );
-	fgSizer47->AddGrowableCol( 0 );
-	fgSizer47->SetFlexibleDirection( wxBOTH );
-	fgSizer47->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
-
-	m_cHost = new wxComboBox( sbSizer10->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, NULL, 0 );
-	m_cHost->Append( _("192.168.14.1 (tinypilot)") );
-	m_cHost->Append( _("10.10.10.1 (openplotter)") );
-	m_cHost->Append( _("127.0.0.1 (localhost)") );
-	m_cHost->Append( _("192.168.14.1 (tinypilot)") );
-	m_cHost->Append( wxEmptyString );
-	m_cHost->SetSelection( 0 );
-	fgSizer47->Add( m_cHost, 0, wxALL|wxEXPAND, 5 );
-
-
-	sbSizer10->Add( fgSizer47, 1, wxEXPAND, 5 );
-
 
 	fgSizer17->Add( sbSizer10, 1, wxEXPAND, 5 );
 
