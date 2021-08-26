@@ -109,7 +109,10 @@ be triggered again later."),
 
 bool ODVersionNewerThan(int major, int minor, int patch)
 {
-    if(g_ReceivedODVersionMessage == wxEmptyString) return false;
+    if(g_ReceivedODVersionMessage == wxEmptyString) {
+        GetODVersion();
+        if(g_ReceivedODVersionMessage == wxEmptyString) return false;
+    }
     if(g_ReceivedODVersionJSONMsg["Major"].asInt() > major) return true;
     if(g_ReceivedODVersionJSONMsg["Major"].asInt() == major &&
         g_ReceivedODVersionJSONMsg["Minor"].asInt() > minor) return true;
@@ -182,7 +185,6 @@ void BoundaryPanel::OnBoundaryGUIDKillFocus( wxFocusEvent& event )
         return;
     }
     
-    GetODVersion();
     if(ODVersionNewerThan( 1, 1, 15)) {
         jMsg["Source"] = "WATCHDOG_PI";
         jMsg["Type"] = "Request";
@@ -257,7 +259,6 @@ void BoundaryPanel::OnGuardZoneGUIDKillFocus( wxFocusEvent& event )
         return;
     }
     
-    GetODVersion();
     if(ODVersionNewerThan( 1, 1, 15)) {
         jMsg["Source"] = "WATCHDOG_PI";
         jMsg["Type"] = "Request";

@@ -1,50 +1,23 @@
-#
-#  Provide a TinyXML 3.0-style linkable targetocpn::tinyxml which
-#  provides all necessary libraries, headers and defines required to
-#  use tinyxml
-#
-#  Probes for an available, system implementation and uses it if 
-#  is available. If not, builds the library from bundled sources.
-
 cmake_minimum_required(VERSION 3.1.0)
 
 if (TARGET ocpn::tinyxml)
-  return ()
+    return ()
 endif ()
 
-INCLUDE( "FindPackageHandleStandardArgs" )
+set(SAVE_CMLOC_TINYXML ${CMLOC})
+set(CMLOC "CMakeLists_TINYXML: ")
 
+message(STATUS "${CMLOC}Building TinyXML")
 set (SRC
-  src/tinyxml.cpp
-  src/tinyxmlerror.cpp
-  src/tinyxmlparser.cpp
-  include/tinyxml.h
-)
-
-#add_library(TINYXML STATIC ${SRC})
-#target_compile_definitions(TINYXML PUBLIC -DTIXML_USE_STL)
-#set_property(TARGET TINYXML PROPERTY COMPILE_FLAGS "${OBJ_VISIBILITY}")
-#target_include_directories(TINYXML PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
-#add_library(ocpn::tinyxml ALIAS TINYXML)
-
-
-add_library(_TINYXML INTERFACE)
-add_library(ocpn::tinyxml ALIAS _TINYXML)
-
-find_package(TinyXML)
-if (TINYXML_FOUND)
-  message(${CMLOC} "Using system tinyxml")
-  target_include_directories(_TINYXML INTERFACE ${TINYXML_INCLUDE_DIR})
-  target_link_libraries(_TINYXML INTERFACE ${TINYXML_LIBRARIES})
-else ()
-  message(${CMLOC} "Using bundled tinyxml")
-  add_library(TINYXML STATIC ${SRC})
-  target_link_libraries(_TINYXML INTERFACE TINYXML)
-  target_include_directories(
-    _TINYXML INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/include
+src/tinyxml.cpp
+src/tinyxmlerror.cpp
+src/tinyxmlparser.cpp
   )
-  target_compile_definitions(TINYXML PUBLIC "-DTIXML_USE_STL")
-  target_include_directories(
-    TINYXML PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include
-  )
-endif ()
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+add_library(TINYXML STATIC ${SRC})
+target_compile_definitions(TINYXML PUBLIC -DTIXML_USE_STL)
+set_property(TARGET TINYXML PROPERTY COMPILE_FLAGS "${OBJ_VISIBILITY}")
+target_include_directories(TINYXML PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+add_library(ocpn::tinyxml ALIAS TINYXML)
+
+set(CMLOC ${SAVE_CMLOC_TINYXML})

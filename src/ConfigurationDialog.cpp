@@ -25,6 +25,7 @@
  */
 
 #include "watchdog_pi.h"
+#include "WatchdogUI.h"
 #include "WatchdogDialog.h"
 #include "ConfigurationDialog.h"
 #include "NewAlarmDialog.h"

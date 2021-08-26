@@ -8,7 +8,7 @@
 
 wxBitmap *_img_watchdog;
 
-#ifdef WATCHDOG_USE_SVG
+#ifdef PLUGIN_USE_SVG
 #include "ocpn_plugin.h"
 wxString _svg_watchdog;
 wxString _svg_watchdog_rollover;
@@ -22,14 +22,19 @@ void initialize_images(void)
 		_img_watchdog = new wxBitmap(wxImage(sm));
 	}
 
-#ifdef WATCHDOG_USE_SVG
+#ifdef PLUGIN_USE_SVG
+	
     wxFileName fn;
-    fn.SetPath(*GetpSharedDataLocation());
-    fn.AppendDir(_T("plugins"));
-    fn.AppendDir(_T("watchdog_pi"));
-    fn.AppendDir(_T("data"));
-    fn.SetFullName(_T("watchdog_pi.svg"));
-    _svg_watchdog = fn.GetFullPath();
+      fn.SetPath(GetPluginDataDir("watchdog_pi"));
+      fn.AppendDir(_T("data"));
+
+      fn.SetFullName(_T("watchdog_pi.svg"));
+      _svg_watchdog = fn.GetFullPath();
+      wxLogMessage(_T("Loading toolbar icon: ") + _svg_watchdog); 
+
+      fn.SetFullName(_T("watchdog_pi_toggled.svg"));
+      _svg_watchdog_toggled = fn.GetFullPath();
+      wxLogMessage(_T("Loading toolbar icon: ") + _svg_watchdog_toggled); 
 #endif
 
 	return;

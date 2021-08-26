@@ -26,6 +26,7 @@
 
 #include <wx/wx.h>
 #include <wx/stdpaths.h>
+//#include <GL/gl.h>
 
 #include "json/json.h"
 
@@ -98,7 +99,7 @@ extern "C" DECL_EXP void destroy_pi(opencpn_plugin* p)
 watchdog_pi *g_watchdog_pi = NULL;
 
 watchdog_pi::watchdog_pi(void *ppimgr)
-    : opencpn_plugin_116(ppimgr)
+: opencpn_plugin_116(ppimgr)
 {
     // Create the PlugIn icons
     initialize_images();
@@ -108,7 +109,7 @@ watchdog_pi::watchdog_pi(void *ppimgr)
     m_sog = m_cog = m_hdm = 0;
     m_declination = NAN;
     m_pypilot_host = "192.168.14.1";
-    
+
     g_ReceivedPathGUIDMessage = wxEmptyString;
     g_ReceivedBoundaryTimeMessage = wxEmptyString;
     g_ReceivedBoundaryDistanceMessage = wxEmptyString;
@@ -120,7 +121,7 @@ watchdog_pi::watchdog_pi(void *ppimgr)
     g_GuardZoneName = wxEmptyString;
     g_GuardZoneDescription = wxEmptyString;
     g_GuardZoneGUID = wxEmptyString;
-    
+
     g_AISTarget.m_dLat = 0.;
     g_AISTarget.m_dLon = 0.;
     g_AISTarget.m_dSOG = 0.;
@@ -144,23 +145,24 @@ int watchdog_pi::Init(void)
 
     Alarm::LoadConfigAll();
 
-#ifdef WATCHDOG_USE_SVG
-    m_leftclick_tool_id = InsertPlugInToolSVG(  "Watchdog" , _svg_watchdog, _svg_watchdog,
-        _svg_watchdog, wxITEM_CHECK, _( "Watchdog" ),  "" , NULL, WATCHDOG_TOOL_POSITION, 0, this);
-#else
+    #ifdef PLUGIN_USE_SVG
+    m_leftclick_tool_id = InsertPlugInToolSVG(  "Watchdog" , _svg_watchdog, _svg_watchdog_toggled,
+                                                _svg_watchdog_toggled, wxITEM_CHECK, _( "Watchdog" ),  "" , NULL, WATCHDOG_TOOL_POSITION, 0, this);
+    #else
     m_leftclick_tool_id  = InsertPlugInTool
-        ("", _img_watchdog, _img_watchdog, wxITEM_NORMAL,
-         _("Watchdog"), "", NULL, WATCHDOG_TOOL_POSITION, 0, this);
-#endif
-    
+  ("", _img_watchdog, _img_watchdog, wxITEM_NORMAL,
+     _("Watchdog"), "", NULL, WATCHDOG_TOOL_POSITION, 0, this);
+   
+    #endif
+
     m_PropertiesDialog = NULL;
     m_Timer.Connect(wxEVT_TIMER, wxTimerEventHandler
-                    ( watchdog_pi::OnTimer ), NULL, this);
+    ( watchdog_pi::OnTimer ), NULL, this);
     m_Timer.Start(3000);
-    
+
     m_WatchdogDialog = new WatchdogDialog(*this, GetOCPNCanvasWindow());
     m_ConfigurationDialog = new ConfigurationDialog(*this, m_WatchdogDialog);
-        
+
     wxIcon icon;
     icon.CopyFromBitmap(*_img_watchdog);
     m_WatchdogDialog->SetIcon(icon);
@@ -173,15 +175,15 @@ int watchdog_pi::Init(void)
     SendPluginMessage("PYPILOT_HOST_REQUEST", "");
     
     return (WANTS_OVERLAY_CALLBACK |
-            WANTS_OPENGL_OVERLAY_CALLBACK |
-            WANTS_TOOLBAR_CALLBACK    |
-            WANTS_CURSOR_LATLON       |
-            WANTS_NMEA_SENTENCES      |
-            WANTS_NMEA_EVENTS         |
-            WANTS_AIS_SENTENCES       |
-            WANTS_PLUGIN_MESSAGING    |
-            WANTS_PREFERENCES         |
-            WANTS_CONFIG);
+    WANTS_OPENGL_OVERLAY_CALLBACK |
+    WANTS_TOOLBAR_CALLBACK    |
+    WANTS_CURSOR_LATLON       |
+    WANTS_NMEA_SENTENCES      |
+    WANTS_NMEA_EVENTS         |
+    WANTS_AIS_SENTENCES       |
+    WANTS_PLUGIN_MESSAGING    |
+    WANTS_PREFERENCES         |
+    WANTS_CONFIG);
 }
 
 bool watchdog_pi::DeInit(void)
@@ -200,10 +202,10 @@ bool watchdog_pi::DeInit(void)
         m_WatchdogDialog = NULL;
         m_ConfigurationDialog = NULL;
     }
-    
+
     m_Timer.Stop();
     m_Timer.Disconnect(wxEVT_TIMER, wxTimerEventHandler( watchdog_pi::OnTimer ), NULL, this);
-    
+
     RemovePlugInTool(m_leftclick_tool_id);
 
     return true;
@@ -219,7 +221,7 @@ int watchdog_pi::GetAPIVersionMajor()
 int watchdog_pi::GetAPIVersionMinor()
 {
 
- return OCPN_API_VERSION_MINOR;
+    return OCPN_API_VERSION_MINOR;
 
 }
 
@@ -246,18 +248,18 @@ wxString watchdog_pi::GetCommonName()
 {
 
     // return _("Watchdog");
-	return _T(PLUGIN_COMMON_NAME);
+    return _T(PLUGIN_COMMON_NAME);
 
 }
 
 wxString watchdog_pi::GetShortDescription()
 {
-    return _(PLUGIN_SHORT_DESCRIPTION);
+    return _(PLUGIN_LONG_DESCRIPTION);
 }
 
 wxString watchdog_pi::GetLongDescription()
 {
-   return _(PLUGIN_LONG_DESCRIPTION);
+    return _(PLUGIN_LONG_DESCRIPTION);
 }
 
 int watchdog_pi::GetToolbarToolCount(void)
@@ -270,12 +272,12 @@ void watchdog_pi::ShowPreferencesDialog( wxWindow* parent )
     //dlgShow = false;
     if( NULL == m_PropertiesDialog )
         m_PropertiesDialog = new WatchdogPropertiesDialog( parent );
-    
+
     m_PropertiesDialog->ShowModal();
-    
+
     delete m_PropertiesDialog;
     m_PropertiesDialog = NULL;
-    
+
 }
 
 void watchdog_pi::SetColorScheme(PI_ColorScheme cs)
@@ -292,7 +294,7 @@ void watchdog_pi::RearrangeWindow()
         return;
 
     SetColorScheme(PI_ColorScheme());
-    
+
     m_WatchdogDialog->Fit();
 }
 
@@ -380,7 +382,7 @@ void watchdog_pi::OnTimer( wxTimerEvent & )
             // wait 60 seconds from startup because of slowness to receive first nmea message
             m_sog = m_cog = m_hdm = NAN;
     }
-    
+
     m_lasttimerfix = m_lastfix;
 }
 
@@ -410,7 +412,7 @@ void watchdog_pi::SetPluginMessage(wxString &message_id, wxString &message_body)
     // construct a JSON parser
     Json::Reader reader;
     bool        bFail = false;
-    
+
     if(message_id == "WATCHDOG_PI") {
         // now read the JSON text and store it in the 'root' structure
         // check for errors before retreiving values...
@@ -418,31 +420,31 @@ void watchdog_pi::SetPluginMessage(wxString &message_id, wxString &message_body)
             wxLogMessage(wxString("watchdog_pi: Error parsing JSON message: ") + reader.getFormattedErrorMessages() + " : " + message_body );
             return;
         }
-        
+
         if(!root.isMember( "Source")) {
             // Originator
             wxLogMessage( "No Source found in message" );
             bFail = true;
         }
-        
+
         if(!root.isMember( "Msg")) {
             // Message identifier
             wxLogMessage( "No Msg found in message" );
             bFail = true;
         }
-        
+
         if(!root.isMember( "Type")) {
             // Message type, orig or resp
             wxLogMessage( "No Type found in message" );
             bFail = true;
         }
-        
+
         if(!root.isMember( "MsgId")) {
             // Unique (?) Msg number/identifier
             wxLogMessage( "No MsgNo found in message" );
             bFail = true;
         }
-        
+
         if(!bFail) {
             if(root["Type"].asString() == "Response" && root["Source"].asString() == "OCPN_DRAW_PI") {
                 if(root["Msg"].asString() == "FindPathByGUID" ) {
@@ -451,8 +453,8 @@ void watchdog_pi::SetPluginMessage(wxString &message_id, wxString &message_body)
                     }
                 } else if(root["Msg"].asString() == "FindPointInAnyBoundary" ) {
                     if(root["MsgId"].asString() == "time") {
-                    g_ReceivedBoundaryTimeJSONMsg = root;
-                    g_ReceivedBoundaryTimeMessage = message_body;
+                        g_ReceivedBoundaryTimeJSONMsg = root;
+                        g_ReceivedBoundaryTimeMessage = message_body;
                     } else if(root["MsgId"].asString() == "distance") {
                         g_ReceivedBoundaryDistanceJSONMsg = root;
                         g_ReceivedBoundaryDistanceMessage = message_body;
@@ -541,7 +543,7 @@ void watchdog_pi::SetPluginMessage(wxString &message_id, wxString &message_body)
             wxLogMessage( "No Ship Name found in message" );
             bFail = true;
         }
-        
+
         if(!bFail) {
             if(root["Type"].asString() == "Information" && root["Source"].asString() == "AIS_Decoder") {
                 g_ReceivedAISJSONMsg = root;
@@ -593,41 +595,57 @@ void watchdog_pi::ShowConfigurationDialog( wxWindow* )
     m_ConfigurationDialog->Show();
 }
 
+/*
+ * wxString watchdog_pi::StandardPath()
+ * {
+ *    wxStandardPathsBase& std_path = wxStandardPathsBase::Get();
+ *    wxString s = wxFileName::GetPathSeparator();
+ *
+ * #if defined(__WXMSW__)
+ *    wxString stdPath  = std_path.GetConfigDir();
+ * #elif defined(__WXGTK__) || defined(__WXQT__)
+ *    wxString stdPath  = std_path.GetUserDataDir();
+ * #elif defined(__WXOSX__)
+ *    wxString stdPath  = (std_path.GetUserConfigDir() + s + "opencpn");
+ * #endif
+ *
+ *    stdPath += s + "plugins";
+ *    if (!wxDirExists(stdPath))
+ *      wxMkdir(stdPath);
+ *
+ *    stdPath += s + "watchdog";
+ *
+ * #ifdef __WXOSX__
+ *    // Compatibility with pre-OCPN-4.2; move config dir to
+ *    // ~/Library/Preferences/opencpn if it exists
+ *    wxString oldPath = (std_path.GetUserConfigDir() + s + "plugins" + s + "weatherfax");
+ *    if (wxDirExists(oldPath) && !wxDirExists(stdPath)) {
+ *	wxLogMessage("weatherfax_pi: moving config dir %s to %s", oldPath, stdPath);
+ *	wxRenameFile(oldPath, stdPath);
+ *    }
+ * #endif
+ *
+ *    if (!wxDirExists(stdPath))
+ *      wxMkdir(stdPath);
+ *
+ *    stdPath += s; // is this necessary?
+ *    return stdPath;
+ * }
+ */
+
 wxString watchdog_pi::StandardPath()
 {
-    wxStandardPathsBase& std_path = wxStandardPathsBase::Get();
     wxString s = wxFileName::GetPathSeparator();
-
-#if defined(__WXMSW__)
-    wxString stdPath  = std_path.GetConfigDir();
-#elif defined(__WXGTK__) || defined(__WXQT__)
-    wxString stdPath  = std_path.GetUserDataDir();
-#elif defined(__WXOSX__)
-    wxString stdPath  = (std_path.GetUserConfigDir() + s + "opencpn");
-#endif
-
-    stdPath += s + "plugins";
+    wxString stdPath(*GetpPrivateApplicationDataLocation());
+    stdPath += s + _T("plugins");
     if (!wxDirExists(stdPath))
-      wxMkdir(stdPath);
-
-    stdPath += s + "watchdog";
-
-#ifdef __WXOSX__
-    // Compatibility with pre-OCPN-4.2; move config dir to
-    // ~/Library/Preferences/opencpn if it exists
-    wxString oldPath = (std_path.GetUserConfigDir() + s + "plugins" + s + "weatherfax");
-    if (wxDirExists(oldPath) && !wxDirExists(stdPath)) {
-	wxLogMessage("weatherfax_pi: moving config dir %s to %s", oldPath, stdPath);
-	wxRenameFile(oldPath, stdPath);
-    }
-#endif
-
+        wxMkdir(stdPath);
+    stdPath += s + _T("watchdog");
     if (!wxDirExists(stdPath))
-      wxMkdir(stdPath);
-
-    stdPath += s; // is this necessary?
+        wxMkdir(stdPath);
     return stdPath;
 }
+
 
 double watchdog_pi::Declination()
 {
@@ -636,3 +654,4 @@ double watchdog_pi::Declination()
 
     return m_declination;
 }
+

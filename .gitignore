@@ -1,2 +1,6 @@
 build/
-src/version.h
+buildwin/
+.directory
+manual/public
+manual/docs
+po/POTFILES.in.test

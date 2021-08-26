@@ -41,7 +41,7 @@
 #include "WeatherPanel.h"
 
 #include "AIS_Target_Info.h"
-#include "nmea0183/nmea0183.h"
+#include "nmea0183.h"
 #include "ODAPI.h"
 
 static double deg2rad(double deg)
@@ -2453,7 +2453,10 @@ public:
     
     bool ODVersionNewerThan(int major, int minor, int patch)
     {
-        if(g_ReceivedODVersionMessage == wxEmptyString) return false;
+        if(g_ReceivedODVersionMessage == wxEmptyString) {
+            GetODVersion();
+            if(g_ReceivedODVersionMessage == wxEmptyString) return false;
+        }
         if(g_ReceivedODVersionJSONMsg["Major"].asInt() > major) return true;
         if(g_ReceivedODVersionJSONMsg["Major"].asInt() == major &&
             g_ReceivedODVersionJSONMsg["Minor"].asInt() > minor) return true;
@@ -2468,6 +2471,7 @@ public:
         Json::Value jMsg;
         Json::FastWriter writer;
         wxString    MsgString;
+        if(g_ReceivedODVersionMessage != wxEmptyString) return;
         jMsg["Source"] = "WATCHDOG_PI";
         jMsg["Type"] = "Request";
         jMsg["Msg"] = "Version";
@@ -2777,9 +2781,10 @@ void Alarm::RenderAll(wdDC &dc, PlugIn_ViewPort &vp)
 
 void Alarm::LoadConfigAll()
 {
-    wxString configuration = watchdog_pi::StandardPath() + "WatchdogConfiguration.xml";
+//    wxString configuration = watchdog_pi::StandardPath() + "WatchdogConfiguration.xml";
     TiXmlDocument doc;
-
+    wxString s = wxFileName::GetPathSeparator();
+	wxString configuration = watchdog_pi::StandardPath() + s + "WatchdogConfiguration.xml";
     if(!doc.LoadFile(configuration.mb_str())) {
         wxLogMessage("Watchdog: " + wxString(_("Failed to read")) + ": " + configuration);
         return;
@@ -2793,6 +2798,7 @@ void Alarm::LoadConfigAll()
                 continue;
             Alarm *alarm;
             if(!strcasecmp(type, "Anchor")) alarm = Alarm::NewAlarm(ANCHOR);
+			else if(!strcasecmp(type, "Depth")) alarm = Alarm::NewAlarm(DEPTH);
             else if(!strcasecmp(type, "Course")) alarm = Alarm::NewAlarm(COURSE);
             else if(!strcasecmp(type, "Speed")) alarm = Alarm::NewAlarm(SPEED);
             else if(!strcasecmp(type, "Wind")) alarm = Alarm::NewAlarm(WIND);
@@ -2838,7 +2844,11 @@ void Alarm::SaveConfigAll()
         root->LinkEndChild(c);
     }
 
-    wxString configuration = watchdog_pi::StandardPath() + "WatchdogConfiguration.xml";
+//    wxString configuration = watchdog_pi::StandardPath() + "WatchdogConfiguration.xml";
+
+    wxString s = wxFileName::GetPathSeparator();
+    wxString configuration = watchdog_pi::StandardPath() + s + "WatchdogConfiguration.xml";
+
     if(!doc.SaveFile(configuration.mb_str()))
         wxLogMessage("Watchdog: " + wxString(_("failed to save")) + ": " + configuration);
 }

@@ -1,4 +1,4 @@
-// Copyright 2007-2010 Baptiste Lepilleur and The JsonCpp Authors
+// Copyright 2007-2010 Baptiste Lepilleur
 // Distributed under MIT license, or public domain if desired and
 // recognized in your jurisdiction.
 // See file LICENSE for detail or copy at http://jsoncpp.sourceforge.net/LICENSE
@@ -13,23 +13,17 @@
 namespace Json {
 
 // writer.h
-class StreamWriter;
-class StreamWriterBuilder;
-class Writer;
 class FastWriter;
 class StyledWriter;
-class StyledStreamWriter;
 
 // reader.h
 class Reader;
-class CharReader;
-class CharReaderBuilder;
 
-// json_features.h
+// features.h
 class Features;
 
 // value.h
-using ArrayIndex = unsigned int;
+typedef unsigned int ArrayIndex;
 class StaticString;
 class Path;
 class PathArgument;
@@ -37,6 +31,12 @@ class Value;
 class ValueIteratorBase;
 class ValueIterator;
 class ValueConstIterator;
+#ifdef JSON_VALUE_USE_INTERNAL_MAP
+class ValueMapAllocator;
+class ValueInternalLink;
+class ValueInternalArray;
+class ValueInternalMap;
+#endif // #ifdef JSON_VALUE_USE_INTERNAL_MAP
 
 } // namespace Json
 
