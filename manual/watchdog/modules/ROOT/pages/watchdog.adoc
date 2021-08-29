@@ -33,7 +33,7 @@ Current OpenCPN Downloads Page: https://cloudsmith.io/~opencpn/repos/
 Watchdog Plugin,implements various configurable alarms to alert regarding changing conditions on the boat. Included are a Deadman-alarm, improved anchor alarm and Depth alarm.  
 
 Watchdog communicates with another very useful plug-in, called
-xref:odraw::odraw.adoc[OCPN Draw]. OCPN Draw is used to draw points, lines
+xref:odraw::index.adoc[OCPN Draw]. OCPN Draw is used to draw points, lines
 and shapes, guard zones and boundaries which can be used in navigation to show
 
 * Electronic bearing lines (EBL)
