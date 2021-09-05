@@ -142,19 +142,20 @@ image::april-2020-014.png[april-2020-014.png,width=119,height=64]
 Watchdog warns you -in a couple of specific situations- when you want to be warned. 
 Watchdog has the following alarms:
 
-* link:#_1_landfall_alarm[Landfall Alarm]
-* link:#_2_boundary_alarm[Boundary Alarm]
-* link:#_6_dynamic_guard_zones[Guard Zone Alarm]
-* link:#_7_anchor_alarm[Anchor Alarm]
-* link:#_8_course_alarm[Course Alarm]
-* link:#_9_speed_alarm[Speed Alarm]
-* link:#_10_depth_alarm[Depth Alarm]
-* link:#_11_wind_alarm[Wind Alarm]
-* link:#_12_weather_alarm[Weather Alarm]
-* link:#_13_pypilot_alarm[Pypilot Alarm]
-* link:#_14_deadman_alarm[Deadman Alarm]
-* link:#_15_nmea_data_alarm[NMEA No Data Alarm]
-* link:#_16_email_alert[Email Alert]
+link:#_1_landfall_alarm[Landfall Alarm] +
+link:#_2_boundary_alarm[Boundary Alarm] +
+link:#_6_dynamic_guard_zones[Guard Zone Alarm] +
+link:#_7_anchor_alarm[Anchor Alarm] +
+link:#_8_course_alarm[Course Alarm] +
+link:#_9_speed_alarm[Speed Alarm] +
+link:#_10_depth_alarm[Depth Alarm] +
+link:#_11_wind_alarm[Wind Alarm] +
+link:#_12_weather_alarm[Weather Alarm] +
+link:#_13_pypilot_alarm[Pypilot Alarm] +
+link:#_14_deadman_alarm[Deadman Alarm] +
+link:#_15_nmea_data_alarm[NMEA No Data Alarm] +
+link:#_16_email_alert[Email Alert] +
+
 
 === F. How can WD alert me?
 
