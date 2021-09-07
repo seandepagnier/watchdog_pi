@@ -59,9 +59,22 @@ The plugin was originally named "Watch**man**" but was later renamed to "Watch**
 
 == INSTALLATION
 
-=== A. How to get WD_pi?
+=== Use Plugin Manager (PIM)
 
-The easiest way to get Watchdog_pi is to use OpenCPN PI Package Installer and go to Options, Plugins and update the Master Plugin Catalog. You should find an icon to download the most current version of Watchdog_pi that works in your environment. Once the plugins downloads successfully, you will need to install it and then enable it with the checkbox.
+Watchdog is available as a managed plugin (PIM), which is the easiest way to install. The OpenCPN Manual has general information in xref:opencpn-plugins:misc:plugin-install.adoc[Plugin Download, Install and Enable] 
+for installing this plugin. This is the preferred way.
+
+In OpenCPN, go to the _Options → Plugins_ and download, install and enable the Watchdog plugin.
+
+. In OpenCPN  Click *Tools-Options-Plugins*
+. First "Update" the master plugins catalog.
+. Select the Watchdog entry and "Install" the plugin.
+. In the list of installed plugins "Enable" the Tactics plugin and "Apply".
+. Use “*Preferences*” to set your preferences (should be self-explanatory). Then “*Apply*.
+. After successful installation, the plugin should be available in the plugins tab of your OpenCPN options dialog box.
+. Then close *Options* and the Watchdog Icon should appear in the Toolbar.
+
+=== Use Plugin Package Installer (PI)
 
 The second best way is to download a PI Package Installer (Windows .exe, Linux .deb or MacOS .pkg) from the  https://www.opencpn.org[OpenCPN website, to download Watchdog]
 
@@ -69,8 +82,7 @@ image::april-2020-001.png[april-2020-001.png,width=672,height=113]
 
 Then Click "*Downloads*"
 
-These instructions are specifically for WD-pi, however the OpenCPN Manual has more general information using this older method in 
-xref:opencpn-plugins:misc:plugin-install.adoc[Plugin Download, Install and Enable].
+These instructions are specifically for WD-pi, however the OpenCPN Manual has more general information using this older method in xref:opencpn-plugins:misc:plugin-install.adoc[Plugin Download, Install and Enable].
 
 
 Click "*Plugins for OpenCPN 4.2 and up*"
@@ -88,8 +100,7 @@ These examples are for Windows, so we choose the *Windows setup-package*.
 
 image::april-2020-003.png[april-2020-003.png,width=628,height=732]
 
-
-=== B. How to install WD_pi?
+*Install the Package*
 
 It's better to *close OpenCPN* before installing WD-pi. 
 We assume you know where to find the files you download from the Internet.
@@ -115,7 +126,7 @@ image::april-2020-009.png[april-2020-009.png,width=511,height=395]
 
 Then before using WD-pi *enable* the plug-in.
 
-=== C. How to enable WD-pi?
+=== How to enable WD-pi?
 
 Open *OpenCPN*, Click *Tools* - *Options*
 
@@ -137,7 +148,7 @@ Now the Watchdog-icon should be visible in your OpenCPN toolbar
 
 image::april-2020-014.png[april-2020-014.png,width=119,height=64]
 
-=== D. What does WD do?
+== A. What does WD do?
 
 Watchdog warns you -in a couple of specific situations- when you want to be warned. 
 Watchdog has the following alarms:
@@ -157,7 +168,7 @@ link:#_15_nmea_data_alarm[NMEA No Data Alarm] +
 link:#_16_email_alert[Email Alert] +
 
 
-=== F. How can WD alert me?
+== B. How can WD alert me?
 
 Does it bark?  Yes, that is possible. But maybe you want to choose something else.
 
@@ -181,7 +192,7 @@ Just type whatever you want, adjust pitch and speed to your liking and save as .
 If your only reaction to hearing the beeps of Morse code is "Ah, the pizza in the microwave is ready!" then maybe a more direct approach suits you better. Perhaps a computer that actually says "*Warning! Boundary!*" when the Boundary-alarm sounds and "*Warning!
 Anchor!*" when your anchor is dragging.
 
-==== Play WD Warnings with "Sound" checked
+=== Play WD Warnings with "Sound" checked
 
 In a "Edit Alarm" Menu browse to  '%localappdata"\watchdog_pi\data\Warnings\Warning Boundary.wav'
 
@@ -193,7 +204,7 @@ C:\Users\Rick\AppData\Local\opencpn\plugins\watchdog_pi\data\Warnings
 
 and pick an appropriate Warning. Then "Test" to confirm the path is correct.. _ _
 
-==== Play WD Warnings from Command
+=== Play WD Warnings from Command
 
 Use a sound command line utility to play sound files.
 Another way to play Watchdog Warnings with "Sound" unchecked and "Command" checked. Then try these examples using Powershell for Win OS:
@@ -229,7 +240,8 @@ image::s-wdpi-04b.png[s-wdpi-04b.png]
 
 How this email-trick is done, is explained in  "*link:#_16_email_alert[Email Alert to yourself]*" at the end of this manual.
 
-=== G. Typical Setup of Alarm
+
+== C. Typical Setup of Alarm
 
 When Watchdog is installed and in the OpenCPN Toolbar, follow these 4 initial steps to set up a new Watchdog Alarm:
 
@@ -260,7 +272,8 @@ image::april-2020-019.png[april-2020-019.png,width=516,height=357]
 *NOTE*: These 4 initial steps are the same for each alarm. 
 In the rest of this tutorial these steps will not be repeated but will be referred to as "set up a new Watchdog-alarm".
 
-=== H. Typical Setup of Alarm Details
+
+== D. Typical Setup of Alarm Details
 
 When setting up a new Watchdog-alarm, you will come across the “*Edit Alarm*” window.
 
@@ -328,7 +341,7 @@ If you do not understand the function of the buttons “*OK*” and/or “*Cance
 First the various types of alarms are briefly explained. After that each type of alarm is explained in (a bit) more detail.
 
 
-== ALARM SUMMARY
+== E. ALARM SUMMARY
 
 Short Alarm Descriptions below.
 
@@ -336,6 +349,7 @@ Short Alarm Descriptions below.
 
 Landfall Alarm alerts when own ship nears land. 
 Most useful for long voyages with vast stretches of water. 
+
 More extensive description of the alarm  link:#_1_landfall_alarm[LANDFALL ALARM].
 
 
@@ -370,47 +384,63 @@ To avoid "inclusion-confusion" 8-O , just keep in mind that the "Inclusion Alarm
 
 The more extensive description of the alarm is here: link:#_2_boundary_alarm[BOUNDARY ALARM].
 
-=== Guard Zone Alarm
+=== GPS Course cross Boundary Alarm
+
+This alarm will be triggered when course and speed will bring you in less than (user defined) minutes to a boundary.
+
+The more extensive description is here:  link:#_3_gps_course_cross_boundary[GPS COURSE Cross Boundary].
+
+=== GPS Fix NM from Boundary Alarm
+
+This is an alarm when the ship reaches a user specified distance (NM) from a Boundary.
+
+The more extensive description is here:  link:#_4_gps_fix_nm_from_boundary[GPS FIX NM from Boundary].
+
+=== AIS Guard Zone & Inclusion Alarm
 
 A Boundary alarm of the type AIS *Guard Zone* is triggered by the data from other ships, as received by your *AIS* receiver.
 
-The difference with the "normal" AIS alarm (warn me when a ship comes within a given distance from "own ship") is that the Watchdog Boundary
-Guard Zone alarm gets triggered when a ship enters a specific area (like for instance the entrance to that secluded spot you thought to have for just you and your spouse/friend/secretary/…).
+The difference with the "normal" AIS alarm (warn me when a ship comes within a given distance from "own ship") is that the Watchdog Boundary Guard Zone alarm gets triggered when a ship enters a specific area (like for instance the entrance to that secluded spot you thought to have for just you and your spouse/friend/secretary/…).
 
-The more extensive description of the alarm is here: link:#_2_boundary_alarm[BOUNDARY ALARM].
+The more extensive description of the alarm is here: link:#_5_ais_guard_inclusion[AIS GUARD & Inclusion].
+
+=== Dynamic Guard Zones
 
 *Note*: in Watchdog you can set a "Guard Zone" alarm but in O-Draw you can also create a "Guard Zone". +
 A Guard Zone in O-Draw is a special kind of area that is not static, but moves with your own ship. +
+
 The more extensive description is here:  link:#_6_dynamic_guard_zones[DYNAMIC GUARD ZONES].
 
 === Anchor Alarm
 
 Anchor Alarm alerts when your position changes more than a specific distance from a certain position (when your anchor
 is dragging).
+
 The more extensive description of the alarm is here:  link:#_7_anchor_alarm[ANCHOR ALARM].
 
 === Course Alarm
 
 Course Alarm is alerts when "own ship" gets off course.
+
 The more extensive description of the alarm is here: link:#_8_course_alarm[COURSE ALARM].
 
 === Speed Alarm
 
 Speed Alarm alerts when boat speed drops below a set speed (*Underspeed*) or when boat speed has increased above a set speed (*Overspeed*), both can be problematical.
-The more extensive description of the alarm is here: 
-link:#_9_speed_alarm[SPEED ALARM].
 
-=== Wind Alarm
-
-The wind-alarm can be set to warn when the windspeed exceeds a given value, drops under a given value or changes direction.
-The more extensive description of the alarm is here: 
-link:#_11_wind_alarm[WIND ALARM].
+The more extensive description of the alarm is here:  link:#_9_speed_alarm[SPEED ALARM].
 
 === Depth Alarm
 
 Depth alerts when depth is less than a user set depth.
+
 The more extensive description of the alarm is here: link:#_10_depth_alarm[DEPTH ALARM].
 
+=== Wind Alarm
+
+The wind-alarm can be set to warn when the windspeed exceeds a given value, drops under a given value or changes direction.
+
+The more extensive description of the alarm is here: link:#_11_wind_alarm[WIND ALARM].
 
 === Weather Alarm
 
@@ -440,6 +470,12 @@ In short: if NMEA input is lost a significant part of OpenCPN is lost.
 The more extensive description of the alarm is here: 
 
 link:#_15_nmea_data_alarm[NMEA DATA ALARM].
+
+=== Email Alert
+
+For any of the alarms, send an email alert.
+
+link:#_16_email_alert[EMAIL ALERT].
 
 == ALARMS
 
@@ -589,7 +625,7 @@ This screenshot shows the different types of boundaries.
 image::s-wdpi-20.png[s-wdpi-20.png]
 
   
-=== 3. GPS COURSE x's Boundary 
+=== 3. GPS COURSE Cross Boundary 
 
 Setting up a "GPS COURSE CROSSES BOUNDARY IN < ....MINUTES" ALARM
 
