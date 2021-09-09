@@ -50,7 +50,7 @@ Watchdog and Ocpn_Draw work together using boundary identifiers called GUID to p
 
 The plugin was originally named "Watch**man**" but was later renamed to "Watch**dog**" which might seen in some screens and menu's. +
 
-== INSTALLATION
+== Installation
 
 === Using Plugin Manager (PIM)
 
