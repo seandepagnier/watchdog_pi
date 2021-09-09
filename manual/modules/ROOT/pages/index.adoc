@@ -9,15 +9,8 @@ PI Manager Workflow: Testplugin
 == Version & Changes
 
 Watchdog v2.4.29 for OpenCPN v5.4.2 was updated March 2021 and requires Opencpn v4.1.xxx or newer. 
-This plugin now works with the new Plugin Manager integrated installation for multiple environments. 
+This plugin now works with the new Plugin Manager (PIM) integrated installation for multiple environments. 
 
-New alarms are:
-
-link:#_10_depth_alarm[Depth Alarm] +
-link:#_11_wind_alarm[Wind Alarm] +
-link:#_12_weather_alarm[Weather Alarm] +
-link:#_13_pypilot_alarm[Pypilot Alarm] +
-link:#_15_nmea_data_alarm[NMEA No Data Alarm] +
 
 == Links
 
@@ -30,7 +23,7 @@ Current OpenCPN Downloads Page: https://cloudsmith.io/~opencpn/repos/
 
 == What is Watchdog (WD)?
 
-Watchdog Plugin,implements various configurable alarms to alert regarding changing conditions on the boat. Included are a Deadman-alarm, improved anchor alarm and Depth alarm.  
+Watchdog Plugin implements various configurable alarms to alert regarding changing conditions on the boat. Included are a Deadman-alarm, improved anchor alarm and Depth alarm.  
 
 Watchdog communicates with another very useful plug-in, called
 xref:odraw::index.adoc[OCPN Draw]. OCPN Draw is used to draw points, lines
@@ -59,9 +52,9 @@ The plugin was originally named "Watch**man**" but was later renamed to "Watch**
 
 == INSTALLATION
 
-=== Use Plugin Manager (PIM)
+=== Using Plugin Manager (PIM)
 
-Watchdog is available as a managed plugin (PIM), which is the easiest way to install. The OpenCPN Manual has general information in xref:opencpn-plugins:misc:plugin-install.adoc[Plugin Download, Install and Enable] 
+Watchdog is available as a managed plugin (PIM), which is the easiest way to install the plugin. The OpenCPN Manual has general information in xref:opencpn-plugins:misc:plugin-install.adoc[Plugin Download, Install and Enable] 
 for installing this plugin. This is the preferred way.
 
 In OpenCPN, go to the _Options → Plugins_ and download, install and enable the Watchdog plugin.
@@ -76,7 +69,7 @@ In OpenCPN, go to the _Options → Plugins_ and download, install and enable the
 
 === Use Plugin Package Installer (PI)
 
-The second best way is to download a PI Package Installer (Windows .exe, Linux .deb or MacOS .pkg) from the  https://www.opencpn.org[OpenCPN website, to download Watchdog]
+The second way is to download a PI Package Installer (Windows .exe, Linux .deb or MacOS .pkg) from the  https://www.opencpn.org[OpenCPN website, to download Watchdog]
 
 image::april-2020-001.png[april-2020-001.png,width=672,height=113]
 
@@ -114,17 +107,7 @@ image::april-2020-005.png[april-2020-005.png,width=414,height=313]
 
 image::april-2020-006.png[april-2020-006.png,width=512,height=396]
 
-
-image::april-2020-007.png[april-2020-007.png,width=512,height=396]
-
-
-image::april-2020-008.png[april-2020-008.png,width=510,height=398]
-
-
-image::april-2020-009.png[april-2020-009.png,width=511,height=395]
-
-
-Then before using WD-pi *enable* the plug-in.
+Accept the license terms and install the plugin.  Then before using WD-pi *enable* the plug-in.
 
 === How to enable WD-pi?
 
@@ -150,23 +133,27 @@ image::april-2020-014.png[april-2020-014.png,width=119,height=64]
 
 == A. What does WD do?
 
-Watchdog warns you -in a couple of specific situations- when you want to be warned. 
+Watchdog warns you -in specific situations- when you want to be warned. 
 Watchdog has the following alarms:
 
 link:#_1_landfall_alarm[Landfall Alarm] +
 link:#_2_boundary_alarm[Boundary Alarm] +
+link:#_3_gps_course_cross_boundary_alarm[GPS Course Cross Boundary Alarm] +
+link:#_4_gps_fix_nm_from_boundary_alarm[GPS Fix NM from Boundary Alarm] +
+link:#_5_ais_guard_inclusion[AIS GUARD & Inclusion] +
 link:#_6_dynamic_guard_zones[Guard Zone Alarm] +
 link:#_7_anchor_alarm[Anchor Alarm] +
 link:#_8_course_alarm[Course Alarm] +
 link:#_9_speed_alarm[Speed Alarm] +
-link:#_10_depth_alarm[Depth Alarm] +
-link:#_11_wind_alarm[Wind Alarm] +
-link:#_12_weather_alarm[Weather Alarm] +
-link:#_13_pypilot_alarm[Pypilot Alarm] +
+link:#_10_depth_alarm[Depth Alarm*] +
+link:#_11_wind_alarm[Wind Alarm*] +
+link:#_12_weather_alarm[Weather Alarm*] +
+link:#_13_pypilot_alarm[Pypilot Alarm*] +
 link:#_14_deadman_alarm[Deadman Alarm] +
-link:#_15_nmea_data_alarm[NMEA No Data Alarm] +
+link:#_15_nmea_data_alarm[NMEA No Data Alarm*] +
 link:#_16_email_alert[Email Alert] +
 
+New alarms are noted with an asterick *
 
 == B. How can WD alert me?
 
@@ -206,24 +193,21 @@ and pick an appropriate Warning. Then "Test" to confirm the path is correct.. _ 
 
 === Play WD Warnings from Command
 
-Use a sound command line utility to play sound files.
-Another way to play Watchdog Warnings with "Sound" unchecked and "Command" checked. Then try these examples using Powershell for Win OS:
+Use a sound command line utility to play sound files. Another way to play Watchdog Warnings with "Sound" unchecked and "Command" checked. Then try these examples using Powershell for Win OS:
 
 ....
-powershell -c (New-Object Media.SoundPlayer 'C:\Program Files
-(x86)\OpenCPN 5.2.4+6b314e6\sounds\2bells.wav').PlaySync(); </code> OR
-<code> powershell -c (New-Object Media.SoundPlayer
-'C:\Users\Rick\AppData\Local\opencpn\plugins\watchdog_pi\data\Warnings\Warning
-Boundary.wav').PlaySync();
+powershell -c (New-Object Media.SoundPlayer 'C:\Program Files(x86)\OpenCPN 5.2.4+6b314e6\sounds\2bells.wav').PlaySync(); 
+OR
+powershell -c (New-Object Media.SoundPlayer
+'C:\Users\Rick\AppData\Local\opencpn\plugins\watchdog_pi\data\Warnings\Warning\Boundary.wav').PlaySync();
 ....
 
 The paths are:
 
 ....
-%localappdata%\opencpn\plugins\watchdog_pi\data\Warnings\ and 
-then [add the appropriate filename] OR
-C:\Users\[user]\AppData\Local\opencpn\plugins\watchdog_pi\data\Warnings
-[appropriate file name]
+%localappdata%\opencpn\plugins\watchdog_pi\data\Warnings\ 
+and then [add the appropriate filename] OR
+C:\Users\[user]\AppData\Local\opencpn\plugins\watchdog_pi\data\Warnings[appropriate file name]
 ....
 
 image::s-wdpi-04.png[s-wdpi-04.png]
@@ -281,7 +265,7 @@ image::april-2020-021.png[april-2020-021.png,width=414,height=467]
 
 In that window there is a part (normally the uppermost part) that is specific for that type of alarm, but there is also a part that is the same for every type of alarm. It is the “*Alarm Action*” part.
 
-*Important*:
+=== Important:
 
 In several alarms you’ll see in the "Alarm Action" part a checkbox
 “*Alarm if no Data*”. That is because most WD-alarms are based upon
@@ -297,9 +281,9 @@ is interrupted.
 
 For instance: anchor alarm is set to be activated when you drift more
 than 50 metres from your position. Your position is given by your
-GPS-receiver. If the “Alarm if no Data”-checkbox is checked and the GPS
-stops working, //the alarm will be activated, ////*even if your ship
-has’nt drifted at all* /_/._
+GPS-receiver. If the “Alarm if no Data” - checkbox is checked and the GPS
+stops working, _the alarm will be activated,_ *even if your ship
+hasn't drifted at all*.
 
 That checkbox is an important safety-feature because it will warn you
 when one of your instruments has gone on the blink and has stopped
@@ -347,18 +331,15 @@ Short Alarm Descriptions below.
 
 === Landfall Alarm
 
-Landfall Alarm alerts when own ship nears land. 
-Most useful for long voyages with vast stretches of water. 
-
+Landfall Alarm alerts when own ship nears land. Most useful for long voyages with vast stretches of water. 
 More extensive description of the alarm  link:#_1_landfall_alarm[LANDFALL ALARM].
 
 
 === Boundary Alarm
 
 See also  xref:opencpn-plugins:misc:draw-messaging.adoc[Plugin Messaging
-between ODraw, Watchdog and Weather_routing.]
-
-Boundary Alarm alerts when own ship's position relative to a Boundary is not within ranges set or when about to sail into a "restricted area".
+between ODraw, Watchdog and Weather_routing.] Boundary Alarm alerts when 
+own ship's position relative to a Boundary is not within ranges set or when about to sail into a "restricted area".
 
 The manual for Boundary Alarm is a bit more complex than the other sections. That is because:
 
@@ -387,13 +368,11 @@ The more extensive description of the alarm is here: link:#_2_boundary_alarm[BOU
 === GPS Course cross Boundary Alarm
 
 This alarm will be triggered when course and speed will bring you in less than (user defined) minutes to a boundary.
-
 The more extensive description is here:  link:#_3_gps_course_cross_boundary[GPS COURSE Cross Boundary].
 
 === GPS Fix NM from Boundary Alarm
 
 This is an alarm when the ship reaches a user specified distance (NM) from a Boundary.
-
 The more extensive description is here:  link:#_4_gps_fix_nm_from_boundary[GPS FIX NM from Boundary].
 
 === AIS Guard Zone & Inclusion Alarm
@@ -401,45 +380,32 @@ The more extensive description is here:  link:#_4_gps_fix_nm_from_boundary[GPS F
 A Boundary alarm of the type AIS *Guard Zone* is triggered by the data from other ships, as received by your *AIS* receiver.
 
 The difference with the "normal" AIS alarm (warn me when a ship comes within a given distance from "own ship") is that the Watchdog Boundary Guard Zone alarm gets triggered when a ship enters a specific area (like for instance the entrance to that secluded spot you thought to have for just you and your spouse/friend/secretary/…).
-
 The more extensive description of the alarm is here: link:#_5_ais_guard_inclusion[AIS GUARD & Inclusion].
 
 === Dynamic Guard Zones
 
-*Note*: in Watchdog you can set a "Guard Zone" alarm but in O-Draw you can also create a "Guard Zone". +
-A Guard Zone in O-Draw is a special kind of area that is not static, but moves with your own ship. +
-
-The more extensive description is here:  link:#_6_dynamic_guard_zones[DYNAMIC GUARD ZONES].
+*Note*: in Watchdog you can set a "Guard Zone" alarm but in O-Draw you can also create a "Guard Zone". A Guard Zone in O-Draw is a special kind of area that is not static, but moves with your own ship. The more extensive description is here:  link:#_6_dynamic_guard_zones[DYNAMIC GUARD ZONES].
 
 === Anchor Alarm
 
 Anchor Alarm alerts when your position changes more than a specific distance from a certain position (when your anchor
-is dragging).
-
-The more extensive description of the alarm is here:  link:#_7_anchor_alarm[ANCHOR ALARM].
+is dragging). The more extensive description of the alarm is here:  link:#_7_anchor_alarm[ANCHOR ALARM].
 
 === Course Alarm
 
-Course Alarm is alerts when "own ship" gets off course.
-
-The more extensive description of the alarm is here: link:#_8_course_alarm[COURSE ALARM].
+Course Alarm is alerts when "own ship" gets off course. The more extensive description of the alarm is here: link:#_8_course_alarm[COURSE ALARM].
 
 === Speed Alarm
 
-Speed Alarm alerts when boat speed drops below a set speed (*Underspeed*) or when boat speed has increased above a set speed (*Overspeed*), both can be problematical.
-
-The more extensive description of the alarm is here:  link:#_9_speed_alarm[SPEED ALARM].
+Speed Alarm alerts when boat speed drops below a set speed (*Underspeed*) or when boat speed has increased above a set speed (*Overspeed*), both can be problematical. The more extensive description of the alarm is here:  link:#_9_speed_alarm[SPEED ALARM].
 
 === Depth Alarm
 
-Depth alerts when depth is less than a user set depth.
-
-The more extensive description of the alarm is here: link:#_10_depth_alarm[DEPTH ALARM].
+Depth alerts when depth is less than a user set depth. The more extensive description of the alarm is here: link:#_10_depth_alarm[DEPTH ALARM].
 
 === Wind Alarm
 
 The wind-alarm can be set to warn when the windspeed exceeds a given value, drops under a given value or changes direction.
-
 The more extensive description of the alarm is here: link:#_11_wind_alarm[WIND ALARM].
 
 === Weather Alarm
@@ -456,8 +422,7 @@ The more extensive description of the alarm is here: link:#_13_pypilot_alarm[PYP
 === Deadman Alarm
 
 Deadman Alarm alerts when there is no keyboard activity (fallen asleep, jumped overboard or simply passed away). 
-The alert occurs after a given amount of time the program still has not experienced any input, to be sure there is still someone on watch. 
-The Deadman alarm stops as soon as any user action is taken, for instance a movement of the cursor (mouse).
+The alert occurs after a given amount of time the program still has not experienced any input, to be sure there is still someone on watch. The Deadman alarm stops as soon as any user action is taken, for instance a movement of the cursor (mouse).
 The more extensive description of the alarm is here: link:#_14_deadman_alarm[DEADMAN ALARM].
 
 === NMEA Data Alarm
@@ -467,15 +432,11 @@ NMEA-data is information the program receives from various instruments.
 Most well-known NMEA-data is from GPS receivers and AIS receivers.
 NMEA Data Alarm is crucial if you want to rely on instruments for position, course and speed or AIS! 
 In short: if NMEA input is lost a significant part of OpenCPN is lost.
-The more extensive description of the alarm is here: 
-
-link:#_15_nmea_data_alarm[NMEA DATA ALARM].
+The more extensive description of the alarm  link:#_15_nmea_data_alarm[NMEA DATA ALARM].
 
 === Email Alert
 
-For any of the alarms, send an email alert.
-
-link:#_16_email_alert[EMAIL ALERT].
+For any of the alarms, send an email alert.  link:#_16_email_alert[EMAIL ALERT].
 
 == ALARMS
 
@@ -623,7 +584,6 @@ This screenshot shows the different types of boundaries.
 * Fourth row: three boundary points. From left to right, "inclusion", "exclusion"and "neither".
 
 image::s-wdpi-20.png[s-wdpi-20.png]
-
   
 === 3. GPS COURSE Cross Boundary 
 
@@ -643,15 +603,15 @@ In this example "*Any*" and "*Active*" are ticked. +
 The result is that the alarm will look at *all active* boundaries, no matter what the type is.
 
 Regarding the *type* of the boundary: If you'd like the alarm to react to +
-*any* boundary, no matter what the type is, select "*Any*". +
-*only* to boundaries of the type "*Exclusion*", select "*Exclusion*". +
-*only* to boundaries of the type "*Inclusion*", select "*Inclusion*". +
-*only* to boundaries of the type "*Neither*", select "*Neither*".
+* *any* boundary, no matter what the type is, select "*Any*". +
+* *only* to boundaries of the type "*Exclusion*", select "*Exclusion*". +
+* *only* to boundaries of the type "*Inclusion*", select "*Inclusion*". +
+* *only* to boundaries of the type "*Neither*", select "*Neither*".
 
 Regarding the *state* of the boundary: If you'd like the alarm to react to +
-*any* boundary, no matter what the state is, select "*Any*". +
-*only* to *active* boundaries, select "*Active*". +
-*only* to *inactive* boundaries, select "*Inactive*".
+* *any* boundary, no matter what the state is, select "*Any*". +
+* *only* to *active* boundaries, select "*Active*". +
+* *only* to *inactive* boundaries, select "*Inactive*".
 
 *Note*: as from WD version 1.9025 the "Edit Alarm" window for Boundary alarm also shows a slider to allow the user to select the frequency of checking.
 
@@ -726,15 +686,11 @@ Watchdog did warn you, but if you still decide to go on, she (yes, Watchdog is a
 
 === 5. AIS GUARD & Inclusion
 
-A Boundary alarm of the type “*Inclusion Alarm*” is meant to alert you when your own ship gets outside a specific boundary. +
-The alarm is related to the position of *your own ship* and is fed by the NMEA-data from your *GPS* receiver.
+A Boundary alarm of the type “*Inclusion Alarm*” is meant to alert you when your own ship gets outside a specific boundary. The alarm is related to the position of *your own ship* and is fed by the NMEA-data from your *GPS* receiver.
 
-A Boundary alarm of the type “*Guard Zone*” is meant to alert you when one or more other ships are inside a specific boundary. +
-“Guard Zone” is related to the position of *other ships* and is fed by the NMEA-data from your *AIS* receiver. +
-"Guard Zone" will also be shortened to "*GZ*".
+A Boundary alarm of the type “*Guard Zone*” is meant to alert you when one or more other ships are inside a specific boundary. “Guard Zone” is related to the position of *other ships* and is fed by the NMEA-data from your *AIS* receiver. "Guard Zone" will also be shortened to "*GZ*".
 
-*NOTE*: “other ships” are only ships that actually transmit AIS data and whose AIS-data are actually received by your AIS receiver! +
-*Ships that do not transmit AIS-data (or AIS-data your AIS receiver does not receive) are not “seen” by WD!*
+*NOTE*: “other ships” are only ships that actually transmit AIS data and whose AIS-data are actually received by your AIS receiver! *Ships that do not transmit AIS-data (or AIS-data your AIS receiver does not receive) are not “seen” by WD!*
 
 Keep this in mind, especially as you might encounter ships that *should* send out AIS-signals, *but don't do so* because their transmitter is switched off on purpose (like fishing vessels that want to keep their favourite fishing tracks hidden from others!)
 
@@ -855,19 +811,13 @@ image::watchdog_19056_bd_gz-combined.jpg[watchdog_19056_bd_gz-combined.jpg]
 
 === 6. DYNAMIC GUARD ZONES
 
-The plugin "*Ocpn_Draw*" was invaluable to begin with, but got even better when it was updated with the possibility to draw a Guard Zone *that
-moves with our own ship!* 
-Guard Zones differ from normal Boundaries, they move with your own ship and can rotate with the ships heading or with the ship's course over the ground. Let's call them "*Dynamic Guard Zones*".
+The plugin "*Ocpn_Draw*" was invaluable to begin with, but got even better when it was updated with the possibility to draw a Guard Zone *that moves with our own ship!* Guard Zones differ from normal Boundaries, they move with your own ship and can rotate with the ships heading or with the ship's course over the ground. Let's call them "*Dynamic Guard Zones*".
 
-As oDraw works hand in glove with WATCHDOG, these new features in oDraw  also affect the way WATCHDOG can be used.
-Here are some examples. In these examples "Guard Zone" is shortened to "GZ".
+As oDraw works hand in glove with WATCHDOG, these new features in oDraw  also affect the way WATCHDOG can be used. Here are some examples. In these examples "Guard Zone" is shortened to "GZ".
 
-Let's assume that our ship has a blind spot. A blind spot is an area around the ship that cannot be directly observed by the helms(wo)man. 
-In this example the blind spot is on the port side and extends from 70 to 90 degrees. 
-We want to be alerted if any ship (AIS-target that is) enters that blind spot. We can set up Watchdog to do that for us.
+Let's assume that our ship has a blind spot. A blind spot is an area around the ship that cannot be directly observed by the helms(wo)man. In this example the blind spot is on the port side and extends from 70 to 90 degrees. We want to be alerted if any ship (AIS-target that is) enters that blind spot. We can set up Watchdog to do that for us.
 
-First set up a GZ  Guard Zone.
-Open the Draw Toolbar
+First set up a GZ  Guard Zone. Open the Draw Toolbar
 
 image::wdpi-gz-001.jpg[wdpi-gz-001.jpg]
 
@@ -1130,6 +1080,7 @@ image::april-2020-weather-alarm-001.png[april-2020-weather-alarm-001.png]
 image::april-2020-weather-alarm-002.png[april-2020-weather-alarm-002.png]
 
 For the region of North Sea and Baltic Sea (40 - 60 degrees N) this table can be used as an indication:
+
 [cols=",,",]
 |===
 |air-pressure change in hPa per hour |air-pressure change in hPa per 3 hours |expected windspeed in Bf
@@ -1140,8 +1091,7 @@ For the region of North Sea and Baltic Sea (40 - 60 degrees N) this table can be
 |more than -2 |more than -6 |8-12
 |===
 
-Note: In subtropic and tropic regions some of the above rules may not be valid at all! In tradewind- zones you should observe the daily
-variations: are they still present? If not: possible gale is to be expected.
+Note: In subtropic and tropic regions some of the above rules may not be valid at all! In tradewind- zones you should observe the daily variations: are they still present? If not: possible gale is to be expected.
 
 Let’s say you want to be warned when the barometer drops more than 1,3 hPa per hour.
 
@@ -1153,23 +1103,18 @@ Type: Decreasing
 Value: 130 mBar
 In Last: 3600 Seconds
 
- +
-*weathertips:* +
-Rapid pressure drop with no or almost no wind: sudden increase of windspeed / gale possible without any other sign! Weather front with
-rain coming before wind comes up: stronger winds are to be expected.
-Wind coming before rain: wind will probably not increase.
+*Weathertips:* +
 
+Rapid pressure drop with no or almost no wind: sudden increase of windspeed / gale possible without any other sign! Weather front with rain coming before wind comes up: stronger winds are to be expected.
+Wind coming before rain: wind will probably not increase.
 
 === 13. PYPILOT ALARM
 
-Watchdog can be used in conjunction with the free software autopilot
-"Pypilot", wich is a separate plugin for OpenCPN.
+Watchdog can be used in conjunction with the free software autopilot "Pypilot", wich is a separate plugin for OpenCPN.
 
-For more information on Pypilot, see the (separate)
-xref:pypilot::index.adoc[Pypilot manual]
+For more information on Pypilot, see the (separate) xref:pypilot::index.adoc[Pypilot manual]
 
-In Watchdog there are several options to warn you for possible problems
-in the soft- or hardware of the Pypilot autopilot.
+In Watchdog there are several options to warn you for possible problems in the soft- or hardware of the Pypilot autopilot.
 
 image::april-2020-031.png[april-2020-031.png]
 
@@ -1296,6 +1241,5 @@ image::s-wdpi-04b.png[s-wdpi-04b.png]
 
 *Note* Of course this only works when you can actually email from the computer OpenCPN is installed on! This example is tested on a Windows 7 PC with Internet connection and a Gmail-account.
 
-If, after reading all of the above, you still wonder why Watchdog could
-be of any use for navigation, we strongly advise you to sell your boat.
+If, after reading all of the above, you still wonder why Watchdog could be of any use for navigation, we strongly advise you to sell your boat.
 
