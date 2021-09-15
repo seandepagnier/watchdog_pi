@@ -1,5 +1,5 @@
 site:
-  title: Watchdog Manual
+  title: Watchdog
   url:  https://nowhere.net
   start_page: watchdog:ROOT:index.adoc
 content:
