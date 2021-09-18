@@ -26,7 +26,7 @@ Current OpenCPN Downloads Page: https://cloudsmith.io/~opencpn/repos/
 Watchdog Plugin implements various configurable alarms for changing conditions.   
 
 Watchdog communicates with another very useful plug-in, called
-xref:ocpn_draw::index.adoc[OCPN Draw]. OCPN Draw is used to draw points, lines
+xref:ocpn_draw::index.adoc[Ocpn_Draw]. Ocpn_Draw (OD) is used to draw points, lines
 and shapes, guard zones and boundaries which can be used in navigation to show
 
 * Electronic bearing lines (EBL)
@@ -35,7 +35,7 @@ and shapes, guard zones and boundaries which can be used in navigation to show
 * Specific areas (Boundaries)
 * Special boundary which moves with the boat (Guard Zone)
 
-These features of the oDraw-plugin can be used in Watchdog. 
+These features of Ocpn_Draw (OD) must be made using Ocpn_Draw, so they can be used in Watchdog. 
 Watchdog can alert you when your own ship 
 
 - enters (or gets too close to) or 
