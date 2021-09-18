@@ -23,7 +23,7 @@ Current OpenCPN Downloads Page: https://cloudsmith.io/~opencpn/repos/
 
 == What is Watchdog (WD)?
 
-Watchdog Plugin implements various configurable alarms for changing conditions.   
+Watchdog Plugin (WD) implements various configurable alarms for changing conditions.   
 
 Watchdog communicates with another very useful plug-in, called
 xref:ocpn_draw::index.adoc[Ocpn_Draw]. Ocpn_Draw (OD) is used to draw points, lines
@@ -45,8 +45,8 @@ one or more of these stationary Boundaries.
 Watchdog can also provide an alert when another ship (AIS-target) enters a Guard Zone Boundary(moving with your ship).
 Watchdog and Ocpn_Draw work together using boundary identifiers called GUID to provide some very useful alarms.
 
-*Watchdog* will be referred to as *"WD-pi"* or *"WD".* +
-*OpenCPN Draw Plugin* will be referred to as *"Draw-pi"* or *"OD"*.
+*Watchdog* will be referred to as *"WD".* +
+*Ocpn_Draw* will be referred to as *"OD"*.
 
 The plugin was originally named "Watch**man**" but was later renamed to "Watch**dog**" which might seen in some screens and menu's. +
 
