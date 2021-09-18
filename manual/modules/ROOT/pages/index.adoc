@@ -139,7 +139,7 @@ Watchdog has the following alarms:
 link:#_1_landfall_alarm[Landfall Alarm] +
 link:#_2_boundary_alarm[Boundary Alarm] +
 link:#_3_gps_course_cross_boundary[GPS Course Cross Boundary Alarm] +
-link:#_4_gps_fix_nm_from_boundary[GPS Fix NM from Boundary Alarm] +   #_4_gps_fix_nm_from_boundary
+link:#_4_gps_fix_nm_from_boundary[GPS Fix NM from Boundary Alarm] +
 link:#_5_ais_guard_inclusion[AIS GUARD & Inclusion] +
 link:#_6_dynamic_guard_zones[Guard Zone Alarm] +
 link:#_7_anchor_alarm[Anchor Alarm] +
