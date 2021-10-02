@@ -1,3 +1,5 @@
 name: watchdog
 title: Watchdog
 version: '2.4.29'
+nav: 
+- xref:opencpn-plugins:ROOT:nav.doc
