@@ -19,7 +19,7 @@
 ## *   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                                       *
 ## ***
 #-----------------------------------------------------------------------------
-# CI-CMake: v1.0.174.0   22/07/2021  # DD/MM/YYYY format  CI-CMake Author: Jon Gough
+# CI-CMake: v1.0.175.0   03/10/2021  # DD/MM/YYYY format  CI-CMake Author: Jon Gough
 # ---------------------------------------------------------------------------
 ## buildCI:yes useODAPI:yes validateJSON:no
 ##
@@ -55,9 +55,9 @@ set(LONG_DESCRIPTION "Set alarms for changing conditions, boundaries, cog, landf
 
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "4")
-set(VERSION_PATCH "33")
+set(VERSION_PATCH "34")
 set(VERSION_TWEAK "0")
-set(VERSION_DATE "29/07/2021") # DD/MM/YYYY format
+set(VERSION_DATE "03/10/2021") # DD/MM/YYYY format
 set(OCPN_MIN_VERSION "ov50")
 set(OCPN_API_VERSION_MAJOR "1")
 set(OCPN_API_VERSION_MINOR "16")
@@ -72,7 +72,7 @@ set(PARENT "opencpn")
 
 #No longer needed, queried.
 # set(GIT_USER "rgleason")
-# set(GIT_REPOSITORY_NAME "weather_routing_pi")
+# set(GIT_REPOSITORY_NAME "watchdog_pi")
 
 ## Specifies Cloudsmith upload repository suffix for each catalog
 set(PROD "prod")   #Standard Repos
@@ -229,19 +229,21 @@ include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/nmea0183/src)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/${EXTINCLUDE_DIR})
 
-## Statement below is required to collect all the set( headers and SRCS  - Adjust as required
-## This add_library  can be used in conditionals below.
-#======================================================================================
-target_sources(${PACKAGE_NAME} PUBLIC ${SRCS} ${HDRS} ${OCPNSRC} ${EXTSRC} ${LIBSSRC} )
-#=======================================================================================
 
 # Needed for android builds
 
 if(QT_ANDROID)
     include_directories(BEFORE ${qt_android_include})
     include_directories( ${CMAKE_SOURCE_DIR}/extinclude/GLES2)
+
+    #    #include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/glshim/include/GLES)
 endif(QT_ANDROID)
 
+## Statement below is required to collect all the set( headers and SRCS  - Adjust as required
+## This add_library  can be used in conditionals below.
+#======================================================================================
+target_sources(${PACKAGE_NAME} PUBLIC ${SRCS} ${HDRS} ${OCPNSRC} ${EXTSRC} ${LIBSSRC} )
+#=======================================================================================
 if(NOT OCPN_FLATPAK_CONFIG)
     # Build environment not available when flatpak is being configured so following statements will not work
     message(STATUS "${CMLOC}Adding target link libraries to ${PACKAGE_NAME}")
