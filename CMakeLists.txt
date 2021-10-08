@@ -19,7 +19,7 @@
 ## *   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                                       *
 ## ***
 #-----------------------------------------------------------------------------
-# CI-CMake: v1.0.175.0   03/10/2021  # DD/MM/YYYY format  CI-CMake Author: Jon Gough
+# CI-CMake: v1.0.176   03/10/2021  # DD/MM/YYYY format  CI-CMake Author: Jon Gough
 # ---------------------------------------------------------------------------
 ## buildCI:yes useODAPI:yes validateJSON:no
 ##
@@ -56,7 +56,7 @@ set(LONG_DESCRIPTION "Set alarms for changing conditions, boundaries, cog, landf
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "4")
 set(VERSION_PATCH "34")
-set(VERSION_TWEAK "0")
+set(VERSION_TWEAK "1")
 set(VERSION_DATE "03/10/2021") # DD/MM/YYYY format
 set(OCPN_MIN_VERSION "ov50")
 set(OCPN_API_VERSION_MAJOR "1")
