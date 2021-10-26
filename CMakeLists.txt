@@ -56,7 +56,7 @@ set(LONG_DESCRIPTION "Set alarms for changing conditions, boundaries, cog, landf
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "4")
 set(VERSION_PATCH "35")
-set(VERSION_TWEAK "0")
+set(VERSION_TWEAK "1")
 set(VERSION_DATE "07/10/2021") # DD/MM/YYYY format
 set(OCPN_MIN_VERSION "ov50")
 set(OCPN_API_VERSION_MAJOR "1")
@@ -234,9 +234,8 @@ include_directories(BEFORE ${PROJECT_SOURCE_DIR}/${EXTINCLUDE_DIR})
 
 if(QT_ANDROID)
     include_directories(BEFORE ${qt_android_include})
-    include_directories( ${CMAKE_SOURCE_DIR}/extinclude/GLES2)
-
-    #    #include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/glshim/include/GLES)
+    include_directories( ${PROJECT_SOURCE_DIR}/extinclude/GLES2)
+#   include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/glshim/include/GLES)
 endif(QT_ANDROID)
 
 ## Statement below is required to collect all the set( headers and SRCS  - Adjust as required
