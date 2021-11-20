@@ -19,7 +19,7 @@
 ## *   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                                       *
 ## ***
 #-----------------------------------------------------------------------------
-# CI-CMake: v1.0.176.1 07/10/2021  # DD/MM/YYYY format  CI-CMake Author: Jon Gough
+# CI-CMake: v1.0.180 19/11/2021  # DD/MM/YYYY format  CI-CMake Author: Jon Gough
 # ---------------------------------------------------------------------------
 ## buildCI:yes useODAPI:yes validateJSON:no
 ##
@@ -33,12 +33,14 @@
 set(CMLOC "CMakeLists: ")
 
 # define minimum cmake version
-cmake_minimum_required(VERSION 3.1.1)
+cmake_minimum_required(VERSION 3.5.1)
 if(COMMAND cmake_policy)
     if(POLICY CMP0043)
         cmake_policy(SET CMP0043 NEW)
     endif(POLICY CMP0043)
     cmake_policy(SET CMP0048 NEW)
+# Need cmake 3.13 to implement this, but raspbian builds are at 3.7.2 and bionic at 3.10 and xenial builds at 3.5.1
+#    cmake_policy(SET CMP0076 NEW)
     if(POLICY CMP0077)
         cmake_policy(SET CMP0077 NEW)
     endif(POLICY CMP0077)
@@ -55,8 +57,8 @@ set(LONG_DESCRIPTION "Set alarms for changing conditions, boundaries, cog, landf
 
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "4")
-set(VERSION_PATCH "36")
-set(VERSION_TWEAK "1")
+set(VERSION_PATCH "37")
+set(VERSION_TWEAK "0")
 set(VERSION_DATE "19/11/2021") # DD/MM/YYYY format
 set(OCPN_MIN_VERSION "ov50")
 set(OCPN_API_VERSION_MAJOR "1")
@@ -68,11 +70,9 @@ set(PARENT "opencpn")
 #
 #Used to set up a local webserver with git loaded, for testing purposes.
 #Now set in plugin configure, needed to build flatpak, also locally.
+
 #set(GIT_REPOSITORY_SERVER "github.com")
 
-#No longer needed, queried.
-# set(GIT_USER "rgleason")
-# set(GIT_REPOSITORY_NAME "watchdog_pi")
 
 ## Specifies Cloudsmith upload repository suffix for each catalog
 set(PROD "prod")   #Standard Repos
@@ -210,33 +210,46 @@ set(LIBHDRS
 
 add_definitions(-DPLUGIN_USE_SVG)
 
-set(EXTINCLUDE_DIR ${EXTINCLUDE_DIR} extinclude)
+set(EXTINCLUDE_DIR ${EXTINCLUDE_DIR} extinclude libs/ocpn-api/)
+
+#
+# ----- If using JSON validation in plugin section below is needed ----- ##
+#
+
+# Not doing JSON Validation for this plugin - probably should!
+
+
+#
+# ----- If using JSON validation in plugin section above is needed ----- ##
+#
 
 ##=============================================================
 # Modify/configure 'Include' Directories below for the Plugin
 ##=============================================================
 
-# Not doing JSON_SCHEMA_VALIDATOR
-
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/include)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpnsrc/glu/include)
-include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs)
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/${EXTINCLUDE_DIR})
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/)
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/GL)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/ocpn-api)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/wxJSON/include)
+
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/jsoncpp)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/nmea0183/src)
-include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude)
-include_directories(BEFORE ${PROJECT_SOURCE_DIR}/${EXTINCLUDE_DIR})
 
-
-# Needed for android builds
+#
+# ----- Change below to match project requirements for android build ----- ##
+#
 
 if(QT_ANDROID)
-    include_directories(BEFORE ${qt_android_include})
     include_directories( ${PROJECT_SOURCE_DIR}/extinclude/GLES2)
-#   include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/glshim/include/GLES)
 endif(QT_ANDROID)
+
+##
+## ----- Change above to match project requirements for android build ----- ##
+##
 
 ## Statement below is required to collect all the set( headers and SRCS  - Adjust as required
 ## This add_library  can be used in conditionals below.
@@ -258,18 +271,23 @@ endif(NOT OCPN_FLATPAK_CONFIG)
 
 add_definitions(-DTIXML_USE_STL)
 
+#
+# ----- If using JSON validation in plugin section below is needed ----- ##
+#
+
 # Not doing JSON_SCHEMA_VALIDATOR
+#
+# ----- If using JSON validation in plugin section above is needed ----- ##
+#
 
 ## ----- Change above to match project requirements ----- ##
-#These are NOT used in Testplugin, used for other plugins
-##=======================================
-#include("PluginGL")
-#include("PluginNMEA") #not for wxfax
-#include("PluginJSON")  #not for wxfax  #commented out using libs
-##=======================================
-## ----- Change above to match project requirements ----- ##
+
 ## ----- do not change next section - needed to configure build process ----- ##
 
+# Needed for android builds
+if(QT_ANDROID)
+    include_directories(BEFORE ${qt_android_include})
+endif(QT_ANDROID)
 
 # Needed for all builds
 ##=======================================
