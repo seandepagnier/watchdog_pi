@@ -2553,10 +2553,9 @@ private:
 };
 
 
-wxString m_Host;
-
-class pypilotAlarm : virtual public Alarm, virtual public pypilotClient
+class pypilotAlarm : virtual public Alarm, public pypilotClient
 {
+    friend class AlarmClient;
 public:
     pypilotAlarm() : pypilotClient(false, false),
                      m_bNoConnection(true),
@@ -2580,6 +2579,14 @@ public:
         return m_status;
     }
 
+    void OnConnected() {
+        UpdateWatchlist();
+    }
+
+    void OnDisconnected() {
+        m_lastvalues.clear();
+    }
+
     bool Test() {
         wxString status;
         double d;
@@ -2587,7 +2594,7 @@ public:
         wxDateTime unow = wxDateTime::UNow();
         if(m_bNoConnection && unow > m_startTime && (!connected() || (unow - m_lastMessageTime).GetMilliseconds() > 3000))
             status = "no connection";
-        if(m_bNoIMU && lastvalue("imu.loopfreq") == "0")
+        if(m_bNoIMU && lastvalue("imu.frequency") == "0")
             status = "no imu";
         else if(m_bNoMotorController && lastvalue("servo.controller") == "none")
             status = "no controller";
@@ -2598,9 +2605,9 @@ public:
             status = "over temperature";
         else if(m_bOverCurrent && lastvalue("servo.flags").Contains("OVERCURRENT"))
             status = "over current";
-        else if(m_bNoRudderFeedback && lastvalue("servo.rudder") == "False")
+        else if(m_bNoRudderFeedback && lastvalue("rudder.angle") == "false")
             status = "no rudder feedback";
-        else if(m_bNoMotorTemperature && lastvalue("servo.motor_temp") == "False")
+        else if(m_bNoMotorTemperature && lastvalue("servo.motor_temp") == "false")
             status = "no motor temperature";
         else if(m_bDriverTimeout && lastvalue("servo.flags").Contains("DRIVER_TIMEOUT"))
             status = "driver timeout (No Motor)";
@@ -2625,33 +2632,25 @@ public:
     void OnTimer(wxTimerEvent &tEvent) {
         Alarm::OnTimer( tEvent );
         if(!connected()) {
-            if(g_watchdog_pi->m_pypilot_host.Length()) {
-                if(m_Host == g_watchdog_pi->m_pypilot_host)
-                    return;
+            if(g_watchdog_pi->m_pypilot_host.Length())
                 m_Host = g_watchdog_pi->m_pypilot_host;
-            }
-            if(m_Host.Length())
+
+            wxDateTime now = wxDateTime::UNow();
+            unsigned long dt = (now-m_connect_time).GetSeconds().ToLong();
+            if(dt > 4) {
                 connect(m_Host);
-            m_Host = "";
+                m_connect_time = now;
+            }
             return;
         }
 
         std::string name;
         Json::Value data;
         while(receive(name, data)) {
-            Json::Value value = data.get("value", "");
-            if(value.isConvertibleTo(Json::stringValue))
-               m_lastvalues[name] = value.asString();
+            if(data.isConvertibleTo(Json::stringValue))
+               m_lastvalues[name] = data.asString();
             m_lastMessageTime = wxDateTime::UNow();
         }
-    }
-
-    void OnConnected() {
-        UpdateWatchlist();
-    }
-
-    void OnDisconnected() {
-        m_lastvalues.clear();
     }
 
     void UpdateWatchlist() {
@@ -2660,13 +2659,13 @@ public:
 
         std::map<std::string, double> watchlist;
         double period = 0.5;
-        if(m_bNoConnection)              watchlist["imu.loopfreq"]     = period;
+        if(m_bNoConnection)              watchlist["imu.frequency"]     = period;
         if(m_bOverTemperature || m_bOverCurrent || m_bDriverTimeout
            || m_bEndOfTravel || m_bServoSaturated)
             watchlist["servo.flags"] = period;
-        if(m_bNoIMU)              watchlist["imu.loopfreq"]     = period;
+        if(m_bNoIMU)              watchlist["imu.frequency"]     = period;
         if(m_bNoMotorController)       watchlist["servo.controller"] = 0;
-        if(m_bNoRudderFeedback)   watchlist["servo.rudder"]     = period;
+        if(m_bNoRudderFeedback)   watchlist["rudder.angle"]     = period;
         if(m_bNoMotorTemperature) watchlist["servo.motor_temp"] = period;
         if(m_bLostMode)           watchlist["ap.lost_mode"]     = period;
         if(m_bPowerConsumption)   watchlist["servo.watts"]      = period;
@@ -2769,9 +2768,11 @@ public:
     }
     
 private:
-    std::map<std::string, std::string> m_lastvalues;
-    wxString m_status;
 
+    std::map<std::string, std::string> m_lastvalues;
+    wxDateTime m_connect_time;
+    wxString m_status;
+    
     bool m_bNoConnection, m_bOverTemperature, m_bOverCurrent;
     bool m_bNoIMU, m_bNoMotorController, m_bNoRudderFeedback,
         m_bNoMotorTemperature, m_bDriverTimeout;
@@ -2781,8 +2782,11 @@ private:
     bool m_bCourseError;
     double m_dCourseError;
 
+    wxString m_Host;
     wxDateTime m_startTime, m_lastMessageTime;
 };
+
+
 
 ////////// Alarm Base Class /////////////////
 std::vector<Alarm*> Alarm::s_Alarms;
