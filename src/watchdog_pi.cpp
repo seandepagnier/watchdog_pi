@@ -108,6 +108,8 @@ watchdog_pi::watchdog_pi(void *ppimgr)
     m_lasttimerfix.FixTime = m_lastfix.FixTime = 0;
     m_sog = m_cog = m_hdm = 0;
     m_declination = NAN;
+    m_pypilot_host = "";
+
 
     g_ReceivedPathGUIDMessage = wxEmptyString;
     g_ReceivedBoundaryTimeMessage = wxEmptyString;
