@@ -152,19 +152,20 @@ add_definitions(-DUSE_S57)
 
 
 SET(SRCS
-            src/watchdog_pi.cpp
-            src/WatchdogDialog.cpp
-            src/WatchdogPropertiesDialog.cpp
-            src/ConfigurationDialog.cpp
-            src/NewAlarmDialog.cpp
-            src/EditAlarmDialog.cpp
-            src/Alarm.cpp
-            src/signalk_client.cpp
-            src/WatchdogUI.cpp
-            src/icons.cpp
-            src/wddc.cpp
-	)
 
+  src/wddc.cpp
+  src/watchdog_pi.cpp
+  src/WatchdogDialog.cpp
+  src/WatchdogPropertiesDialog.cpp
+  src/ConfigurationDialog.cpp
+  src/NewAlarmDialog.cpp
+  src/EditAlarmDialog.cpp
+  src/Alarm.cpp
+  src/pypilot_client.cpp
+  src/WatchdogUI.cpp
+  src/icons.cpp
+  )
+	
 SET(HDRS
   	        include/AIS_Target_Info.h
 			include/Alarm.h
