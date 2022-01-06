@@ -152,6 +152,7 @@ add_definitions(-DUSE_S57)
 
 
 SET(SRCS
+  src/wddc.cpp
   src/watchdog_pi.cpp
   src/WatchdogDialog.cpp
   src/WatchdogPropertiesDialog.cpp
