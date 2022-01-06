@@ -56,11 +56,12 @@ void SignalKClient::connect(wxString host, int port)
         host = "pypilot";
             
     if(port == 0)
-        port = 21311; /* default port */
-
+        port = 23322; /* default port */
+    
     wxIPV4address addr;
     addr.Hostname(host);
     addr.Service(port);
+    m_sock.Close();
     m_sock.Connect(addr, false);
 }
 
