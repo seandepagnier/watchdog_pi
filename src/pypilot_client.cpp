@@ -53,7 +53,7 @@ pypilotClient::pypilotClient(bool queue_mode, bool request_list)
 void pypilotClient::connect(wxString host, int port)
 {
     if(host.empty())
-        host = "pypilot";
+        host = "192.168.14.1";
             
     if(port == 0)
         port = 23322; /* default port */

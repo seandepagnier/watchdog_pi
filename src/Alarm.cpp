@@ -2553,6 +2553,8 @@ private:
 };
 
 
+wxString m_Host;
+
 class pypilotAlarm : virtual public Alarm, virtual public pypilotClient
 {
 public:
@@ -2623,7 +2625,14 @@ public:
     void OnTimer(wxTimerEvent &tEvent) {
         Alarm::OnTimer( tEvent );
         if(!connected()) {
-            connect(g_watchdog_pi->m_pypilot_host);
+            if(g_watchdog_pi->m_pypilot_host.Length()) {
+                if(m_Host == g_watchdog_pi->m_pypilot_host)
+                    return;
+                m_Host = g_watchdog_pi->m_pypilot_host;
+            }
+            if(m_Host.Length())
+                connect(m_Host);
+            m_Host = "";
             return;
         }
 
@@ -2675,6 +2684,7 @@ public:
 
     wxWindow *OpenPanel(wxWindow *parent) {
         pypilotPanel *panel = new pypilotPanel(parent);
+        panel->m_tHost->SetValue(m_Host);
         panel->m_cbNoConnection->SetValue(m_bNoConnection);
         panel->m_cbOverTemperature->SetValue(m_bOverTemperature);
         panel->m_cbOverCurrent->SetValue(m_bOverCurrent);
@@ -2695,6 +2705,7 @@ public:
 
     void SavePanel(wxWindow *p) {
         pypilotPanel *panel = (pypilotPanel*)p;
+        m_Host = panel->m_tHost->GetValue();
         m_bNoConnection = panel->m_cbNoConnection->GetValue();
         m_bOverTemperature = panel->m_cbOverTemperature->GetValue();
         m_bOverCurrent = panel->m_cbOverCurrent->GetValue();
@@ -2715,6 +2726,9 @@ public:
     }
 
     void LoadConfig(TiXmlElement *e) {
+        std::string stdstrhost;
+        e->QueryStringAttribute("Host", &stdstrhost);
+        m_Host = stdstrhost;
         e->QueryBoolAttribute("NoConnection", &m_bNoConnection);
         e->QueryBoolAttribute("OverTemperature", &m_bOverTemperature);
         e->QueryBoolAttribute("OverCurrent", &m_bOverCurrent);
@@ -2735,6 +2749,7 @@ public:
     }
 
     void SaveConfig(TiXmlElement *c) {
+        c->SetAttribute("Host", m_Host);
         c->SetAttribute("Type", "pypilot");
         c->SetAttribute("NoConnection", m_bNoConnection);
         c->SetAttribute("OverTemperature", m_bOverTemperature);

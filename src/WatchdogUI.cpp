@@ -1278,6 +1278,9 @@ pypilotPanel::pypilotPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos,
 	wxStaticBoxSizer* sbSizer10;
 	sbSizer10 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Host") ), wxVERTICAL );
 
+	m_tHost = new wxTextCtrl( sbSizer10->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	sbSizer10->Add( m_tHost, 0, wxALL|wxEXPAND, 5 );
+
 
 	fgSizer17->Add( sbSizer10, 1, wxEXPAND, 5 );
 
