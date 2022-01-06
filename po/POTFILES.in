@@ -1,3 +1,4 @@
+src/wddc.cpp
 src/watchdog_pi.cpp
 src/WatchdogDialog.cpp
 src/WatchdogPropertiesDialog.cpp
