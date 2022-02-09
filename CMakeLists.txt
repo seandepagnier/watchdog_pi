@@ -167,23 +167,24 @@ SET(SRCS
   )
 	
 SET(HDRS
-  	        include/AIS_Target_Info.h
-			include/Alarm.h
-			include/ConfigurationDialog.h
-			include/EditAlarmDialog.h
-			include/icons.h
-			include/msvcdefs.h
-			include/NewAlarmDialog.h
-            include/signalk_client.h
-			include/watchdog_pi.h
-			include/WatchdogDialog.h
-			include/WatchdogPropertiesDialog.h
-			include/WatchdogUI.h
-			include/wddc.h
-			include/WeatherPanel.h
-			include/WindPanel.h
-			include/wxWTranslateCatalog.h
-	)
+  include/AIS_Target_Info.h
+  include/Alarm.h
+  include/ConfigurationDialog.h
+  include/EditAlarmDialog.h
+  include/icons.h
+  include/msvcdefs.h
+  include/NewAlarmDialog.h
+  extinclude/ODAPI.h
+  include/pypilot_client.h
+  include/watchdog_pi.h
+  include/WatchdogDialog.h
+  include/WatchdogPropertiesDialog.h
+  src/WatchdogUI.h
+  include/wddc.h
+  include/WeatherPanel.h
+  include/WindPanel.h
+  include/wxWTranslateCatalog.h
+  )
 
 # TexFont.cpp has to be here it will not compile
 # also src/TexFont.h has to exist AND ocpnhdrs/TexFont.h is not needed.
