@@ -12,29 +12,39 @@
 
 # bailout on errors and echo commands.
 set -xe
-sudo apt-get -qq update
+sudo apt-get -q -y --allow-unauthenticated --allow-downgrades --allow-remove-essential --allow-change-held-packages update
 
 #PLUGIN=bsb4
 
-sudo apt install flatpak flatpak-builder
+sudo apt --allow-unauthenticated --allow-downgrades --allow-remove-essential --allow-change-held-packages install flatpak flatpak-builder
+
+if [ -n "$CI" ]; then
+    sudo apt update
+
+    # Avoid using outdated TLS certificates, see #210.
+    sudo apt install --reinstall  ca-certificates
+
+    # Install flatpak and flatpak-builder
+    sudo apt install flatpak flatpak-builder
+fi
 
 flatpak remote-add --user --if-not-exists \
-    flathub https://flathub.org/repo/flathub.flatpakrepo
+    flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 
 
 if [ "$FLATPAK_BRANCH" = "beta" ]; then
-        flatpak install --user -y flathub org.freedesktop.Sdk//20.08 >/dev/null
-        flatpak remote-add --user --if-not-exists flathub-beta \
-            https://flathub.org/beta-repo/flathub-beta.flatpakrepo
-        flatpak install --user -y flathub-beta \
-            org.opencpn.OpenCPN >/dev/null
+    flatpak install --user -y flathub org.freedesktop.Sdk//20.08 >/dev/null
+    flatpak remote-add --user --if-not-exists flathub-beta \
+        https://dl.flathub.org/beta-repo/flathub-beta.flatpakrepo
+    flatpak install --user -y flathub-beta \
+        org.opencpn.OpenCPN >/dev/null
 else
-        flatpak install --user -y flathub org.freedesktop.Sdk//18.08 >/dev/null
-        flatpak remote-add --user --if-not-exists flathub \
-            https://flathub.org/repo/flathub.flatpakrepo
-        flatpak install --user -y flathub \
-            org.opencpn.OpenCPN >/dev/null
-        FLATPAK_BRANCH='stable'
+    flatpak install --user -y flathub org.freedesktop.Sdk//18.08 >/dev/null
+    flatpak remote-add --user --if-not-exists flathub \
+        https://dl.flathub.org/repo/flathub.flatpakrepo
+    flatpak install --user -y flathub \
+        org.opencpn.OpenCPN >/dev/null
+    FLATPAK_BRANCH='stable'
 fi
 
 rm -rf build && mkdir build && cd build

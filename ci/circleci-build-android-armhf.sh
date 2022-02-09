@@ -4,24 +4,17 @@
 # Build the Android artifacts inside the circleci linux container
 #
 
-
 set -xe
 
 pwd
 
-#not needed for CI built, the workflow starts up already in "project" directory.
-# but required for local build.
-#cd project
-
 ls -la
-
-#sudo chown -R 1000 /oesenc_pi/build_android_64_ci
 
 sudo apt-get -q update
 sudo apt-get -y install git cmake gettext unzip
 
 # Get the OCPN Android build support package.
-#NOT REQUIRED FOR LOCAL BUILD
+# FOR LOCAL BUILD - have a local version to avoid big download each run - need to stage it but not commit it. DO NOT COMMIT AND PUSH master.zip
 echo "CIRCLECI_LOCAL: $CIRCLECI_LOCAL"
 if [ -z "$CIRCLECI_LOCAL" ]; then
    wget https://github.com/bdbcat/OCPNAndroidCommon/archive/master.zip
@@ -31,14 +24,11 @@ unzip -qq -o master.zip
 pwd
 ls -la
 
-#change this for local build, so as not to overwrite any other generic buildin "build".
-#sudo mkdir -p build_android_arm32
-#cd build_android_arm32
 mkdir -p build
 cd build
 
 rm -f CMakeCache.txt
-COMPDIR=$(find /opt/android -iname "android-ndk*")
+COMPDIR=$(find ~/. -regex ".*/ndk/22.[0-9].[0-9]*")
 
 cmake  \
   -D_wx_selected_config=androideabi-qt-armhf \
@@ -52,12 +42,9 @@ cmake  \
   ..
 
 # Get number of processors and use this on make to speed up build
-if type nproc &> /dev/null
-then
-    make_cmd="make -j"$(nproc)
-else
-    make_cmd="make"
-fi
+procs=$(awk -F- '{print $2}' /sys/fs/cgroup/cpuset/cpuset.cpus)
+procs=$((procs + 1))
+make_cmd="make -j"$procs
 eval $make_cmd
 
 make package
