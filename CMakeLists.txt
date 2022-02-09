@@ -178,7 +178,7 @@ SET(HDRS
   include/watchdog_pi.h
   include/WatchdogDialog.h
   include/WatchdogPropertiesDialog.h
-  include/WatchdogUI.h
+  src/WatchdogUI.h
   include/wddc.h
   include/WeatherPanel.h
   include/WindPanel.h
