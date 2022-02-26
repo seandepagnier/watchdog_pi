@@ -19,7 +19,7 @@
 ## *   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                                       *
 ## ***
 #-----------------------------------------------------------------------------
-# CI-CMake: v1.0.185.0 08/12/2021  # DD/MM/YYYY format  CI-CMake Author: Jon Gough
+# CI-CMake: v1.0.193.0 02/25/2022  # DD/MM/YYYY format  CI-CMake Author: Jon Gough
 # ---------------------------------------------------------------------------
 ## buildCI:yes useODAPI:yes validateJSON:no
 ##
@@ -58,8 +58,8 @@ set(LONG_DESCRIPTION "Set alarms for changing conditions, boundaries, cog, landf
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "4")
 set(VERSION_PATCH "39")
-set(VERSION_TWEAK "0")
-set(VERSION_DATE "08/12/2021") # DD/MM/YYYY format
+set(VERSION_TWEAK "1")
+set(VERSION_DATE "02/24/2022") # DD/MM/YYYY format
 set(OCPN_MIN_VERSION "ov50")
 set(OCPN_API_VERSION_MAJOR "1")
 set(OCPN_API_VERSION_MINOR "16")
@@ -79,13 +79,13 @@ set(PROD "prod")   #Standard Repos
 set(BETA "beta")   #Standard Repos
 set(ALPHA "alpha") #Standard Repos
 
-set(CLOUDSMITH_USER "opencpn")
-#set(CLOUDSMITH_USER "rick-gleason")
-
 # Set if Cloudsmith Base Repository name does not match your Git Repository name.
 #set(CLOUDSMITH_BASE_REPOSITORY "${GIT_REPOSITORY_NAME}")
 set(CLOUDSMITH_BASE_REPOSITORY "watchdog")  #without the pi
 # Set the following to use OpenCPN cloudsmith repositories instead of own repositories
+set(CLOUDSMITH_USER "opencpn")
+#set(CLOUDSMITH_USER "rick-gleason")
+
 # Set Plugin info-url, summary and description
 set(XML_INFO_URL "https://opencpn.org/OpenCPN/plugins/watchdog.html")
 set(XML_SUMMARY ${SHORT_DESCRIPTION})
