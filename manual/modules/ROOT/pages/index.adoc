@@ -8,7 +8,7 @@ PI Manager Workflow: Testplugin
 
 == Version & Changes
 
-Watchdog v2.4.29 for OpenCPN v5.4.2 was updated March 2021 and requires Opencpn v4.1.xxx or newer. 
+Watchdog v2.4.44 for OpenCPN v5.4.2 was updated March 2021 and requires Opencpn v5.0.0 or newer. 
 This plugin now works with the new Plugin Manager (PIM) integrated installation for multiple environments. 
 
 
@@ -26,7 +26,7 @@ Current OpenCPN Downloads Page: https://cloudsmith.io/~opencpn/repos/
 Watchdog Plugin (WD) implements various configurable alarms for changing conditions.   
 
 Watchdog communicates with another very useful plug-in, called
-xref:ocpn_draw::index.adoc[Ocpn_Draw]. Ocpn_Draw (OD) is used to draw points, lines
+xref:odraw::index.adoc[Ocpn_Draw]. Ocpn_Draw (OD) is used to draw points, lines
 and shapes, guard zones and boundaries which can be used in navigation to show
 
 * Electronic bearing lines (EBL)
