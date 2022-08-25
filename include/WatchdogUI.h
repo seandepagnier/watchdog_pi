@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Feb 26 2019)
+// C++ code generated with wxFormBuilder (version 3.9.0 Sep 12 2020)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO *NOT* EDIT THIS FILE!
@@ -171,7 +171,7 @@ class NewAlarmDialogBase : public wxDialog
 	public:
 		wxListCtrl* m_lAlarmType;
 
-		NewAlarmDialogBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("New Alarm"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1), long style = wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER);
+		NewAlarmDialogBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("New Alarm"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 200,300 ), long style = wxDEFAULT_DIALOG_STYLE );
 		~NewAlarmDialogBase();
 
 };
@@ -215,30 +215,6 @@ class EditAlarmDialogBase : public wxDialog
 		~EditAlarmDialogBase();
 
 };
-
-///////////////////////////////////////////////////////////////////////////////
-/// Class DepthPanel
-///////////////////////////////////////////////////////////////////////////////
-class DepthPanel : public wxPanel
-{
-private:
-
-protected:
-	wxStaticText* m_staticText51;
-	wxStaticText* m_staticText44;
-
-	wxStaticText* m_staticText64;
-
-public:
-	wxChoice* m_cUnits;
-	wxChoice* m_cMode;
-	wxTextCtrl* m_tDepth;
-
-	DepthPanel(wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(500, 300), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString);
-	~DepthPanel();
-
-};
-
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Class AnchorPanel
@@ -433,6 +409,55 @@ class NMEADataPanel : public wxPanel
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+/// Class DepthPanel
+///////////////////////////////////////////////////////////////////////////////
+class DepthPanel : public wxPanel
+{
+	private:
+
+	protected:
+		wxStaticText* m_staticText51;
+		wxStaticText* m_staticText44;
+		wxChoice* m_cUnits;
+		wxStaticText* m_staticText64;
+
+	public:
+		wxChoice* m_cMode;
+		wxTextCtrl* m_tDepth;
+
+		DepthPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,300 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
+		~DepthPanel();
+
+};
+
+
+/*
+///////////////////////////////////////////////////////////////////////////////
+/// Class DepthPanel
+///////////////////////////////////////////////////////////////////////////////
+class DepthPanel : public wxPanel
+{
+private:
+
+protected:
+	wxStaticText* m_staticText51;
+	wxStaticText* m_staticText44;
+
+	wxStaticText* m_staticText64;
+
+public:
+	wxChoice* m_cUnits;
+	wxChoice* m_cMode;
+	wxTextCtrl* m_tDepth;
+
+	DepthPanel(wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(500, 300), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString);
+	~DepthPanel();
+
+};
+*/
+
+///////////////////////////////////////////////////////////////////////////////
 /// Class LandFallPanel
 ///////////////////////////////////////////////////////////////////////////////
 class LandFallPanel : public wxPanel
@@ -519,7 +544,8 @@ class pypilotPanel : public wxPanel
 
 
 	public:
-		wxComboBox* m_cHost;
+//		wxComboBox* m_cHost;
+		wxTextCtrl* m_tHost;
 		wxCheckBox* m_cbNoConnection;
 		wxCheckBox* m_cbOverTemperature;
 		wxCheckBox* m_cbOverCurrent;

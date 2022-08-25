@@ -55,6 +55,7 @@ static double rad2deg(double rad)
 }
 
 ///////// The Alarm classes /////////
+
 class AnchorAlarm : public Alarm
 {
 public:
