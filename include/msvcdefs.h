@@ -40,7 +40,8 @@
 # define INFINITY std::numeric_limits<double>::infinity ()
 # endif
 
-#define isnan _isnan
+/* #define isnan _isnan
+*/
 #define isinf(x) (!_finite(x) && !_isnan(x))
 
 inline double trunc(double d){ return (d>0) ? floor(d) : ceil(d) ; }

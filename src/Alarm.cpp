@@ -31,6 +31,7 @@
 
 #include <wx/process.h>
 
+#include <math.h>
 #include "json/json.h"
 #include "tinyxml.h"
 #include "pypilot_client.h"
