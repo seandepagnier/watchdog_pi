@@ -42,6 +42,5 @@ NewAlarmDialog::NewAlarmDialog(wxWindow* parent)
     m_lAlarmType->InsertItem(LANDFALL, _("Landfall"));
     m_lAlarmType->InsertItem(BOUNDARY, _("Boundary Alarm"));
     m_lAlarmType->InsertItem(PYPILOT, _("pypilot Alarm"));
-    m_lAlarmType->InsertItem(RUDDER, _("Rudder"));
     m_lAlarmType->SetColumnWidth(0, wxLIST_AUTOSIZE);
 }
