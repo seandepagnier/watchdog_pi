@@ -67,7 +67,7 @@ public:
 
 	wxString GetStatus() {
 		wxString s;
-		if (wxIsNaN(m_depth))
+		if (isnan(m_depth))
 			s = "N/A";
 		else {
 			wxString fmt("%.1f");
@@ -82,7 +82,7 @@ public:
 
 	bool Test() {
 		double depth = Depth();
-		if (wxIsNaN(depth))
+		if (isnan(depth))
 			return m_bNoData;
 
 		switch (m_Mode) {
@@ -168,14 +168,14 @@ public:
 		if (m_pri_depth >= 4 && nmea.LastSentenceIDReceived == "DBT" && nmea.Parse()) {
 			m_pri_depth = 4;
 			depth = NAN;
-			if (!wxIsNaN(nmea.Dbt.DepthMeters)) {
+			if (!isnan(nmea.Dbt.DepthMeters)) {
 				depth = nmea.Dbt.DepthMeters;
 				wxString d = wxString::Format("%f", depth);
 
 			}
-			else if (!wxIsNaN(nmea.Dbt.DepthFeet))
+			else if (!isnan(nmea.Dbt.DepthFeet))
 				depth = nmea.Dbt.DepthFeet * 0.3048;
-			else if (!wxIsNaN(nmea.Dbt.DepthFathoms))
+			else if (!isnan(nmea.Dbt.DepthFathoms))
 				depth = nmea.Dbt.DepthFathoms * 1.82880;
 			else
 				return;
@@ -186,7 +186,7 @@ public:
 			depth = nmea.Dpt.DepthMeters;
 
 			{
-				if (!wxIsNaN(nmea.Dpt.OffsetFromTransducerMeters)) {
+				if (!isnan(nmea.Dpt.OffsetFromTransducerMeters)) {
 					depth += nmea.Dpt.OffsetFromTransducerMeters;
 				}
 			}
@@ -248,7 +248,7 @@ public:
     wxString Type() { return _("Anchor"); }
 
     bool Test() {
-        if(wxIsNaN(g_watchdog_pi->m_sog))
+        if(isnan(g_watchdog_pi->m_sog))
             return m_bNoData;
         return Distance() > m_Radius;
     }
@@ -265,7 +265,7 @@ public:
 
         double anchordist = Distance();
         wxString s;
-        if(wxIsNaN(anchordist))
+        if(isnan(anchordist))
             s = "N/A";
         else {
             wxString fmt("%.0f ");
@@ -330,7 +330,7 @@ public:
 
 private:
     double Distance() {
-        if(wxIsNaN(g_watchdog_pi->m_cog))
+        if(isnan(g_watchdog_pi->m_cog))
             return NAN;
         PlugIn_Position_Fix_Ex lastfix = g_watchdog_pi->LastFix();
 
@@ -359,7 +359,7 @@ public:
 
     bool Test() {
         double error = CourseError();
-        if(wxIsNaN(error))
+        if(isnan(error))
             return m_bNoData;
 
         return error > m_Tolerance;
@@ -368,7 +368,7 @@ public:
     wxString GetStatus() {
         double courseerror = CourseError();
         wxString s;
-        if(wxIsNaN(courseerror))
+        if(isnan(courseerror))
             s = "N/A";
         else {
             wxString fmt("%.0f ");
@@ -389,7 +389,7 @@ public:
         double lat1 = lastfix.Lat, lon1 = lastfix.Lon, lat2, lon2, lat3, lon3;
         double dist = lastfix.Sog;
 
-        if(wxIsNaN(dist))
+        if(isnan(dist))
             return;
 
         PositionBearingDistanceMercator_Plugin(lat1, lon1, m_Course+m_Tolerance,
@@ -480,7 +480,7 @@ public:
 
     wxString GetStatus() {
         wxString s;
-        if(wxIsNaN(g_watchdog_pi->m_sog))
+        if(isnan(g_watchdog_pi->m_sog))
             s = "N/A";
         else {
             wxString fmt("%.1f");
@@ -514,7 +514,7 @@ public:
 
     bool Test() {
         double knots = Knots();
-        if(wxIsNaN(knots))
+        if(isnan(knots))
             return m_bNoData;
 
         if(m_Mode == UNDERSPEED)
@@ -569,7 +569,7 @@ public:
     {
         Alarm::OnTimer( tEvent );
         double sog = g_watchdog_pi->LastFix().Sog;
-        if(!wxIsNaN(sog))
+        if(!isnan(sog))
             m_SOGqueue.push_front(sog);
         while((int)m_SOGqueue.size() > m_iAverageTime)
             m_SOGqueue.pop_back();
@@ -631,12 +631,12 @@ public:
         switch(m_Mode) {
         case UNDERSPEED:
         case OVERSPEED:
-            if(wxIsNaN(m_speed))
+            if(isnan(m_speed))
                 return "N/A";
             else
                 return wxString::Format(fmt + (m_Mode == UNDERSPEED ? " < " : " > ") + fmt, m_speed, m_dVal);
         case DIRECTION:
-            if(wxIsNaN(m_direction))
+            if(isnan(m_direction))
                 return "N/A";
             else
                 return wxString::Format(fmt + " < " + fmt + " < " + fmt,
@@ -649,7 +649,7 @@ public:
     void Render(wdDC &dc, PlugIn_ViewPort &vp) {
         if(m_Mode != DIRECTION)
             return;
-        if(wxIsNaN(m_direction))
+        if(isnan(m_direction))
             return;
         PlugIn_Position_Fix_Ex lastfix = g_watchdog_pi->LastFix();
 
@@ -823,7 +823,7 @@ public:
         s += " ";
 
         double val = Value();
-        if(wxIsNaN(val))
+        if(isnan(val))
             s += "N/A";
         else {
             wxString fmt("%.2f");
@@ -962,7 +962,7 @@ private:
                 value = nmea.Mtw.Temperature;
             break;
         }
-        if(wxIsNaN(value))
+        if(isnan(value))
             return;
 
         m_WeatherDataTime = wxDateTime::Now();
@@ -1144,7 +1144,7 @@ public:
     bool Test() {
         PlugIn_Position_Fix_Ex lastfix = g_watchdog_pi->LastFix();
 
-        if(wxIsNaN(lastfix.Lat))
+        if(isnan(lastfix.Lat))
             return m_bNoData;
 
         double lat1 = lastfix.Lat, lon1 = lastfix.Lon, lat2, lon2;
@@ -1159,7 +1159,7 @@ public:
             while(count < 10 && dist1 > 1e-6) {
                 PositionBearingDistanceMercator_Plugin
                     (lastfix.Lat, lastfix.Lon, lastfix.Cog, dist + dist1, &lat2, &lon2);
-                if(!wxIsNaN(lat2) && PlugIn_GSHHS_CrossesLand(lat1, lon1, lat2, lon2)) {
+                if(!isnan(lat2) && PlugIn_GSHHS_CrossesLand(lat1, lon1, lat2, lon2)) {
                     if(dist1 < 1) {
                         m_LandFallTime = wxTimeSpan::Seconds(3600.0 * (dist + dist1) / lastfix.Sog);
                         m_crossinglat1 = lat1, m_crossinglon1 = lon1;
@@ -1251,7 +1251,7 @@ public:
 
     void Render(wdDC &dc, PlugIn_ViewPort &vp) {
         PlugIn_Position_Fix_Ex lastfix = g_watchdog_pi->LastFix();
-        if(wxIsNaN(m_crossinglat1))
+        if(isnan(m_crossinglat1))
             return;
 
         wxPoint r1, r2, r3, r4;
@@ -1413,7 +1413,7 @@ public:
     bool Test() {
         PlugIn_Position_Fix_Ex lastfix = g_watchdog_pi->LastFix();
 
-        if(wxIsNaN(lastfix.Lat))
+        if(isnan(lastfix.Lat))
             return m_bNoData;
 
         double lat, lon;
@@ -1451,7 +1451,7 @@ public:
 
         switch(m_Mode) {
             case TIME: {
-                if(wxIsNaN(lastfix.Lat) || wxIsNaN(lastfix.Lon) ||wxIsNaN(lastfix.Cog) || wxIsNaN(lastfix.Sog)) break;
+                if(isnan(lastfix.Lat) || isnan(lastfix.Lon) || isnan(lastfix.Cog) || isnan(lastfix.Sog)) break;
                 if(ODVersionNewerThan( 1, 1, 1)) {
                     dist = lastfix.Sog * ( m_TimeMinutes / 60 );
                     PositionBearingDistanceMercator_Plugin(lastfix.Lat, lastfix.Lon, lastfix.Cog, dist, &lat, &lon);
@@ -1650,7 +1650,7 @@ public:
                 break;
             }
             case DISTANCE: {
-                if(wxIsNaN(lastfix.Lat) || wxIsNaN(lastfix.Lon)) break;
+                if(isnan(lastfix.Lat) || isnan(lastfix.Lon)) break;
                 // check OD version to see which lookup to use
                 if( ODVersionNewerThan( 1, 1, 1)) {
                     BoundaryCrossingList.clear();
@@ -1878,7 +1878,7 @@ public:
                 break;
             }
             case ANCHOR: {
-                if(wxIsNaN(lastfix.Lat) || wxIsNaN(lastfix.Lon)) break;
+                if(isnan(lastfix.Lat) || isnan(lastfix.Lon)) break;
                 if(m_BoundaryName == wxEmptyString)
                     m_BoundaryName = g_BoundaryName;
                 if(m_BoundaryDescription == wxEmptyString)
@@ -1909,7 +1909,7 @@ public:
                 break;
             }
             case GUARD: {
-                if(wxIsNaN(g_AISTarget.m_dLat) || wxIsNaN(g_AISTarget.m_dLat)) break;
+                if(isnan(g_AISTarget.m_dLat) || isnan(g_AISTarget.m_dLat)) break;
                 Json::Value jMsg;
                 Json::FastWriter writer;
                 jMsg["Source"] = "WATCHDOG_PI";
@@ -2815,7 +2815,7 @@ public:
     bool Test() {
         // TODO check if this works.
         // Returns True if rudder is outside the limits
-        if (wxIsNaN(m_rsa)) return false;
+        if (isnan(m_rsa)) return false;
         else return ((m_rsa < m_LowerLimit) || (m_rsa > m_UpperLimit));
     }
 

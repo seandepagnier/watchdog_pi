@@ -57,7 +57,7 @@ set(LONG_DESCRIPTION "Set alarms for changing conditions, boundaries, cog, landf
 
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "4")
-set(VERSION_PATCH "48")
+set(VERSION_PATCH "49")
 set(VERSION_TWEAK "0")
 set(VERSION_DATE "24/12/2022") # DD/MM/YYYY format
 set(OCPN_MIN_VERSION "ov50")
