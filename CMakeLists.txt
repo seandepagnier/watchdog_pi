@@ -57,9 +57,9 @@ set(LONG_DESCRIPTION "Set alarms for changing conditions, boundaries, cog, landf
 
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "4")
-set(VERSION_PATCH "49")
+set(VERSION_PATCH "50")
 set(VERSION_TWEAK "0")
-set(VERSION_DATE "24/12/2022") # DD/MM/YYYY format
+set(VERSION_DATE "04/01/2022") # DD/MM/YYYY format
 set(OCPN_MIN_VERSION "ov50")
 set(OCPN_API_VERSION_MAJOR "1")
 set(OCPN_API_VERSION_MINOR "16")
@@ -159,7 +159,7 @@ SET(SRCS
             src/NewAlarmDialog.cpp
             src/EditAlarmDialog.cpp
             src/Alarm.cpp
-            src/signalk_client.cpp
+##            src/signalk_client.cpp
             src/WatchdogUI.cpp
             src/icons.cpp
             src/wddc.cpp
@@ -173,7 +173,7 @@ SET(HDRS
 			include/icons.h
 			include/msvcdefs.h
 			include/NewAlarmDialog.h
-            include/signalk_client.h
+##            include/signalk_client.h
 			include/watchdog_pi.h
 			include/WatchdogDialog.h
 			include/WatchdogPropertiesDialog.h

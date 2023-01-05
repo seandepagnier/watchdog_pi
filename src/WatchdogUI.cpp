@@ -1271,6 +1271,9 @@ BoundaryPanel::~BoundaryPanel()
 
 }
 
+/*
+//PYPILOT
+
 pypilotPanel::pypilotPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) : wxPanel( parent, id, pos, size, style, name )
 {
 	wxFlexGridSizer* fgSizer17;
@@ -1444,6 +1447,9 @@ pypilotPanel::~pypilotPanel()
 	m_button19->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( pypilotPanel::OnAboutHardwareErrors ), NULL, this );
 
 }
+
+//PYPILOT
+*/
 
 RudderPanel::RudderPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) : wxPanel( parent, id, pos, size, style, name )
 {

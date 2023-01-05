@@ -33,7 +33,7 @@
 
 #include "json/json.h"
 #include "tinyxml.h"
-#include "signalk_client.h"
+// #include "signalk_client.h"
 
 #include "watchdog_pi.h"
 #include "WatchdogDialog.h"
@@ -2581,7 +2581,8 @@ private:
     wxTimer    m_baTimer;
 
 };
-
+/*
+//BEGIN PYPILOT
 
 class pypilotAlarm : virtual public Alarm, virtual public SignalKClient
 {
@@ -2804,6 +2805,10 @@ private:
     wxDateTime m_startTime, m_lastMessageTime;
 };
 
+// END Pypilot
+*/
+
+
 class RudderAlarm : public Alarm
 {// WT: 20220409 added this class, to support a RudderAlarm
  // Note that the RSA instrument even supports 2 rudders. The rudder alarm checks the first rudder == the Starboard rudder.
@@ -2913,7 +2918,7 @@ void Alarm::LoadConfigAll()
             else if(!strcasecmp(type, "NMEAData")) alarm = Alarm::NewAlarm(NMEADATA);
             else if(!strcasecmp(type, "LandFall")) alarm = Alarm::NewAlarm(LANDFALL);
             else if(!strcasecmp(type, "Boundary")) alarm = Alarm::NewAlarm(BOUNDARY);
-            else if(!strcasecmp(type, "pypilot")) alarm = Alarm::NewAlarm(PYPILOT);
+//            else if(!strcasecmp(type, "pypilot")) alarm = Alarm::NewAlarm(PYPILOT);
             else if(!strcasecmp(type, "Rudder")) alarm = Alarm::NewAlarm(RUDDER);
             else {
                 wxLogMessage("Watchdog: " + wxString(_("invalid alarm type")) + ": " + wxString::FromUTF8(type));
@@ -2993,7 +2998,7 @@ Alarm *Alarm::NewAlarm(enum AlarmType type)
     case NMEADATA: alarm = new NMEADataAlarm; break;
     case LANDFALL: alarm = new LandFallAlarm; break;
     case BOUNDARY: alarm = new BoundaryAlarm; break;
-    case PYPILOT: alarm = new pypilotAlarm; break;
+//    case PYPILOT: alarm = new pypilotAlarm; break;
     case RUDDER:   alarm = new RudderAlarm; break;
     default:  wxLogMessage("Invalid Alarm Type"); return NULL;
     }

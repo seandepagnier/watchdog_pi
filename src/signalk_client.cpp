@@ -29,7 +29,7 @@
 #include <wx/wx.h>
 #include <wx/socket.h>
 
-#include "signalk_client.h"
+// #include "signalk_client.h"
 
 
 BEGIN_EVENT_TABLE(SignalKClient, wxEvtHandler)

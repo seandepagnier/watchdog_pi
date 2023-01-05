@@ -5,7 +5,6 @@ src/ConfigurationDialog.cpp
 src/NewAlarmDialog.cpp
 src/EditAlarmDialog.cpp
 src/Alarm.cpp
-src/signalk_client.cpp
 src/WatchdogUI.cpp
 src/icons.cpp
 src/wddc.cpp
@@ -16,7 +15,6 @@ include/EditAlarmDialog.h
 include/icons.h
 include/msvcdefs.h
 include/NewAlarmDialog.h
-include/signalk_client.h
 include/watchdog_pi.h
 include/WatchdogDialog.h
 include/WatchdogPropertiesDialog.h
