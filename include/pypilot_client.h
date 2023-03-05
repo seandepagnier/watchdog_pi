@@ -33,32 +33,7 @@
 
 #include <json/json.h>
 
-<<<<<<< HEAD:src/pypilot_client.h
 class pypilotClient : public wxEvtHandler
-=======
-#ifdef USE_ANDROID_GLES2
-#include <gl2.h>
-#endif
-
-#ifdef ocpnUSE_GL
-#ifdef __WXMSW__
-#include <GL/glu.h>
-#include "GL/gl.h"  // local copy for Windows
-#else
-#ifndef __OCPN__ANDROID__
-#include <GL/gl.h>
-#include <GL/glu.h>
-#else
-#include "GL/gl_private.h"
-#include "qopengl.h"  // this gives us the qt runtime gles2.h
-#endif
-
-#endif
-#endif
-
-
-class SignalKClient : public wxEvtHandler
->>>>>>> e17ecfbb11f8322aa76b20115f88f2ba904cb891:include/signalk_client.h
 {
 public:
     pypilotClient(bool queue_mode = true, bool request_list = true);
@@ -94,7 +69,7 @@ private:
     std::map<std::string, Json::Value> m_map;
 
     bool m_bQueueMode;
-    
+
     bool m_bRequestList;
 
     std::map<std::string, double> m_watchlist;

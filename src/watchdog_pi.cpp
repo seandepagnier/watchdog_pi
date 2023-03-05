@@ -108,6 +108,7 @@ watchdog_pi::watchdog_pi(void *ppimgr)
     m_lasttimerfix.FixTime = m_lastfix.FixTime = 0;
     m_sog = m_cog = m_hdm = 0;
     m_declination = NAN;
+    m_pypilot_host = "";
 
     g_ReceivedPathGUIDMessage = wxEmptyString;
     g_ReceivedBoundaryTimeMessage = wxEmptyString;
@@ -171,6 +172,8 @@ int watchdog_pi::Init(void)
     m_cursor_time = wxDateTime::Now();
     m_ValidFixTime = wxDateTime::Now();
 
+    SendPluginMessage("PYPILOT_HOST_REQUEST", "");
+    
     return (WANTS_OVERLAY_CALLBACK |
     WANTS_OPENGL_OVERLAY_CALLBACK |
     WANTS_TOOLBAR_CALLBACK    |
@@ -581,6 +584,8 @@ void watchdog_pi::SetPluginMessage(wxString &message_id, wxString &message_body)
             m_declination = root["Decl"].asDouble();
             m_declinationTime = wxDateTime::Now();
         }
+    } else if(message_id == "PYPILOT_HOST") {
+        m_pypilot_host = message_body;
     }
 }
 
