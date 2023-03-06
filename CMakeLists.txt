@@ -150,7 +150,7 @@ add_definitions(-DUSE_S57)
 # ----Remember to Add your project Set(SRCS and set(HDRS  etc..
 # ++++++++++++++Section below is direct from Watchdog +++++++++##
 
-
+SET (SRC
   src/wddc.cpp
   src/watchdog_pi.cpp
   src/WatchdogDialog.cpp
@@ -163,6 +163,7 @@ add_definitions(-DUSE_S57)
   src/WatchdogUI.cpp
   src/icons.cpp
   )
+	
 	
 SET(HDRS
   include/AIS_Target_Info.h
