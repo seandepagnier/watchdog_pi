@@ -30,9 +30,8 @@
 class wdDC;
 class TiXmlElement;
 
-enum AlarmType {DEPTH, ANCHOR, COURSE, SPEED, WIND, WEATHER, DEADMAN, NMEADATA, LANDFALL, BOUNDARY, PYPILOT, RUDDER};
+enum AlarmType {ANCHOR, COURSE, SPEED, WIND, WEATHER, DEADMAN, NMEADATA, DEPTH, LANDFALL, BOUNDARY, PYPILOT};
 
-class Alarm : public wxEvtHandler {
 public:
     static void RenderAll(wdDC &dc, PlugIn_ViewPort &vp);
     static void LoadConfigAll();

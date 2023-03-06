@@ -1,3 +1,4 @@
+src/wddc.cpp
 src/watchdog_pi.cpp
 src/WatchdogDialog.cpp
 src/WatchdogPropertiesDialog.cpp
@@ -5,9 +6,9 @@ src/ConfigurationDialog.cpp
 src/NewAlarmDialog.cpp
 src/EditAlarmDialog.cpp
 src/Alarm.cpp
+src/pypilot_client.cpp
 src/WatchdogUI.cpp
 src/icons.cpp
-src/wddc.cpp
 include/AIS_Target_Info.h
 include/Alarm.h
 include/ConfigurationDialog.h
@@ -15,10 +16,12 @@ include/EditAlarmDialog.h
 include/icons.h
 include/msvcdefs.h
 include/NewAlarmDialog.h
+extinclude/ODAPI.h
+include/pypilot_client.h
 include/watchdog_pi.h
 include/WatchdogDialog.h
 include/WatchdogPropertiesDialog.h
-include/WatchdogUI.h
+src/WatchdogUI.h
 include/wddc.h
 include/WeatherPanel.h
 include/WindPanel.h

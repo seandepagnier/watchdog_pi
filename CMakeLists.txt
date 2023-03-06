@@ -57,9 +57,9 @@ set(LONG_DESCRIPTION "Set alarms for changing conditions, boundaries, cog, landf
 
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "4")
-set(VERSION_PATCH "51")
+set(VERSION_PATCH "52")
 set(VERSION_TWEAK "0")
-set(VERSION_DATE "28/02/2023") # DD/MM/YYYY format
+set(VERSION_DATE "05/03/2023") # DD/MM/YYYY format
 set(OCPN_MIN_VERSION "ov50")
 set(OCPN_API_VERSION_MAJOR "1")
 set(OCPN_API_VERSION_MINOR "16")
@@ -151,38 +151,38 @@ add_definitions(-DUSE_S57)
 # ++++++++++++++Section below is direct from Watchdog +++++++++##
 
 
-SET(SRCS
-            src/watchdog_pi.cpp
-            src/WatchdogDialog.cpp
-            src/WatchdogPropertiesDialog.cpp
-            src/ConfigurationDialog.cpp
-            src/NewAlarmDialog.cpp
-            src/EditAlarmDialog.cpp
-            src/Alarm.cpp
-##            src/signalk_client.cpp
-            src/WatchdogUI.cpp
-            src/icons.cpp
-            src/wddc.cpp
-	)
-
+  src/wddc.cpp
+  src/watchdog_pi.cpp
+  src/WatchdogDialog.cpp
+  src/WatchdogPropertiesDialog.cpp
+  src/ConfigurationDialog.cpp
+  src/NewAlarmDialog.cpp
+  src/EditAlarmDialog.cpp
+  src/Alarm.cpp
+  src/pypilot_client.cpp
+  src/WatchdogUI.cpp
+  src/icons.cpp
+  )
+	
 SET(HDRS
-  	        include/AIS_Target_Info.h
-			include/Alarm.h
-			include/ConfigurationDialog.h
-			include/EditAlarmDialog.h
-			include/icons.h
-			include/msvcdefs.h
-			include/NewAlarmDialog.h
-##            include/signalk_client.h
-			include/watchdog_pi.h
-			include/WatchdogDialog.h
-			include/WatchdogPropertiesDialog.h
-			include/WatchdogUI.h
-			include/wddc.h
-			include/WeatherPanel.h
-			include/WindPanel.h
-			include/wxWTranslateCatalog.h
-	)
+  include/AIS_Target_Info.h
+  include/Alarm.h
+  include/ConfigurationDialog.h
+  include/EditAlarmDialog.h
+  include/icons.h
+  include/msvcdefs.h
+  include/NewAlarmDialog.h
+  extinclude/ODAPI.h
+  include/pypilot_client.h
+  include/watchdog_pi.h
+  include/WatchdogDialog.h
+  include/WatchdogPropertiesDialog.h
+  src/WatchdogUI.h
+  include/wddc.h
+  include/WeatherPanel.h
+  include/WindPanel.h
+  include/wxWTranslateCatalog.h
+  )
 
 # TexFont.cpp has to be here it will not compile
 # also src/TexFont.h has to exist AND ocpnhdrs/TexFont.h is not needed.
@@ -299,6 +299,7 @@ include("PluginPackage")
 ##
 ## ----- do not change section above - needed to configure build process ----- ##
 ##
+
 message(STATUS "${CMLOC}include directories: ")
 get_property(dirs DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY INCLUDE_DIRECTORIES)
 foreach(dir ${dirs})

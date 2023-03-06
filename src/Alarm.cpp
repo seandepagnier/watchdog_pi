@@ -33,7 +33,7 @@
 
 #include "json/json.h"
 #include "tinyxml.h"
-// #include "signalk_client.h"
+#include "pypilot_client.h"
 
 #include "watchdog_pi.h"
 #include "WatchdogDialog.h"
@@ -55,183 +55,6 @@ static double rad2deg(double rad)
 }
 
 ///////// The Alarm classes /////////
-class DepthAlarm : public Alarm
-{
-public:
-	DepthAlarm() : Alarm(true), m_Mode(MINIMUM), m_dDepth(5) {
-		m_depth = m_depthrate = NAN;
-		m_pri_depth = 99;
-	}
-
-	wxString Type() { return _("Depth"); }
-
-	wxString GetStatus() {
-		wxString s;
-		if (isnan(m_depth))
-			s = "N/A";
-		else {
-			wxString fmt("%.1f");
-			double d = (m_Mode == INCREASING || m_Mode == DECREASING) ? DepthRate() : Depth();
-			s = wxString::Format(fmt + (d < m_dDepth ? " < " : " > ") + fmt, d, m_dDepth);
-
-			//wxMessageBox(s);
-		}
-		//wxMessageBox(s);
-		return s;
-	}
-
-	bool Test() {
-		double depth = Depth();
-		if (isnan(depth))
-			return m_bNoData;
-
-		switch (m_Mode) {
-		case MINIMUM:
-			return m_dDepth > depth;
-		case DECREASING:
-			return m_dDepth > DepthRate();
-		case MAXIMUM:
-			return m_dDepth < depth;
-		case INCREASING:
-			return m_dDepth < DepthRate();
-		}
-		return false;
-	}
-
-	wxWindow *OpenPanel(wxWindow *parent) {
-		DepthPanel *panel = new DepthPanel(parent);
-		panel->m_cMode->SetSelection((int)m_Mode);
-		panel->m_tDepth->SetValue(wxString::Format("%f", m_dDepth));
-		//panel->m_sliderSOGAverageNumber->SetValue(m_iAverageTime);
-		return panel;
-	}
-
-	void SavePanel(wxWindow *p) {
-		DepthPanel *panel = (DepthPanel*)p;
-		m_Mode = (Mode)panel->m_cMode->GetSelection();
-		panel->m_tDepth->GetValue().ToDouble(&m_dDepth);
-		m_iUnits = panel->m_cUnits->GetSelection();
-
-		//m_iAverageTime = panel->m_sliderSOGAverageNumber->GetValue();
-	}
-
-	void LoadConfig(TiXmlElement *e) {
-		const char *mode = e->Attribute("Mode");
-		if (!strcasecmp(mode, "Minimum")) m_Mode = MINIMUM;
-		else if (!strcasecmp(mode, "Decreasing")) m_Mode = DECREASING;
-		else if (!strcasecmp(mode, "Maximum")) m_Mode = MAXIMUM;
-		else if (!strcasecmp(mode, "Increasing")) m_Mode = INCREASING;
-		else wxLogMessage("Watchdog: " + wxString(_("invalid Depth mode")) + ": "
-			+ wxString::FromUTF8(mode));
-
-		e->Attribute("Depth", &m_dDepth);
-		e->Attribute("Units", &m_iUnits);
-
-		//m_iAverageTime = 10;
-		//e->Attribute("AverageTime", &m_iAverageTime);
-	}
-
-	void SaveConfig(TiXmlElement *c) {
-		c->SetAttribute("Type", "Depth");
-		switch (m_Mode) {
-		case MINIMUM:
-			c->SetAttribute("Mode", "Minimum");
-			break;
-		case DECREASING:
-			c->SetAttribute("Mode", "Decreasing");
-			break;
-		case MAXIMUM:
-			c->SetAttribute("Mode", "Maximum");
-			break;
-		case INCREASING:
-			c->SetAttribute("Mode", "Increasing");
-			break;
-		}
-
-		c->SetDoubleAttribute("Depth", m_dDepth);
-		c->SetAttribute("Units", m_iUnits);
-		//c->SetAttribute("AverageTime", m_iAverageTime);
-	}
-
-	void NMEAString(const wxString &string) {
-		wxString str = string;
-		NMEA0183 nmea;
-		double depth = NAN;
-		nmea << str;
-
-
-
-		if (!nmea.PreParse()) {
-			return;
-		}
-
-		if (m_pri_depth >= 4 && nmea.LastSentenceIDReceived == "DBT" && nmea.Parse()) {
-			m_pri_depth = 4;
-			depth = NAN;
-			if (!isnan(nmea.Dbt.DepthMeters)) {
-				depth = nmea.Dbt.DepthMeters;
-				wxString d = wxString::Format("%f", depth);
-
-			}
-			else if (!isnan(nmea.Dbt.DepthFeet))
-				depth = nmea.Dbt.DepthFeet * 0.3048;
-			else if (!isnan(nmea.Dbt.DepthFathoms))
-				depth = nmea.Dbt.DepthFathoms * 1.82880;
-			else
-				return;
-		}
-
-		if (m_pri_depth >= 3 && nmea.LastSentenceIDReceived == "DPT" && nmea.Parse()) {
-			m_pri_depth = 3;
-			depth = nmea.Dpt.DepthMeters;
-
-			{
-				if (!isnan(nmea.Dpt.OffsetFromTransducerMeters)) {
-					depth += nmea.Dpt.OffsetFromTransducerMeters;
-				}
-			}
-		}
-		else
-			return;
-
-
-       if (depth != NAN) {
-
-			wxDateTime now = wxDateTime::UNow();
-			m_depthrate = 1000.0*(depth - m_depth) /
-				(now - m_lastdepthtime).GetMilliseconds().ToLong();
-
-			m_lastdepthtime = now;
-			m_depth = depth;
-
-		}
-
-
-	}
-private:
-	double Depth() {
-		wxDateTime now = wxDateTime::UNow();
-		if ((now - m_lastdepthtime).GetMilliseconds() > 20000)
-			m_depth = m_depthrate = 0; // invalid if older than 10s (20s)
-
-		return m_depth * (m_iUnits == METERS ? 1 : 3.281);
-	}
-
-	double DepthRate() {
-		return m_depthrate * (m_iUnits == METERS ? 1 : 3.281);
-	}
-
-	enum Mode { MINIMUM, DECREASING, MAXIMUM, INCREASING } m_Mode;
-	enum Units { METERS, FEET } m_Units;
-	double  m_dDepth;
-	int     m_iUnits;
-
-	double m_depth, m_depthrate;
-	wxDateTime m_lastdepthtime;
-	int m_pri_depth = 3;
-};
-
-
 
 class AnchorAlarm : public Alarm
 {
@@ -763,7 +586,6 @@ private:
     void NMEAString(const wxString &string) {
         wxString str = string;
         NMEA0183 nmea;
-        wxString LastSentenceIDReceived;
         nmea << str;
         if(!nmea.PreParse())
             return;
@@ -1123,6 +945,155 @@ private:
     double m_seconds;
 
 };
+
+class DepthAlarm : public Alarm
+{
+public:
+    DepthAlarm() : Alarm(true), m_Mode(MINIMUM), m_dDepth(5) {
+        m_depth = m_depthrate = NAN;
+        m_pri_depth = 99;
+    }
+
+    wxString Type() { return _("Depth"); }
+
+    wxString GetStatus() {
+        wxString s;
+        if(wxIsNaN(m_depth))
+            s = "N/A";
+        else {
+            wxString fmt("%.1f");
+            double d = (m_Mode==INCREASING || m_Mode==DECREASING) ? DepthRate() : Depth();
+            s = wxString::Format(fmt + (d < m_dDepth ? " < " : " > ") + fmt, d, m_dDepth);
+        }
+        return s;
+    }
+
+    bool Test() {
+        double depth = Depth();
+        if(wxIsNaN(depth))
+            return m_bNoData;
+
+        switch(m_Mode) {
+        case MINIMUM:
+            return m_dDepth > depth;
+        case DECREASING:
+            return m_dDepth > DepthRate();
+        case MAXIMUM:
+            return m_dDepth < depth;
+        case INCREASING:
+            return m_dDepth < DepthRate();
+        }
+        return false;
+    }
+
+    wxWindow *OpenPanel(wxWindow *parent) {
+        DepthPanel *panel = new DepthPanel(parent);
+        panel->m_cMode->SetSelection((int)m_Mode);
+        panel->m_tDepth->SetValue(wxString::Format("%f", m_dDepth));
+        //panel->m_sliderSOGAverageNumber->SetValue(m_iAverageTime);
+        return panel;
+    }
+
+    void SavePanel(wxWindow *p) {
+        DepthPanel *panel = (DepthPanel*)p;
+        m_Mode = (Mode)panel->m_cMode->GetSelection();
+        panel->m_tDepth->GetValue().ToDouble(&m_dDepth);
+        //m_iAverageTime = panel->m_sliderSOGAverageNumber->GetValue();
+    }
+
+    void LoadConfig(TiXmlElement *e) {
+        const char *mode = e->Attribute("Mode");
+        if(!strcasecmp(mode, "Minimum")) m_Mode = MINIMUM;
+        else if(!strcasecmp(mode, "Decreasing")) m_Mode = DECREASING;
+        else if(!strcasecmp(mode, "Maximum")) m_Mode = MAXIMUM;
+        else if(!strcasecmp(mode, "Increasing")) m_Mode = INCREASING;
+        else wxLogMessage("Watchdog: " + wxString(_("invalid Depth mode")) + ": "
+                         + wxString::FromUTF8(mode));
+
+        e->Attribute("Depth", &m_dDepth);
+        e->Attribute("Units", &m_iUnits);
+        //m_iAverageTime = 10;
+        //e->Attribute("AverageTime", &m_iAverageTime);
+    }
+
+    void SaveConfig(TiXmlElement *c) {
+        c->SetAttribute("Type", "Depth");
+        switch(m_Mode) {
+        case MINIMUM:
+            c->SetAttribute("Mode", "Minimum");
+            break;
+        case DECREASING:
+            c->SetAttribute("Mode", "Decreasing");
+            break;
+        case MAXIMUM:
+            c->SetAttribute("Mode", "Maximum");
+            break;
+        case INCREASING:
+            c->SetAttribute("Mode", "Increasing");
+            break;
+        }
+
+        c->SetDoubleAttribute("Depth", m_dDepth);
+        c->SetAttribute("Units", m_iUnits);
+        //c->SetAttribute("AverageTime", m_iAverageTime);
+    }
+
+    void NMEAString(const wxString &string) {
+        wxString str = string;
+        NMEA0183 nmea;
+        double depth = NAN;
+        nmea << str;
+
+        if(!nmea.PreParse())
+            return;
+        if(m_pri_depth >= 4 && nmea.LastSentenceIDReceived == "DBT" && nmea.Parse()) {
+            m_pri_depth = 4;
+            double depth = NAN;
+            if ( !std::isnan(nmea.Dbt.DepthMeters) )
+                depth = nmea.Dbt.DepthMeters;
+            else if( !std::isnan(nmea.Dbt.DepthFeet) )
+                depth = nmea.Dbt.DepthFeet * 0.3048;
+            else if( !std::isnan(nmea.Dbt.DepthFathoms) )
+                depth = nmea.Dbt.DepthFathoms * 1.82880;
+            else
+                return;
+        } if(m_pri_depth >= 3 && nmea.LastSentenceIDReceived == "DPT" && nmea.Parse()) {
+            m_pri_depth = 3;
+            double depth = nmea.Dpt.DepthMeters;
+            if (!std::isnan(nmea.Dpt.OffsetFromTransducerMeters))
+                depth += nmea.Dpt.OffsetFromTransducerMeters;
+        } else
+            return;
+
+        wxDateTime now = wxDateTime::UNow();
+        m_depthrate = 1000.0*(depth - m_depth) /
+            (now - m_lastdepthtime).GetMilliseconds().ToLong();
+        m_lastdepthtime = now;
+        m_depth = depth;
+    }
+private:
+    double Depth() {
+        wxDateTime now = wxDateTime::UNow();
+        if((now - m_lastdepthtime).GetMilliseconds() > 10000)
+            m_depth = m_depthrate = NAN; // invalid if older than 10s
+  
+        return m_depth * (m_iUnits == METERS ? 1 : 3.281);
+    }
+
+    double DepthRate() {
+        return m_depthrate * (m_iUnits == METERS ? 1 : 3.281);
+    }
+
+    enum Mode { MINIMUM, DECREASING, MAXIMUM, INCREASING } m_Mode;
+    enum Units { METERS, FEET } m_Units;
+    double  m_dDepth;
+    int     m_iUnits;
+
+    double m_depth, m_depthrate;
+    wxDateTime m_lastdepthtime;
+    int m_pri_depth = 3;
+};
+
 
 class LandFallAlarm : public Alarm
 {
@@ -2584,10 +2555,11 @@ private:
 /*
 //BEGIN PYPILOT
 
-class pypilotAlarm : virtual public Alarm, virtual public SignalKClient
+class pypilotAlarm : virtual public Alarm, public pypilotClient
 {
+    friend class AlarmClient;
 public:
-    pypilotAlarm() : SignalKClient(false, false),
+    pypilotAlarm() : pypilotClient(false, false),
                      m_bNoConnection(true),
                      m_bOverTemperature(true), m_bOverCurrent(false),
                      m_bNoIMU(true), m_bNoMotorController(true),
@@ -2596,8 +2568,7 @@ public:
                      m_bEndOfTravel(false), m_bLostMode(false),
                      m_bServoSaturated(false),
                      m_bPowerConsumption(false), m_dPowerConsumption(10),
-                     m_bCourseError(false), m_dCourseError(20),
-                     m_host("192.168.14.1")
+                     m_bCourseError(false), m_dCourseError(20)
         {
             // give 10 seconds to at startup before connection failure
             m_startTime = wxDateTime::UNow() + wxTimeSpan::Seconds(10);
@@ -2610,6 +2581,14 @@ public:
         return m_status;
     }
 
+    void OnConnected() {
+        UpdateWatchlist();
+    }
+
+    void OnDisconnected() {
+        m_lastvalues.clear();
+    }
+
     bool Test() {
         wxString status;
         double d;
@@ -2617,7 +2596,7 @@ public:
         wxDateTime unow = wxDateTime::UNow();
         if(m_bNoConnection && unow > m_startTime && (!connected() || (unow - m_lastMessageTime).GetMilliseconds() > 3000))
             status = "no connection";
-        if(m_bNoIMU && lastvalue("imu.loopfreq") == "0")
+        if(m_bNoIMU && lastvalue("imu.frequency") == "0")
             status = "no imu";
         else if(m_bNoMotorController && lastvalue("servo.controller") == "none")
             status = "no controller";
@@ -2628,9 +2607,9 @@ public:
             status = "over temperature";
         else if(m_bOverCurrent && lastvalue("servo.flags").Contains("OVERCURRENT"))
             status = "over current";
-        else if(m_bNoRudderFeedback && lastvalue("servo.rudder") == "False")
+        else if(m_bNoRudderFeedback && lastvalue("rudder.angle") == "false")
             status = "no rudder feedback";
-        else if(m_bNoMotorTemperature && lastvalue("servo.motor_temp") == "False")
+        else if(m_bNoMotorTemperature && lastvalue("servo.motor_temp") == "false")
             status = "no motor temperature";
         else if(m_bDriverTimeout && lastvalue("servo.flags").Contains("DRIVER_TIMEOUT"))
             status = "driver timeout (No Motor)";
@@ -2655,44 +2634,44 @@ public:
     void OnTimer(wxTimerEvent &tEvent) {
         Alarm::OnTimer( tEvent );
         if(!connected()) {
-            connect(m_host);
+            if(g_watchdog_pi->m_pypilot_host.Length())
+                m_Host = g_watchdog_pi->m_pypilot_host;
+
+            wxDateTime now = wxDateTime::UNow();
+            unsigned long dt = (now-m_connect_time).GetSeconds().ToLong();
+            if(dt > 4) {
+                connect(m_Host);
+                m_connect_time = now;
+            }
             return;
         }
 
         std::string name;
         Json::Value data;
         while(receive(name, data)) {
-            Json::Value value = data.get("value", "");
-            if(value.isConvertibleTo(Json::stringValue))
-               m_lastvalues[name] = value.asString();
+            if(data.isConvertibleTo(Json::stringValue))
+               m_lastvalues[name] = data.asString();
             m_lastMessageTime = wxDateTime::UNow();
         }
-    }
-
-    void OnConnected() {
-        UpdateWatchlist();
-    }
-
-    void OnDisconnected() {
-        m_lastvalues.clear();
     }
 
     void UpdateWatchlist() {
         if(!connected())
             return;
 
-        std::map<std::string, bool> watchlist;
-        if(m_bNoConnection)              watchlist["imu.loopfreq"]     = true;
+        std::map<std::string, double> watchlist;
+        double period = 0.5;
+        if(m_bNoConnection)              watchlist["imu.frequency"]     = period;
         if(m_bOverTemperature || m_bOverCurrent || m_bDriverTimeout
            || m_bEndOfTravel || m_bServoSaturated)
-            watchlist["servo.flags"] = true;
-        if(m_bNoIMU)              watchlist["imu.loopfreq"]     = true;
-        if(m_bNoMotorController)       watchlist["servo.controller"] = true;
-        if(m_bNoRudderFeedback)   watchlist["servo.rudder"]     = true;
-        if(m_bNoMotorTemperature) watchlist["servo.motor_temp"] = true;
-        if(m_bLostMode)           watchlist["ap.lost_mode"]     = true;
-        if(m_bPowerConsumption)   watchlist["servo.watts"]      = true;
-        if(m_bCourseError)        watchlist["ap.heading_error"] = true;
+            watchlist["servo.flags"] = period;
+        if(m_bNoIMU)              watchlist["imu.frequency"]     = period;
+        if(m_bNoMotorController)       watchlist["servo.controller"] = 0;
+        if(m_bNoRudderFeedback)   watchlist["rudder.angle"]     = period;
+        if(m_bNoMotorTemperature) watchlist["servo.motor_temp"] = period;
+        if(m_bLostMode)           watchlist["ap.lost_mode"]     = period;
+        if(m_bPowerConsumption)   watchlist["servo.watts"]      = period;
+        if(m_bCourseError)        watchlist["ap.heading_error"] = period;
 
         update_watchlist(watchlist);
     }
@@ -2706,6 +2685,7 @@ public:
 
     wxWindow *OpenPanel(wxWindow *parent) {
         pypilotPanel *panel = new pypilotPanel(parent);
+        panel->m_tHost->SetValue(m_Host);
         panel->m_cbNoConnection->SetValue(m_bNoConnection);
         panel->m_cbOverTemperature->SetValue(m_bOverTemperature);
         panel->m_cbOverCurrent->SetValue(m_bOverCurrent);
@@ -2721,12 +2701,12 @@ public:
         panel->m_sPowerConsumption->SetValue(m_dPowerConsumption);
         panel->m_cbCourseError->SetValue(m_bCourseError);
         panel->m_sCourseError->SetValue(m_dCourseError);
-        panel->m_cHost->SetValue(m_host);
         return panel;
     }
 
     void SavePanel(wxWindow *p) {
         pypilotPanel *panel = (pypilotPanel*)p;
+        m_Host = panel->m_tHost->GetValue();
         m_bNoConnection = panel->m_cbNoConnection->GetValue();
         m_bOverTemperature = panel->m_cbOverTemperature->GetValue();
         m_bOverCurrent = panel->m_cbOverCurrent->GetValue();
@@ -2742,12 +2722,14 @@ public:
         m_dPowerConsumption = panel->m_sPowerConsumption->GetValue();
         m_bCourseError = panel->m_cbCourseError->GetValue();
         m_dCourseError = panel->m_sCourseError->GetValue();
-        m_host = panel->m_cHost->GetValue().BeforeFirst(' ');
 
         UpdateWatchlist();
     }
 
     void LoadConfig(TiXmlElement *e) {
+        std::string stdstrhost;
+        e->QueryStringAttribute("Host", &stdstrhost);
+        m_Host = stdstrhost;
         e->QueryBoolAttribute("NoConnection", &m_bNoConnection);
         e->QueryBoolAttribute("OverTemperature", &m_bOverTemperature);
         e->QueryBoolAttribute("OverCurrent", &m_bOverCurrent);
@@ -2763,12 +2745,12 @@ public:
         e->Attribute("PowerConsumptionWatts", &m_dPowerConsumption);
         e->QueryBoolAttribute("CourseError", &m_bCourseError);
         e->Attribute("CourseErrorDegrees", &m_dCourseError);
-        m_host = e->Attribute("Host");
 
         UpdateWatchlist();
     }
 
     void SaveConfig(TiXmlElement *c) {
+        c->SetAttribute("Host", m_Host);
         c->SetAttribute("Type", "pypilot");
         c->SetAttribute("NoConnection", m_bNoConnection);
         c->SetAttribute("OverTemperature", m_bOverTemperature);
@@ -2785,13 +2767,14 @@ public:
         c->SetDoubleAttribute("PowerConsumptionWatts", m_dPowerConsumption);
         c->SetAttribute("CourseError", m_bCourseError);
         c->SetDoubleAttribute("CourseErrorDegrees", m_dCourseError);
-        c->SetAttribute("Host", m_host);
     }
 
 private:
-    std::map<std::string, std::string> m_lastvalues;
-    wxString m_status;
 
+    std::map<std::string, std::string> m_lastvalues;
+    wxDateTime m_connect_time;
+    wxString m_status;
+    
     bool m_bNoConnection, m_bOverTemperature, m_bOverCurrent;
     bool m_bNoIMU, m_bNoMotorController, m_bNoRudderFeedback,
         m_bNoMotorTemperature, m_bDriverTimeout;
@@ -2800,13 +2783,14 @@ private:
     double m_dPowerConsumption;
     bool m_bCourseError;
     double m_dCourseError;
-    wxString m_host;
 
+    wxString m_Host;
     wxDateTime m_startTime, m_lastMessageTime;
 };
 
+
 // END Pypilot
-*/
+
 
 
 class RudderAlarm : public Alarm
@@ -2879,6 +2863,7 @@ private:
     }
 };
 
+*/
 
 ////////// Alarm Base Class /////////////////
 std::vector<Alarm*> Alarm::s_Alarms;
@@ -2989,13 +2974,13 @@ Alarm *Alarm::NewAlarm(enum AlarmType type)
     Alarm *alarm;
     switch(type) {
     case ANCHOR:   alarm = new AnchorAlarm;   break;
-	case DEPTH:   alarm = new DepthAlarm;   break;
     case COURSE:   alarm = new CourseAlarm;   break;
     case SPEED:    alarm = new SpeedAlarm;    break;
     case WIND:     alarm = new WindAlarm;     break;
     case WEATHER:  alarm = new WeatherAlarm; break;
     case DEADMAN:  alarm = new DeadmanAlarm;  break;
     case NMEADATA: alarm = new NMEADataAlarm; break;
+    case DEPTH:    alarm = new DepthAlarm; break;
     case LANDFALL: alarm = new LandFallAlarm; break;
     case BOUNDARY: alarm = new BoundaryAlarm; break;
 //    case PYPILOT: alarm = new pypilotAlarm; break;

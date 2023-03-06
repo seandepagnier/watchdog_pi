@@ -139,6 +139,7 @@ public:
       
       int       m_iEnableType;
       bool      m_bWatchdogDialogShown;
+      wxString m_pypilot_host;
       
 protected:
       wxPoint m_cursor_position;

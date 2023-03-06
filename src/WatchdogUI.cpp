@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Feb 26 2019)
+// C++ code generated with wxFormBuilder (version 3.10.1-0-g8feb16b3)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO *NOT* EDIT THIS FILE!
@@ -293,13 +293,13 @@ NewAlarmDialogBase::NewAlarmDialogBase( wxWindow* parent, wxWindowID id, const w
 	m_sdbSizer3->AddButton( m_sdbSizer3Cancel );
 	m_sdbSizer3->Realize();
 
-    fgSizer40->Add( m_sdbSizer3, 1, wxALL | wxEXPAND, 5 );
+	fgSizer40->Add( m_sdbSizer3, 1, wxEXPAND, 5 );
+
 
 	this->SetSizer( fgSizer40 );
 	this->Layout();
 
 	this->Centre( wxBOTH );
-    fgSizer40->Fit(this);
 
 	// Connect Events
 	m_lAlarmType->Connect( wxEVT_LEFT_DCLICK, wxMouseEventHandler( NewAlarmDialogBase::OnDoubleClick ), NULL, this );
@@ -436,79 +436,6 @@ EditAlarmDialogBase::~EditAlarmDialogBase()
 	m_button6->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( EditAlarmDialogBase::OnInformation ), NULL, this );
 
 }
-
-
-DepthPanel::DepthPanel(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name) : wxPanel(parent, id, pos, size, style, name)
-{
-	wxStaticBoxSizer* sbSizer7;
-	sbSizer7 = new wxStaticBoxSizer(new wxStaticBox(this, wxID_ANY, _("Depth Alarm")), wxVERTICAL);
-
-	wxFlexGridSizer* fgSizer14;
-	fgSizer14 = new wxFlexGridSizer(0, 3, 0, 0);
-	fgSizer14->SetFlexibleDirection(wxBOTH);
-	fgSizer14->SetNonFlexibleGrowMode(wxFLEX_GROWMODE_SPECIFIED);
-
-	m_staticText51 = new wxStaticText(sbSizer7->GetStaticBox(), wxID_ANY, _("Type"), wxDefaultPosition, wxDefaultSize, 0);
-	m_staticText51->Wrap(-1);
-	fgSizer14->Add(m_staticText51, 0, wxALL, 5);
-
-	wxString m_cModeChoices[] = { _("Minimum Depth"), _("Depth Decreasing"), _("Maximum Depth"), _("Depth Increasing") };
-	int m_cModeNChoices = sizeof(m_cModeChoices) / sizeof(wxString);
-	m_cMode = new wxChoice(sbSizer7->GetStaticBox(), wxID_ANY, wxDefaultPosition, wxDefaultSize, m_cModeNChoices, m_cModeChoices, 0);
-	m_cMode->SetSelection(0);
-	fgSizer14->Add(m_cMode, 0, wxALL, 5);
-
-
-	fgSizer14->Add(0, 0, 1, wxEXPAND, 5);
-
-	m_staticText44 = new wxStaticText(sbSizer7->GetStaticBox(), wxID_ANY, _("Depth"), wxDefaultPosition, wxDefaultSize, 0);
-	m_staticText44->Wrap(-1);
-	fgSizer14->Add(m_staticText44, 0, wxALL, 5);
-
-	m_tDepth = new wxTextCtrl(sbSizer7->GetStaticBox(), wxID_ANY, _("1"), wxDefaultPosition, wxDefaultSize, 0);
-#ifdef __WXGTK__
-	if (!m_tDepth->HasFlag(wxTE_MULTILINE))
-	{
-		m_tDepth->SetMaxLength(10);
-	}
-#else
-	m_tDepth->SetMaxLength(10);
-#endif
-	fgSizer14->Add(m_tDepth, 0, wxALL, 5);
-
-	wxString m_cUnitsChoices[] = { _("Meters"), _("Feet") };
-	int m_cUnitsNChoices = sizeof(m_cUnitsChoices) / sizeof(wxString);
-	m_cUnits = new wxChoice(sbSizer7->GetStaticBox(), wxID_ANY, wxDefaultPosition, wxDefaultSize, m_cUnitsNChoices, m_cUnitsChoices, 0);
-	m_cUnits->SetSelection(0);
-	fgSizer14->Add(m_cUnits, 0, wxALL, 5);
-
-
-	sbSizer7->Add(fgSizer14, 1, wxEXPAND, 5);
-
-	wxFlexGridSizer* fgSizer45;
-	fgSizer45 = new wxFlexGridSizer(0, 2, 0, 0);
-	fgSizer45->AddGrowableCol(0);
-	fgSizer45->AddGrowableRow(0);
-	fgSizer45->SetFlexibleDirection(wxBOTH);
-	fgSizer45->SetNonFlexibleGrowMode(wxFLEX_GROWMODE_SPECIFIED);
-
-	m_staticText64 = new wxStaticText(sbSizer7->GetStaticBox(), wxID_ANY, _("Alarm will trigger if less than the minimum depth, or greater than maximum depth.\n\nAlarm will trigger if increasing/decreasing at the depth in units per second over the last 10 seconds."), wxDefaultPosition, wxDefaultSize, 0);
-	m_staticText64->Wrap(-1);
-	fgSizer45->Add(m_staticText64, 0, wxALL | wxEXPAND, 5);
-
-
-	sbSizer7->Add(fgSizer45, 1, wxEXPAND, 5);
-
-
-	this->SetSizer(sbSizer7);
-	this->Layout();
-}
-
-DepthPanel::~DepthPanel()
-{
-}
-
-
 
 AnchorPanel::AnchorPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) : wxPanel( parent, id, pos, size, style, name )
 {
@@ -1025,6 +952,76 @@ NMEADataPanel::~NMEADataPanel()
 {
 }
 
+DepthPanel::DepthPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) : wxPanel( parent, id, pos, size, style, name )
+{
+	wxStaticBoxSizer* sbSizer7;
+	sbSizer7 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Depth Alarm") ), wxVERTICAL );
+
+	wxFlexGridSizer* fgSizer14;
+	fgSizer14 = new wxFlexGridSizer( 0, 3, 0, 0 );
+	fgSizer14->SetFlexibleDirection( wxBOTH );
+	fgSizer14->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+
+	m_staticText51 = new wxStaticText( sbSizer7->GetStaticBox(), wxID_ANY, _("Type"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText51->Wrap( -1 );
+	fgSizer14->Add( m_staticText51, 0, wxALL, 5 );
+
+	wxString m_cModeChoices[] = { _("Minimum Depth"), _("Depth Decreasing"), _("Maximum Depth"), _("Depth Increasing") };
+	int m_cModeNChoices = sizeof( m_cModeChoices ) / sizeof( wxString );
+	m_cMode = new wxChoice( sbSizer7->GetStaticBox(), wxID_ANY, wxDefaultPosition, wxDefaultSize, m_cModeNChoices, m_cModeChoices, 0 );
+	m_cMode->SetSelection( 0 );
+	fgSizer14->Add( m_cMode, 0, wxALL, 5 );
+
+
+	fgSizer14->Add( 0, 0, 1, wxEXPAND, 5 );
+
+	m_staticText44 = new wxStaticText( sbSizer7->GetStaticBox(), wxID_ANY, _("Depth"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText44->Wrap( -1 );
+	fgSizer14->Add( m_staticText44, 0, wxALL, 5 );
+
+	m_tDepth = new wxTextCtrl( sbSizer7->GetStaticBox(), wxID_ANY, _("1"), wxDefaultPosition, wxDefaultSize, 0 );
+	#ifdef __WXGTK__
+	if ( !m_tDepth->HasFlag( wxTE_MULTILINE ) )
+	{
+	m_tDepth->SetMaxLength( 10 );
+	}
+	#else
+	m_tDepth->SetMaxLength( 10 );
+	#endif
+	fgSizer14->Add( m_tDepth, 0, wxALL, 5 );
+
+	wxString m_cUnitsChoices[] = { _("Meters"), _("Feet") };
+	int m_cUnitsNChoices = sizeof( m_cUnitsChoices ) / sizeof( wxString );
+	m_cUnits = new wxChoice( sbSizer7->GetStaticBox(), wxID_ANY, wxDefaultPosition, wxDefaultSize, m_cUnitsNChoices, m_cUnitsChoices, 0 );
+	m_cUnits->SetSelection( 0 );
+	fgSizer14->Add( m_cUnits, 0, wxALL, 5 );
+
+
+	sbSizer7->Add( fgSizer14, 1, wxEXPAND, 5 );
+
+	wxFlexGridSizer* fgSizer45;
+	fgSizer45 = new wxFlexGridSizer( 0, 2, 0, 0 );
+	fgSizer45->AddGrowableCol( 0 );
+	fgSizer45->AddGrowableRow( 0 );
+	fgSizer45->SetFlexibleDirection( wxBOTH );
+	fgSizer45->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+
+	m_staticText64 = new wxStaticText( sbSizer7->GetStaticBox(), wxID_ANY, _("Alarm will trigger if less than the minimum depth, or greater than maximum depth.\n\nAlarm will trigger if increasing/decreasing at the depth in units per second over the last 10 seconds."), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText64->Wrap( -1 );
+	fgSizer45->Add( m_staticText64, 0, wxALL|wxEXPAND, 5 );
+
+
+	sbSizer7->Add( fgSizer45, 1, wxEXPAND, 5 );
+
+
+	this->SetSizer( sbSizer7 );
+	this->Layout();
+}
+
+DepthPanel::~DepthPanel()
+{
+}
+
 LandFallPanel::LandFallPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) : wxPanel( parent, id, pos, size, style, name )
 {
 	wxFlexGridSizer* fgSizer17;
@@ -1271,9 +1268,6 @@ BoundaryPanel::~BoundaryPanel()
 
 }
 
-/*
-//PYPILOT
-
 pypilotPanel::pypilotPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) : wxPanel( parent, id, pos, size, style, name )
 {
 	wxFlexGridSizer* fgSizer17;
@@ -1284,23 +1278,8 @@ pypilotPanel::pypilotPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos,
 	wxStaticBoxSizer* sbSizer10;
 	sbSizer10 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Host") ), wxVERTICAL );
 
-	wxFlexGridSizer* fgSizer47;
-	fgSizer47 = new wxFlexGridSizer( 0, 2, 0, 0 );
-	fgSizer47->AddGrowableCol( 0 );
-	fgSizer47->SetFlexibleDirection( wxBOTH );
-	fgSizer47->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
-
-	m_cHost = new wxComboBox( sbSizer10->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, NULL, 0 );
-	m_cHost->Append( _("192.168.14.1 (tinypilot)") );
-	m_cHost->Append( _("10.10.10.1 (openplotter)") );
-	m_cHost->Append( _("127.0.0.1 (localhost)") );
-	m_cHost->Append( _("192.168.14.1 (tinypilot)") );
-	m_cHost->Append( wxEmptyString );
-	m_cHost->SetSelection( 0 );
-	fgSizer47->Add( m_cHost, 0, wxALL|wxEXPAND, 5 );
-
-
-	sbSizer10->Add( fgSizer47, 1, wxEXPAND, 5 );
+	m_tHost = new wxTextCtrl( sbSizer10->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	sbSizer10->Add( m_tHost, 0, wxALL|wxEXPAND, 5 );
 
 
 	fgSizer17->Add( sbSizer10, 1, wxEXPAND, 5 );
@@ -1446,54 +1425,4 @@ pypilotPanel::~pypilotPanel()
 	// Disconnect Events
 	m_button19->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( pypilotPanel::OnAboutHardwareErrors ), NULL, this );
 
-}
-
-//PYPILOT
-*/
-
-RudderPanel::RudderPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) : wxPanel( parent, id, pos, size, style, name )
-{
-	wxFlexGridSizer* fgSizer22;
-	fgSizer22 = new wxFlexGridSizer( 0, 1, 0, 0 );
-	fgSizer22->SetFlexibleDirection( wxBOTH );
-	fgSizer22->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
-
-	wxFlexGridSizer* fgSizer101;
-	fgSizer101 = new wxFlexGridSizer( 0, 3, 0, 0 );
-	fgSizer101->SetFlexibleDirection( wxBOTH );
-	fgSizer101->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
-
-	m_staticText32 = new wxStaticText( this, wxID_ANY, _("Lower Limit"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText32->Wrap( -1 );
-	fgSizer101->Add( m_staticText32, 0, wxALL, 5 );
-
-	m_LowerLimit = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, -30, 30, 0 );
-	fgSizer101->Add( m_LowerLimit, 0, wxALL, 5 );
-
-	m_staticText18 = new wxStaticText( this, wxID_ANY, _("Degrees"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText18->Wrap( -1 );
-	fgSizer101->Add( m_staticText18, 0, wxALL, 5 );
-
-	m_staticText21 = new wxStaticText( this, wxID_ANY, _("Upper Limit"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText21->Wrap( -1 );
-	fgSizer101->Add( m_staticText21, 0, wxALL, 5 );
-
-	m_UpperLimit = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, -30, 30, 0 );
-	fgSizer101->Add( m_UpperLimit, 0, wxALL, 5 );
-
-	m_staticText181 = new wxStaticText( this, wxID_ANY, _("Degrees"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText181->Wrap( -1 );
-	fgSizer101->Add( m_staticText181, 0, wxALL, 5 );
-
-
-	fgSizer22->Add( fgSizer101, 1, wxEXPAND, 5 );
-
-
-	this->SetSizer( fgSizer22 );
-	this->Layout();
-	fgSizer22->Fit( this );
-}
-
-RudderPanel::~RudderPanel()
-{
 }
