@@ -1076,7 +1076,7 @@ private:
         wxDateTime now = wxDateTime::UNow();
         if((now - m_lastdepthtime).GetMilliseconds() > 10000)
             m_depth = m_depthrate = NAN; // invalid if older than 10s
-  
+
         return m_depth * (m_iUnits == METERS ? 1 : 3.281);
     }
 
@@ -2774,7 +2774,7 @@ private:
     std::map<std::string, std::string> m_lastvalues;
     wxDateTime m_connect_time;
     wxString m_status;
-    
+
     bool m_bNoConnection, m_bOverTemperature, m_bOverCurrent;
     bool m_bNoIMU, m_bNoMotorController, m_bNoRudderFeedback,
         m_bNoMotorTemperature, m_bDriverTimeout;
@@ -2904,7 +2904,7 @@ void Alarm::LoadConfigAll()
             else if(!strcasecmp(type, "LandFall")) alarm = Alarm::NewAlarm(LANDFALL);
             else if(!strcasecmp(type, "Boundary")) alarm = Alarm::NewAlarm(BOUNDARY);
 //            else if(!strcasecmp(type, "pypilot")) alarm = Alarm::NewAlarm(PYPILOT);
-            else if(!strcasecmp(type, "Rudder")) alarm = Alarm::NewAlarm(RUDDER);
+//            else if(!strcasecmp(type, "Rudder")) alarm = Alarm::NewAlarm(RUDDER);
             else {
                 wxLogMessage("Watchdog: " + wxString(_("invalid alarm type")) + ": " + wxString::FromUTF8(type));
                 continue;
@@ -2984,7 +2984,7 @@ Alarm *Alarm::NewAlarm(enum AlarmType type)
     case LANDFALL: alarm = new LandFallAlarm; break;
     case BOUNDARY: alarm = new BoundaryAlarm; break;
 //    case PYPILOT: alarm = new pypilotAlarm; break;
-    case RUDDER:   alarm = new RudderAlarm; break;
+//    case RUDDER:   alarm = new RudderAlarm; break;
     default:  wxLogMessage("Invalid Alarm Type"); return NULL;
     }
 

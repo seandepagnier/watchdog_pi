@@ -1417,12 +1417,12 @@ pypilotPanel::pypilotPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos,
 	fgSizer17->Fit( this );
 
 	// Connect Events
-	m_button19->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( pypilotPanel::OnAboutHardwareErrors ), NULL, this );
+	//m_button19->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( pypilotPanel::OnAboutHardwareErrors ), NULL, this );
 }
 
 pypilotPanel::~pypilotPanel()
 {
 	// Disconnect Events
-	m_button19->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( pypilotPanel::OnAboutHardwareErrors ), NULL, this );
+	//m_button19->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( pypilotPanel::OnAboutHardwareErrors ), NULL, this );
 
 }
