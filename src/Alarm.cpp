@@ -25,8 +25,9 @@
  */
 
 #include <map>
-
 #include <wx/wx.h>
+#include <wx/stdpaths.h>
+
 #include "wddc.h"
 
 #include <wx/process.h>
@@ -958,7 +959,7 @@ public:
 
     wxString GetStatus() {
         wxString s;
-        if(wxIsNaN(m_depth))
+        if(isnan(m_depth))
             s = "N/A";
         else {
             wxString fmt("%.1f");
@@ -970,7 +971,7 @@ public:
 
     bool Test() {
         double depth = Depth();
-        if(wxIsNaN(depth))
+        if(isnan(depth))
             return m_bNoData;
 
         switch(m_Mode) {
@@ -1049,18 +1050,18 @@ public:
         if(m_pri_depth >= 4 && nmea.LastSentenceIDReceived == "DBT" && nmea.Parse()) {
             m_pri_depth = 4;
             double depth = NAN;
-            if ( !std::isnan(nmea.Dbt.DepthMeters) )
+            if ( !isnan(nmea.Dbt.DepthMeters) )
                 depth = nmea.Dbt.DepthMeters;
-            else if( !std::isnan(nmea.Dbt.DepthFeet) )
+            else if( !isnan(nmea.Dbt.DepthFeet) )
                 depth = nmea.Dbt.DepthFeet * 0.3048;
-            else if( !std::isnan(nmea.Dbt.DepthFathoms) )
+            else if( !isnan(nmea.Dbt.DepthFathoms) )
                 depth = nmea.Dbt.DepthFathoms * 1.82880;
             else
                 return;
         } if(m_pri_depth >= 3 && nmea.LastSentenceIDReceived == "DPT" && nmea.Parse()) {
             m_pri_depth = 3;
             double depth = nmea.Dpt.DepthMeters;
-            if (!std::isnan(nmea.Dpt.OffsetFromTransducerMeters))
+            if (!isnan(nmea.Dpt.OffsetFromTransducerMeters))
                 depth += nmea.Dpt.OffsetFromTransducerMeters;
         } else
             return;
