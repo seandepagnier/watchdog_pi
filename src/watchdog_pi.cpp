@@ -152,7 +152,7 @@ int watchdog_pi::Init(void)
     m_leftclick_tool_id  = InsertPlugInTool
   ("", _img_watchdog, _img_watchdog, wxITEM_NORMAL,
      _("Watchdog"), "", NULL, WATCHDOG_TOOL_POSITION, 0, this);
-   
+
     #endif
 
     m_PropertiesDialog = NULL;
@@ -173,7 +173,7 @@ int watchdog_pi::Init(void)
     m_ValidFixTime = wxDateTime::Now();
 
     SendPluginMessage("PYPILOT_HOST_REQUEST", "");
-    
+
     return (WANTS_OVERLAY_CALLBACK |
     WANTS_OPENGL_OVERLAY_CALLBACK |
     WANTS_TOOLBAR_CALLBACK    |
