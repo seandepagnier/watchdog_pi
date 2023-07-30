@@ -2793,6 +2793,7 @@ private:
 
 // END Pypilot
 
+*/
 
 
 class RudderAlarm : public Alarm
@@ -2858,14 +2859,13 @@ private:
         nmea << str;
         if (!nmea.PreParse())
             return;
-            if (nmea.LastSentenceIDReceived == "RSA" &&
+        if (nmea.LastSentenceIDReceived == "RSA" &&
                 nmea.Parse() && nmea.Rsa.IsStarboardDataValid == NTrue) {
-                m_rsa = nmea.Rsa.Starboard;
-            }
+            m_rsa = nmea.Rsa.Starboard;
+        }
     }
 };
 
-*/
 
 ////////// Alarm Base Class /////////////////
 std::vector<Alarm*> Alarm::s_Alarms;
@@ -2986,7 +2986,7 @@ Alarm *Alarm::NewAlarm(enum AlarmType type)
     case LANDFALL: alarm = new LandFallAlarm; break;
     case BOUNDARY: alarm = new BoundaryAlarm; break;
 //    case PYPILOT: alarm = new pypilotAlarm; break;
-//    case RUDDER:   alarm = new RudderAlarm; break;
+    case RUDDER:   alarm = new RudderAlarm; break;
     default:  wxLogMessage("Invalid Alarm Type"); return NULL;
     }
 
