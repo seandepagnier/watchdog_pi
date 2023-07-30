@@ -953,6 +953,7 @@ public:
     DepthAlarm() : Alarm(true), m_Mode(MINIMUM), m_dDepth(5) {
         m_depth = m_depthrate = NAN;
         m_pri_depth = 99;
+        m_lastdepthtime = wxDateTime::UNow();
     }
 
     wxString Type() { return _("Depth"); }
@@ -1047,9 +1048,9 @@ public:
 
         if(!nmea.PreParse())
             return;
-        if(m_pri_depth >= 4 && nmea.LastSentenceIDReceived == "DBT" && nmea.Parse()) {
+
+        if((m_pri_depth >= 4) && (nmea.LastSentenceIDReceived == "DBT") && nmea.Parse()) {
             m_pri_depth = 4;
-            double depth = NAN;
             if ( !isnan(nmea.Dbt.DepthMeters) )
                 depth = nmea.Dbt.DepthMeters;
             else if( !isnan(nmea.Dbt.DepthFeet) )
@@ -1058,7 +1059,7 @@ public:
                 depth = nmea.Dbt.DepthFathoms * 1.82880;
             else
                 return;
-        } if(m_pri_depth >= 3 && nmea.LastSentenceIDReceived == "DPT" && nmea.Parse()) {
+        } else if(m_pri_depth >= 3 && nmea.LastSentenceIDReceived == "DPT" && nmea.Parse()) {
             m_pri_depth = 3;
             double depth = nmea.Dpt.DepthMeters;
             if (!isnan(nmea.Dpt.OffsetFromTransducerMeters))
