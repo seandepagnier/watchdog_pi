@@ -2554,7 +2554,7 @@ private:
     wxTimer    m_baTimer;
 
 };
-/*
+
 //BEGIN PYPILOT
 
 class pypilotAlarm : virtual public Alarm, public pypilotClient
@@ -2572,6 +2572,8 @@ public:
                      m_bPowerConsumption(false), m_dPowerConsumption(10),
                      m_bCourseError(false), m_dCourseError(20)
         {
+            m_connect_time.Set( (time_t) 0);
+
             // give 10 seconds to at startup before connection failure
             m_startTime = wxDateTime::UNow() + wxTimeSpan::Seconds(10);
             m_lastMessageTime = wxDateTime::UNow();
@@ -2793,7 +2795,7 @@ private:
 
 // END Pypilot
 
-*/
+
 
 
 class RudderAlarm : public Alarm
@@ -2985,7 +2987,7 @@ Alarm *Alarm::NewAlarm(enum AlarmType type)
     case DEPTH:    alarm = new DepthAlarm; break;
     case LANDFALL: alarm = new LandFallAlarm; break;
     case BOUNDARY: alarm = new BoundaryAlarm; break;
-//    case PYPILOT: alarm = new pypilotAlarm; break;
+    case PYPILOT: alarm = new pypilotAlarm; break;
     case RUDDER:   alarm = new RudderAlarm; break;
     default:  wxLogMessage("Invalid Alarm Type"); return NULL;
     }

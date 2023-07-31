@@ -29,7 +29,6 @@
 #include <wx/wx.h>
 #include <wx/socket.h>
 
-// #include "signalk_client.h"
 #include "pypilot_client.h"
 
 
