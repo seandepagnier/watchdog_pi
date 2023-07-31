@@ -1426,3 +1426,51 @@ pypilotPanel::~pypilotPanel()
 	//m_button19->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( pypilotPanel::OnAboutHardwareErrors ), NULL, this );
 
 }
+
+RudderPanel::RudderPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) : wxPanel( parent, id, pos, size, style, name )
+{
+wxFlexGridSizer* fgSizer22;
+fgSizer22 = new wxFlexGridSizer( 0, 1, 0, 0 );
+fgSizer22->SetFlexibleDirection( wxBOTH );
+fgSizer22->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+
+wxFlexGridSizer* fgSizer101;
+fgSizer101 = new wxFlexGridSizer( 0, 3, 0, 0 );
+fgSizer101->SetFlexibleDirection( wxBOTH );
+fgSizer101->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+
+m_staticText32 = new wxStaticText( this, wxID_ANY, _("Lower Limit"), wxDefaultPosition, wxDefaultSize, 0 );
+m_staticText32->Wrap( -1 );
+fgSizer101->Add( m_staticText32, 0, wxALL, 5 );
+
+m_LowerLimit = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, -30, 30, 0 );
+fgSizer101->Add( m_LowerLimit, 0, wxALL, 5 );
+
+m_staticText18 = new wxStaticText( this, wxID_ANY, _("Degrees"), wxDefaultPosition, wxDefaultSize, 0 );
+m_staticText18->Wrap( -1 );
+fgSizer101->Add( m_staticText18, 0, wxALL, 5 );
+
+m_staticText21 = new wxStaticText( this, wxID_ANY, _("Upper Limit"), wxDefaultPosition, wxDefaultSize, 0 );
+m_staticText21->Wrap( -1 );
+fgSizer101->Add( m_staticText21, 0, wxALL, 5 );
+
+m_UpperLimit = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, -30, 30, 0 );
+fgSizer101->Add( m_UpperLimit, 0, wxALL, 5 );
+
+m_staticText181 = new wxStaticText( this, wxID_ANY, _("Degrees"), wxDefaultPosition, wxDefaultSize, 0 );
+m_staticText181->Wrap( -1 );
+fgSizer101->Add( m_staticText181, 0, wxALL, 5 );
+
+
+fgSizer22->Add( fgSizer101, 1, wxEXPAND, 5 );
+
+
+this->SetSizer( fgSizer22 );
+this->Layout();
+fgSizer22->Fit( this );
+}
+
+RudderPanel::~RudderPanel()
+{
+}
+

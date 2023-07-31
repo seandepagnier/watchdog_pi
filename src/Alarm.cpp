@@ -953,6 +953,7 @@ public:
     DepthAlarm() : Alarm(true), m_Mode(MINIMUM), m_dDepth(5) {
         m_depth = m_depthrate = NAN;
         m_pri_depth = 99;
+        m_lastdepthtime = wxDateTime::UNow();
     }
 
     wxString Type() { return _("Depth"); }
@@ -1047,9 +1048,9 @@ public:
 
         if(!nmea.PreParse())
             return;
-        if(m_pri_depth >= 4 && nmea.LastSentenceIDReceived == "DBT" && nmea.Parse()) {
+
+        if((m_pri_depth >= 4) && (nmea.LastSentenceIDReceived == "DBT") && nmea.Parse()) {
             m_pri_depth = 4;
-            double depth = NAN;
             if ( !isnan(nmea.Dbt.DepthMeters) )
                 depth = nmea.Dbt.DepthMeters;
             else if( !isnan(nmea.Dbt.DepthFeet) )
@@ -1058,7 +1059,7 @@ public:
                 depth = nmea.Dbt.DepthFathoms * 1.82880;
             else
                 return;
-        } if(m_pri_depth >= 3 && nmea.LastSentenceIDReceived == "DPT" && nmea.Parse()) {
+        } else if(m_pri_depth >= 3 && nmea.LastSentenceIDReceived == "DPT" && nmea.Parse()) {
             m_pri_depth = 3;
             double depth = nmea.Dpt.DepthMeters;
             if (!isnan(nmea.Dpt.OffsetFromTransducerMeters))
@@ -2553,7 +2554,7 @@ private:
     wxTimer    m_baTimer;
 
 };
-/*
+
 //BEGIN PYPILOT
 
 class pypilotAlarm : virtual public Alarm, public pypilotClient
@@ -2571,6 +2572,8 @@ public:
                      m_bPowerConsumption(false), m_dPowerConsumption(10),
                      m_bCourseError(false), m_dCourseError(20)
         {
+            m_connect_time.Set( (time_t) 0);
+
             // give 10 seconds to at startup before connection failure
             m_startTime = wxDateTime::UNow() + wxTimeSpan::Seconds(10);
             m_lastMessageTime = wxDateTime::UNow();
@@ -2794,6 +2797,7 @@ private:
 
 
 
+
 class RudderAlarm : public Alarm
 {// WT: 20220409 added this class, to support a RudderAlarm
  // Note that the RSA instrument even supports 2 rudders. The rudder alarm checks the first rudder == the Starboard rudder.
@@ -2857,14 +2861,13 @@ private:
         nmea << str;
         if (!nmea.PreParse())
             return;
-            if (nmea.LastSentenceIDReceived == "RSA" &&
+        if (nmea.LastSentenceIDReceived == "RSA" &&
                 nmea.Parse() && nmea.Rsa.IsStarboardDataValid == NTrue) {
-                m_rsa = nmea.Rsa.Starboard;
-            }
+            m_rsa = nmea.Rsa.Starboard;
+        }
     }
 };
 
-*/
 
 ////////// Alarm Base Class /////////////////
 std::vector<Alarm*> Alarm::s_Alarms;
@@ -2984,8 +2987,8 @@ Alarm *Alarm::NewAlarm(enum AlarmType type)
     case DEPTH:    alarm = new DepthAlarm; break;
     case LANDFALL: alarm = new LandFallAlarm; break;
     case BOUNDARY: alarm = new BoundaryAlarm; break;
-//    case PYPILOT: alarm = new pypilotAlarm; break;
-//    case RUDDER:   alarm = new RudderAlarm; break;
+    case PYPILOT: alarm = new pypilotAlarm; break;
+    case RUDDER:   alarm = new RudderAlarm; break;
     default:  wxLogMessage("Invalid Alarm Type"); return NULL;
     }
 

@@ -397,7 +397,7 @@ void WeatherPanel::OnVariable( wxCommandEvent& )
     SetupControls();
 }
 
-/*
+
 // Pypilot
 
 void pypilotPanel::OnAboutHardwareErrors( wxCommandEvent& )
@@ -413,4 +413,3 @@ Driver Timeout - Motor not drawing power: motor not connected to controller\n");
     mdlg.ShowModal();
 }
 
-*/

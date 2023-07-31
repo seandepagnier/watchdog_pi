@@ -436,7 +436,6 @@ class DepthPanel : public wxPanel
 	public:
 		wxChoice* m_cMode;
 		wxTextCtrl* m_tDepth;
-
 		DepthPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,300 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
 
 		~DepthPanel();
@@ -555,3 +554,24 @@ class pypilotPanel : public wxPanel
 
 };
 
+///////////////////////////////////////////////////////////////////////////////
+/// Class RudderPanel
+///////////////////////////////////////////////////////////////////////////////
+class RudderPanel : public wxPanel
+{
+private:
+
+protected:
+    wxStaticText* m_staticText32;
+    wxStaticText* m_staticText18;
+    wxStaticText* m_staticText21;
+    wxStaticText* m_staticText181;
+
+public:
+    wxSpinCtrl* m_LowerLimit;
+    wxSpinCtrl* m_UpperLimit;
+
+    RudderPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
+    ~RudderPanel();
+
+};
