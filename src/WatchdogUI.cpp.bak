@@ -21,7 +21,7 @@ WatchdogDialogBase::WatchdogDialogBase( wxWindow* parent, wxWindowID id, const w
 	fgSizer8->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_ALL );
 
 	m_lStatus = new wxListCtrl( this, wxID_ANY, wxDefaultPosition, wxSize( -1,-1 ), wxLC_NO_HEADER|wxLC_REPORT );
-	m_lStatus->SetFont( wxFont( 9, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxT("Arial") ) );
+	m_lStatus->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxT("Sans") ) );
 	m_lStatus->SetMinSize( wxSize( 300,50 ) );
 
 	fgSizer8->Add( m_lStatus, 1, wxALL|wxEXPAND, 5 );
@@ -274,18 +274,16 @@ ConfigurationDialogBase::~ConfigurationDialogBase()
 NewAlarmDialogBase::NewAlarmDialogBase( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
 	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
-	this->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
+	this->SetFont( wxFont( 14, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxT("Sans") ) );
 
 	wxFlexGridSizer* fgSizer40;
 	fgSizer40 = new wxFlexGridSizer( 0, 1, 0, 0 );
 	fgSizer40->AddGrowableCol( 0 );
 	fgSizer40->AddGrowableRow( 0 );
 	fgSizer40->SetFlexibleDirection( wxBOTH );
-	fgSizer40->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_ALL );
+	fgSizer40->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 
 	m_lAlarmType = new wxListCtrl( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_NO_HEADER|wxLC_REPORT|wxLC_SINGLE_SEL );
-	m_lAlarmType->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
-
 	fgSizer40->Add( m_lAlarmType, 0, wxALL|wxEXPAND, 5 );
 
 	m_sdbSizer3 = new wxStdDialogButtonSizer();
@@ -295,14 +293,14 @@ NewAlarmDialogBase::NewAlarmDialogBase( wxWindow* parent, wxWindowID id, const w
 	m_sdbSizer3->AddButton( m_sdbSizer3Cancel );
 	m_sdbSizer3->Realize();
 
-	fgSizer40->Add( m_sdbSizer3, 1, wxEXPAND, 5 );
-
+	//fgSizer40->Add( m_sdbSizer3, 1, wxEXPAND, 5 );
+    fgSizer40->Add( m_sdbSizer3, 1, wxALL | wxEXPAND, 5 );
 
 	this->SetSizer( fgSizer40 );
 	this->Layout();
-	fgSizer40->Fit( this );
 
 	this->Centre( wxBOTH );
+    fgSizer40->Fit(this);
 
 	// Connect Events
 	m_lAlarmType->Connect( wxEVT_LEFT_DCLICK, wxMouseEventHandler( NewAlarmDialogBase::OnDoubleClick ), NULL, this );
@@ -1323,7 +1321,7 @@ pypilotPanel::pypilotPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos,
 	m_panel2->SetSizer( fgSizer57 );
 	m_panel2->Layout();
 	fgSizer57->Fit( m_panel2 );
-	m_notebook1->AddPage( m_panel2, _("Hardware Failures"), false );
+	m_notebook1->AddPage( m_panel2, _("Hardware Failures"), true );
 	m_panel3 = new wxPanel( m_notebook1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxFlexGridSizer* fgSizer59;
 	fgSizer59 = new wxFlexGridSizer( 0, 1, 0, 0 );
@@ -1410,7 +1408,7 @@ pypilotPanel::pypilotPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos,
 	m_panel1->SetSizer( fgSizer54 );
 	m_panel1->Layout();
 	fgSizer54->Fit( m_panel1 );
-	m_notebook1->AddPage( m_panel1, _("Steering Errors"), true );
+	m_notebook1->AddPage( m_panel1, _("Steering Errors"), false );
 
 	fgSizer17->Add( m_notebook1, 1, wxEXPAND | wxALL, 5 );
 
@@ -1420,59 +1418,60 @@ pypilotPanel::pypilotPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos,
 	fgSizer17->Fit( this );
 
 	// Connect Events
-	m_button19->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( pypilotPanel::OnAboutHardwareErrors ), NULL, this );
+	//m_button19->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( pypilotPanel::OnAboutHardwareErrors ), NULL, this );
 }
 
 pypilotPanel::~pypilotPanel()
 {
 	// Disconnect Events
-	m_button19->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( pypilotPanel::OnAboutHardwareErrors ), NULL, this );
+	//m_button19->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( pypilotPanel::OnAboutHardwareErrors ), NULL, this );
 
 }
 
 RudderPanel::RudderPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) : wxPanel( parent, id, pos, size, style, name )
 {
-	wxFlexGridSizer* fgSizer22;
-	fgSizer22 = new wxFlexGridSizer( 0, 1, 0, 0 );
-	fgSizer22->SetFlexibleDirection( wxBOTH );
-	fgSizer22->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+wxFlexGridSizer* fgSizer22;
+fgSizer22 = new wxFlexGridSizer( 0, 1, 0, 0 );
+fgSizer22->SetFlexibleDirection( wxBOTH );
+fgSizer22->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 
-	wxFlexGridSizer* fgSizer101;
-	fgSizer101 = new wxFlexGridSizer( 0, 3, 0, 0 );
-	fgSizer101->SetFlexibleDirection( wxBOTH );
-	fgSizer101->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+wxFlexGridSizer* fgSizer101;
+fgSizer101 = new wxFlexGridSizer( 0, 3, 0, 0 );
+fgSizer101->SetFlexibleDirection( wxBOTH );
+fgSizer101->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 
-	m_staticText32 = new wxStaticText( this, wxID_ANY, _("Lower Limit"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText32->Wrap( -1 );
-	fgSizer101->Add( m_staticText32, 0, wxALL, 5 );
+m_staticText32 = new wxStaticText( this, wxID_ANY, _("Lower Limit"), wxDefaultPosition, wxDefaultSize, 0 );
+m_staticText32->Wrap( -1 );
+fgSizer101->Add( m_staticText32, 0, wxALL, 5 );
 
-	m_LowerLimit = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, -30, 30, 0 );
-	fgSizer101->Add( m_LowerLimit, 0, wxALL, 5 );
+m_LowerLimit = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, -30, 30, 0 );
+fgSizer101->Add( m_LowerLimit, 0, wxALL, 5 );
 
-	m_staticText18 = new wxStaticText( this, wxID_ANY, _("Degrees"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText18->Wrap( -1 );
-	fgSizer101->Add( m_staticText18, 0, wxALL, 5 );
+m_staticText18 = new wxStaticText( this, wxID_ANY, _("Degrees"), wxDefaultPosition, wxDefaultSize, 0 );
+m_staticText18->Wrap( -1 );
+fgSizer101->Add( m_staticText18, 0, wxALL, 5 );
 
-	m_staticText21 = new wxStaticText( this, wxID_ANY, _("Upper Limit"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText21->Wrap( -1 );
-	fgSizer101->Add( m_staticText21, 0, wxALL, 5 );
+m_staticText21 = new wxStaticText( this, wxID_ANY, _("Upper Limit"), wxDefaultPosition, wxDefaultSize, 0 );
+m_staticText21->Wrap( -1 );
+fgSizer101->Add( m_staticText21, 0, wxALL, 5 );
 
-	m_UpperLimit = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, -30, 30, 0 );
-	fgSizer101->Add( m_UpperLimit, 0, wxALL, 5 );
+m_UpperLimit = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, -30, 30, 0 );
+fgSizer101->Add( m_UpperLimit, 0, wxALL, 5 );
 
-	m_staticText181 = new wxStaticText( this, wxID_ANY, _("Degrees"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText181->Wrap( -1 );
-	fgSizer101->Add( m_staticText181, 0, wxALL, 5 );
-
-
-	fgSizer22->Add( fgSizer101, 1, wxEXPAND, 5 );
+m_staticText181 = new wxStaticText( this, wxID_ANY, _("Degrees"), wxDefaultPosition, wxDefaultSize, 0 );
+m_staticText181->Wrap( -1 );
+fgSizer101->Add( m_staticText181, 0, wxALL, 5 );
 
 
-	this->SetSizer( fgSizer22 );
-	this->Layout();
-	fgSizer22->Fit( this );
+fgSizer22->Add( fgSizer101, 1, wxEXPAND, 5 );
+
+
+this->SetSizer( fgSizer22 );
+this->Layout();
+fgSizer22->Fit( this );
 }
 
 RudderPanel::~RudderPanel()
 {
 }
+

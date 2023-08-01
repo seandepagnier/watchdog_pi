@@ -174,7 +174,7 @@ class NewAlarmDialogBase : public wxDialog
 	public:
 		wxListCtrl* m_lAlarmType;
 
-		NewAlarmDialogBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("New Alarm"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
+		NewAlarmDialogBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("New Alarm"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 200,300 ), long style = wxDEFAULT_DIALOG_STYLE );
 
 		~NewAlarmDialogBase();
 
@@ -560,21 +560,19 @@ class pypilotPanel : public wxPanel
 ///////////////////////////////////////////////////////////////////////////////
 class RudderPanel : public wxPanel
 {
-	private:
+private:
 
-	protected:
-		wxStaticText* m_staticText32;
-		wxStaticText* m_staticText18;
-		wxStaticText* m_staticText21;
-		wxStaticText* m_staticText181;
+protected:
+    wxStaticText* m_staticText32;
+    wxStaticText* m_staticText18;
+    wxStaticText* m_staticText21;
+    wxStaticText* m_staticText181;
 
-	public:
-		wxSpinCtrl* m_LowerLimit;
-		wxSpinCtrl* m_UpperLimit;
+public:
+    wxSpinCtrl* m_LowerLimit;
+    wxSpinCtrl* m_UpperLimit;
 
-		RudderPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
+    RudderPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
+    ~RudderPanel();
 
-		~RudderPanel();
-
-};
-
+};																			   
