@@ -5,7 +5,7 @@
  * Author:   Sean D'Epagnier
  *
  ***************************************************************************
- *   Copyright (C) 2018 by Sean D'Epagnier                                 *
+ *   Copyright (C) 2020 by Sean D'Epagnier                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -26,61 +26,41 @@
 
 #include <deque>
 #include <map>
+#include <list>
 
 #include <wx/wx.h>
 #include <wx/socket.h>
 
 #include <json/json.h>
 
-#ifdef USE_ANDROID_GLES2
-#include <gl2.h>
-#endif
-
-#ifdef ocpnUSE_GL
-#ifdef __WXMSW__
-#include <GL/glu.h>
-#include "GL/gl.h"  // local copy for Windows
-#else
-#ifndef __OCPN__ANDROID__
-#include <GL/gl.h>
-#include <GL/glu.h>
-#else
-#include "GL/gl_private.h"
-#include "qopengl.h"  // this gives us the qt runtime gles2.h
-#endif
-
-#endif
-#endif
-
-
-class SignalKClient : public wxEvtHandler
+class pypilotClient : public wxEvtHandler
 {
 public:
-    SignalKClient(bool queue_mode = true, bool request_list = true);
+    pypilotClient(bool queue_mode = true, bool request_list = true);
 
     void connect(wxString host, int port=0);
     void disconnect();
     bool connected() { return m_sock.IsConnected(); }
     virtual bool receive(std::string &name, Json::Value &value);
 
-    void get(std::string name);
     void set(std::string name, Json::Value &value);
     void set(std::string name, double value);
     void set(std::string name, std::string &value);
     void set(std::string name, const char *value);
-    void watch(std::string name, bool on=true);
+    void watch(std::string name, bool on=true, double period=0);
 
     bool info(std::string name, Json::Value &info);
-    void update_watchlist(std::map<std::string, bool> &watchlist, bool refresh=false);
+    Json::Value &list() { return m_list; }
+    void update_watchlist(std::map<std::string, double> &watchlist);
 
+    void GetSettings(std::list<std::string> &settings, std::string member);
+    
 protected:
     virtual void OnConnected() = 0;
     virtual void OnDisconnected() = 0;
     Json::Value m_list;
 
 private:
-    void request_list_values();
-    void send(Json::Value &request);
     void OnSocketEvent(wxSocketEvent& event);
 
     wxSocketClient      m_sock;
@@ -89,10 +69,10 @@ private:
     std::map<std::string, Json::Value> m_map;
 
     bool m_bQueueMode;
-    
-    bool m_bRequestList, m_bRequestingList;
 
-    std::map<std::string, bool> m_watchlist;
+    bool m_bRequestList;
+
+    std::map<std::string, double> m_watchlist;
 
 DECLARE_EVENT_TABLE()
 };
