@@ -1061,7 +1061,7 @@ public:
                 return;
         } else if(m_pri_depth >= 3 && nmea.LastSentenceIDReceived == "DPT" && nmea.Parse()) {
             m_pri_depth = 3;
-            double depth = nmea.Dpt.DepthMeters;
+            depth = nmea.Dpt.DepthMeters;
             if (!isnan(nmea.Dpt.OffsetFromTransducerMeters))
                 depth += nmea.Dpt.OffsetFromTransducerMeters;
         } else
