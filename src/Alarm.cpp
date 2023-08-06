@@ -954,6 +954,7 @@ public:
         m_depth = m_depthrate = NAN;
         m_pri_depth = 99;
         m_lastdepthtime = wxDateTime::UNow();
+        m_iUnits = 0;
     }
 
     wxString Type() { return _("Depth"); }
@@ -992,6 +993,7 @@ public:
         DepthPanel *panel = new DepthPanel(parent);
         panel->m_cMode->SetSelection((int)m_Mode);
         panel->m_tDepth->SetValue(wxString::Format("%f", m_dDepth));
+        panel->m_cUnits->SetSelection((int)m_iUnits);
         //panel->m_sliderSOGAverageNumber->SetValue(m_iAverageTime);
         return panel;
     }
@@ -1000,6 +1002,7 @@ public:
         DepthPanel *panel = (DepthPanel*)p;
         m_Mode = (Mode)panel->m_cMode->GetSelection();
         panel->m_tDepth->GetValue().ToDouble(&m_dDepth);
+        m_iUnits = panel->m_cUnits->GetSelection();
         //m_iAverageTime = panel->m_sliderSOGAverageNumber->GetValue();
     }
 
@@ -1061,7 +1064,7 @@ public:
                 return;
         } else if(m_pri_depth >= 3 && nmea.LastSentenceIDReceived == "DPT" && nmea.Parse()) {
             m_pri_depth = 3;
-            double depth = nmea.Dpt.DepthMeters;
+            depth = nmea.Dpt.DepthMeters;
             if (!isnan(nmea.Dpt.OffsetFromTransducerMeters))
                 depth += nmea.Dpt.OffsetFromTransducerMeters;
         } else

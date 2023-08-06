@@ -430,11 +430,11 @@ class DepthPanel : public wxPanel
 	protected:
 		wxStaticText* m_staticText51;
 		wxStaticText* m_staticText44;
-		wxChoice* m_cUnits;
 		wxStaticText* m_staticText64;
 
 	public:
 		wxChoice* m_cMode;
+        wxChoice* m_cUnits;
 		wxTextCtrl* m_tDepth;
 
 		DepthPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,300 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
