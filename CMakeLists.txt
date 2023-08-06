@@ -19,7 +19,7 @@
 ## *   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                                       *
 ## ***
 #-----------------------------------------------------------------------------
-# CI-CMake: v1.0.238.1 01/08/2023  # DD/MM/YYYY format  CI-CMake Author: Jon Gough
+# CI-CMake: v1.0.253.0 06/08/2023  # DD/MM/YYYY format  CI-CMake Author: Jon Gough
 # ---------------------------------------------------------------------------
 ## buildCI:yes useODAPI:yes validateJSON:no
 ##
@@ -72,7 +72,6 @@ set(PARENT "opencpn")
 #Now set in plugin configure, needed to build flatpak, also locally.
 
 #set(GIT_REPOSITORY_SERVER "github.com")
-
 
 ## Specifies Cloudsmith upload repository suffix for each catalog
 set(PROD "prod")   #Standard Repos

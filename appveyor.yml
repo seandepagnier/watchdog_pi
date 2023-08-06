@@ -2,7 +2,6 @@ clone_folder: c:\project\ocpn_project
 shallow_clone: false
 clone_depth: 10
 
-
 platform:
 # - x64
   - Win32
