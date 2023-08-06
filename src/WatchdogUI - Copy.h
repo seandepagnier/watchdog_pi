@@ -174,7 +174,7 @@ class NewAlarmDialogBase : public wxDialog
 	public:
 		wxListCtrl* m_lAlarmType;
 
-		NewAlarmDialogBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("New Alarm"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 200,300 ), long style = wxDEFAULT_DIALOG_STYLE );
+		NewAlarmDialogBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("New Alarm"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
 
 		~NewAlarmDialogBase();
 
@@ -430,11 +430,11 @@ class DepthPanel : public wxPanel
 	protected:
 		wxStaticText* m_staticText51;
 		wxStaticText* m_staticText44;
-		wxChoice* m_cUnits;
 		wxStaticText* m_staticText64;
 
 	public:
 		wxChoice* m_cMode;
+        wxChoice* m_cUnits;
 		wxTextCtrl* m_tDepth;
 
 		DepthPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,300 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
@@ -560,19 +560,21 @@ class pypilotPanel : public wxPanel
 ///////////////////////////////////////////////////////////////////////////////
 class RudderPanel : public wxPanel
 {
-private:
+	private:
 
-protected:
-    wxStaticText* m_staticText32;
-    wxStaticText* m_staticText18;
-    wxStaticText* m_staticText21;
-    wxStaticText* m_staticText181;
+	protected:
+		wxStaticText* m_staticText32;
+		wxStaticText* m_staticText18;
+		wxStaticText* m_staticText21;
+		wxStaticText* m_staticText181;
 
-public:
-    wxSpinCtrl* m_LowerLimit;
-    wxSpinCtrl* m_UpperLimit;
+	public:
+		wxSpinCtrl* m_LowerLimit;
+		wxSpinCtrl* m_UpperLimit;
 
-    RudderPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
-    ~RudderPanel();
+		RudderPanel( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
 
-};																			   
+		~RudderPanel();
+
+};
+
