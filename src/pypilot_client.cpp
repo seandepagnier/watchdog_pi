@@ -43,7 +43,7 @@ pypilotClient::pypilotClient(bool queue_mode, bool request_list)
 : m_bQueueMode(queue_mode), m_bRequestList(request_list)
 {
 //    m_sock.Connect(wxEVT_SOCKET, wxSocketEventHandler(pypilotClient::OnSocketEvent), NULL, this);
-    
+
     m_sock.SetEventHandler(*this);
     m_sock.SetNotify(wxSOCKET_CONNECTION_FLAG | wxSOCKET_INPUT_FLAG | wxSOCKET_LOST_FLAG);
     m_sock.Notify(true);
@@ -54,10 +54,10 @@ void pypilotClient::connect(wxString host, int port)
 {
     if(host.empty())
         host = "192.168.14.1";
-            
+
     if(port == 0)
         port = 23322; /* default port */
-    
+
     wxIPV4address addr;
     addr.Hostname(host);
     addr.Service(port);
@@ -80,7 +80,7 @@ bool pypilotClient::receive(std::string &name, Json::Value &value)
 
         std::pair<std::string, Json::Value> &val = m_queue.front();
         m_queue.pop_front();
-    
+
         name = val.first;
         value = val.second;
         return true;
@@ -177,7 +177,7 @@ void pypilotClient::OnSocketEvent(wxSocketEvent& event)
                 if(request.size())
                     set("watch", request);
             }
-            
+
             OnConnected();
             break;
 

@@ -30,7 +30,7 @@
 class wdDC;
 class TiXmlElement;
 
-enum AlarmType {ANCHOR, COURSE, SPEED, WIND, WEATHER, DEADMAN, NMEADATA, DEPTH, LANDFALL, BOUNDARY, PYPILOT};
+enum AlarmType {ANCHOR, COURSE, SPEED, WIND, WEATHER, DEADMAN, NMEADATA, DEPTH, LANDFALL, BOUNDARY, RUDDER, PYPILOT};
 
 class Alarm : public wxEvtHandler {
 public:
@@ -63,7 +63,7 @@ public:
     virtual void SaveConfig(TiXmlElement *c) = 0;
     virtual void OnAISMessage(int iAlarmIndex) {return;}
     virtual void OnAISMessage() {return;}
-    
+
     void LoadConfigBase(TiXmlElement *e);
     void SaveConfigBase(TiXmlElement *c);
 
@@ -79,7 +79,7 @@ protected:
     wxDateTime m_LastAlarmTime;
     int m_iRepeatSeconds;
     int m_iDelay;
-    
+
     wxTimer    m_Timer;
     wxDateTime m_DelayTime;
 

@@ -397,6 +397,9 @@ void WeatherPanel::OnVariable( wxCommandEvent& )
     SetupControls();
 }
 
+
+// Pypilot
+
 void pypilotPanel::OnAboutHardwareErrors( wxCommandEvent& )
 {
     wxString l_s = _("Hardware errors usually indicate bad wiring or failed components.\n\
@@ -409,3 +412,4 @@ Driver Timeout - Motor not drawing power: motor not connected to controller\n");
     wxMessageDialog mdlg(GetOCPNCanvasWindow(), l_s, _("Watchdog"), wxOK | wxICON_INFORMATION);
     mdlg.ShowModal();
 }
+

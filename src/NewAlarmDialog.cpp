@@ -39,9 +39,9 @@ NewAlarmDialog::NewAlarmDialog(wxWindow* parent)
     m_lAlarmType->InsertItem(WEATHER,  _("Weather"));
     m_lAlarmType->InsertItem(DEADMAN,  _("Deadman"));
     m_lAlarmType->InsertItem(NMEADATA, _("NMEA Data"));
-    m_lAlarmType->InsertItem(DEPTH, _("Depth"));
     m_lAlarmType->InsertItem(LANDFALL, _("Landfall"));
     m_lAlarmType->InsertItem(BOUNDARY, _("Boundary Alarm"));
-    m_lAlarmType->InsertItem(PYPILOT, _("pypilot Alarm"));
+    m_lAlarmType->InsertItem(PYPILOT, _("Pypilot Alarm"));
+    m_lAlarmType->InsertItem(RUDDER, _("Rudder"));
     m_lAlarmType->SetColumnWidth(0, wxLIST_AUTOSIZE);
 }

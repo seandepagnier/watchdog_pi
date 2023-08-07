@@ -152,7 +152,7 @@ int watchdog_pi::Init(void)
     m_leftclick_tool_id  = InsertPlugInTool
   ("", _img_watchdog, _img_watchdog, wxITEM_NORMAL,
      _("Watchdog"), "", NULL, WATCHDOG_TOOL_POSITION, 0, this);
-   
+
     #endif
 
     m_PropertiesDialog = NULL;
@@ -173,7 +173,7 @@ int watchdog_pi::Init(void)
     m_ValidFixTime = wxDateTime::Now();
 
     SendPluginMessage("PYPILOT_HOST_REQUEST", "");
-    
+
     return (WANTS_OVERLAY_CALLBACK |
     WANTS_OPENGL_OVERLAY_CALLBACK |
     WANTS_TOOLBAR_CALLBACK    |
@@ -358,14 +358,14 @@ void watchdog_pi::OnTimer( wxTimerEvent & )
 {
     /* calculate course and speed over ground from gps */
     double dt = m_lastfix.FixTime - m_lasttimerfix.FixTime;
-    if(!wxIsNaN(m_lastfix.Lat) && !wxIsNaN(m_lasttimerfix.Lat) && dt > 0) {
+    if(!isnan(m_lastfix.Lat) && !isnan(m_lasttimerfix.Lat) && dt > 0) {
         /* this way helps avoid surge speed from gps from surfing waves etc... */
         double cog, sog;
         DistanceBearingMercator_Plugin(m_lastfix.Lat, m_lastfix.Lon,
                                        m_lasttimerfix.Lat, m_lasttimerfix.Lon, &cog, &sog);
         sog *= (3600.0 / dt);
 
-        if(wxIsNaN(m_cog))
+        if(isnan(m_cog))
             m_cog = cog, m_sog = sog;
         else {
             cog = heading_resolve(cog, m_cog);
