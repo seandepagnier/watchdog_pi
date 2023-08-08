@@ -187,7 +187,7 @@ SET(HDRS
 
 # TexFont.cpp has to be here it will not compile
 # also src/TexFont.h has to exist AND ocpnhdrs/TexFont.h is not needed.
-set(OCPNSRC ocpnsrc/TexFont.cpp)
+#set(OCPNSRC ocpnsrc/TexFont.cpp)
 
 set(EXTSRC
 )

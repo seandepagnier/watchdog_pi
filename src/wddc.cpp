@@ -907,6 +907,7 @@ void wdDC::DrawBitmap( const wxBitmap &bitmap, wxCoord x, wxCoord y, bool usemas
 #endif
 }
 
+#if 0
 void wdDC::DrawText( const wxString &text, wxCoord x, wxCoord y )
 {
     if( dc )
@@ -1020,6 +1021,7 @@ void wdDC::GetTextExtent( const wxString &string, wxCoord *w, wxCoord *h, wxCoor
      if( w && (*w > 500) ) *w = 500;
      if( h && (*h > 500) ) *h = 500;
 }
+#endif
 
 void wdDC::ResetBoundingBox()
 {
