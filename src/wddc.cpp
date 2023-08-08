@@ -110,7 +110,7 @@ void wdDC::Clear()
 {
     if( dc ) dc->Clear();
     else {
-#ifdef ocpnUSE_GL
+#if defined(ocpnUSE_GL) && not defined(USE_ANDROID_GLES2)
         wxBrush tmpBrush = m_brush;
         int w, h;
         SetBrush( wxBrush( glcanvas->GetBackgroundColour() ) );
@@ -195,7 +195,7 @@ void wdDC::GetSize( wxCoord *width, wxCoord *height ) const
 bool wdDC::s_pushed_blend = false;
 void wdDC::SetGLStipple(int style, bool needs_blend)
 {
-#ifdef ocpnUSE_GL
+#if defined(ocpnUSE_GL) && not defined(USE_ANDROID_GLES2)
     static GLuint gl_stipple_textures[4];
     const int stippleLookup[4] = {wxDOT, wxLONG_DASH, wxSHORT_DASH, wxDOT_DASH};
 
@@ -242,7 +242,7 @@ void wdDC::ClearGLStipple()
     }
 }
 
-#ifdef ocpnUSE_GL
+#if defined(ocpnUSE_GL) && not defined(USE_ANDROID_GLES2)
 /* draw a half circle using triangles */
 void DrawEndCap(float x1, float y1, float t1, float angle)
 {
@@ -269,7 +269,7 @@ void DrawEndCap(float x1, float y1, float t1, float angle)
 // Draws a line between (x1,y1) - (x2,y2) with a start thickness of t1
 void DrawGLThickLine( float x1, float y1, float x2, float y2, wxPen pen, bool b_hiqual )
 {
-#ifdef ocpnUSE_GL
+#if defined(ocpnUSE_GL) && not defined(USE_ANDROID_GLES2)
 
     float angle = atan2f( y2 - y1, x2 - x1 );
     float t1 = pen.GetWidth();
@@ -347,8 +347,8 @@ void wdDC::DrawLine( wxCoord x1, wxCoord y1, wxCoord x2, wxCoord y2, bool b_hiqu
 {
     if( dc )
         dc->DrawLine( x1, y1, x2, y2 );
-#ifdef ocpnUSE_GL
-    else if( ConfigurePen() ) {
+#if defined(ocpnUSE_GL) && not defined(USE_ANDROID_GLES2)
+else if( ConfigurePen() ) {
         bool b_draw_thick = false;
 
         float pen_width = wxMax(g_GLMinSymbolLineWidth, m_pen.GetWidth());
@@ -444,7 +444,7 @@ void wdDC::DrawLine( wxCoord x1, wxCoord y1, wxCoord x2, wxCoord y2, bool b_hiqu
 void DrawGLThickLines( int n, wxPoint points[],wxCoord xoffset,
                        wxCoord yoffset, wxPen pen, bool b_hiqual )
 {
-#ifdef ocpnUSE_GL
+#if defined(ocpnUSE_GL) && not defined(USE_ANDROID_GLES2)
     if(n < 2)
         return;
 
@@ -544,7 +544,7 @@ void wdDC::DrawLines( int n, wxPoint points[], wxCoord xoffset, wxCoord yoffset,
 {
     if( dc )
         dc->DrawLines( n, points, xoffset, yoffset );
-#ifdef ocpnUSE_GL
+#if defined(ocpnUSE_GL) && not defined(USE_ANDROID_GLES2)
     else if( ConfigurePen() ) {
 
         bool b_draw_thick = false;
@@ -631,7 +631,7 @@ void wdDC::DrawRectangle( wxCoord x, wxCoord y, wxCoord w, wxCoord h )
 {
     if( dc )
         dc->DrawRectangle( x, y, w, h );
-#ifdef ocpnUSE_GL
+#if defined(ocpnUSE_GL) && not defined(USE_ANDROID_GLES2)
     else {
         if( ConfigureBrush() ) {
             glBegin( GL_QUADS );
@@ -657,7 +657,7 @@ void wdDC::DrawRectangle( wxCoord x, wxCoord y, wxCoord w, wxCoord h )
 /* draw the arc along corners */
 static void drawrrhelper( wxCoord x, wxCoord y, wxCoord r, float st, float et )
 {
-#ifdef ocpnUSE_GL
+#if defined(ocpnUSE_GL) && not defined(USE_ANDROID_GLES2)
     const int slices = 10;
     float dt = ( et - st ) / slices;
     for( float t = st; t <= et + dt; t += dt )
@@ -669,7 +669,7 @@ void wdDC::DrawRoundedRectangle( wxCoord x, wxCoord y, wxCoord w, wxCoord h, wxC
 {
     if( dc )
         dc->DrawRoundedRectangle( x, y, w, h, r );
-#ifdef ocpnUSE_GL
+#if defined(ocpnUSE_GL) && not defined(USE_ANDROID_GLES2)
     else {
         wxCoord x0 = x, x1 = x + r, x2 = x + w - r, x3 = x + w;
         wxCoord y0 = y, y1 = y + r, y2 = y + h - r, y3 = y + h;
@@ -755,7 +755,7 @@ void wdDC::DrawEllipse( wxCoord x, wxCoord y, wxCoord width, wxCoord height )
 {
     if( dc )
         dc->DrawEllipse( x, y, width, height );
-#ifdef ocpnUSE_GL
+#if defined(ocpnUSE_GL) && not defined(USE_ANDROID_GLES2)
     else {
         float r1 = width / 2, r2 = height / 2;
         float cx = x + r1, cy = y + r2;
@@ -790,7 +790,7 @@ void wdDC::DrawPolygon( int n, wxPoint points[], wxCoord xoffset, wxCoord yoffse
 {
     if( dc )
         dc->DrawPolygon( n, points, xoffset, yoffset );
-#ifdef ocpnUSE_GL
+#if defined(ocpnUSE_GL) && not defined(USE_ANDROID_GLES2)
     else {
         glEnable( GL_BLEND );
 
@@ -861,7 +861,7 @@ void wdDC::DrawBitmap( const wxBitmap &bitmap, wxCoord x, wxCoord y, bool usemas
     }
     if( dc )
         dc->DrawBitmap( bmp, x, y, usemask );
-#ifdef ocpnUSE_GL
+#if defined(ocpnUSE_GL) && not defined(USE_ANDROID_GLES2)
     else {
         wxImage image = bmp.ConvertToImage();
         int w = image.GetWidth(), h = image.GetHeight();
@@ -907,11 +907,12 @@ void wdDC::DrawBitmap( const wxBitmap &bitmap, wxCoord x, wxCoord y, bool usemas
 #endif
 }
 
+#if 0
 void wdDC::DrawText( const wxString &text, wxCoord x, wxCoord y )
 {
     if( dc )
         dc->DrawText( text, x, y );
-#ifdef ocpnUSE_GL
+#if defined(ocpnUSE_GL) && not defined(USE_ANDROID_GLES2)
     else {
        wxCoord w = 0;
         wxCoord h = 0;
@@ -1020,6 +1021,7 @@ void wdDC::GetTextExtent( const wxString &string, wxCoord *w, wxCoord *h, wxCoor
      if( w && (*w > 500) ) *w = 500;
      if( h && (*h > 500) ) *h = 500;
 }
+#endif
 
 void wdDC::ResetBoundingBox()
 {
@@ -1036,7 +1038,7 @@ bool wdDC::ConfigurePen()
     if( !m_pen.IsOk() ) return false;
     if( m_pen == *wxTRANSPARENT_PEN ) return false;
 
-#ifdef ocpnUSE_GL
+#if defined(ocpnUSE_GL) && not defined(USE_ANDROID_GLES2)
     wxColour c = m_pen.GetColour();
     int width = m_pen.GetWidth();
     glColor4ub( c.Red(), c.Green(), c.Blue(), c.Alpha() );
@@ -1049,7 +1051,7 @@ bool wdDC::ConfigureBrush()
 {
     if( m_brush == wxNullBrush || m_brush.GetStyle() == wxBRUSHSTYLE_TRANSPARENT )
         return false;
-#ifdef ocpnUSE_GL
+#if defined(ocpnUSE_GL) && not defined(USE_ANDROID_GLES2)
     wxColour c = m_brush.GetColour();
     glColor4ub( c.Red(), c.Green(), c.Blue(), c.Alpha() );
 #endif
@@ -1059,7 +1061,7 @@ bool wdDC::ConfigureBrush()
 void wdDC::GLDrawBlendData( wxCoord x, wxCoord y, wxCoord w, wxCoord h, int format,
         const unsigned char *data )
 {
-#ifdef ocpnUSE_GL
+#if defined(ocpnUSE_GL) && not defined(USE_ANDROID_GLES2)
     glEnable( GL_BLEND );
     glRasterPos2i( x, y );
     glPixelZoom( 1, -1 );
