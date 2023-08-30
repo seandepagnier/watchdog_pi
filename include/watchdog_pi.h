@@ -78,7 +78,7 @@ double heading_resolve(double degrees, double offset=0);
 
 #include "Alarm.h"
 
-class wdDC;
+class piDC;
 class WatchdogDialog;
 class ConfigurationDialog;
 class WatchdogPropertiesDialog;
@@ -115,7 +115,7 @@ public:
 
       bool RenderOverlay(wxDC &dc, PlugIn_ViewPort *vp);
       bool RenderGLOverlay(wxGLContext *pcontext, PlugIn_ViewPort *vp);
-      void Render(wdDC &dc, PlugIn_ViewPort &vp);
+      void Render(piDC &dc, PlugIn_ViewPort &vp);
 
       void OnTimer( wxTimerEvent & );
 

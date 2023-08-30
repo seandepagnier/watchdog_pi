@@ -150,7 +150,7 @@ add_definitions(-DUSE_S57)
 # ++++++++++++++Section below is direct from Watchdog +++++++++##
 
 SET (SRCS
-  src/wddc.cpp
+  #src/wddc.cpp
   src/watchdog_pi.cpp
   src/WatchdogDialog.cpp
   src/WatchdogPropertiesDialog.cpp
@@ -178,7 +178,7 @@ SET(HDRS
   include/WatchdogDialog.h
   include/WatchdogPropertiesDialog.h
   src/WatchdogUI.h
-  include/wddc.h
+  #include/wddc.h
   include/WeatherPanel.h
   include/WindPanel.h
   include/wxWTranslateCatalog.h
@@ -238,6 +238,7 @@ include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/wxJSON/include)
 
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/jsoncpp)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/nmea0183/src)
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/pluginDC/include)
 
 #
 # ----- Change below to match project requirements for android build ----- ##
@@ -263,10 +264,12 @@ if(NOT OCPN_FLATPAK_CONFIG)
     add_subdirectory(libs/jsoncpp)
     add_subdirectory(libs/nmea0183)
     add_subdirectory(libs/tinyxml)
+    add_subdirectory(libs/pluginDC)
 
     target_link_libraries(${PACKAGE_NAME} ocpn::jsoncpp)
     target_link_libraries(${PACKAGE_NAME} ocpn::nmea0183)
     target_link_libraries(${PACKAGE_NAME} ocpn::tinyxml)
+    target_link_libraries(${PACKAGE_NAME} ocpn::pluginDC)
 endif(NOT OCPN_FLATPAK_CONFIG)
 
 add_definitions(-DTIXML_USE_STL)
