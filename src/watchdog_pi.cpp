@@ -30,7 +30,7 @@
 
 #include "json/json.h"
 
-#include "wddc.h"
+#include "pidc.h"
 
 #include "watchdog_pi.h"
 #include "WatchdogDialog.h"
@@ -328,21 +328,21 @@ void watchdog_pi::OnContextMenuItemCallback(int id)
 
 bool watchdog_pi::RenderOverlay(wxDC &dc, PlugIn_ViewPort *vp)
 {
-    wdDC odc(dc);
+    piDC odc(dc);
     Render(odc, *vp);
     return true;
 }
 
 bool watchdog_pi::RenderGLOverlay(wxGLContext *pcontext, PlugIn_ViewPort *vp)
 {
-    wdDC odc;
+    piDC odc;
     glEnable( GL_BLEND );
     Render(odc, *vp);
     glDisable( GL_BLEND );
     return true;
 }
 
-void watchdog_pi::Render(wdDC &dc, PlugIn_ViewPort &vp)
+void watchdog_pi::Render(piDC &dc, PlugIn_ViewPort &vp)
 {
     if((!m_WatchdogDialog || !m_WatchdogDialog->IsShown()) && (m_iEnableType == ID_ALARM_NEVER || m_iEnableType == ID_ALARM_VISIBLE))
         return;
