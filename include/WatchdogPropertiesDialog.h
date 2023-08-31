@@ -30,7 +30,7 @@
 #include <wx/bmpcbox.h>
 
 #ifdef USE_ANDROID_GLES2
-#include <gl2.h>
+//#include <gl2.h>
 #endif
 
 #ifdef __WXMSW__
