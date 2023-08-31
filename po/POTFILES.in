@@ -1,4 +1,3 @@
-src/wddc.cpp
 src/watchdog_pi.cpp
 src/WatchdogDialog.cpp
 src/WatchdogPropertiesDialog.cpp
@@ -22,7 +21,6 @@ include/watchdog_pi.h
 include/WatchdogDialog.h
 include/WatchdogPropertiesDialog.h
 src/WatchdogUI.h
-include/wddc.h
 include/WeatherPanel.h
 include/WindPanel.h
 include/wxWTranslateCatalog.h
