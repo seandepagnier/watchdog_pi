@@ -199,10 +199,6 @@ set(EXTINCLUDE
 set(LIBSSRC libs/wxJSON/src/jsonreader.cpp libs/wxJSON/src/jsonval.cpp libs/wxJSON/src/jsonwriter.cpp)
 
 set(LIBHDRS
-#    libs/GL/gl.h
-#    libs/GL/gl_private.h
-#    libs/GL/glext.h
-#    libs/GL/glu.h
     libs/wxJSON/include/json_defs.h
     libs/wxJSON/include/jsonreader.h
     libs/wxJSON/include/jsonval.h
