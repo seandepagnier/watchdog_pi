@@ -32,10 +32,6 @@
 #else
 
 
-#ifdef USE_ANDROID_GLES2
-//#include <gl2.h>
-#endif
-
 #ifndef __OCPN__ANDROID__
 #include <GL/gl.h>
 #include <GL/glu.h>
