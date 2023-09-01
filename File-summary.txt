@@ -11,9 +11,11 @@ Directory of C:\Users\fcgle\source\watchdog_pi
 08/30/2023  01:26 PM    <DIR>          ci          <-- KEEP
 08/06/2023  07:04 PM    <DIR>          cmake       <-- KEEP
 03/06/2023  08:24 PM    <DIR>          data        <-- KEEP
-03/06/2023  08:24 PM    <DIR>          extinclude      <--- KEEP!!! Tried move to OLD GLES2 ODAPI.h etc-failed.  
-                                                            Error:CMakeLists.txt:258 Cannot find extinclude/ODAPI.h
-03/06/2023  08:24 PM    <DIR>          extsrc          <--- Moved to OLD  json-schema-validate
+03/06/2023  08:24 PM    <DIR>          extinclude      <--- Bdbcat made new libs folder ODAPI and json-schema-validator
+                                                            and then MOVED to OLD GLES2 ODAPI.h etc-failed. 
+                                                            See https://github.com/rgleason/watchdog_pi/pull/56
+															Note many changes to includes in various files.
+03/06/2023  08:24 PM    <DIR>          extsrc          <--- Bdbcat MOVED to Libs   json-schema-validate used by some plugins
 08/30/2023  12:46 PM    <DIR>          include     <-- KEEP
 08/30/2023  12:46 PM    <DIR>          libs        <-- KEEP
 03/06/2023  08:24 PM    <DIR>          manual      <-- KEEP
