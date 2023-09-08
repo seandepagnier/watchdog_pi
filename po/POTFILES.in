@@ -15,7 +15,6 @@ include/EditAlarmDialog.h
 include/icons.h
 include/msvcdefs.h
 include/NewAlarmDialog.h
-extinclude/ODAPI.h
 include/pypilot_client.h
 include/watchdog_pi.h
 include/WatchdogDialog.h

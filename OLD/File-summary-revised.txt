@@ -1,3 +1,25 @@
+Consolidated List  - Move to OLD directory  (Keeps Mingw)
+
+03/06/2023  08:24 PM    <DIR>          extinclude     
+03/06/2023  08:24 PM    <DIR>          extsrc   
+03/06/2023  08:24 PM    <DIR>          ocpninclude
+03/06/2023  08:24 PM    <DIR>          ocpnsrc
+03/06/2023  08:51 PM    <DIR>          Resources
+03/06/2023  08:24 PM   ci          934 circleci-build-macos-new.sh
+03/06/2023  08:24 PM   ci        1,150 circleci-build-trusty.sh
+03/06/2023  08:24 PM   ci        1,154 travis-build-raspbian-armhf-part1.sh  <---MOVE TO OLD DIR
+03/06/2023  08:24 PM   ci          765 travis-build-raspbian-armhf-part2.sh  <---MOVE TO OLD DIR
+03/06/2023  08:24 PM   cmake     2,762 FindGTK3.cmake                <---MOVE TO OLD DIR
+03/06/2023  08:24 PM   cmake       821 FindTinyXML.cmake             <---MOVE TO OLD DIR
+03/06/2023  08:24 PM   cmake     1,122 SimpleWxConfig.cmake         <---MOVE TO OLD DIR
+03/06/2023  08:24 PM             1,404 .travis.yml
+12/15/2022  09:50 AM                83 wx-config.bat
+03/06/2023  08:24 PM             9,532 Read-Build.md
+03/06/2023  08:24 PM            11,415 Frontend2.md
+03/06/2023  08:24 PM               772 README 
+03/06/2023  08:24 PM             6,838 Testplugin-CI-CMake-v1.0.160.txt
+  
+
 Directory of C:\Users\fcgle\source\watchdog_pi
 
 08/30/2023  01:30 PM    <DIR>          .
@@ -19,7 +41,7 @@ Directory of C:\Users\fcgle\source\watchdog_pi
 08/30/2023  12:46 PM    <DIR>          include     <-- KEEP
 08/30/2023  12:46 PM    <DIR>          libs        <-- KEEP
 03/06/2023  08:24 PM    <DIR>          manual      <-- KEEP
-03/06/2023  08:24 PM    <DIR>          mingw           <--- Moved to OLD
+03/06/2023  08:24 PM    <DIR>          mingw       <-- KEEP
 08/06/2023  07:06 PM    <DIR>          msvc        <-- KEEP holds batch file
 03/06/2023  08:24 PM    <DIR>          ocpninclude     <--- Moved to OLD  cutil.h linmath.h pluginmanager.h shaders.h TexFont.h vector2D.h
 03/06/2023  08:24 PM    <DIR>          ocpnsrc         <--- Moved to OLDcutil.cpp  TexFont.cpp
@@ -55,20 +77,20 @@ Directory of C:\Users\fcgle\source\watchdog_pi\ci
 06/09/2023  11:10 AM             2,821 circleci-build-android-arm64.sh  <---KEEP
 03/06/2023  08:24 PM             3,328 circleci-build-android-armhf.sh  <---KEEP
 08/06/2023  07:29 PM             1,414 circleci-build-debian.sh         <---KEEP
-03/06/2023  08:24 PM               242 circleci-build-fedora.sh             <---MOVE TO OLD DIR
+03/06/2023  08:24 PM               242 circleci-build-fedora.sh         <---KEEP mingw
 03/06/2023  08:24 PM             2,924 circleci-build-flatpak.sh        <---KEEP
 03/06/2023  08:24 PM             1,442 circleci-build-jammy.sh          <---KEEP
-03/06/2023  08:24 PM               934 circleci-build-macos-new.sh          <---MOVE TO OLD DIR
+03/06/2023  08:24 PM               934 circleci-build-macos-new.sh           <---MOVE TO OLD DIR
 03/11/2023  10:35 AM             3,001 circleci-build-macos.sh          <---KEEP
-03/06/2023  08:24 PM               305 circleci-build-mingw.sh              <---MOVE TO OLD DIR
+03/06/2023  08:24 PM               305 circleci-build-mingw.sh          <---MOVE mingw
 08/06/2023  07:30 PM             1,874 circleci-build-msvc.bat          <---KEEP
 03/06/2023  08:24 PM             1,150 circleci-build-trusty.sh             <---MOVE TO OLD DIR
 05/01/2023  08:08 PM             7,173 circleci-build-ubuntu-docker.sh  <---KEEP
 03/06/2023  08:24 PM               141 cloudsmith-upload.sh             <---KEEP
 08/01/2023  02:07 PM             1,132 control                          <---KEEP
 08/06/2023  07:01 PM    <DIR>          extras                           <---KEEP
-03/06/2023  08:24 PM             1,503 opencpn-deps.spec                     <---MOVE TO OLD DIR  for mingw 
-03/06/2023  08:24 PM               807 opencpn-fedora.spec                   <---MOVE TO OLD DIR  for Fedora 
+03/06/2023  08:24 PM             1,503 opencpn-deps.spec                <---KEEP for mingw 
+03/06/2023  08:24 PM               807 opencpn-fedora.spec              <---KEEP for Fedora 
 03/06/2023  08:24 PM             1,154 travis-build-raspbian-armhf-part1.sh  <---MOVE TO OLD DIR
 03/06/2023  08:24 PM               765 travis-build-raspbian-armhf-part2.sh  <---MOVE TO OLD DIR
               19 File(s)         32,110 bytes
