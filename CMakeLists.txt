@@ -55,7 +55,7 @@ set(LONG_DESCRIPTION "Set alarms for changing conditions, boundaries, cog, landf
 
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "4")
-set(VERSION_PATCH "71")
+set(VERSION_PATCH "72")
 set(VERSION_TWEAK "0")
 set(VERSION_DATE  "07/09/2023")#DD/MM/YYYY format
 set(OCPN_MIN_VERSION "ov58")
@@ -137,7 +137,7 @@ add_definitions(-DUSE_S57)
 
 ## ---- Section Below - Add your project SET(SRCS and SET(HDRS  etc..
 
-SET (SRCS
+SET(SRCS
   #src/wddc.cpp
   src/watchdog_pi.cpp
   src/WatchdogDialog.cpp
@@ -150,7 +150,6 @@ SET (SRCS
   src/WatchdogUI.cpp
   src/icons.cpp
   )
-
 
 SET(HDRS
   include/AIS_Target_Info.h
@@ -171,19 +170,6 @@ SET(HDRS
   include/wxWTranslateCatalog.h
   )
 
-# TexFont.cpp has to be here it will not compile
-# also src/TexFont.h has to exist AND ocpnhdrs/TexFont.h is not needed.
-#set(OCPNSRC ocpnsrc/TexFont.cpp)
-
-#### TAKE OUT
-#set(EXTSRC  )
-
-#### TAKE OUT
-#set(EXTINCLUDE
-#    extinclude/ODAPI.h
-#    extinclude/ODJSONSchemas.h
-#)
-
 set(LIBSSRC 
     libs/wxJSON/src/jsonreader.cpp
     libs/wxJSON/src/jsonval.cpp
@@ -201,9 +187,6 @@ set(LIBHDRS
 
 add_definitions(-DPLUGIN_USE_SVG)
 
-#### TAKE OUT
-# set(EXTINCLUDE_DIR ${EXTINCLUDE_DIR} extinclude libs/ocpn-api/)
-
 ## ----- Section above - Add your project SET(SRCS and SET(HDRS  etc..
 ## ----- If using JSON validation in plugin section below is needed ----- ##
 
@@ -217,7 +200,7 @@ add_definitions(-DPLUGIN_USE_SVG)
 ## This add_library  can be used in conditionals below.
 ##================================================================================
 
-SET(SRC ${SRCS} ${HDRS} ${LIBSSRC} )  
+SET(SRC ${SRCS} ${HDRS} ${LIBSSRC} )
 
 ##=============================================================
 ## Modify/configure 'Include' Directories below for the Plugin
@@ -236,14 +219,6 @@ include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/jsoncpp)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/nmea0183/src)
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/pluginDC/include)
 
-#
-# ----- Change below to match project requirements for android build ----- ##
-#
-
-####TAKE OUT
-if(QT_ANDROID)
-    #include_directories( ${PROJECT_SOURCE_DIR}/extinclude/GLES2)
-endif(QT_ANDROID)
 
 ## Change target_sources to match your project needs.
 ##=================================================
