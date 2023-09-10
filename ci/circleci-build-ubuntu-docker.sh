@@ -4,6 +4,7 @@
 # Build for Raspbian and debian in a docker container
 #
 
+cd ~/project
 git submodule update --init opencpn-libs
 
 # bailout on errors and echo commands.
