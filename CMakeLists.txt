@@ -204,7 +204,7 @@ if(NOT OCPN_FLATPAK_CONFIG)
     message(STATUS "${CMLOC}Adding target link libraries to ${PACKAGE_NAME}")
 
     add_subdirectory(opencpn-libs/api-16)
-    add_subdirectory(opencpn-libs/jsonlib)
+    add_subdirectory(${PROJECT_SOURCE_DIR}/opencpn-libs/jsonlib)
     add_subdirectory(opencpn-libs/nmea0183)
     add_subdirectory(opencpn-libs/tinyxml)
     add_subdirectory(opencpn-libs/pluginDC)
