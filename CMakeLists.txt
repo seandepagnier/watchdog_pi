@@ -170,20 +170,6 @@ SET(HDRS
   include/wxWTranslateCatalog.h
   )
 
-set(LIBSSRC 
-    libs/wxJSON/src/jsonreader.cpp
-    libs/wxJSON/src/jsonval.cpp
-    libs/wxJSON/src/jsonwriter.cpp)
-
-set(LIBHDRS
-    libs/GL/gl.h
-    libs/GL/gl_private.h
-    libs/GL/glext.h
-    libs/GL/glu.h
-    libs/wxJSON/include/json_defs.h
-    libs/wxJSON/include/jsonreader.h
-    libs/wxJSON/include/jsonval.h
-    libs/wxJSON/include/jsonwriter.h)
 
 add_definitions(-DPLUGIN_USE_SVG)
 
@@ -200,25 +186,13 @@ add_definitions(-DPLUGIN_USE_SVG)
 ## This add_library  can be used in conditionals below.
 ##================================================================================
 
-SET(SRC ${SRCS} ${HDRS} ${LIBSSRC} )
+SET(SRC ${SRCS} ${HDRS} )
 
 ##=============================================================
 ## Modify/configure 'Include' Directories below for the Plugin
 ##=============================================================
 
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/include)
-#include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude)
-include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/ODAPI)
-include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/)
-include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/GL)
-include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/glu/include)
-include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/ocpn-api)
-include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/wxJSON/include)
-
-include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/jsoncpp)
-include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/nmea0183/src)
-include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/pluginDC/include)
-
 
 ## Change target_sources to match your project needs.
 ##=================================================
@@ -229,15 +203,21 @@ if(NOT OCPN_FLATPAK_CONFIG)
     # Build environment not available when flatpak is being configured so following statements will not work
     message(STATUS "${CMLOC}Adding target link libraries to ${PACKAGE_NAME}")
 
-    add_subdirectory(libs/jsoncpp)
+    add_subdirectory(opencpn-libs/api-16)
+    add_subdirectory(opencpn-libs/jsonlib)
     add_subdirectory(libs/nmea0183)
-    add_subdirectory(libs/tinyxml)
-    add_subdirectory(libs/pluginDC)
+    add_subdirectory(opencpn-libs/tinyxml)
+    add_subdirectory(opencpn-libs/pluginDC)
+    add_subdirectory(opencpn-libs/wxJSON)
+    add_subdirectory(opencpn-libs/ODAPI)
 
-    target_link_libraries(${PACKAGE_NAME} ocpn::jsoncpp)
+    target_link_libraries(${PACKAGE_NAME} ocpn::api)
+    target_link_libraries(${PACKAGE_NAME} ocpn::jsonlib)
     target_link_libraries(${PACKAGE_NAME} ocpn::nmea0183)
     target_link_libraries(${PACKAGE_NAME} ocpn::tinyxml)
     target_link_libraries(${PACKAGE_NAME} ocpn::pluginDC)
+    target_link_libraries(${PACKAGE_NAME} ocpn::wxjson)
+    target_link_libraries(${PACKAGE_NAME} ocpn::odapi)
 endif(NOT OCPN_FLATPAK_CONFIG)
 
 add_definitions(-DTIXML_USE_STL)

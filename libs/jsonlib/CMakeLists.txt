@@ -5,12 +5,12 @@
 ##---------------------------------------------------------------------------
 cmake_minimum_required(VERSION 3.1.0)
 
-if (TARGET ocpn::jsoncpp)
+if (TARGET ocpn::jsonlib)
     return ()
 endif ()
 
-set(SAVE_CMLOC_JSONCPP ${CMLOC})
-set(CMLOC "CMakeLists_jsoncpp: ")
+set(SAVE_CMLOC_JSONLIB ${CMLOC})
+set(CMLOC "CMakeLists_jsonlib: ")
 
 
 if (NOT CMAKE_MODULE_PATH)
@@ -25,13 +25,13 @@ SET(SRC_JSON
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-add_library(JSONCPP STATIC ${SRC_JSON})
-add_library(ocpn::jsoncpp ALIAS JSONCPP)
+add_library(JSONLIB STATIC ${SRC_JSON})
+add_library(ocpn::jsonlib ALIAS JSONLIB)
 
-set_property(TARGET JSONCPP PROPERTY COMPILE_FLAGS "${OBJ_VISIBILITY}")
-target_include_directories(JSONCPP PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
-target_include_directories(JSONCPP PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
-target_include_directories(JSONCPP PRIVATE ${wxWidgets_INCLUDE_DIRS})
+set_property(TARGET JSONLIB PROPERTY COMPILE_FLAGS "${OBJ_VISIBILITY}")
+target_include_directories(JSONLIB PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
+target_include_directories(JSONLIB PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_include_directories(JSONLIB PRIVATE ${wxWidgets_INCLUDE_DIRS})
 
 
-set(CMLOC ${SAVE_CMLOC_JSONCPP})
+set(CMLOC ${SAVE_CMLOC_JSONLIB})
