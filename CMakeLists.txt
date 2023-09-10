@@ -205,7 +205,7 @@ if(NOT OCPN_FLATPAK_CONFIG)
 
     add_subdirectory(opencpn-libs/api-16)
     add_subdirectory(opencpn-libs/jsonlib)
-    add_subdirectory(libs/nmea0183)
+    add_subdirectory(opencpn-libs/nmea0183)
     add_subdirectory(opencpn-libs/tinyxml)
     add_subdirectory(opencpn-libs/pluginDC)
     add_subdirectory(opencpn-libs/wxJSON)
