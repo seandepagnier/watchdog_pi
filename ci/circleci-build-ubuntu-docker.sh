@@ -4,6 +4,8 @@
 # Build for Raspbian and debian in a docker container
 #
 
+git submodule update --init opencpn-libs
+
 # bailout on errors and echo commands.
 set -x
 sudo apt-get -y --allow-unauthenticated update
