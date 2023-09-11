@@ -87,6 +87,6 @@ cmake \
   -DCMAKE_OSX_DEPLOYMENT_TARGET=$MACOSX_DEPLOYMENT_TARGET \
   "/" \
   ..
-make -sj2
+make 
 make package
 
