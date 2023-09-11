@@ -40,8 +40,6 @@ nsis-3.04-setup.exe /S
 
 echo Create build environment
 
-git submodule update --init opencpn-libs
-
 if "%MSVC_VERSION%" == "2019" (
 cmake -T v141_xp -G "Visual Studio 16 2019" ^
     -DCMAKE_GENERATOR_PLATFORM=Win32 ^
