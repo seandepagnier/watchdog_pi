@@ -130,11 +130,6 @@ option(Plugin_CXX11 "Use c++11" OFF)
 #===========================================================
 include("PluginConfigure")
 
-if (WIN32)
-    add_subdirectory("${PROJECT_SOURCE_DIR}/opencpn-libs/WindowsHeaders")
-    target_link_libraries(${PACKAGE_NAME} windows::headers)
-endif ()
-
 #===========================================================
 ## ----- do not change section above - needed to configure build process ----- ##
 ## ----- Change below to match project requirements for source, headers, etc. ----- ##
@@ -144,7 +139,6 @@ add_definitions(-DUSE_S57)
 ## ---- Section Below - Add your project SET(SRCS and SET(HDRS  etc..
 
 SET(SRCS
-  #src/wddc.cpp
   src/watchdog_pi.cpp
   src/WatchdogDialog.cpp
   src/WatchdogPropertiesDialog.cpp
@@ -170,7 +164,6 @@ SET(HDRS
   include/WatchdogDialog.h
   include/WatchdogPropertiesDialog.h
   src/WatchdogUI.h
-  #include/wddc.h
   include/WeatherPanel.h
   include/WindPanel.h
   include/wxWTranslateCatalog.h
@@ -209,6 +202,7 @@ if(NOT OCPN_FLATPAK_CONFIG)
     # Build environment not available when flatpak is being configured so following statements will not work
     message(STATUS "${CMLOC}Adding target link libraries to ${PACKAGE_NAME}")
 
+    add_subdirectory("${PROJECT_SOURCE_DIR}/opencpn-libs/WindowsHeaders")
     add_subdirectory(${PROJECT_SOURCE_DIR}/opencpn-libs/api-16)
     add_subdirectory(${PROJECT_SOURCE_DIR}/opencpn-libs/jsonlib)
     add_subdirectory(${PROJECT_SOURCE_DIR}/opencpn-libs/nmea0183)
@@ -217,6 +211,7 @@ if(NOT OCPN_FLATPAK_CONFIG)
     add_subdirectory(${PROJECT_SOURCE_DIR}/opencpn-libs/wxJSON)
     add_subdirectory(${PROJECT_SOURCE_DIR}/opencpn-libs/ODAPI)
 
+    target_link_libraries(${PACKAGE_NAME} windows::headers)
     target_link_libraries(${PACKAGE_NAME} ocpn::api)
     target_link_libraries(${PACKAGE_NAME} ocpn::jsonlib)
     target_link_libraries(${PACKAGE_NAME} ocpn::nmea0183)
