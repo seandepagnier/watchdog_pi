@@ -92,7 +92,7 @@ before_build:
   - cmake %cmake_parms% ..
 
 build_script:
-  - cmake --build . --target package --config Release -D_CRT_USE_WINAPI_FAMILY_DESKTOP_APP=TRUE
+  - cmake --build . -D_CRT_USE_WINAPI_FAMILY_DESKTOP_APP=TRUE --target package --config Release
   - python -m ensurepip
   - python -m pip install -q setuptools
   - python -m pip install -q cloudsmith-cli
