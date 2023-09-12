@@ -129,6 +129,12 @@ option(Plugin_CXX11 "Use c++11" OFF)
 ## ----- do not change next section - needed to configure build process ----- ##
 #===========================================================
 include("PluginConfigure")
+
+if (WIN32)
+    add_subdirectory("${PROJECT_SOURCE_DIR}/opencpn-libs/WindowsHeaders")
+    target_link_libraries(${PACKAGE_NAME} windows::headers)
+endif ()
+
 #===========================================================
 ## ----- do not change section above - needed to configure build process ----- ##
 ## ----- Change below to match project requirements for source, headers, etc. ----- ##
