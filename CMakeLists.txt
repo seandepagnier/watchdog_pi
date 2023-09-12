@@ -133,6 +133,7 @@ include("PluginConfigure")
 if (WIN32)
     add_subdirectory("${PROJECT_SOURCE_DIR}/opencpn-libs/WindowsHeaders")
     target_link_libraries(${PACKAGE_NAME} windows::headers)
+    add_definitions(-D_CRT_USE_WINAPI_FAMILY_DESKTOP_APP)
 endif ()
 
 #===========================================================
