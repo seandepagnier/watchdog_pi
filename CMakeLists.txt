@@ -55,7 +55,7 @@ set(LONG_DESCRIPTION "Set alarms for changing conditions, boundaries, cog, landf
 
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "4")
-set(VERSION_PATCH "72")
+set(VERSION_PATCH "73")
 set(VERSION_TWEAK "0")
 set(VERSION_DATE  "07/09/2023")#DD/MM/YYYY format
 set(OCPN_MIN_VERSION "ov58")
@@ -203,21 +203,27 @@ if(NOT OCPN_FLATPAK_CONFIG)
     message(STATUS "${CMLOC}Adding target link libraries to ${PACKAGE_NAME}")
 
     add_subdirectory("${PROJECT_SOURCE_DIR}/opencpn-libs/WindowsHeaders")
-    add_subdirectory(${PROJECT_SOURCE_DIR}/opencpn-libs/api-16)
-    add_subdirectory(${PROJECT_SOURCE_DIR}/opencpn-libs/jsonlib)
-    add_subdirectory(${PROJECT_SOURCE_DIR}/opencpn-libs/nmea0183)
-    add_subdirectory(${PROJECT_SOURCE_DIR}/opencpn-libs/tinyxml)
-    add_subdirectory(${PROJECT_SOURCE_DIR}/opencpn-libs/plugingl)
-    add_subdirectory(${PROJECT_SOURCE_DIR}/opencpn-libs/wxJSON)
-    add_subdirectory(${PROJECT_SOURCE_DIR}/opencpn-libs/ODAPI)
-
     target_link_libraries(${PACKAGE_NAME} windows::headers)
+
+    add_subdirectory(${PROJECT_SOURCE_DIR}/opencpn-libs/api-16)
     target_link_libraries(${PACKAGE_NAME} ocpn::api)
+
+    add_subdirectory(${PROJECT_SOURCE_DIR}/opencpn-libs/jsonlib)
     target_link_libraries(${PACKAGE_NAME} ocpn::jsonlib)
+
+    add_subdirectory(${PROJECT_SOURCE_DIR}/opencpn-libs/nmea0183)
     target_link_libraries(${PACKAGE_NAME} ocpn::nmea0183)
+
+    add_subdirectory(${PROJECT_SOURCE_DIR}/opencpn-libs/tinyxml)
     target_link_libraries(${PACKAGE_NAME} ocpn::tinyxml)
+
+    add_subdirectory(${PROJECT_SOURCE_DIR}/opencpn-libs/plugingl)
     target_link_libraries(${PACKAGE_NAME} ocpn::plugingl)
+
+    add_subdirectory(${PROJECT_SOURCE_DIR}/opencpn-libs/wxJSON)
     target_link_libraries(${PACKAGE_NAME} ocpn::wxjson)
+
+    add_subdirectory(${PROJECT_SOURCE_DIR}/opencpn-libs/ODAPI)
     target_link_libraries(${PACKAGE_NAME} ocpn::odapi)
 endif(NOT OCPN_FLATPAK_CONFIG)
 
