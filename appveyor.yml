@@ -4,8 +4,8 @@ clone_depth: 10
 
 
 platform:
-# - x64
-  - Win32
+#  - x64
+#  - Win32
 
 configuration: Release
 test: OFF
@@ -88,7 +88,6 @@ before_build:
   - ps: Start-FileDownload https://sourceforge.net/projects/opencpnplugins/files/opencpn.lib
   - ps: Start-FileDownload https://download.opencpn.org/s/oibxM3kzfzKcSc3/download -FileName OpenCPN_buildwin-4.99a.7z
   - cmd: 7z x -y OpenCPN_buildwin-4.99a.7z -oc:\project\ocpn_project\buildwin
-
   - cmake %cmake_parms% ..
 
 build_script:
