@@ -79,6 +79,7 @@ set(ALPHA "alpha") #Standard Repos
 #set(CLOUDSMITH_BASE_REPOSITORY "${GIT_REPOSITORY_NAME}")
 #set(CLOUDSMITH_BASE_REPOSITORY "opencpn-plugins")  #Ricks's customization
 set(CLOUDSMITH_BASE_REPOSITORY "watchdog")  #without the pi
+
 # Set the following to use OpenCPN cloudsmith repositories instead of own repositories
 set(CLOUDSMITH_USER "opencpn")
 #set(CLOUDSMITH_USER "rick-gleason")
@@ -180,7 +181,7 @@ add_definitions(-DPLUGIN_USE_SVG)
 
 # Do not need Json Schema Validation
 
-## ----- If using JSON validation in plugin section above is needed -----==-##
+## ----- If using JSON validation in plugin section above is needed --------##
 
 if(QT_ANDROID)
 endif(QT_ANDROID)
@@ -215,24 +216,25 @@ if(NOT OCPN_FLATPAK_CONFIG)
 
     add_subdirectory(opencpn-libs/api-16)
     target_link_libraries(${PACKAGE_NAME} ocpn::api)
-	
-    add_subdirectory(opencpn-libs/jsonlib)
-    target_link_libraries(${PACKAGE_NAME} ocpn::jsonlib)
-
-    add_subdirectory(opencpn-libs/nmea0183)
-    target_link_libraries(${PACKAGE_NAME} ocpn::nmea0183)
 
     add_subdirectory(opencpn-libs/tinyxml)
     target_link_libraries(${PACKAGE_NAME} ocpn::tinyxml)
 
-    add_subdirectory(opencpn-libs/plugingl)
-    target_link_libraries(${PACKAGE_NAME} ocpn::plugingl)
-	
+    add_subdirectory(opencpn-libs/ODAPI)
+    target_link_libraries(${PACKAGE_NAME} ocpn::odapi)
+
+    add_subdirectory(opencpn-libs/jsonlib)
+    target_link_libraries(${PACKAGE_NAME} ocpn::jsonlib)
+
     add_subdirectory(opencpn-libs/wxJSON)
     target_link_libraries(${PACKAGE_NAME} ocpn::wxjson)
 
-    add_subdirectory(opencpn-libs/ODAPI)
-    target_link_libraries(${PACKAGE_NAME} ocpn::odapi)
+    add_subdirectory(opencpn-libs/plugingl)
+    target_link_libraries(${PACKAGE_NAME} ocpn::plugingl)
+  
+    add_subdirectory(opencpn-libs/nmea0183)
+    target_link_libraries(${PACKAGE_NAME} ocpn::nmea0183)
+
 endif(NOT OCPN_FLATPAK_CONFIG)
 
 add_definitions(-DTIXML_USE_STL)
@@ -245,6 +247,8 @@ add_definitions(-DTIXML_USE_STL)
 
 
 ##------- Change below to match project requirements --------------------##
+
+##------- Change below to match project requirements --------------
 
 # Needed for android builds
 if(QT_ANDROID)
