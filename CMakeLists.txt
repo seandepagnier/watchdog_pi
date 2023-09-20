@@ -132,6 +132,9 @@ option(Plugin_CXX11 "Use c++11" OFF)
 ## ----- Do not change next section - needed to configure build process ---------##
 ##===========================================================
 
+## --Below needed for build process.
+##===========================================================
+
 include("PluginConfigure")
 
 ##===========================================================
@@ -247,8 +250,6 @@ add_definitions(-DTIXML_USE_STL)
 
 
 ##------- Change below to match project requirements --------------------##
-
-##------- Change below to match project requirements --------------
 
 # Needed for android builds
 if(QT_ANDROID)
