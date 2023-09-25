@@ -55,9 +55,9 @@ set(LONG_DESCRIPTION "Set alarms for changing conditions, boundaries, cog, landf
 
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "4")
-set(VERSION_PATCH "74")
+set(VERSION_PATCH "76")
 set(VERSION_TWEAK "0")
-set(VERSION_DATE  "19/09/2023")#DD/MM/YYYY format
+set(VERSION_DATE  "25/09/2023")#DD/MM/YYYY format
 set(OCPN_MIN_VERSION "ov58")
 
 set(OCPN_API_VERSION_MAJOR "1")
@@ -130,9 +130,6 @@ option(Plugin_CXX11 "Use c++11" OFF)
 
 ## ----- Modify section above if there are special requirements for the plugin --##
 ## ----- Do not change next section - needed to configure build process ---------##
-##===========================================================
-
-## --Below needed for build process.
 ##===========================================================
 
 include("PluginConfigure")
@@ -234,7 +231,7 @@ if(NOT OCPN_FLATPAK_CONFIG)
 
     add_subdirectory(opencpn-libs/plugingl)
     target_link_libraries(${PACKAGE_NAME} ocpn::plugingl)
-  
+
     add_subdirectory(opencpn-libs/nmea0183)
     target_link_libraries(${PACKAGE_NAME} ocpn::nmea0183)
 
