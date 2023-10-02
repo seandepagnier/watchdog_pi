@@ -233,12 +233,12 @@ int watchdog_pi::GetPlugInVersionMinor()
 int watchdog_pi::GetPlugInVersionPatch()
 { 
       return PLUGIN_VERSION_PATCH; 
-}
+};
 
 int watchdog_pi::GetPlugInVersionPost();
 { 
       return PLUGIN_VERSION_TWEAK;
-}
+};
 
 wxBitmap *watchdog_pi::GetPlugInBitmap()
 { 
