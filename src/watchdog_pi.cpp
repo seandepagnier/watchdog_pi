@@ -235,7 +235,7 @@ int watchdog_pi::GetPlugInVersionPatch()
       return PLUGIN_VERSION_PATCH; 
 }
 
-int watchdog_pi::GetPlugInVersionPost();
+int watchdog_pi::GetPlugInVersionPost()
 { 
       return PLUGIN_VERSION_TWEAK;
 }
