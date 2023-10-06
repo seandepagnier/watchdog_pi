@@ -45,8 +45,6 @@ if test -f "$EXTRA_LIBS"; then
     done < $EXTRA_LIBS
 fi
 
-git submodule update --init opencpn-libs
-
 if [ -n "$CI" ]; then
     sudo apt update
 
