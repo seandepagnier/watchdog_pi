@@ -28,6 +28,8 @@ if errorlevel 1 (
   call "%VS_HOME%\Community\VC\Auxiliary\Build\vcvars32.bat"
 )
 
+git submodule update --init opencpn-libs
+
 dir
 
 if exist build (rmdir /s /q build)

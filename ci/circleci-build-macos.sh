@@ -78,6 +78,8 @@ export MACOSX_DEPLOYMENT_TARGET=$MACOSX_DEPLOYMENT_TARGET
 #    brew install --cask packages
 #fi
 
+git submodule update --init opencpn-libs
+
 rm -rf build && mkdir build && cd build
 cmake \
   -DwxWidgets_CONFIG_EXECUTABLE=$WX_EXECUTABLE \
