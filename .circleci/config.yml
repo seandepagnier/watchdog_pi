@@ -4,7 +4,7 @@ version: 2.1
 parameters:
     run_workflow_deploy:
         type: boolean
-        default: false
+        default: true
 
 ## Start of build control of O58 and O562 plugins
 ## run_workflow_deploy_O58
