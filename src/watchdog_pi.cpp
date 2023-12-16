@@ -26,11 +26,10 @@
 
 #include <wx/wx.h>
 #include <wx/stdpaths.h>
-//#include <GL/gl.h>
 
 #include "json/json.h"
 
-#include "wddc.h"
+#include "pidc.h"
 
 #include "watchdog_pi.h"
 #include "WatchdogDialog.h"
@@ -99,7 +98,7 @@ extern "C" DECL_EXP void destroy_pi(opencpn_plugin* p)
 watchdog_pi *g_watchdog_pi = NULL;
 
 watchdog_pi::watchdog_pi(void *ppimgr)
-: opencpn_plugin_116(ppimgr)
+: opencpn_plugin_117(ppimgr)
 {
     // Create the PlugIn icons
     initialize_images();
@@ -212,54 +211,54 @@ bool watchdog_pi::DeInit(void)
 }
 
 int watchdog_pi::GetAPIVersionMajor()
-{
-
-    return OCPN_API_VERSION_MAJOR;
-
+{ 
+     return OCPN_API_VERSION_MAJOR;
 }
 
 int watchdog_pi::GetAPIVersionMinor()
 {
-
-    return OCPN_API_VERSION_MINOR;
-
+     return OCPN_API_VERSION_MINOR;
 }
 
 int watchdog_pi::GetPlugInVersionMajor()
 {
-
-    return PLUGIN_VERSION_MAJOR;
-
+	  return PLUGIN_VERSION_MAJOR;
 }
 
 int watchdog_pi::GetPlugInVersionMinor()
 {
+	 return PLUGIN_VERSION_MINOR;
+}
 
-    return PLUGIN_VERSION_MINOR;
+int watchdog_pi::GetPlugInVersionPatch()
+{ 
+      return PLUGIN_VERSION_PATCH; 
+}
 
+int watchdog_pi::GetPlugInVersionPost()
+{ 
+      return PLUGIN_VERSION_TWEAK;
 }
 
 wxBitmap *watchdog_pi::GetPlugInBitmap()
-{
-    return new wxBitmap(_img_watchdog->ConvertToImage().Copy());
+{ 
+      return new wxBitmap(_img_watchdog->ConvertToImage().Copy());
 }
 
 wxString watchdog_pi::GetCommonName()
 {
-
-    // return _("Watchdog");
-    return _T(PLUGIN_COMMON_NAME);
-
-}
+	  return _T(PLUGIN_COMMON_NAME); 
+}   
+ // return _("Watchdog");
 
 wxString watchdog_pi::GetShortDescription()
 {
-    return _(PLUGIN_LONG_DESCRIPTION);
+	  return _(PLUGIN_SHORT_DESCRIPTION);
 }
 
 wxString watchdog_pi::GetLongDescription()
 {
-    return _(PLUGIN_LONG_DESCRIPTION);
+	  return _(PLUGIN_LONG_DESCRIPTION);
 }
 
 int watchdog_pi::GetToolbarToolCount(void)
@@ -328,21 +327,21 @@ void watchdog_pi::OnContextMenuItemCallback(int id)
 
 bool watchdog_pi::RenderOverlay(wxDC &dc, PlugIn_ViewPort *vp)
 {
-    wdDC odc(dc);
+    piDC odc(dc);
     Render(odc, *vp);
     return true;
 }
 
 bool watchdog_pi::RenderGLOverlay(wxGLContext *pcontext, PlugIn_ViewPort *vp)
 {
-    wdDC odc;
+    piDC odc;
     glEnable( GL_BLEND );
     Render(odc, *vp);
     glDisable( GL_BLEND );
     return true;
 }
 
-void watchdog_pi::Render(wdDC &dc, PlugIn_ViewPort &vp)
+void watchdog_pi::Render(piDC &dc, PlugIn_ViewPort &vp)
 {
     if((!m_WatchdogDialog || !m_WatchdogDialog->IsShown()) && (m_iEnableType == ID_ALARM_NEVER || m_iEnableType == ID_ALARM_VISIBLE))
         return;

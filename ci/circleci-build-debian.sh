@@ -3,7 +3,6 @@
 #
 # Build the Debian artifacts
 #
-
 set -xe
 
 if [ "${CIRCLECI_LOCAL,,}" = "true" ]; then
@@ -34,6 +33,9 @@ if test -f "$EXTRA_LIBS"; then
 fi
 
 pwd
+
+git submodule update --init opencpn-libs
+
 sudo mk-build-deps --install ./ci/control
 
 sudo apt-get --allow-unauthenticated install ./*all.deb  || :

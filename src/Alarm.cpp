@@ -28,7 +28,7 @@
 #include <wx/wx.h>
 #include <wx/stdpaths.h>
 
-#include "wddc.h"
+#include "pidc.h"
 
 #include <wx/process.h>
 
@@ -99,7 +99,7 @@ public:
         return s;
     }
 
-    void Render(wdDC &dc, PlugIn_ViewPort &vp) {
+    void Render(piDC &dc, PlugIn_ViewPort &vp) {
         wxPoint r1, r2;
 
         GetCanvasPixLL(&vp, &r1, m_Latitude, m_Longitude);
@@ -207,7 +207,7 @@ public:
         return s;
     }
 
-    void Render(wdDC &dc, PlugIn_ViewPort &vp) {
+    void Render(piDC &dc, PlugIn_ViewPort &vp) {
         PlugIn_Position_Fix_Ex lastfix = g_watchdog_pi->LastFix();
 
         double lat1 = lastfix.Lat, lon1 = lastfix.Lon, lat2, lon2, lat3, lon3;
@@ -316,7 +316,7 @@ public:
         return s;
     }
 
-    void Render(wdDC &dc, PlugIn_ViewPort &vp) {
+    void Render(piDC &dc, PlugIn_ViewPort &vp) {
         PlugIn_Position_Fix_Ex lastfix = g_watchdog_pi->LastFix();
 
         double knots = Knots();
@@ -470,7 +470,7 @@ public:
         return "";
     }
 
-    void Render(wdDC &dc, PlugIn_ViewPort &vp) {
+    void Render(piDC &dc, PlugIn_ViewPort &vp) {
         if(m_Mode != DIRECTION)
             return;
         if(isnan(m_direction))
@@ -1225,7 +1225,7 @@ public:
         return "";
     }
 
-    void Render(wdDC &dc, PlugIn_ViewPort &vp) {
+    void Render(piDC &dc, PlugIn_ViewPort &vp) {
         PlugIn_Position_Fix_Ex lastfix = g_watchdog_pi->LastFix();
         if(isnan(m_crossinglat1))
             return;
@@ -2080,7 +2080,7 @@ public:
         return "";
     }
 
-    void Render(wdDC &dc, PlugIn_ViewPort &vp) {
+    void Render(piDC &dc, PlugIn_ViewPort &vp) {
         if(m_bFired) {
             PlugIn_Position_Fix_Ex lastfix = g_watchdog_pi->LastFix();
             wxPoint r1, r2;
@@ -2825,7 +2825,7 @@ public:
         }
     }
 
-    void Render(wdDC &dc, PlugIn_ViewPort &vp) {        //TODO no clue why these commands are like this.
+    void Render(piDC &dc, PlugIn_ViewPort &vp) {        //TODO no clue why these commands are like this.
 
             PlugIn_Position_Fix_Ex lastfix = g_watchdog_pi->LastFix();
     }
@@ -2875,7 +2875,7 @@ private:
 ////////// Alarm Base Class /////////////////
 std::vector<Alarm*> Alarm::s_Alarms;
 
-void Alarm::RenderAll(wdDC &dc, PlugIn_ViewPort &vp)
+void Alarm::RenderAll(piDC &dc, PlugIn_ViewPort &vp)
 {
     for(unsigned int i=0; i<s_Alarms.size(); i++)
         if(s_Alarms[i]->m_bgfxEnabled)

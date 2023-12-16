@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: opencpn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-24 10:06+0200\n"
-"PO-Revision-Date: 2022-07-31 01:56\n"
+"POT-Creation-Date: 2023-10-19 15:56+0200\n"
+"PO-Revision-Date: 2023-11-09 21:22\n"
 "Last-Translator: \n"
 "Language-Team: Finnish\n"
 "Language: fi_FI\n"
@@ -17,385 +17,365 @@ msgstr ""
 "X-Crowdin-File: /plugins/watchdog_pi/po/watchdog_pi.pot\n"
 "X-Crowdin-File-ID: 125\n"
 
-#: include/Alarm.h:100 src/WatchdogUI.cpp:390
+#: include/Alarm.h:100 src/WatchdogUI.cpp:393
 msgid "Test"
 msgstr "Testi"
 
-#: include/WatchdogUI.h:80
-msgid "WatchDog"
-msgstr "WatchDog"
-
-#: include/WatchdogUI.h:122
-msgid "About Watchdog Properties"
-msgstr "Watchdog ominaisuuksista"
-
-#: include/WatchdogUI.h:151
-msgid "Watchdog Configuration"
-msgstr "Vahdin konfigurointi"
-
-#: include/WatchdogUI.h:174
-msgid "New Alarm"
-msgstr "Uusi hälytys"
-
-#: include/WatchdogUI.h:214
-msgid "Edit Alarm"
-msgstr "Muokkaa hälytystä"
-
-#: src/Alarm.cpp:66 src/NewAlarmDialog.cpp:35 src/WatchdogUI.cpp:464
-msgid "Depth"
-msgstr ""
-
-#: src/Alarm.cpp:124
-msgid "invalid Depth mode"
-msgstr ""
-
-#: src/Alarm.cpp:248 src/NewAlarmDialog.cpp:34
+#: src/Alarm.cpp:72 src/NewAlarmDialog.cpp:34
 msgid "Anchor"
 msgstr "Ankkuri"
 
-#: src/Alarm.cpp:272
+#: src/Alarm.cpp:96
 msgid "meter(s)"
 msgstr "metri(t)"
 
-#: src/Alarm.cpp:358 src/NewAlarmDialog.cpp:36
+#: src/Alarm.cpp:182 src/NewAlarmDialog.cpp:36
 msgid "Course"
 msgstr "Kurssi"
 
-#: src/Alarm.cpp:375
+#: src/Alarm.cpp:199
 msgid "degrees(s)"
 msgstr "aste(et)"
 
-#: src/Alarm.cpp:379 src/WatchdogUI.cpp:614
+#: src/Alarm.cpp:203 src/WatchdogUI.cpp:544
 msgid "Starboard"
 msgstr "Oikea"
 
-#: src/Alarm.cpp:381 src/WatchdogUI.cpp:614
+#: src/Alarm.cpp:205 src/WatchdogUI.cpp:544
 msgid "Port"
 msgstr "Vasen"
 
-#: src/Alarm.cpp:436
+#: src/Alarm.cpp:260
 msgid "invalid Course mode"
 msgstr "kurssin tila ei kelpaa"
 
-#: src/Alarm.cpp:479 src/NewAlarmDialog.cpp:37
+#: src/Alarm.cpp:303 src/NewAlarmDialog.cpp:37
 msgid "Speed"
 msgstr "Nopeus"
 
-#: src/Alarm.cpp:545
+#: src/Alarm.cpp:369
 msgid "invalid Speed mode"
 msgstr "virheellinen Speed-tila"
 
-#: src/Alarm.cpp:626 src/NewAlarmDialog.cpp:38
+#: src/Alarm.cpp:450 src/NewAlarmDialog.cpp:38
 msgid "Wind"
-msgstr ""
+msgstr "Tuuli"
 
-#: src/Alarm.cpp:735
+#: src/Alarm.cpp:559
 msgid "invalid Wind mode"
-msgstr ""
+msgstr "Virheellinen tuulen tila"
 
-#: src/Alarm.cpp:742
+#: src/Alarm.cpp:566
 msgid "invalid Wind type"
-msgstr ""
+msgstr "Virheellinen Tuulen tyyppi"
 
-#: src/Alarm.cpp:819 src/NewAlarmDialog.cpp:39
+#: src/Alarm.cpp:642 src/NewAlarmDialog.cpp:39
 msgid "Weather"
-msgstr ""
+msgstr "Sää"
 
-#: src/Alarm.cpp:835
+#: src/Alarm.cpp:658
 msgid "In"
-msgstr ""
+msgstr "Sisään"
 
-#: src/Alarm.cpp:835 src/Alarm.cpp:1233 src/Alarm.cpp:2475
-#: src/WatchdogUI.cpp:377 src/WatchdogUI.cpp:909
+#: src/Alarm.cpp:658 src/Alarm.cpp:1209 src/Alarm.cpp:2451
+#: src/WatchdogUI.cpp:380 src/WatchdogUI.cpp:839
 msgid "Seconds"
 msgstr "sekunnit"
 
-#: src/Alarm.cpp:880
+#: src/Alarm.cpp:703
 msgid "invalid Weather variable"
-msgstr ""
+msgstr "virheellinen säämuuttuja"
 
-#: src/Alarm.cpp:891
+#: src/Alarm.cpp:714
 msgid "invalid Weather mode"
-msgstr ""
+msgstr "virheellinen säätila"
 
-#: src/Alarm.cpp:931 src/WatchdogUI.cpp:860
+#: src/Alarm.cpp:754 src/WatchdogUI.cpp:790
 msgid "Barometer"
-msgstr ""
+msgstr "Ilmapuntari"
 
-#: src/Alarm.cpp:932 src/WatchdogUI.cpp:860
+#: src/Alarm.cpp:755 src/WatchdogUI.cpp:790
 msgid "Air Temperature"
-msgstr ""
+msgstr "ilman lämpötila"
 
-#: src/Alarm.cpp:933 src/WatchdogUI.cpp:860
+#: src/Alarm.cpp:756 src/WatchdogUI.cpp:790
 msgid "Sea Temperature"
-msgstr ""
+msgstr "Meriveden lämpötila"
 
-#: src/Alarm.cpp:934 src/WatchdogUI.cpp:860
+#: src/Alarm.cpp:757 src/WatchdogUI.cpp:790
 msgid "Humidity"
-msgstr ""
+msgstr "Kosteus"
 
-#: src/Alarm.cpp:998 src/EditAlarmDialog.cpp:59 src/NewAlarmDialog.cpp:40
+#: src/Alarm.cpp:821 src/EditAlarmDialog.cpp:59 src/NewAlarmDialog.cpp:40
 msgid "Deadman"
 msgstr "Pitoarvo"
 
-#: src/Alarm.cpp:1054 src/EditAlarmDialog.cpp:59 src/NewAlarmDialog.cpp:41
+#: src/Alarm.cpp:877 src/EditAlarmDialog.cpp:59 src/NewAlarmDialog.cpp:41
 msgid "NMEA Data"
 msgstr "NMEA Data"
 
-#: src/Alarm.cpp:1061
+#: src/Alarm.cpp:884
 msgid "second(s)"
 msgstr "sekunnit"
 
-#: src/Alarm.cpp:1136
+#: src/Alarm.cpp:960 src/NewAlarmDialog.cpp:35 src/WatchdogUI.cpp:981
+msgid "Depth"
+msgstr "Syvyys"
+
+#: src/Alarm.cpp:1015
+msgid "invalid Depth mode"
+msgstr "virheellinen syvyys tila"
+
+#: src/Alarm.cpp:1112
 msgid "landfall alarm without gshhs data"
 msgstr "pohjakosketushälytys ilman gshhs tietoja"
 
-#: src/Alarm.cpp:1142
+#: src/Alarm.cpp:1118
 msgid "LandFall"
 msgstr "Maakosketus"
 
-#: src/Alarm.cpp:1201
+#: src/Alarm.cpp:1177
 msgid "No GSHHS Data"
 msgstr "Ei GSHHS tietoja"
 
-#: src/Alarm.cpp:1207
+#: src/Alarm.cpp:1183
 msgid "LandFall Time Invalid"
 msgstr "Maakosketus aika virheellinen"
 
-#: src/Alarm.cpp:1212 src/Alarm.cpp:2454
+#: src/Alarm.cpp:1188 src/Alarm.cpp:2430
 msgid "Days"
 msgstr "Päivät"
 
-#: src/Alarm.cpp:1215 src/Alarm.cpp:2457
+#: src/Alarm.cpp:1191 src/Alarm.cpp:2433
 msgid "Day"
 msgstr "Päivä"
 
-#: src/Alarm.cpp:1219 src/Alarm.cpp:2461
+#: src/Alarm.cpp:1195 src/Alarm.cpp:2437
 msgid "Hours"
 msgstr "Tunnit"
 
-#: src/Alarm.cpp:1222 src/Alarm.cpp:2464
+#: src/Alarm.cpp:1198 src/Alarm.cpp:2440
 msgid "Hour"
 msgstr "Tunti"
 
-#: src/Alarm.cpp:1226 src/Alarm.cpp:2468
+#: src/Alarm.cpp:1202 src/Alarm.cpp:2444
 msgid "Minutes"
 msgstr "Minuuttia"
 
-#: src/Alarm.cpp:1229 src/Alarm.cpp:2471
+#: src/Alarm.cpp:1205 src/Alarm.cpp:2447
 msgid "Minute"
 msgstr "Minuutti"
 
-#: src/Alarm.cpp:1235 src/Alarm.cpp:2477
+#: src/Alarm.cpp:1211 src/Alarm.cpp:2453
 msgid "Second"
 msgstr "Sekuntti"
 
-#: src/Alarm.cpp:1244 src/Alarm.cpp:1396
+#: src/Alarm.cpp:1220 src/Alarm.cpp:1372
 msgid "Distance"
 msgstr "Etäisyys"
 
-#: src/Alarm.cpp:1294
+#: src/Alarm.cpp:1270
 msgid "invalid LandFall mode"
 msgstr "kelvoton maakosketus tila"
 
-#: src/Alarm.cpp:1385
+#: src/Alarm.cpp:1361
 msgid "Boundary Time"
 msgstr "Raja aika"
 
-#: src/Alarm.cpp:1386 src/Alarm.cpp:1389
+#: src/Alarm.cpp:1362 src/Alarm.cpp:1365
 msgid "Boundary Distance"
 msgstr "Raja etäisyys"
 
-#: src/Alarm.cpp:1387 src/WatchdogUI.cpp:1179
+#: src/Alarm.cpp:1363 src/WatchdogUI.cpp:1179
 msgid "Inclusion Alarm"
 msgstr "Sulkuhälytys"
 
-#: src/Alarm.cpp:1388 src/Alarm.cpp:2097 src/Alarm.cpp:2099
-#: src/watchdog_pi.cpp:574
+#: src/Alarm.cpp:1364 src/Alarm.cpp:2073 src/Alarm.cpp:2075
+#: src/watchdog_pi.cpp:576
 msgid "Guard Zone"
 msgstr "Suojavyöhyke"
 
-#: src/Alarm.cpp:1395 src/Alarm.cpp:2325
+#: src/Alarm.cpp:1371 src/Alarm.cpp:2301
 msgid "Time"
 msgstr "Aika"
 
-#: src/Alarm.cpp:1399 src/Alarm.cpp:1985 src/Alarm.cpp:2025
+#: src/Alarm.cpp:1375 src/Alarm.cpp:1961 src/Alarm.cpp:2001
 #: src/WatchdogUI.cpp:1182
 msgid "Boundary GUID"
 msgstr "Rajan GUID"
 
-#: src/Alarm.cpp:1401
+#: src/Alarm.cpp:1377
 msgid "Boundary Name"
 msgstr "Rajan nimi"
 
-#: src/Alarm.cpp:1405 src/WatchdogUI.cpp:1156
+#: src/Alarm.cpp:1381 src/WatchdogUI.cpp:1156
 msgid "Guard Zone GUID"
 msgstr "Suojavyöhyke GUID"
 
-#: src/Alarm.cpp:1407 src/Alarm.cpp:2322 src/Alarm.cpp:2340
+#: src/Alarm.cpp:1383 src/Alarm.cpp:2298 src/Alarm.cpp:2316
 msgid "Guard Zone Name"
 msgstr "Suojavyöhykkeen nimi"
 
-#: src/Alarm.cpp:1983 src/Alarm.cpp:2023
+#: src/Alarm.cpp:1959 src/Alarm.cpp:1999
 msgid "Boundary name"
 msgstr "Rajan nimi"
 
-#: src/Alarm.cpp:1989
+#: src/Alarm.cpp:1965
 msgid "No Boundary within "
 msgstr "Ei ole rajan sisällä "
 
-#: src/Alarm.cpp:1991
+#: src/Alarm.cpp:1967
 msgid " minutes"
 msgstr " minuuttia"
 
-#: src/Alarm.cpp:1996 src/Alarm.cpp:2029
+#: src/Alarm.cpp:1972 src/Alarm.cpp:2005
 msgid " - inside any boundary"
 msgstr " - minkä tahansa reunuksen sisällä"
 
-#: src/Alarm.cpp:1999 src/Alarm.cpp:2032
+#: src/Alarm.cpp:1975 src/Alarm.cpp:2008
 msgid " - inside active boundary"
 msgstr " -aktiivisen rajan sisällä"
 
-#: src/Alarm.cpp:2002 src/Alarm.cpp:2035
+#: src/Alarm.cpp:1978 src/Alarm.cpp:2011
 msgid " - inside inactive boundary"
 msgstr " - passiivisen rajan sisällä"
 
-#: src/Alarm.cpp:2007
+#: src/Alarm.cpp:1983
 msgid " in "
 msgstr " sisällä "
 
-#: src/Alarm.cpp:2047
+#: src/Alarm.cpp:2023
 msgid "Any Boundary Distance"
 msgstr "Joka reunan etäisyys"
 
-#: src/Alarm.cpp:2050
+#: src/Alarm.cpp:2026
 msgid "Active Boundary Distance"
 msgstr "Aktiivisen reunan etäisyys"
 
-#: src/Alarm.cpp:2053
+#: src/Alarm.cpp:2029
 msgid "Inactive Boundary Distance"
 msgstr "Passiivisen rajan etäisyys"
 
-#: src/Alarm.cpp:2064 src/Alarm.cpp:2068
+#: src/Alarm.cpp:2040 src/Alarm.cpp:2044
 msgid "Boat"
 msgstr "Vene"
 
-#: src/Alarm.cpp:2065 src/Alarm.cpp:2069
+#: src/Alarm.cpp:2041 src/Alarm.cpp:2045
 msgid "inside"
 msgstr "sisällä"
 
-#: src/Alarm.cpp:2065 src/Alarm.cpp:2069
+#: src/Alarm.cpp:2041 src/Alarm.cpp:2045
 msgid "outside"
 msgstr "ulkopuolella"
 
-#: src/Alarm.cpp:2066 src/Alarm.cpp:2070
+#: src/Alarm.cpp:2042 src/Alarm.cpp:2046
 msgid " boundary area: "
 msgstr " raja-alue: "
 
-#: src/Alarm.cpp:2100
+#: src/Alarm.cpp:2076
 msgid "AIS Target in zone"
 msgstr "AIS kohde alueella"
 
-#: src/Alarm.cpp:2100
+#: src/Alarm.cpp:2076
 msgid "NO AIS tagets found in zone"
 msgstr "EI AIS kohdetta alueella"
 
-#: src/Alarm.cpp:2237
+#: src/Alarm.cpp:2213
 msgid "invalid Boundary mode"
 msgstr "kelvoton rajatila"
 
-#: src/Alarm.cpp:2288 src/Alarm.cpp:2299 src/Alarm.cpp:2314
+#: src/Alarm.cpp:2264 src/Alarm.cpp:2275 src/Alarm.cpp:2290
 msgid "Name"
 msgstr "Nimi"
 
-#: src/Alarm.cpp:2289 src/Alarm.cpp:2300 src/Alarm.cpp:2315 src/Alarm.cpp:2323
-#: src/Alarm.cpp:2341
+#: src/Alarm.cpp:2265 src/Alarm.cpp:2276 src/Alarm.cpp:2291 src/Alarm.cpp:2299
+#: src/Alarm.cpp:2317
 msgid "Description"
 msgstr "Kuvaus"
 
-#: src/Alarm.cpp:2290 src/Alarm.cpp:2301 src/Alarm.cpp:2316 src/Alarm.cpp:2324
-#: src/Alarm.cpp:2342 src/EditAlarmDialog.cpp:208 src/EditAlarmDialog.cpp:233
+#: src/Alarm.cpp:2266 src/Alarm.cpp:2277 src/Alarm.cpp:2292 src/Alarm.cpp:2300
+#: src/Alarm.cpp:2318 src/EditAlarmDialog.cpp:208 src/EditAlarmDialog.cpp:233
 #: src/EditAlarmDialog.cpp:283 src/EditAlarmDialog.cpp:307
 msgid "GUID"
 msgstr "GUID"
 
-#: src/Alarm.cpp:2292 src/Alarm.cpp:2303
+#: src/Alarm.cpp:2268 src/Alarm.cpp:2279
 msgid "inside boundary"
 msgstr "rajan sisällä"
 
-#: src/Alarm.cpp:2294 src/Alarm.cpp:2305
+#: src/Alarm.cpp:2270 src/Alarm.cpp:2281
 msgid "in"
 msgstr "paikassa"
 
-#: src/Alarm.cpp:2313
+#: src/Alarm.cpp:2289
 msgid "Outside"
 msgstr "Ulkopuolella"
 
-#: src/Alarm.cpp:2317 src/Alarm.cpp:2343 src/Alarm.cpp:3037 src/Alarm.cpp:3045
+#: src/Alarm.cpp:2293 src/Alarm.cpp:2319 src/Alarm.cpp:3034 src/Alarm.cpp:3042
 #: src/EditAlarmDialog.cpp:209 src/EditAlarmDialog.cpp:234
 #: src/EditAlarmDialog.cpp:284 src/EditAlarmDialog.cpp:308
-#: src/EditAlarmDialog.cpp:358 src/EditAlarmDialog.cpp:409
+#: src/EditAlarmDialog.cpp:358 src/EditAlarmDialog.cpp:412
 #: src/watchdog_pi.cpp:149 src/watchdog_pi.cpp:153
 msgid "Watchdog"
 msgstr "Watchdog"
 
-#: src/Alarm.cpp:2331
+#: src/Alarm.cpp:2307
 msgid "Ship Name"
 msgstr "Aluksen nimi"
 
-#: src/Alarm.cpp:2332
+#: src/Alarm.cpp:2308
 msgid "Ship MMSI"
 msgstr "Aluksen MMSI"
 
-#: src/Alarm.cpp:2342
+#: src/Alarm.cpp:2318
 msgid "Guard Zone not Found"
 msgstr "Rajavyöhykettä ei löydy"
 
-#: src/Alarm.cpp:2606
+#: src/Alarm.cpp:2585
 msgid "pypilot"
-msgstr ""
+msgstr "pypilot"
 
-#: src/Alarm.cpp:2813 src/NewAlarmDialog.cpp:45
+#: src/Alarm.cpp:2810 src/NewAlarmDialog.cpp:45
 msgid "Rudder"
-msgstr ""
+msgstr "Peräsin"
 
-#: src/Alarm.cpp:2895
+#: src/Alarm.cpp:2892
 msgid "Failed to read"
 msgstr "Ei voitu lukea"
 
-#: src/Alarm.cpp:2919
+#: src/Alarm.cpp:2916
 msgid "invalid alarm type"
 msgstr "virheellisen hälytyksen tyyppi"
 
-#: src/Alarm.cpp:2960
+#: src/Alarm.cpp:2957
 msgid "failed to save"
 msgstr "tallennus epäonnistui"
 
-#: src/Alarm.cpp:3019 src/WatchdogUI.cpp:333
+#: src/Alarm.cpp:3016 src/WatchdogUI.cpp:336
 msgid "Sound"
 msgstr "Ääni"
 
-#: src/Alarm.cpp:3020 src/WatchdogUI.cpp:339
+#: src/Alarm.cpp:3017 src/WatchdogUI.cpp:342
 msgid "Command"
 msgstr "Komento"
 
-#: src/Alarm.cpp:3021
+#: src/Alarm.cpp:3018
 msgid "MessageBox"
 msgstr "MessageBox"
 
-#: src/Alarm.cpp:3022
+#: src/Alarm.cpp:3019
 msgid "Repeat"
 msgstr "Toista"
 
-#: src/Alarm.cpp:3023
+#: src/Alarm.cpp:3020
 msgid "Auto Reset"
 msgstr "Automaattinen kuittaus"
 
-#: src/Alarm.cpp:3036
+#: src/Alarm.cpp:3033
 msgid "Failed to execute command: "
 msgstr "Komennon suoritus epäonnistui: "
 
-#: src/Alarm.cpp:3043
+#: src/Alarm.cpp:3040
 msgid "ALARM!"
 msgstr "HÄLYTYS!"
 
@@ -428,40 +408,48 @@ msgid "Wind Alarms can be from:\n"
 "1) Apparent - measured from moving boat (requires only wind sensors)\n"
 "2) True Relative - wind would feel like if boat stopped (requires wind sensors + gps)\n"
 "3) True Absolute - wind would feel if boat stopped and faced north (requires wind sensors + gps + compass)"
-msgstr ""
+msgstr "Tuulihälytykset voivat olla kotoisin:\n"
+"1) Näennäinen - mitattuna liikkuvasta veneestä (vaatii vain tuulianturit)\n"
+"2) Todellinen suhteellinen - tuuli tuntuu, jos vene pysähtyisi (vaatii tuulianturin + gps)\n"
+"3) Todellinen absoluuttinen - tuuli tuntuu, jos vene pysähtyisi ja kääntyisi pohjoiseen (vaatii tuulianturin + gps + kompassi)"
 
 #: src/EditAlarmDialog.cpp:372
 msgid "mBar"
-msgstr ""
+msgstr "mbar"
 
 #: src/EditAlarmDialog.cpp:375 src/EditAlarmDialog.cpp:378
 msgid "Deg C"
-msgstr ""
+msgstr "Astetta C"
 
-#: src/EditAlarmDialog.cpp:385 src/WatchdogUI.cpp:882
+#: src/EditAlarmDialog.cpp:385 src/WatchdogUI.cpp:812
 msgid "Increasing"
-msgstr ""
+msgstr "Kasvava"
 
-#: src/EditAlarmDialog.cpp:386 src/WatchdogUI.cpp:882
+#: src/EditAlarmDialog.cpp:386 src/WatchdogUI.cpp:812
 msgid "Decreasing"
-msgstr ""
+msgstr "Vähenevä"
 
 #: src/EditAlarmDialog.cpp:388
 msgid "Above"
-msgstr ""
+msgstr "Yläpuolella"
 
 #: src/EditAlarmDialog.cpp:389
 msgid "Below"
-msgstr ""
+msgstr "Alla"
 
-#: src/EditAlarmDialog.cpp:402
+#: src/EditAlarmDialog.cpp:405
 msgid "Hardware errors usually indicate bad wiring or failed components.\n"
 "No IMU Sensor - inertial sensors cannot be read\n"
 "No Motor Controller - motor controller lost communication\n"
 "No Rudder Feedback - optional Rudder feedback sensor not working\n"
 "No Motor Temperature - optional motor temperature sensor not working\n"
 "Driver Timeout - Motor not drawing power: motor not connected to controller\n"
-msgstr ""
+msgstr "Laitteistovirheet viittaavat yleensä huonoon johdotukseen tai epäonnistuneisiin komponentteihin.\n"
+"Ei IMU Sensoria - inertial sensoreita ei voi lukea\n"
+"Ei Moottorin ohjainta - moottorin ohjain ei saa yhteyttä\n"
+"Ei palautetta peräsimestä - mahdollinen peräsimen palaute ei toimi\n"
+"Ei moottorin lämpötilaa - mahdollinen moottorin lämpötilan tunnistin ei toimi\n"
+"Ajurin aikakatkaisu - Moottori ei käytä tehoa: moottoria ei ole kytketty ohjaimeen\n"
 
 #: src/NewAlarmDialog.cpp:42
 msgid "Landfall"
@@ -472,11 +460,11 @@ msgid "Boundary Alarm"
 msgstr "Rajahälytys"
 
 #: src/NewAlarmDialog.cpp:44
-msgid "pypilot Alarm"
+msgid "Pypilot Alarm"
 msgstr ""
 
-#: src/WatchdogDialog.cpp:112 src/WatchdogUI.cpp:451 src/WatchdogUI.cpp:610
-#: src/WatchdogUI.cpp:691 src/WatchdogUI.cpp:782 src/WatchdogUI.cpp:878
+#: src/WatchdogDialog.cpp:112 src/WatchdogUI.cpp:540 src/WatchdogUI.cpp:621
+#: src/WatchdogUI.cpp:712 src/WatchdogUI.cpp:808 src/WatchdogUI.cpp:968
 msgid "Type"
 msgstr "Tyyppi"
 
@@ -486,7 +474,7 @@ msgstr "Tila"
 
 #: src/WatchdogDialog.cpp:114
 msgid "Count"
-msgstr ""
+msgstr "Lukumäärä"
 
 #: src/WatchdogUI.cpp:35
 msgid "New"
@@ -506,11 +494,11 @@ msgstr "Poista"
 
 #: src/WatchdogUI.cpp:50
 msgid "Reset All"
-msgstr ""
+msgstr "Nollaa Kaikki"
 
 #: src/WatchdogUI.cpp:54
 msgid "DeleteAll"
-msgstr ""
+msgstr "Poista kaikki"
 
 #: src/WatchdogUI.cpp:58
 msgid "Configuration"
@@ -553,7 +541,14 @@ msgid "Please report problems using FlySpray at:\n"
 "or\n\n"
 "Raise an issue in GIT at:\n"
 "https://github.com/seandepagnier/watchdog_pi/issues\n"
-msgstr ""
+msgstr "Ilmoita ongelmista käyttämällä FlySpraytä osoitteessa:\n"
+"http://willkamp.com/opencpn/flyspray/index.php?project=0&do=index&switch=1\n\n"
+"tai\n\n"
+"OpenCPN-foorumissa:\n"
+"http://www. ruisersforum.com/forums/f134\n\n"
+"tai\n\n"
+"Lisää ongelma GIT:ssä:\n"
+"https://github.com/seandepagnier/watchdog_pi/issues\n"
 
 #: src/WatchdogUI.cpp:160
 msgid "About Author"
@@ -585,279 +580,280 @@ msgstr "Estä kaikki hälytykset"
 
 #: src/WatchdogUI.cpp:230
 msgid "Font"
-msgstr ""
+msgstr "Kirjasin"
 
-#: src/WatchdogUI.cpp:325
+#: src/WatchdogUI.cpp:328
 msgid "Alarm Action"
 msgstr "Hälytystoiminto"
 
-#: src/WatchdogUI.cpp:336
+#: src/WatchdogUI.cpp:339
 msgid "Select a file"
 msgstr "Valitse tiedosto"
 
-#: src/WatchdogUI.cpp:336
+#: src/WatchdogUI.cpp:339
 msgid "Wav Files (*.wav)|*.WAV;*.wav|All Files (*.*)|*.*"
-msgstr ""
+msgstr "Wav- Tiedostot (*.wav)- *.Wav;*.wav- Kaikki Tiedostot (*.*)¶ *.*"
 
-#: src/WatchdogUI.cpp:353
+#: src/WatchdogUI.cpp:356
 msgid "Message Box"
 msgstr "Sanomaruudun"
 
-#: src/WatchdogUI.cpp:356
-msgid "Alarm if no Data"
-msgstr ""
-
 #: src/WatchdogUI.cpp:359
+msgid "Alarm if no Data"
+msgstr "Hälytys jos ei tietoja"
+
+#: src/WatchdogUI.cpp:362
 msgid "Repeat Alarm after seconds"
 msgstr "Toista hälytys sekuntien kuluttua"
 
-#: src/WatchdogUI.cpp:365
+#: src/WatchdogUI.cpp:368
 msgid "Condition triggered for"
-msgstr ""
+msgstr "Edellytys laukaistu"
 
-#: src/WatchdogUI.cpp:384
+#: src/WatchdogUI.cpp:387
 msgid "Automatically Reset"
 msgstr "Automaattinen nollaus"
 
-#: src/WatchdogUI.cpp:387
+#: src/WatchdogUI.cpp:390
 msgid "Graphics Enabled"
 msgstr "Grafiikka käytössä"
 
-#: src/WatchdogUI.cpp:405
+#: src/WatchdogUI.cpp:408
 msgid "Information"
 msgstr "Lisätietoa"
 
-#: src/WatchdogUI.cpp:444
-msgid "Depth Alarm"
-msgstr ""
-
 #: src/WatchdogUI.cpp:455
-msgid "Depth Decreasing"
-msgstr ""
-
-#: src/WatchdogUI.cpp:455
-msgid "Depth Increasing"
-msgstr ""
-
-#: src/WatchdogUI.cpp:455
-msgid "Maximum Depth"
-msgstr ""
-
-#: src/WatchdogUI.cpp:455
-msgid "Minimum Depth"
-msgstr ""
-
-#: src/WatchdogUI.cpp:468 src/WatchdogUI.cpp:708
-msgid "1"
-msgstr "1"
-
-#: src/WatchdogUI.cpp:479
-msgid "Feet"
-msgstr ""
-
-#: src/WatchdogUI.cpp:479
-msgid "Meters"
-msgstr ""
-
-#: src/WatchdogUI.cpp:495
-msgid "Alarm will trigger if less than the minimum depth, or greater than maximum depth.\n\n"
-"Alarm will trigger if increasing/decreasing at the depth in units per second over the last 10 seconds."
-msgstr ""
-
-#: src/WatchdogUI.cpp:525
 msgid "Latitude"
 msgstr "Leveysaste"
 
-#: src/WatchdogUI.cpp:543
+#: src/WatchdogUI.cpp:473
 msgid "Longitude"
 msgstr "Pituusaste"
 
-#: src/WatchdogUI.cpp:558
+#: src/WatchdogUI.cpp:488
 msgid "Sync to Boat"
 msgstr "Synkronoi veneeseen"
 
-#: src/WatchdogUI.cpp:561
+#: src/WatchdogUI.cpp:491
 msgid "Radius"
 msgstr "Säde"
 
-#: src/WatchdogUI.cpp:568
+#: src/WatchdogUI.cpp:498
 msgid "meters"
 msgstr "metriä"
 
-#: src/WatchdogUI.cpp:575
+#: src/WatchdogUI.cpp:505
 msgid "Automatically syncronize to the boat whenever enabled"
 msgstr "Automaattisesti synkronoi veneeseen, kun mahdollista"
 
-#: src/WatchdogUI.cpp:578
+#: src/WatchdogUI.cpp:508
 msgid "Graphical overlay displays bounding anchor area"
 msgstr "Graafinen kuvio näyttää ankkuroinin liikealueen"
 
-#: src/WatchdogUI.cpp:614
+#: src/WatchdogUI.cpp:544
 msgid "Port or Starboard"
 msgstr "vasemmalle tai oikealle"
 
-#: src/WatchdogUI.cpp:623
+#: src/WatchdogUI.cpp:553
 msgid "Off Course By >"
 msgstr "Hakoteillä suuntaan >"
 
-#: src/WatchdogUI.cpp:630 src/WatchdogUI.cpp:1420 src/WatchdogUI.cpp:1467
-#: src/WatchdogUI.cpp:1478
+#: src/WatchdogUI.cpp:560 src/WatchdogUI.cpp:1405 src/WatchdogUI.cpp:1452
+#: src/WatchdogUI.cpp:1463
 msgid "Degrees"
 msgstr "Astetta"
 
-#: src/WatchdogUI.cpp:634
+#: src/WatchdogUI.cpp:564
 msgid "With Course Of"
 msgstr "Kurssiin"
 
-#: src/WatchdogUI.cpp:641
+#: src/WatchdogUI.cpp:571
 msgid "Current Course"
 msgstr "Nykyinen kurssi"
 
-#: src/WatchdogUI.cpp:647
+#: src/WatchdogUI.cpp:577
 msgid "Graphical overlay displays lines bounding valid courses"
 msgstr "Graafinen kuvio näyttää valitun kurssin reunalinjat"
 
-#: src/WatchdogUI.cpp:656
+#: src/WatchdogUI.cpp:586
 msgid "GPS Course"
-msgstr ""
+msgstr "Gps Kurssi"
 
-#: src/WatchdogUI.cpp:659
+#: src/WatchdogUI.cpp:589
 msgid "Heading Sensor"
-msgstr ""
+msgstr "Suunta Anturi"
 
-#: src/WatchdogUI.cpp:684
+#: src/WatchdogUI.cpp:614
 msgid "Speed Alarm"
 msgstr "Nopeushälytys"
 
-#: src/WatchdogUI.cpp:695 src/WatchdogUI.cpp:770
+#: src/WatchdogUI.cpp:625 src/WatchdogUI.cpp:700
 msgid "Over Speed"
 msgstr "Ylinopeus"
 
-#: src/WatchdogUI.cpp:695 src/WatchdogUI.cpp:770
+#: src/WatchdogUI.cpp:625 src/WatchdogUI.cpp:700
 msgid "Under Speed"
 msgstr "Alinopeus"
 
-#: src/WatchdogUI.cpp:704
+#: src/WatchdogUI.cpp:634
 msgid "Speed over ground"
 msgstr "Nopeus pohjan suhteen"
 
-#: src/WatchdogUI.cpp:719
+#: src/WatchdogUI.cpp:638 src/WatchdogUI.cpp:985
+msgid "1"
+msgstr "1"
+
+#: src/WatchdogUI.cpp:649
 msgid "knots"
 msgstr "solmua"
 
-#: src/WatchdogUI.cpp:732
+#: src/WatchdogUI.cpp:662
 msgid "Seconds to Average\n"
 "SOG over"
 msgstr "Sekunnit haveriin\n"
 "SOG"
 
-#: src/WatchdogUI.cpp:742
+#: src/WatchdogUI.cpp:672
 msgid "Graphical overlay displays circle with radius of this speed"
 msgstr "Graafinen kuvio näyttää ympyrän tämä nopeus säteenä"
 
-#: src/WatchdogUI.cpp:759
+#: src/WatchdogUI.cpp:689
 msgid "Wind Alarm"
-msgstr ""
+msgstr "Tuulivaroitus"
 
-#: src/WatchdogUI.cpp:766
+#: src/WatchdogUI.cpp:696
 msgid "Mode"
-msgstr ""
+msgstr "Tila"
 
-#: src/WatchdogUI.cpp:770
+#: src/WatchdogUI.cpp:700
 msgid "Direction"
-msgstr ""
+msgstr "Suunta"
 
-#: src/WatchdogUI.cpp:786
+#: src/WatchdogUI.cpp:716
 msgid "Apparent"
-msgstr ""
+msgstr "Suhteellinen"
 
-#: src/WatchdogUI.cpp:786
+#: src/WatchdogUI.cpp:716
 msgid "True Absolute"
-msgstr ""
+msgstr "Tosi Absoluuttinen"
+
+#: src/WatchdogUI.cpp:716
+msgid "True Relative"
+msgstr "Todellinen Suhteellinen"
+
+#: src/WatchdogUI.cpp:722 src/WatchdogUI.cpp:1361
+msgid "?"
+msgstr "?"
+
+#: src/WatchdogUI.cpp:728 src/WatchdogUI.cpp:799 src/WatchdogUI.cpp:821
+msgid "Value"
+msgstr "Arvo"
+
+#: src/WatchdogUI.cpp:735
+msgid "knots/degrees"
+msgstr "solmua/astetta"
+
+#: src/WatchdogUI.cpp:739
+msgid "Sync"
+msgstr "Synkronointi"
+
+#: src/WatchdogUI.cpp:742
+msgid "Range"
+msgstr "Kantama"
+
+#: src/WatchdogUI.cpp:749
+msgid "degrees"
+msgstr "astetta"
+
+#: src/WatchdogUI.cpp:779
+msgid "Weather Alarm"
+msgstr "Säähälytys"
 
 #: src/WatchdogUI.cpp:786
-msgid "True Relative"
-msgstr ""
-
-#: src/WatchdogUI.cpp:792 src/WatchdogUI.cpp:1376
-msgid "?"
-msgstr ""
-
-#: src/WatchdogUI.cpp:798 src/WatchdogUI.cpp:869 src/WatchdogUI.cpp:891
-msgid "Value"
-msgstr ""
-
-#: src/WatchdogUI.cpp:805
-msgid "knots/degrees"
-msgstr ""
-
-#: src/WatchdogUI.cpp:809
-msgid "Sync"
-msgstr ""
-
-#: src/WatchdogUI.cpp:812
-msgid "Range"
-msgstr ""
-
-#: src/WatchdogUI.cpp:819
-msgid "degrees"
-msgstr ""
-
-#: src/WatchdogUI.cpp:849
-msgid "Weather Alarm"
-msgstr ""
-
-#: src/WatchdogUI.cpp:856
 msgid "Variable"
-msgstr ""
+msgstr "Muuttuja"
 
-#: src/WatchdogUI.cpp:860
+#: src/WatchdogUI.cpp:790
 msgid "Relative Humidity"
-msgstr ""
+msgstr "Suhteellinen kosteus"
 
-#: src/WatchdogUI.cpp:872
+#: src/WatchdogUI.cpp:802
 msgid "Rate"
-msgstr ""
+msgstr "Määrä"
 
-#: src/WatchdogUI.cpp:895
+#: src/WatchdogUI.cpp:825
 msgid "1010"
-msgstr ""
+msgstr "1010"
 
-#: src/WatchdogUI.cpp:898
+#: src/WatchdogUI.cpp:828
 msgid "mBar/C/%"
-msgstr ""
+msgstr "mBar/C/%"
 
-#: src/WatchdogUI.cpp:902
+#: src/WatchdogUI.cpp:832
 msgid "In Last"
-msgstr ""
+msgstr "Viimeisenä"
 
-#: src/WatchdogUI.cpp:916
+#: src/WatchdogUI.cpp:846
 msgid "No Graphical overlay"
-msgstr ""
+msgstr "Ei graafista peittokuvaa"
 
-#: src/WatchdogUI.cpp:952
+#: src/WatchdogUI.cpp:882
 msgid "No User Activity for"
 msgstr "Ei ole käyttäjän toimintoja"
 
-#: src/WatchdogUI.cpp:959
+#: src/WatchdogUI.cpp:889
 msgid "minute(s)"
 msgstr "minuutti(a)"
 
-#: src/WatchdogUI.cpp:984
+#: src/WatchdogUI.cpp:914
 msgid "Require following NMEA sentences:"
 msgstr "Tarvitsee seuraavat NMEA-lauseet:"
 
-#: src/WatchdogUI.cpp:988
+#: src/WatchdogUI.cpp:918
 msgid "$GPGGA"
 msgstr "$GPGGA"
 
-#: src/WatchdogUI.cpp:1004
+#: src/WatchdogUI.cpp:934
 msgid "at least every"
 msgstr "vähintään joka"
 
-#: src/WatchdogUI.cpp:1011
+#: src/WatchdogUI.cpp:941
 msgid "seconds"
 msgstr "sekuntti"
+
+#: src/WatchdogUI.cpp:961
+msgid "Depth Alarm"
+msgstr "Syvyys Hälytys"
+
+#: src/WatchdogUI.cpp:972
+msgid "Depth Decreasing"
+msgstr "Syvyys Laskeva"
+
+#: src/WatchdogUI.cpp:972
+msgid "Depth Increasing"
+msgstr "Syvyys Kasvava"
+
+#: src/WatchdogUI.cpp:972
+msgid "Maximum Depth"
+msgstr "Suurin Syvyys"
+
+#: src/WatchdogUI.cpp:972
+msgid "Minimum Depth"
+msgstr "Minimi Syvyys"
+
+#: src/WatchdogUI.cpp:996
+msgid "Feet"
+msgstr "Jalkaa"
+
+#: src/WatchdogUI.cpp:996
+msgid "Meters"
+msgstr "Metriä"
+
+#: src/WatchdogUI.cpp:1012
+msgid "Alarm will trigger if less than the minimum depth, or greater than maximum depth.\n\n"
+"Alarm will trigger if increasing/decreasing at the depth in units per second over the last 10 seconds."
+msgstr "Hälytys laukeaa, jos se on pienempi kuin vähimmäissyvyys, tai suurempi kuin suurin syvyys.\n\n"
+"Hälytys laukeaa, jos syvyys kasvaa tai pienenee yksiköissä sekunnissa viimeisten 10 sekunnin aikana."
 
 #: src/WatchdogUI.cpp:1040
 msgid "GPS course crosses land in <"
@@ -953,93 +949,101 @@ msgstr "Graafinen käyttöliittymän GPS fix näyttää linjan veneestä löydet
 
 #: src/WatchdogUI.cpp:1282
 msgid "Host"
-msgstr ""
+msgstr "Isäntä"
 
-#: src/WatchdogUI.cpp:1291 src/WatchdogUI.cpp:1294
-msgid "192.168.14.1 (tinypilot)"
-msgstr ""
-
-#: src/WatchdogUI.cpp:1292
-msgid "10.10.10.1 (openplotter)"
-msgstr ""
-
-#: src/WatchdogUI.cpp:1293
-msgid "127.0.0.1 (localhost)"
-msgstr ""
-
-#: src/WatchdogUI.cpp:1317
+#: src/WatchdogUI.cpp:1302
 msgid "No Connection"
-msgstr ""
+msgstr "Ei Yhteyttä"
 
-#: src/WatchdogUI.cpp:1328
+#: src/WatchdogUI.cpp:1313
 msgid "Over Temperature"
-msgstr ""
+msgstr "Lämpötilan Ylitys"
 
-#: src/WatchdogUI.cpp:1331
+#: src/WatchdogUI.cpp:1316
 msgid "Over Current"
-msgstr ""
+msgstr "Ylivirta"
+
+#: src/WatchdogUI.cpp:1326
+msgid "Hardware Failures"
+msgstr "Laitteistoviat"
+
+#: src/WatchdogUI.cpp:1338
+msgid "No IMU Sensor"
+msgstr "Ei IMU Sensoria"
 
 #: src/WatchdogUI.cpp:1341
-msgid "Hardware Failures"
-msgstr ""
-
-#: src/WatchdogUI.cpp:1353
-msgid "No IMU Sensor"
-msgstr ""
-
-#: src/WatchdogUI.cpp:1356
 msgid "No Motor Controller"
-msgstr ""
+msgstr "Ei Moottorinohjainta"
 
-#: src/WatchdogUI.cpp:1359
+#: src/WatchdogUI.cpp:1344
 msgid "No Rudder Feedback"
-msgstr ""
+msgstr "Ei Peräsin Palautetta"
 
-#: src/WatchdogUI.cpp:1362
+#: src/WatchdogUI.cpp:1347
 msgid "No Motor Temperature"
-msgstr ""
+msgstr "Ei Moottorin Lämpötilaa"
 
-#: src/WatchdogUI.cpp:1373
+#: src/WatchdogUI.cpp:1358
 msgid "Driver Timeout (No Motor)"
-msgstr ""
+msgstr "Ajurin Aikakatkaisu (Ei Moottoria)"
 
-#: src/WatchdogUI.cpp:1386
+#: src/WatchdogUI.cpp:1371
 msgid "Hardware Errors"
-msgstr ""
+msgstr "Laitteiston Virheet"
 
-#: src/WatchdogUI.cpp:1393
+#: src/WatchdogUI.cpp:1378
 msgid "End Of Travel"
-msgstr ""
+msgstr "Liikeradan pää"
 
-#: src/WatchdogUI.cpp:1396
+#: src/WatchdogUI.cpp:1381
 msgid "Lost Mode"
-msgstr ""
+msgstr "Kadonnut Tila"
 
-#: src/WatchdogUI.cpp:1399
+#: src/WatchdogUI.cpp:1384
 msgid "Servo Saturated"
-msgstr ""
+msgstr "Servo Tyydyttynyt"
 
-#: src/WatchdogUI.cpp:1402
+#: src/WatchdogUI.cpp:1387
 msgid "Power Consumption >"
-msgstr ""
+msgstr "Tehonkulutus"
 
-#: src/WatchdogUI.cpp:1409
+#: src/WatchdogUI.cpp:1394
 msgid "Watts"
-msgstr ""
+msgstr "Wattia"
+
+#: src/WatchdogUI.cpp:1398
+msgid "Course Error >"
+msgstr "Kurssivirhe >"
 
 #: src/WatchdogUI.cpp:1413
-msgid "Course Error >"
-msgstr ""
-
-#: src/WatchdogUI.cpp:1428
 msgid "Steering Errors"
-msgstr ""
+msgstr "Ohjauksen Virheet"
 
-#: src/WatchdogUI.cpp:1460
+#: src/WatchdogUI.cpp:1445
 msgid "Lower Limit"
-msgstr ""
+msgstr "Alaraja"
 
-#: src/WatchdogUI.cpp:1471
+#: src/WatchdogUI.cpp:1456
 msgid "Upper Limit"
-msgstr ""
+msgstr "Yläraja"
+
+#: src/WatchdogUI.h:79
+msgid "WatchDog"
+msgstr "WatchDog"
+
+#: src/WatchdogUI.h:122
+msgid "About Watchdog Properties"
+msgstr "Watchdog ominaisuuksista"
+
+#: src/WatchdogUI.h:152
+msgid "Watchdog Configuration"
+msgstr "Vahdin konfigurointi"
+
+#: src/WatchdogUI.h:177
+msgid "New Alarm"
+msgstr "Uusi hälytys"
+
+#: src/WatchdogUI.h:218
+msgid "Edit Alarm"
+msgstr "Muokkaa hälytystä"
 

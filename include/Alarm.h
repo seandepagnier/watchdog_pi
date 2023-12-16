@@ -27,14 +27,14 @@
 #include <vector>
 #include <list>
 
-class wdDC;
+class piDC;
 class TiXmlElement;
 
 enum AlarmType {ANCHOR, COURSE, SPEED, WIND, WEATHER, DEADMAN, NMEADATA, DEPTH, LANDFALL, BOUNDARY, RUDDER, PYPILOT};
 
 class Alarm : public wxEvtHandler {
 public:
-    static void RenderAll(wdDC &dc, PlugIn_ViewPort &vp);
+    static void RenderAll(piDC &dc, PlugIn_ViewPort &vp);
     static void LoadConfigAll();
     static void SaveConfigAll();
     static void DeleteAll();
@@ -56,7 +56,7 @@ public:
     virtual wxString GetStatus() = 0;
     virtual int GetCount() { return m_count; }
     virtual void NMEAString(const wxString &sentence) {}
-    virtual void Render(wdDC &dc, PlugIn_ViewPort &vp) {}
+    virtual void Render(piDC &dc, PlugIn_ViewPort &vp) {}
     virtual wxWindow *OpenPanel(wxWindow *parent) = 0;
     virtual void SavePanel(wxWindow *panel) = 0;
     virtual void LoadConfig(TiXmlElement *e) = 0;
