@@ -72,7 +72,7 @@ fi
 # is not created as required.
 #make VERBOSE=1 tarball || make VERBOSE=1 tarball
 make
-make install
+#make install
 make package
 make package
 
