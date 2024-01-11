@@ -146,6 +146,13 @@ void WatchdogDialog::UpdateAlarms()
 
     for(unsigned int i=0; i<Alarm::s_Alarms.size(); i++)
         UpdateStatus(i);
+
+    if(Alarm::s_Alarms.size() == 0) {
+        wxListItem item;
+        m_lStatus->InsertItem(0, item);
+        m_lStatus->SetItem(0, ALARM_TYPE, _("right click to add alarms"));
+        m_lStatus->SetColumnWidth(ALARM_TYPE, wxLIST_AUTOSIZE);
+    }
 }
 
 void WatchdogDialog::UpdateStatus(int index)
@@ -174,7 +181,7 @@ void WatchdogDialog::OnLeftDown( wxMouseEvent& event )
 
     wxPoint pos = event.GetPosition();
     int flags = 0;
-    long index = m_lStatus->HitTest(pos, flags);
+    long index = HitTest(pos, flags);
     if(index < 0)
         return;
 
@@ -191,7 +198,7 @@ void WatchdogDialog::OnRightDown( wxMouseEvent& event )
 {
     wxPoint pos = event.GetPosition();
     int flags = 0;
-    long index = m_lStatus->HitTest(pos, flags);
+    long index = HitTest(pos, flags);
     if(index >= 0)
         m_menualarm = Alarm::s_Alarms[index];
 
@@ -209,7 +216,7 @@ void WatchdogDialog::OnDoubleClick( wxMouseEvent& event )
 
     wxPoint pos = event.GetPosition();
     int flags = 0;
-    long index = m_lStatus->HitTest(pos, flags);
+    long index = HitTest(pos, flags);
     if(index < 0) {
         // double click but not on alarm, add a new one
         wxCommandEvent e;
@@ -280,4 +287,12 @@ void WatchdogDialog::OnDeleteAll( wxCommandEvent& event )
 void WatchdogDialog::OnConfiguration( wxCommandEvent& event )
 {
     m_watchdog_pi.ShowConfigurationDialog( this );
+}
+
+long WatchdogDialog::HitTest(wxPoint pos, int flags)
+{
+    if(Alarm::s_Alarms.size() == 0)
+        return -1;
+
+    return m_lStatus->HitTest(pos, flags);
 }
