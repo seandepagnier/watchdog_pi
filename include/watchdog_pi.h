@@ -78,7 +78,7 @@ double heading_resolve(double degrees, double offset=0);
 
 #include "Alarm.h"
 
-class wdDC;
+class piDC;
 class WatchdogDialog;
 class ConfigurationDialog;
 class WatchdogPropertiesDialog;
@@ -90,7 +90,7 @@ enum {
     ID_ALARM_VISIBLE
 };
 
-class watchdog_pi : public wxEvtHandler, public opencpn_plugin_116
+class watchdog_pi : public wxEvtHandler, public opencpn_plugin_117
 {
 public:
 
@@ -103,6 +103,8 @@ public:
       int GetAPIVersionMinor();
       int GetPlugInVersionMajor();
       int GetPlugInVersionMinor();
+      int GetPlugInVersionPatch();	  
+      int GetPlugInVersionPost();	  
       wxBitmap *GetPlugInBitmap();
       wxString GetCommonName();
       wxString GetShortDescription();
@@ -115,7 +117,7 @@ public:
 
       bool RenderOverlay(wxDC &dc, PlugIn_ViewPort *vp);
       bool RenderGLOverlay(wxGLContext *pcontext, PlugIn_ViewPort *vp);
-      void Render(wdDC &dc, PlugIn_ViewPort &vp);
+      void Render(piDC &dc, PlugIn_ViewPort &vp);
 
       void OnTimer( wxTimerEvent & );
 

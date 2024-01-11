@@ -17,18 +17,16 @@
 ## *   along with this program; if not, write to the                         *
 ## *   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx,                                       *
 ## *   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                                       *
-## ***
 #-----------------------------------------------------------------------------
-# CI-CMake: v1.0.253.0 06/08/2023  # DD/MM/YYYY format  CI-CMake Author: Jon Gough
+# Frontend2 Author: Jon Gough 
+# Testplugin(TP) v1.0.260 07/10/2023 DD/MM/YYYY format
+# buildCI:yes useODAPI:no validateJSON:no
 # ---------------------------------------------------------------------------
-## buildCI:yes useODAPI:yes validateJSON:no
+## -- When changing this file do NOT change the order of the sections.    -- ##
+## -- Make changes only between the section blocks identified             -- ##
+## -- The whole configuration process relies on this sequence for success.-- ##
 ##
-## ----- When changing this file do NOT change the order in which sections occur        ----- ##
-## ----- Changes should only be made between the section blocks that identify where     ----- ##
-## ----- these changes should be. The whole configuration process relies on this        ----- ##
-## ----- sequence to be successful                                                      ----- ##
-## ----- Modify section below to include all the details for your plugin ----- ##
-##
+## -- Modify section below to include all the details for your plugin.    -- ##
 
 set(CMLOC "CMakeLists: ")
 
@@ -57,20 +55,19 @@ set(LONG_DESCRIPTION "Set alarms for changing conditions, boundaries, cog, landf
 
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "4")
-set(VERSION_PATCH "60")
+set(VERSION_PATCH "102")
 set(VERSION_TWEAK "0")
-set(VERSION_DATE "06/08/2023") # DD/MM/YYYY format
+set(VERSION_DATE  "18/10/2023")#DD/MM/YYYY format
 set(OCPN_MIN_VERSION "ov58")
+
 set(OCPN_API_VERSION_MAJOR "1")
-set(OCPN_API_VERSION_MINOR "16")
-set(TP_COMMENT " Release for O58 ")
+set(OCPN_API_VERSION_MINOR "17")
+set(TP_COMMENT "  * Release using CI")
 
 set(PARENT "opencpn")
 
-#
-#Used to set up a local webserver with git loaded, for testing purposes.
-#Now set in plugin configure, needed to build flatpak, also locally.
-
+#Use to set up a local webserver with git installed.
+#Default is github.com. Now set in pluginconfigure.cmake
 #set(GIT_REPOSITORY_SERVER "github.com")
 
 ## Specifies Cloudsmith upload repository suffix for each catalog
@@ -78,37 +75,30 @@ set(PROD "prod")   #Standard Repos
 set(BETA "beta")   #Standard Repos
 set(ALPHA "alpha") #Standard Repos
 
-# Set if Cloudsmith Base Repository name does not match your Git Repository name.
+# Set if  Cloudsmith Base Repository name does not match your Git Repository name.
 #set(CLOUDSMITH_BASE_REPOSITORY "${GIT_REPOSITORY_NAME}")
+#set(CLOUDSMITH_BASE_REPOSITORY "opencpn-plugins")  #Ricks's customization
 set(CLOUDSMITH_BASE_REPOSITORY "watchdog")  #without the pi
+
 # Set the following to use OpenCPN cloudsmith repositories instead of own repositories
 set(CLOUDSMITH_USER "opencpn")
-#set(CLOUDSMITH_USER "rick-gleason")
+# set(CLOUDSMITH_USER "rick-gleason")
 
-# Set Plugin info-url, summary and description
 set(XML_INFO_URL "https://opencpn.org/OpenCPN/plugins/watchdog.html")
 set(XML_SUMMARY ${SHORT_DESCRIPTION})
 set(XML_DESCRIPTION ${LONG_DESCRIPTION})
 
-##
-## ----- Modify above to include all the plugin details --------- ##
-## ----- Modify below for plugin special requirements------------ ##
-##
+## ----- Modify section above to include all the details for your plugin ------- ##
+## ----- Modify section below if there are special requirements for the plugin --##
 
 option(PLUGIN_USE_SVG "Use SVG graphics" ON)
 
 set(CMAKE_CXX_STANDARD 11)
 
-# Use local version of GLU library
-set(USE_LOCAL_GLU TRUE)
 # Prefer libGL.so to libOpenGL.so, see CMP0072
-set(OpenGL_GL_PREFERENCE "LEGACY")
-# Don't use local version of GLU library
-#set(USE_LOCAL_GLU FALSE)
-
-#Turn ON, only fix found for GL_texture2d, glDisable, GL_BLEND  errors
+set(OpenGL_GL_PREFERENCE "LEGACY")   #not operational
+# For WD turn ON, only fix found for GL_texture2d, glDisable, GL_BLEND  errors
 option(USE_GL "Enable OpenGL support" ON)
-
 message(STATUS "${CMLOC}USE_GL: ${USE_GL}")
 
 if("${CMAKE_BUILD_TYPE}" STREQUAL "")
@@ -117,40 +107,39 @@ endif("${CMAKE_BUILD_TYPE}" STREQUAL "")
 set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "" "Debug" "Release" "RelWithDebInfo" "MinSizeRel")
 message(STATUS "${CMLOC}Build type: ${CMAKE_BUILD_TYPE}")
 
-##
-## ----- The statements below are used to setup standard variables that are required by the CMAKE process - do not remove ----- ##
-##
+## ----- Statements below used to setup standard variables required by the CMAKE process -- Do not remove - ##
 
 project(${PACKAGE})
+
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
-##=======================================
+##========================================================
+
 include("PluginSetup")
-##=======================================
-## ----- Above is used to setup CMAKE required standard variables - do not remove ----- ##
-## ----- Modify section below if there are special requirements for the plugin ----- ##
-##
+
+##========================================================
+## ----- Above sets up standard variables required by CMAKE - Do not remove -----##
+## ----- Modify section below if there are special requirements for the plugin --##
 
 set(CMAKE_VERBOSE_MAKEFILE "Activate verbose mode for make files" ON)
 
 option(Plugin_CXX11 "Use c++11" OFF)
 
+## ----- Modify section above if there are special requirements for the plugin --##
+## ----- Do not change next section - needed to configure build process ---------##
+##===========================================================
 
-## ----- Modify section above if there are special requirements for the plugin ----- ##
-## ----- do not change next section - needed to configure build process ----- ##
-#========================================================
 include("PluginConfigure")
-#========================================================
-## ----- do not change section above - needed to configure build process ----- ##
-## ----- Change below to match project requirements for source, headers, etc. ----- ##
+
+##===========================================================
+## ----- Do not change section above - needed to configure build process --------##
+## ----- Change below to match project requirements for source, headers, etc. ---##
 
 add_definitions(-DUSE_S57)
 
-# ----Remember to Add your project Set(SRCS and set(HDRS  etc..
-# ++++++++++++++Section below is direct from Watchdog +++++++++##
+## ---- Section Below - Add your project SET(SRCS and SET(HDRS  etc..
 
-SET (SRCS
-  src/wddc.cpp
+SET(SRCS
   src/watchdog_pi.cpp
   src/WatchdogDialog.cpp
   src/WatchdogPropertiesDialog.cpp
@@ -163,7 +152,6 @@ SET (SRCS
   src/icons.cpp
   )
 
-
 SET(HDRS
   include/AIS_Target_Info.h
   include/Alarm.h
@@ -172,133 +160,105 @@ SET(HDRS
   include/icons.h
   include/msvcdefs.h
   include/NewAlarmDialog.h
-  extinclude/ODAPI.h
   include/pypilot_client.h
   include/watchdog_pi.h
   include/WatchdogDialog.h
   include/WatchdogPropertiesDialog.h
   src/WatchdogUI.h
-  include/wddc.h
   include/WeatherPanel.h
   include/WindPanel.h
   include/wxWTranslateCatalog.h
   )
 
-# TexFont.cpp has to be here it will not compile
-# also src/TexFont.h has to exist AND ocpnhdrs/TexFont.h is not needed.
-set(OCPNSRC ocpnsrc/TexFont.cpp)
-
-set(EXTSRC
-)
-
-set(EXTINCLUDE
-    extinclude/ODAPI.h
-    extinclude/ODJSONSchemas.h
-)
-
-set(LIBSSRC libs/wxJSON/src/jsonreader.cpp libs/wxJSON/src/jsonval.cpp libs/wxJSON/src/jsonwriter.cpp)
-
-set(LIBHDRS
-#    libs/GL/gl.h
-#    libs/GL/gl_private.h
-#    libs/GL/glext.h
-#    libs/GL/glu.h
-    libs/wxJSON/include/json_defs.h
-    libs/wxJSON/include/jsonreader.h
-    libs/wxJSON/include/jsonval.h
-    libs/wxJSON/include/jsonwriter.h)
 
 add_definitions(-DPLUGIN_USE_SVG)
 
-set(EXTINCLUDE_DIR ${EXTINCLUDE_DIR} extinclude libs/ocpn-api/)
+## ----- Section above - Add your project SET(SRCS and SET(HDRS  etc.-------##
+## ----- If using JSON validation in plugin section below is needed --------##
 
-#
-# ----- If using JSON validation in plugin section below is needed ----- ##
-#
+# Do not need Json Schema Validation
 
-# Not doing JSON Validation for this plugin - probably should!
+## ----- If using JSON validation in plugin section above is needed --------##
 
-
-#
-# ----- If using JSON validation in plugin section above is needed ----- ##
-#
 
 ##=============================================================
-# Modify/configure 'Include' Directories below for the Plugin
+## Change as required to collect all the set( headers and SRCS
+## This add_library  can be used in conditionals below.
+##=============================================================
+
+SET(SRC ${SRCS} ${HDRS} )
+
+##=============================================================
+## Modify/configure 'Include' Directories below for the Plugin
 ##=============================================================
 
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/include)
-include_directories(BEFORE ${PROJECT_SOURCE_DIR}/ocpninclude)
-include_directories(BEFORE ${PROJECT_SOURCE_DIR}/${EXTINCLUDE_DIR})
-include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/)
-include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/GL)
-include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/glu/include)
-include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/ocpn-api)
-include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/wxJSON/include)
 
-include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/jsoncpp)
-include_directories(BEFORE ${PROJECT_SOURCE_DIR}/libs/nmea0183/src)
+## Change target_sources to match your project needs.
+##==============================================================
 
-#
-# ----- Change below to match project requirements for android build ----- ##
-#
+target_sources(${PACKAGE_NAME} PUBLIC ${SRC} )
 
-if(QT_ANDROID)
-    include_directories( ${PROJECT_SOURCE_DIR}/extinclude/GLES2)
-endif(QT_ANDROID)
+##==============================================================
 
-##
-## ----- Change above to match project requirements for android build ----- ##
-##
-
-## Statement below is required to collect all the set( headers and SRCS  - Adjust as required
-## This add_library  can be used in conditionals below.
-#======================================================================================
-target_sources(${PACKAGE_NAME} PUBLIC ${SRCS} ${HDRS} ${OCPNSRC} ${EXTSRC} ${LIBSSRC} )
-#=======================================================================================
 if(NOT OCPN_FLATPAK_CONFIG)
-    # Build environment not available when flatpak is being configured so following statements will not work
+    # Build environment not available when flatpak is being configured 
+	# so following statements will not work
     message(STATUS "${CMLOC}Adding target link libraries to ${PACKAGE_NAME}")
 
-    add_subdirectory(libs/jsoncpp)
-    add_subdirectory(libs/nmea0183)
-    add_subdirectory(libs/tinyxml)
+    if(WIN32)
+        add_subdirectory(opencpn-libs/WindowsHeaders)
+        target_link_libraries(${PACKAGE_NAME} windows::headers)
+    endif()
 
-    target_link_libraries(${PACKAGE_NAME} ocpn::jsoncpp)
-    target_link_libraries(${PACKAGE_NAME} ocpn::nmea0183)
+    add_subdirectory(opencpn-libs/api-17)
+    target_link_libraries(${PACKAGE_NAME} ocpn::api)
+
+    add_subdirectory(opencpn-libs/tinyxml)
     target_link_libraries(${PACKAGE_NAME} ocpn::tinyxml)
+
+    add_subdirectory(opencpn-libs/odapi)
+    target_link_libraries(${PACKAGE_NAME} ocpn::odapi)
+
+    add_subdirectory(opencpn-libs/jsonlib)
+    target_link_libraries(${PACKAGE_NAME} ocpn::jsonlib)
+
+    add_subdirectory(opencpn-libs/wxJSON)
+    target_link_libraries(${PACKAGE_NAME} ocpn::wxjson)
+
+    add_subdirectory(opencpn-libs/plugin_dc)
+    target_link_libraries(${PACKAGE_NAME} ocpn::plugin-dc)
+
+    add_subdirectory(opencpn-libs/nmea0183)
+    target_link_libraries(${PACKAGE_NAME} ocpn::nmea0183)
+
 endif(NOT OCPN_FLATPAK_CONFIG)
 
 add_definitions(-DTIXML_USE_STL)
 
-#
-# ----- If using JSON validation in plugin section below is needed ----- ##
-#
+##
+## ----- If using JSON validation section below is needed ---------------##
+##
 
-# Not doing JSON_SCHEMA_VALIDATOR
-#
-# ----- If using JSON validation in plugin section above is needed ----- ##
-#
+# Do not need Json Schema Validation
 
-## ----- Change above to match project requirements ----- ##
 
-## ----- do not change next section - needed to configure build process ----- ##
+##------- Change below to match project requirements --------------------##
 
 # Needed for android builds
 if(QT_ANDROID)
     include_directories(BEFORE ${qt_android_include})
 endif(QT_ANDROID)
 
-# Needed for all builds
-##=======================================
+## Needed for all builds Do not change - needed to build app -------------##
+##===============================================================
+
 include("PluginInstall")
 include("PluginLocalization")
 include("PluginPackage")
-##=======================================
 
-##
-## ----- do not change section above - needed to configure build process ----- ##
-##
+##================================================================
+## ----- Do not change section above - needed to configure build process --##
 
 message(STATUS "${CMLOC}include directories: ")
 get_property(dirs DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY INCLUDE_DIRECTORIES)
