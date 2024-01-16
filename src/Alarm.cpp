@@ -45,6 +45,10 @@
 #include "nmea0183.h"
 #include "ODAPI.h"
 
+#ifdef __OCPN__ANDROID__
+#include "qdebug.h"
+#endif
+
 static double deg2rad(double deg)
 {
     return (deg * M_PI / 180.0);
@@ -391,6 +395,8 @@ public:
 
     void OnTimer( wxTimerEvent &tEvent )
     {
+        qDebug() << "SpeedAlarm::OnTimer";
+
         Alarm::OnTimer( tEvent );
         double sog = g_watchdog_pi->LastFix().Sog;
         if(!isnan(sog))
@@ -2989,6 +2995,14 @@ void Alarm::SaveConfigAll()
         wxLogMessage("Watchdog: " + wxString(_("failed to save")) + ": " + configuration);
 }
 
+void Alarm::StopAll()
+{
+    for(unsigned int i=0; i<s_Alarms.size(); i++){
+        if(s_Alarms[i])
+            s_Alarms[i]->StopTimer();
+    }
+}
+
 void Alarm::DeleteAll()
 {
     for(unsigned int i=0; i<s_Alarms.size(); i++)
@@ -3040,6 +3054,11 @@ Alarm::Alarm(bool gfx, int interval)
 {
     m_Timer.Connect(wxEVT_TIMER, wxTimerEventHandler( Alarm::OnTimer ), NULL, this);
     m_Timer.Start(m_interval * 1000, wxTIMER_CONTINUOUS);
+}
+Alarm::~Alarm()
+{
+    qDebug() << "Alarm DTOR";
+    Alarm::StopTimer();
 }
 
 wxString Alarm::Action()
@@ -3110,6 +3129,8 @@ void Alarm::SaveConfigBase(TiXmlElement *c)
 
 void Alarm::OnTimer( wxTimerEvent & )
 {
+    qDebug() << "Alarm::OnTimer";
+
     wxFileConfig *pConf = GetOCPNConfigObject();
     pConf->SetPath (  "/Settings/Watchdog"  );
 
@@ -3152,4 +3173,11 @@ void Alarm::OnTimer( wxTimerEvent & )
         for(unsigned int i=0; i<Alarm::s_Alarms.size(); i++)
             if(Alarm::s_Alarms[i] == this)
                 g_watchdog_pi->m_WatchdogDialog->UpdateStatus(i);
+}
+
+void Alarm::StopTimer()
+{
+    qDebug() << "Alarm::StopTimer";
+    m_Timer.Disconnect(wxEVT_TIMER, wxTimerEventHandler( Alarm::OnTimer ), NULL, this);
+    m_Timer.Stop();
 }

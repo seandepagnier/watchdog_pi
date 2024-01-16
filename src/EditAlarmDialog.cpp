@@ -41,6 +41,8 @@ extern wxString    g_ReceivedODVersionMessage;
 EditAlarmDialog::EditAlarmDialog(wxWindow* parent, Alarm *alarm)
     : EditAlarmDialogBase(parent), m_alarm(alarm)
 {
+    wxFont *dFont = GetOCPNScaledFont_PlugIn(_("Dialog"));
+    SetFont(*dFont);
     m_cbSound->SetValue(m_alarm->m_bSound);
     m_fpSound->SetPath(m_alarm->m_sSound);
 
@@ -59,9 +61,31 @@ EditAlarmDialog::EditAlarmDialog(wxWindow* parent, Alarm *alarm)
     if(alarm->Type() == _("NMEA Data") || alarm->Type() == _("Deadman"))
         m_cbNoData->Disable();
 
-    m_fgSizer->Insert( 0, m_alarm->OpenPanel(this), 1, wxEXPAND, 5 );
 
+#ifdef __OCPN__ANDROID__
+    m_fgSizer->Insert( 0, m_alarm->OpenPanel(m_scrollWin), 0, wxEXPAND, 5 );
+    Layout();
+
+    wxRect tbRect = GetMasterToolbarRect();
+    wxPoint pNew;
+    pNew.x = tbRect.x + tbRect.width + 4;
+    pNew.y = tbRect.x + tbRect.width + 4;  // Reasonable spot
+    Move( pNew);
+
+    //int widthAvail =
+    //        GetCanvasByIndex(0)->GetClientSize().x - pNew.x;
+    //int heightAvail =
+    //        GetCanvasByIndex(0)->GetClientSize().y - pNew.y;
+    //wxSize size;
+    //size.x = widthAvail;
+    //size.y = heightAvail;
     m_fgSizer->Fit( this );
+
+#else
+    m_fgSizer->Insert( 0, m_alarm->OpenPanel(this), 1, wxEXPAND, 5 );
+    m_fgSizer->Fit( this );
+#endif
+
 }
 
 void EditAlarmDialog::Save()

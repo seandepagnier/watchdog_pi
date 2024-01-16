@@ -38,6 +38,10 @@
 #include "icons.h"
 #include "AIS_Target_Info.h"
 
+#ifdef __OCPN__ANDROID__
+#include "qdebug.h"
+#endif
+
 Json::Value g_ReceivedPathGUIDJSONMsg;
 wxString    g_ReceivedPathGUIDMessage;
 Json::Value g_ReceivedBoundaryTimeJSONMsg;
@@ -159,13 +163,8 @@ int watchdog_pi::Init(void)
     ( watchdog_pi::OnTimer ), NULL, this);
     m_Timer.Start(3000);
 
-    m_WatchdogDialog = new WatchdogDialog(*this, GetOCPNCanvasWindow());
-    m_ConfigurationDialog = new ConfigurationDialog(*this, m_WatchdogDialog);
-
-    wxIcon icon;
-    icon.CopyFromBitmap(*_img_watchdog);
-    m_WatchdogDialog->SetIcon(icon);
-    m_ConfigurationDialog->SetIcon(icon);
+    m_WatchdogDialog = NULL;  //new WatchdogDialog(*this, GetOCPNCanvasWindow());
+    m_ConfigurationDialog = NULL; //new ConfigurationDialog(*this, m_WatchdogDialog);
 
     m_bWatchdogDialogShown = false;
     m_cursor_time = wxDateTime::Now();
@@ -187,6 +186,8 @@ int watchdog_pi::Init(void)
 
 bool watchdog_pi::DeInit(void)
 {
+    qDebug() << "DeInit()";
+
     Alarm::SaveConfigAll();
     Alarm::DeleteAll();
 
@@ -195,11 +196,14 @@ bool watchdog_pi::DeInit(void)
     {
         if(m_ConfigurationDialog) {
             delete m_ConfigurationDialog;
+            m_ConfigurationDialog = NULL;
         }
-        m_WatchdogDialog->Close();
-        delete m_WatchdogDialog;
-        m_WatchdogDialog = NULL;
-        m_ConfigurationDialog = NULL;
+
+        if (m_WatchdogDialog) {
+            m_WatchdogDialog->Close();
+            delete m_WatchdogDialog;
+            m_WatchdogDialog = NULL;
+        }
     }
 
     m_Timer.Stop();
@@ -301,7 +305,7 @@ void watchdog_pi::OnToolbarToolCallback(int id)
 {
     if(!m_WatchdogDialog)
     {
-        m_WatchdogDialog = new WatchdogDialog(*this, GetOCPNCanvasWindow());
+        m_WatchdogDialog = new WatchdogDialog(*this, GetCanvasByIndex(0));
         m_ConfigurationDialog = new ConfigurationDialog(*this, m_WatchdogDialog);
 
         wxIcon icon;
