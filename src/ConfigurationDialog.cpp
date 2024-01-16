@@ -46,9 +46,14 @@ ConfigurationDialog::ConfigurationDialog( watchdog_pi &_watchdog_pi, wxWindow* p
     m_rbVisible->SetValue(enabled == 3);
     m_rbNever->SetValue(enabled == 0);
 
+#ifdef __OCPN__ANDROID__
+    wxFont *dFont = GetOCPNScaledFont_PlugIn(_("Dialog"));
+    SetFont(*dFont);
+#else
     wxFont font(pConf->Read ( _T ( "Font" ), wxFont(14, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL).GetNativeFontInfoDesc()));
     m_font->SetFont(font);
     m_watchdog_pi.m_WatchdogDialog->m_lStatus->SetFont(font);
+#endif
 }
 
 void ConfigurationDialog::OnEnabled( wxCommandEvent& event )

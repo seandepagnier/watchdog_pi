@@ -31,6 +31,10 @@
 #include "NewAlarmDialog.h"
 #include "EditAlarmDialog.h"
 
+#ifdef __OCPN__ANDROID__
+#include "qdebug.h"
+#endif
+
 /* XPM */
 const char * box_xpm[] = {
 "20 20 3 1",
@@ -91,36 +95,117 @@ enum AlarmStatus { ALARM_ENABLED, ALARM_TYPE, ALARM_STATUS, ALARM_COUNT };
 WatchdogDialog::WatchdogDialog( watchdog_pi &_watchdog_pi, wxWindow* parent)
     : WatchdogDialogBase( parent ), m_watchdog_pi(_watchdog_pi)
 {
+    //wxFont *dFont = GetOCPNScaledFont_PlugIn(_("Dialog"));
+    //SetFont(*dFont);
+
     wxFileConfig *pConf = GetOCPNConfigObject();
 
     pConf->SetPath ( _T( "/Settings/Watchdog" ) );
 
+    wxSize size;
+#ifndef __OCPN__ANDROID__
 #ifdef __WXGTK__
     Move(0, 0);        // workaround for gtk autocentre dialog behavior
 #endif
     Move(pConf->Read ( _T ( "DialogPosX" ), 20L ), pConf->Read ( _T ( "DialogPosY" ), 20L ));
-    wxSize size;
     pConf->Read ( _T ( "DialogWidth" ), &size.x, GetSize().x);
     pConf->Read ( _T ( "DialogHeight" ), &size.y, GetSize().y);
+#else
+    wxRect tbRect = GetMasterToolbarRect();
+    wxPoint pNew;
+    pNew.x = tbRect.x + tbRect.width + 4;
+    pNew.y = tbRect.x + tbRect.width + 4;  // Reasonable spot
+    int widthAvail =
+        GetCanvasByIndex(0)->GetClientSize().x - pNew.x;
 
+    Move( pNew);
+    size.x = widthAvail;
+    size.y = 5 * GetCharHeight();   //Allow a few lines.
+#endif
+
+    int bmsize;
+#ifndef __OCPN__ANDROID__
     wxImageList *imglist = new wxImageList(20, 20, true, 1);
     imglist->Add(wxBitmap(box_xpm));
     imglist->Add(wxBitmap(check_xpm));
     m_lStatus->AssignImageList(imglist, wxIMAGE_LIST_SMALL);
 
-    m_lStatus->InsertColumn(ALARM_ENABLED, _T("X"));
-    m_lStatus->InsertColumn(ALARM_TYPE, _("Type"));
-    m_lStatus->InsertColumn(ALARM_STATUS, _("Status"));
-    m_lStatus->InsertColumn(ALARM_COUNT, _("Count"));
+#else
+    bmsize = m_lStatus->GetCharHeight() * 2;
+    //wxRect tbRect2 = GetMasterToolbarRect();
+    //bmsize = tbRect2.width / 2;
+
+    ///Android/data/org.opencpn.opencpn/files/uidata/markicons/Authority-Health.svg
+    wxImageList *imglist = new wxImageList(bmsize, bmsize, true, 1);
+    int imageRefSize = bmsize;
+#if 1
+//  wxString UserIconPath = g_Platform->GetSharedDataDir() + _T("uidata") +
+//                          wxFileName::GetPathSeparator();
+    wxString iconpath = *GetpPrivateApplicationDataLocation();
+    iconpath.Append(wxFileName::GetPathSeparator());
+    iconpath.Append("uidata");
+    iconpath.Append(wxFileName::GetPathSeparator());
+    qDebug() << "------------------------iconPath" << iconpath.ToStdString().c_str();
+
+    wxFileName fn;
+    fn.SetPath(GetPluginDataDir("watchdog_pi"));
+    fn.AppendDir(_T("data"));
+
+    fn.SetFullName(_T("watchdog_pi.svg"));
+    wxBitmap bm1 = GetBitmapFromSVGFile(fn.GetFullPath(), imageRefSize, imageRefSize);
+
+//    wxBitmap bm1 = GetBitmapFromSVGFile(iconpath + "markicons/Service-Laundry.svg", imageRefSize, imageRefSize);
+    imglist->Add(bm1);
+
+    fn.SetFullName(_T("watchdog_pi.svg"));
+    wxBitmap bm2 = GetBitmapFromSVGFile(fn.GetFullPath(), imageRefSize, imageRefSize);
+  //wxBitmap bm2 = GetBitmapFromSVGFile(iconpath + "markicons/Service-Marina.svg", imageRefSize, imageRefSize);
+    imglist->Add(bm2);
+
+
+
+
+#else
+    wxImage im1(box_xpm);
+    im1.Scale(bmsize, bmsize, wxIMAGE_QUALITY_HIGH);
+    imglist->Add(wxBitmap(im1, -1));
+
+    wxImage im2(check_xpm);
+    im1.Scale(bmsize, bmsize, wxIMAGE_QUALITY_HIGH);
+    imglist->Add(wxBitmap(im2, -1));
+#endif
+
+    m_lStatus->AssignImageList(imglist, wxIMAGE_LIST_SMALL);
+    m_lStatus->GetHandle()->setIconSize(QSize(bmsize, bmsize));
+
+#endif
+
+    m_lStatus->InsertColumn(ALARM_ENABLED, "X");
+    m_lStatus->InsertColumn(ALARM_TYPE, "T");
+    m_lStatus->InsertColumn(ALARM_STATUS, "S");
+    m_lStatus->InsertColumn(ALARM_COUNT, "C");
+
+#ifndef __OCPN__ANDROID__
     m_lStatus->SetColumnWidth(ALARM_ENABLED, wxLIST_AUTOSIZE);
     m_lStatus->SetColumnWidth(ALARM_TYPE, wxLIST_AUTOSIZE);
     m_lStatus->SetColumnWidth(ALARM_STATUS, wxLIST_AUTOSIZE);
     m_lStatus->SetColumnWidth(ALARM_COUNT, wxLIST_AUTOSIZE);
+#else
+    m_lStatus->SetColumnWidth(ALARM_ENABLED, bmsize);
+    m_lStatus->SetColumnWidth(ALARM_TYPE, m_lStatus->GetCharWidth() * 10);
+    m_lStatus->SetColumnWidth(ALARM_STATUS, m_lStatus->GetCharWidth() * 10);
+    m_lStatus->SetColumnWidth(ALARM_COUNT, m_lStatus->GetCharWidth() * 3);
+#endif
 
+#ifndef __OCPN__ANDROID__
     this->GetSizer()->Fit( this );
     this->Layout();
     SetSize(size);
     this->SetSizeHints( 250, 100 );
+#else
+    SetSize(size);
+#endif
+
 }
 
 WatchdogDialog::~WatchdogDialog()
@@ -190,8 +275,14 @@ void WatchdogDialog::OnLeftDown( wxMouseEvent& event )
 void WatchdogDialog::OnRightDown( wxMouseEvent& event )
 {
     wxPoint pos = event.GetPosition();
+#ifdef __OCPN__ANDROID__
+    pos.y -= GetPosition().y;
+//    qDebug() << pos.y << pos.x;
+#endif
+
     int flags = 0;
     long index = m_lStatus->HitTest(pos, flags);
+
     if(index >= 0)
         m_menualarm = Alarm::s_Alarms[index];
 
