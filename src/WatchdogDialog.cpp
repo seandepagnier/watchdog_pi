@@ -147,7 +147,6 @@ WatchdogDialog::WatchdogDialog( watchdog_pi &_watchdog_pi, wxWindow* parent)
 
     m_lStatus->AssignImageList(imglist, wxIMAGE_LIST_SMALL);
     m_lStatus->GetHandle()->setIconSize(QSize(imageRefSize, imageRefSize));
-
 #endif
 
     m_lStatus->InsertColumn(ALARM_ENABLED, "X");

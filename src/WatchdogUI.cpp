@@ -395,7 +395,6 @@ NewAlarmDialogBase::NewAlarmDialogBase( wxWindow* parent, wxWindowID id, const w
 
 	m_lAlarmType = new wxListCtrl( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_NO_HEADER|wxLC_REPORT|wxLC_SINGLE_SEL );
     m_lAlarmType-SetFont(*dFont);
-    //m_lAlarmType->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
 
 	fgSizer40->Add( m_lAlarmType, 0, wxALL|wxEXPAND, 5 );
 
