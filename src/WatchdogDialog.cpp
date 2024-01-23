@@ -123,7 +123,6 @@ WatchdogDialog::WatchdogDialog( watchdog_pi &_watchdog_pi, wxWindow* parent)
     size.y = 5 * GetCharHeight();   //Allow a few lines.
 #endif
 
-    int bmsize;
 #ifndef __OCPN__ANDROID__
     wxImageList *imglist = new wxImageList(20, 20, true, 1);
     imglist->Add(wxBitmap(box_xpm));
@@ -131,53 +130,23 @@ WatchdogDialog::WatchdogDialog( watchdog_pi &_watchdog_pi, wxWindow* parent)
     m_lStatus->AssignImageList(imglist, wxIMAGE_LIST_SMALL);
 
 #else
-    bmsize = m_lStatus->GetCharHeight() * 2;
-    //wxRect tbRect2 = GetMasterToolbarRect();
-    //bmsize = tbRect2.width / 2;
-
-    ///Android/data/org.opencpn.opencpn/files/uidata/markicons/Authority-Health.svg
-    wxImageList *imglist = new wxImageList(bmsize, bmsize, true, 1);
-    int imageRefSize = bmsize;
-#if 1
-//  wxString UserIconPath = g_Platform->GetSharedDataDir() + _T("uidata") +
-//                          wxFileName::GetPathSeparator();
-    wxString iconpath = *GetpPrivateApplicationDataLocation();
-    iconpath.Append(wxFileName::GetPathSeparator());
-    iconpath.Append("uidata");
-    iconpath.Append(wxFileName::GetPathSeparator());
-    qDebug() << "------------------------iconPath" << iconpath.ToStdString().c_str();
+    int imageRefSize = m_lStatus->GetCharHeight() * 15 / 10;
+    wxImageList *imglist = new wxImageList(imageRefSize, imageRefSize, true, 1);
 
     wxFileName fn;
     fn.SetPath(GetPluginDataDir("watchdog_pi"));
     fn.AppendDir(_T("data"));
 
-    fn.SetFullName(_T("watchdog_pi.svg"));
+    fn.SetFullName(_T("checkbox_clear.svg"));
     wxBitmap bm1 = GetBitmapFromSVGFile(fn.GetFullPath(), imageRefSize, imageRefSize);
-
-//    wxBitmap bm1 = GetBitmapFromSVGFile(iconpath + "markicons/Service-Laundry.svg", imageRefSize, imageRefSize);
     imglist->Add(bm1);
 
-    fn.SetFullName(_T("watchdog_pi.svg"));
+    fn.SetFullName(_T("checkbox_set.svg"));
     wxBitmap bm2 = GetBitmapFromSVGFile(fn.GetFullPath(), imageRefSize, imageRefSize);
-  //wxBitmap bm2 = GetBitmapFromSVGFile(iconpath + "markicons/Service-Marina.svg", imageRefSize, imageRefSize);
     imglist->Add(bm2);
 
-
-
-
-#else
-    wxImage im1(box_xpm);
-    im1.Scale(bmsize, bmsize, wxIMAGE_QUALITY_HIGH);
-    imglist->Add(wxBitmap(im1, -1));
-
-    wxImage im2(check_xpm);
-    im1.Scale(bmsize, bmsize, wxIMAGE_QUALITY_HIGH);
-    imglist->Add(wxBitmap(im2, -1));
-#endif
-
     m_lStatus->AssignImageList(imglist, wxIMAGE_LIST_SMALL);
-    m_lStatus->GetHandle()->setIconSize(QSize(bmsize, bmsize));
-
+    m_lStatus->GetHandle()->setIconSize(QSize(imageRefSize, imageRefSize));
 #endif
 
     m_lStatus->InsertColumn(ALARM_ENABLED, "X");
@@ -191,7 +160,7 @@ WatchdogDialog::WatchdogDialog( watchdog_pi &_watchdog_pi, wxWindow* parent)
     m_lStatus->SetColumnWidth(ALARM_STATUS, wxLIST_AUTOSIZE);
     m_lStatus->SetColumnWidth(ALARM_COUNT, wxLIST_AUTOSIZE);
 #else
-    m_lStatus->SetColumnWidth(ALARM_ENABLED, bmsize);
+    m_lStatus->SetColumnWidth(ALARM_ENABLED, m_lStatus->GetCharWidth() );
     m_lStatus->SetColumnWidth(ALARM_TYPE, m_lStatus->GetCharWidth() * 10);
     m_lStatus->SetColumnWidth(ALARM_STATUS, m_lStatus->GetCharWidth() * 10);
     m_lStatus->SetColumnWidth(ALARM_COUNT, m_lStatus->GetCharWidth() * 3);
@@ -210,6 +179,8 @@ WatchdogDialog::WatchdogDialog( watchdog_pi &_watchdog_pi, wxWindow* parent)
 
 WatchdogDialog::~WatchdogDialog()
 {
+    Alarm::StopAll();
+
     wxFileConfig *pConf = GetOCPNConfigObject();
     pConf->SetPath ( _T ( "/Settings/Watchdog" ) );
 
@@ -217,6 +188,8 @@ WatchdogDialog::~WatchdogDialog()
     pConf->Write ( _T ( "DialogPosY" ), GetPosition().y );
     pConf->Write ( _T ( "DialogWidth" ), GetSize().x);
     pConf->Write ( _T ( "DialogHeight" ), GetSize().y);
+
+    m_watchdog_pi.m_WatchdogDialog = NULL;
 }
 
 void WatchdogDialog::UpdateAlarms()

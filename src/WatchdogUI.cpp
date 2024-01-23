@@ -14,7 +14,6 @@ WatchdogDialogBase::WatchdogDialogBase( wxWindow* parent, wxWindowID id, const w
 {
     wxFont *pFont = GetOCPNScaledFont_PlugIn(_("Dialog"));
     wxFont dFont = *pFont;
-    //dFont.SetPointSize(pFont->GetPointSize() * 2);
     SetFont(dFont);
 
     this->SetSizeHints( wxSize( -1,-1 ), wxSize( -1,-1 ) );
@@ -218,8 +217,13 @@ WatchdogPropertiesDialogBase::~WatchdogPropertiesDialogBase()
 
 ConfigurationDialogBase::ConfigurationDialogBase( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
-	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+    wxFont *pFont = GetOCPNScaledFont_PlugIn(_("Dialog"));
+    wxFont dFont = *pFont;
+    SetFont(dFont);
 
+    this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+
+#ifndef __OCPN__ANDROID__
 	wxFlexGridSizer* fgSizer4;
 	fgSizer4 = new wxFlexGridSizer( 0, 1, 0, 0 );
 	fgSizer4->SetFlexibleDirection( wxBOTH );
@@ -282,12 +286,86 @@ ConfigurationDialogBase::ConfigurationDialogBase( wxWindow* parent, wxWindowID i
 
 	this->Centre( wxBOTH );
 
-	// Connect Events
+#else
+    wxFlexGridSizer* fgSizer4;
+	fgSizer4 = new wxFlexGridSizer( 0, 1, 0, 0 );
+	fgSizer4->SetFlexibleDirection( wxBOTH );
+	fgSizer4->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+
+	wxStaticBoxSizer* sbSizer41;
+	sbSizer41 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("General Setup") ), wxVERTICAL );
+
+	wxFlexGridSizer* fgSizer241;
+	fgSizer241 = new wxFlexGridSizer( 0, 1, 0, 0 );
+	fgSizer241->SetFlexibleDirection( wxBOTH );
+	fgSizer241->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+
+	m_rbAlways = new wxRadioButton( sbSizer41->GetStaticBox(), wxID_ANY, _("Enable All Alarms"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer241->Add( m_rbAlways, 0, wxALL, 5 );
+
+	m_rbOnce = new wxRadioButton( sbSizer41->GetStaticBox(), wxID_ANY, _("Enabled after first time Watchdog Dialog is visible"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer241->Add( m_rbOnce, 0, wxALL, 5 );
+
+	m_rbVisible = new wxRadioButton( sbSizer41->GetStaticBox(), wxID_ANY, _("Enabled only if Watchdog Dialog is visible"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer241->Add( m_rbVisible, 0, wxALL, 5 );
+
+	m_rbNever = new wxRadioButton( sbSizer41->GetStaticBox(), wxID_ANY, _("Disable All Alarms"), wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer241->Add( m_rbNever, 0, wxALL, 5 );
+
+
+	sbSizer41->Add( fgSizer241, 1, wxEXPAND, 5 );
+
+
+	fgSizer4->Add( sbSizer41, 1, wxEXPAND, 5 );
+
+	wxFlexGridSizer* fgSizer11;
+	fgSizer11 = new wxFlexGridSizer( 1, 0, 0, 0 );
+	fgSizer11->AddGrowableCol( 1 );
+	fgSizer11->SetFlexibleDirection( wxBOTH );
+	fgSizer11->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+
+	m_staticText61 = new wxStaticText( this, wxID_ANY, _("Font"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText61->Wrap( -1 );
+	fgSizer11->Add( m_staticText61, 0, wxALL, 5 );
+    m_staticText61->Hide();
+
+	m_font = new wxFontPickerCtrl( this, wxID_ANY, wxNullFont, wxDefaultPosition, wxDefaultSize, wxFNTP_DEFAULT_STYLE );
+	m_font->SetMaxPointSize( 100 );
+	fgSizer11->Add( m_font, 0, wxALL, 5 );
+    m_font->SetSize(1,1);
+
+	m_sdbSizer1 = new wxStdDialogButtonSizer();
+	m_sdbSizer1OK = new wxButton( this, wxID_OK );
+	m_sdbSizer1->AddButton( m_sdbSizer1OK );
+	m_sdbSizer1->Realize();
+
+	fgSizer11->Add( m_sdbSizer1, 0, wxALIGN_RIGHT|wxBOTTOM|wxEXPAND|wxTOP, 5 );
+	fgSizer4->Add( fgSizer11, 1, wxEXPAND, 5 );
+	this->SetSizer( fgSizer4 );
+	fgSizer4->Fit( this );
+
+    wxRect tbRect = GetMasterToolbarRect();
+    wxPoint pNew;
+    pNew.x = tbRect.x + tbRect.width + 4;
+    pNew.y = tbRect.x + tbRect.width + 4;  // Reasonable spot
+    Move( pNew);
+
+    int widthAvail =
+        GetCanvasByIndex(0)->GetClientSize().x - pNew.x;
+    wxSize sizef;
+    sizef.x = widthAvail;
+    sizef.y = 10 * GetCharHeight();   //Allow a few lines.
+    SetSize(sizef);
+
+#endif
+
+    // Connect Events
 	m_rbAlways->Connect( wxEVT_COMMAND_RADIOBUTTON_SELECTED, wxCommandEventHandler( ConfigurationDialogBase::OnEnabled ), NULL, this );
 	m_rbOnce->Connect( wxEVT_COMMAND_RADIOBUTTON_SELECTED, wxCommandEventHandler( ConfigurationDialogBase::OnEnabled ), NULL, this );
 	m_rbVisible->Connect( wxEVT_COMMAND_RADIOBUTTON_SELECTED, wxCommandEventHandler( ConfigurationDialogBase::OnEnabled ), NULL, this );
 	m_rbNever->Connect( wxEVT_COMMAND_RADIOBUTTON_SELECTED, wxCommandEventHandler( ConfigurationDialogBase::OnEnabled ), NULL, this );
 	m_font->Connect( wxEVT_COMMAND_FONTPICKER_CHANGED, wxFontPickerEventHandler( ConfigurationDialogBase::OnFont ), NULL, this );
+
 }
 
 ConfigurationDialogBase::~ConfigurationDialogBase()
@@ -316,8 +394,7 @@ NewAlarmDialogBase::NewAlarmDialogBase( wxWindow* parent, wxWindowID id, const w
 	fgSizer40->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_ALL );
 
 	m_lAlarmType = new wxListCtrl( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_NO_HEADER|wxLC_REPORT|wxLC_SINGLE_SEL );
-    //m_lAlarmType-SetFont(*dFont);
-    m_lAlarmType->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
+    m_lAlarmType-SetFont(*dFont);
 
 	fgSizer40->Add( m_lAlarmType, 0, wxALL|wxEXPAND, 5 );
 
@@ -333,9 +410,24 @@ NewAlarmDialogBase::NewAlarmDialogBase( wxWindow* parent, wxWindowID id, const w
 
 	this->SetSizer( fgSizer40 );
 	this->Layout();
-	fgSizer40->Fit( this );
 
+#ifdef __OCPN__ANDROID__
+    wxRect tbRect = GetMasterToolbarRect();
+    wxPoint pNew;
+    pNew.x = tbRect.x + tbRect.width + 4;
+    pNew.y = tbRect.x + tbRect.width + 4;  // Reasonable spot
+    Move( pNew);
+
+    int widthAvail =
+        GetCanvasByIndex(0)->GetClientSize().x - pNew.x;
+    wxSize sizef;
+    sizef.x = widthAvail;
+    sizef.y = 10 * GetCharHeight();   //Allow a few lines.
+    SetSize(sizef);
+#else
+    fgSizer40->Fit( this );
 	this->Centre( wxBOTH );
+#endif
 
 	// Connect Events
 	m_lAlarmType->Connect( wxEVT_LEFT_DCLICK, wxMouseEventHandler( NewAlarmDialogBase::OnDoubleClick ), NULL, this );

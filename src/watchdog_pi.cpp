@@ -38,6 +38,10 @@
 #include "icons.h"
 #include "AIS_Target_Info.h"
 
+#ifdef __OCPN__ANDROID__
+#include "qdebug.h"
+#endif
+
 Json::Value g_ReceivedPathGUIDJSONMsg;
 wxString    g_ReceivedPathGUIDMessage;
 Json::Value g_ReceivedBoundaryTimeJSONMsg;
@@ -190,11 +194,14 @@ bool watchdog_pi::DeInit(void)
     {
         if(m_ConfigurationDialog) {
             delete m_ConfigurationDialog;
+            m_ConfigurationDialog = NULL;
         }
-        m_WatchdogDialog->Close();
-        delete m_WatchdogDialog;
-        m_WatchdogDialog = NULL;
-        m_ConfigurationDialog = NULL;
+
+        if (m_WatchdogDialog) {
+            m_WatchdogDialog->Close();
+            delete m_WatchdogDialog;
+            m_WatchdogDialog = NULL;
+        }
     }
 
     m_Timer.Stop();
@@ -296,7 +303,7 @@ void watchdog_pi::OnToolbarToolCallback(int id)
 {
     if(!m_WatchdogDialog)
     {
-        m_WatchdogDialog = new WatchdogDialog(*this, GetOCPNCanvasWindow());
+        m_WatchdogDialog = new WatchdogDialog(*this, GetCanvasByIndex(0));
         m_ConfigurationDialog = new ConfigurationDialog(*this, m_WatchdogDialog);
 
         wxIcon icon;
