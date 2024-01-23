@@ -395,8 +395,6 @@ public:
 
     void OnTimer( wxTimerEvent &tEvent )
     {
-        qDebug() << "SpeedAlarm::OnTimer";
-
         Alarm::OnTimer( tEvent );
         double sog = g_watchdog_pi->LastFix().Sog;
         if(!isnan(sog))
@@ -3057,7 +3055,6 @@ Alarm::Alarm(bool gfx, int interval)
 }
 Alarm::~Alarm()
 {
-    qDebug() << "Alarm DTOR";
     Alarm::StopTimer();
 }
 
@@ -3129,8 +3126,6 @@ void Alarm::SaveConfigBase(TiXmlElement *c)
 
 void Alarm::OnTimer( wxTimerEvent & )
 {
-    qDebug() << "Alarm::OnTimer";
-
     wxFileConfig *pConf = GetOCPNConfigObject();
     pConf->SetPath (  "/Settings/Watchdog"  );
 
@@ -3177,7 +3172,6 @@ void Alarm::OnTimer( wxTimerEvent & )
 
 void Alarm::StopTimer()
 {
-    qDebug() << "Alarm::StopTimer";
     m_Timer.Disconnect(wxEVT_TIMER, wxTimerEventHandler( Alarm::OnTimer ), NULL, this);
     m_Timer.Stop();
 }

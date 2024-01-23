@@ -179,7 +179,6 @@ WatchdogDialog::WatchdogDialog( watchdog_pi &_watchdog_pi, wxWindow* parent)
 
 WatchdogDialog::~WatchdogDialog()
 {
-    qDebug() << "WatchdogDialog DTOR";
     Alarm::StopAll();
 
     wxFileConfig *pConf = GetOCPNConfigObject();

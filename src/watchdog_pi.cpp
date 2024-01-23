@@ -186,8 +186,6 @@ int watchdog_pi::Init(void)
 
 bool watchdog_pi::DeInit(void)
 {
-    qDebug() << "DeInit()";
-
     Alarm::SaveConfigAll();
     Alarm::DeleteAll();
 
