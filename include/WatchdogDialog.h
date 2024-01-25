@@ -55,6 +55,7 @@ public:
     void OnConfiguration( wxCommandEvent& event );
     
 private:
+    long HitTest(wxPoint pos, int);
     watchdog_pi &m_watchdog_pi;
     Alarm *m_menualarm;
 };

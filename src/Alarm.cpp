@@ -579,12 +579,19 @@ public:
         } else wxLogMessage("Watchdog: " + wxString(_("invalid Wind mode")) + ": "
                          + wxString::FromUTF8(mode));
 
+        m_Type = APPARENT;
         const char *type = e->Attribute("RefType");
-        if(!strcasecmp(type, "Apparent")) m_Type = APPARENT;
-        else if(!strcasecmp(type, "True Relative")) m_Type = TRUE_RELATIVE;
-        else if(!strcasecmp(type, "True Absolute")) m_Type = TRUE_ABSOLUTE;
-        else wxLogMessage("Watchdog: " + wxString(_("invalid Wind type")) + ": "
-                         + wxString::FromUTF8(type));
+        if (type) {
+            if (!strcasecmp(type, "Apparent"))
+                m_Type = APPARENT;
+            else if (!strcasecmp(type, "True Relative"))
+                m_Type = TRUE_RELATIVE;
+            else if (!strcasecmp(type, "True Absolute"))
+                m_Type = TRUE_ABSOLUTE;
+            else
+                wxLogMessage("Watchdog: " + wxString(_("invalid Wind type")) +
+                             ": " + wxString::FromUTF8(type));
+        }
 
         e->Attribute("Value", &m_dVal);
     }
