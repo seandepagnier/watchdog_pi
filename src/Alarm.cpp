@@ -45,6 +45,10 @@
 #include "nmea0183.h"
 #include "ODAPI.h"
 
+#ifdef __OCPN__ANDROID__
+#include "qdebug.h"
+#endif
+
 static double deg2rad(double deg)
 {
     return (deg * M_PI / 180.0);
@@ -439,7 +443,10 @@ W = acos |  VW + VB - VA  |
 */
     A = deg2rad(A);
     VW = sqrt(VA*VA + VB*VB - 2*VA*VB*cos(A));
-    W = rad2deg(acos((VW*VW + VB*VB - VA*VA) / (2*VW*VB)));
+    if (VB < 0.2)
+      W = rad2deg(A);
+    else
+      W = rad2deg(acos((VW*VW + VB*VB - VA*VA) / (2*VW*VB)));
 }
 
 class WindAlarm : public Alarm
@@ -447,7 +454,18 @@ class WindAlarm : public Alarm
 public:
     WindAlarm() : Alarm(true), m_Mode(UNDERSPEED), m_Type(APPARENT), m_dVal(5), m_dRange(15), m_speed(NAN), m_direction(NAN), m_gps_speed(0), m_bearing(NAN), m_WindDataTime(wxDateTime::Now()) {}
 
-    wxString Type() { return _("Wind"); }
+    wxString Type() {
+      switch(m_Type) {
+      case APPARENT:
+            return _("Wind App");
+      case TRUE_RELATIVE:
+            return _("Wind T-R");
+      case TRUE_ABSOLUTE:
+            return _("Wind T-A");
+      default:
+            return _("Wind");
+      }
+    }
 
     wxString GetStatus() {
         wxString s;
@@ -515,6 +533,9 @@ public:
         if((wxDateTime::Now() - m_WindDataTime).GetSeconds() > 3)
             return m_bNoData;
 
+        if (!isnan(g_watchdog_pi->LastFix().Sog))
+          m_gps_speed = g_watchdog_pi->LastFix().Sog * .1 + m_gps_speed * .9;
+
         switch(m_Mode) {
         case UNDERSPEED: return m_dVal > m_speed;
         case OVERSPEED:  return m_dVal < m_speed;
@@ -527,7 +548,6 @@ public:
         default: break;
         }
 
-        m_gps_speed = g_watchdog_pi->LastFix().Sog * .1 + m_gps_speed * .9;
         return 0;
     }
 
@@ -559,10 +579,10 @@ public:
         } else wxLogMessage("Watchdog: " + wxString(_("invalid Wind mode")) + ": "
                          + wxString::FromUTF8(mode));
 
-        const char *type = e->Attribute("Type");
-        if(!strcasecmp(mode, "Apparent")) m_Type = APPARENT;
-        else if(!strcasecmp(mode, "True Relative")) m_Type = TRUE_RELATIVE;
-        else if(!strcasecmp(mode, "True Absolute")) m_Type = TRUE_ABSOLUTE;
+        const char *type = e->Attribute("RefType");
+        if(!strcasecmp(type, "Apparent")) m_Type = APPARENT;
+        else if(!strcasecmp(type, "True Relative")) m_Type = TRUE_RELATIVE;
+        else if(!strcasecmp(type, "True Absolute")) m_Type = TRUE_ABSOLUTE;
         else wxLogMessage("Watchdog: " + wxString(_("invalid Wind type")) + ": "
                          + wxString::FromUTF8(type));
 
@@ -571,13 +591,20 @@ public:
 
     void SaveConfig(TiXmlElement *c) {
         c->SetAttribute("Type", "Wind");
+        switch(m_Type) {
+          case APPARENT:c->SetAttribute("RefType", "Apparent"); break;
+          case TRUE_RELATIVE: c->SetAttribute("RefType", "True Relative"); break;
+          case TRUE_ABSOLUTE: c->SetAttribute("RefType", "True Absolute"); break;
+          default: break;
+        }
         switch(m_Mode) {
-        case UNDERSPEED: c->SetAttribute("Mode", "Underspeed"); break;
-        case OVERSPEED:  c->SetAttribute("Mode", "Overspeed");  break;
-        case DIRECTION:
+          case UNDERSPEED: c->SetAttribute("Mode", "Underspeed"); break;
+          case OVERSPEED:  c->SetAttribute("Mode", "Overspeed");  break;
+          case DIRECTION:
             c->SetAttribute("Mode", "Direction");
             c->SetDoubleAttribute("Range", m_dRange);
             break;
+          default: break;
         }
 
         c->SetDoubleAttribute("Value", m_dVal);
@@ -593,15 +620,24 @@ private:
         if(nmea.LastSentenceIDReceived == "HDM" && nmea.Parse()) {
             m_bearing = nmea.Hdm.DegreesMagnetic + g_watchdog_pi->Declination();
         } else
-        if(nmea.LastSentenceIDReceived == "MWV" &&
-           nmea.Parse() && nmea.Mwv.IsDataValid == NTrue ) {
-            double m_wSpeedFactor = 1.0; //knots ("N")
-            if (nmea.Mwv.WindSpeedUnits == "K" ) m_wSpeedFactor = 0.53995 ; //km/h > knots
-            if (nmea.Mwv.WindSpeedUnits == "M" ) m_wSpeedFactor = 1.94384;
-            if(nmea.Mwv.Reference == "R" && m_Type == APPARENT) {
-                ProcessWind(nmea.Mwv.WindSpeed * m_wSpeedFactor, nmea.Mwv.WindAngle);
-            } else if(nmea.Mwv.Reference == "T" && m_Type == TRUE_RELATIVE) {
-                // should we accept true wind nmea sentences rather than calculate ourself??
+        if(nmea.LastSentenceIDReceived == "MWV") {
+            nmea.Parse();
+            if (nmea.Mwv.IsDataValid == NTrue) {
+                double m_wSpeedFactor = 1.0; // knots ("N")
+                if (nmea.Mwv.WindSpeedUnits == "K")
+                  m_wSpeedFactor = 0.53995; // km/h > knots
+                if (nmea.Mwv.WindSpeedUnits == "M")
+                  m_wSpeedFactor = 1.94384;
+                if (nmea.Mwv.Reference == "R" && m_Type == APPARENT) {
+                  ProcessWind(nmea.Mwv.WindSpeed * m_wSpeedFactor,
+                              nmea.Mwv.WindAngle);
+                } else if (nmea.Mwv.Reference == "R" && m_Type == TRUE_RELATIVE) {
+                    ProcessWind(nmea.Mwv.WindSpeed * m_wSpeedFactor,
+                                nmea.Mwv.WindAngle);
+                } else if (nmea.Mwv.Reference == "T" &&
+                           m_Type == TRUE_RELATIVE) {
+                  // should we accept true wind nmea sentences rather than calculate ourself??
+                }
             }
         }
     }
@@ -613,7 +649,7 @@ private:
             m_speed = apparent_speed;
             m_direction = apparent_direction;
         } else {
-            TrueWind(m_speed, m_direction, m_gps_speed, m_speed, m_direction);
+            TrueWind(apparent_speed, apparent_direction, m_gps_speed, m_speed, m_direction);
             if(m_Type == TRUE_ABSOLUTE) {
                 m_direction += m_bearing;
                 if(m_direction > 360)
@@ -2957,6 +2993,14 @@ void Alarm::SaveConfigAll()
         wxLogMessage("Watchdog: " + wxString(_("failed to save")) + ": " + configuration);
 }
 
+void Alarm::StopAll()
+{
+    for(unsigned int i=0; i<s_Alarms.size(); i++){
+        if(s_Alarms[i])
+            s_Alarms[i]->StopTimer();
+    }
+}
+
 void Alarm::DeleteAll()
 {
     for(unsigned int i=0; i<s_Alarms.size(); i++)
@@ -3008,6 +3052,10 @@ Alarm::Alarm(bool gfx, int interval)
 {
     m_Timer.Connect(wxEVT_TIMER, wxTimerEventHandler( Alarm::OnTimer ), NULL, this);
     m_Timer.Start(m_interval * 1000, wxTIMER_CONTINUOUS);
+}
+Alarm::~Alarm()
+{
+    Alarm::StopTimer();
 }
 
 wxString Alarm::Action()
@@ -3120,4 +3168,10 @@ void Alarm::OnTimer( wxTimerEvent & )
         for(unsigned int i=0; i<Alarm::s_Alarms.size(); i++)
             if(Alarm::s_Alarms[i] == this)
                 g_watchdog_pi->m_WatchdogDialog->UpdateStatus(i);
+}
+
+void Alarm::StopTimer()
+{
+    m_Timer.Disconnect(wxEVT_TIMER, wxTimerEventHandler( Alarm::OnTimer ), NULL, this);
+    m_Timer.Stop();
 }

@@ -39,6 +39,7 @@ public:
     static void SaveConfigAll();
     static void DeleteAll();
     static void ResetAll();
+    static void StopAll();
     static void NMEAStringAll(const wxString &sentence);
     static Alarm *NewAlarm(enum AlarmType type);
     static void SaveAlarms(wxString filename);
@@ -47,6 +48,7 @@ public:
     static std::vector<Alarm*> s_Alarms;
 
     Alarm(bool gfx=false, int interval=1);
+    virtual ~Alarm();
 
     wxString Action();
     virtual void Run();
@@ -68,6 +70,7 @@ public:
     void SaveConfigBase(TiXmlElement *c);
 
     virtual void OnTimer(wxTimerEvent &);
+    virtual void StopTimer();
 
     void Reset() { m_bFired = false; m_count = 0; }
 

@@ -37,6 +37,7 @@
 #include <wx/radiobox.h>
 #include <wx/statline.h>
 #include <wx/notebook.h>
+#include <wx/scrolwin.h>
 
 #include "wxWTranslateCatalog.h"
 
@@ -189,6 +190,7 @@ class EditAlarmDialogBase : public wxDialog
 
 	protected:
 		wxFlexGridSizer* m_fgSizer;
+        wxScrolledWindow *m_scrollWin;
 		wxCheckBox* m_cbNoData;
 		wxStaticText* m_staticText56;
 		wxSpinCtrl* m_sDelay;
