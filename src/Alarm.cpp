@@ -641,9 +641,9 @@ private:
                 } else if (nmea.Mwv.Reference == "R" && m_Type == TRUE_RELATIVE) {
                     ProcessWind(nmea.Mwv.WindSpeed * m_wSpeedFactor,
                                 nmea.Mwv.WindAngle);
-                } else if (nmea.Mwv.Reference == "T" &&
-                           m_Type == TRUE_RELATIVE) {
-                  // should we accept true wind nmea sentences rather than calculate ourself??
+                } else if (nmea.Mwv.Reference == "T" && m_Type == TRUE_ABSOLUTE) {
+                    m_speed = nmea.Mwv.WindSpeed * m_wSpeedFactor;
+                    m_direction = nmea.Mwv.WindAngle;
                 }
             }
         }
