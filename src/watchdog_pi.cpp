@@ -79,6 +79,9 @@ double heading_resolve(double degrees, double offset)
         degrees += 360;
     while(degrees >= offset+180)
         degrees -= 360;
+
+    if (degrees < 0)
+        degrees += 360.;
     return degrees;
 }
 

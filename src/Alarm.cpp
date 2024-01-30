@@ -447,12 +447,63 @@ W = acos |  VW + VB - VA  |
       W = rad2deg(A);
     else
       W = rad2deg(acos((VW*VW + VB*VB - VA*VA) / (2*VW*VB)));
+
+    W += 180.;
+    if (W > 360.)
+      W -= 360.;
+}
+
+/*      Calculate True Wind speed and direction from AWS and AWA
+ *      This algorithm requires HDT, SOG, and COG
+ */
+#ifndef PI
+#define PI 3.1415926535897931160E0 /* pi */
+#endif
+
+void CalculateTWDS(double awsKnots, double awaDegrees, double gps_SOG, double gps_COG, double heading, double &TWspeed, double &TWdirection) {
+    if (!isnan(heading)) {
+      // Apparent wind velocity vector, relative to head-up
+      double awsx = awsKnots * cos(awaDegrees * PI / 180.);
+      double awsy = awsKnots * sin(awaDegrees * PI / 180.);
+
+      // Ownship velocity vector, relative to head-up
+      double bsx = 0;
+      double bsy = 0;
+      if ((!isnan(gps_SOG)) && (!isnan(gps_COG))) {
+            bsx = gps_SOG * cos((gps_COG - heading) * PI / 180.);
+            bsy = gps_SOG * sin((gps_COG - heading) * PI / 180.);
+      }
+
+      // "True" wind is calculated by vector subtraction
+      double twdx = awsx - bsx;
+      double twdy = awsy - bsy;
+
+      // Calculate the speed (magnitude of the vector)
+      double tws = pow(((twdx * twdx) + (twdy * twdy)), 0.5);
+
+      // calculate the True Wind Angle
+      double twd = atan2(twdy, twdx) * 180. / PI;
+
+      // Normalize
+      if (twd < 0) twd += 360.;
+      if (twd > 360.) twd -= 360;
+
+      TWdirection = twd;
+      TWspeed = tws;
+
+      //double twdc = twd + heading;
+      //if (twdc < 0) twdc += 360.;
+      //if (twdc > 360.) twdc -= 360;
+      //printf("Alrm: %4.0f %4.0f %4.0f %4.0f %4.0f\n", TWspeed, twdc, gps_SOG, gps_COG, heading );
+    }
 }
 
 class WindAlarm : public Alarm
 {
 public:
-    WindAlarm() : Alarm(true), m_Mode(UNDERSPEED), m_Type(APPARENT), m_dVal(5), m_dRange(15), m_speed(NAN), m_direction(NAN), m_gps_speed(0), m_bearing(NAN), m_WindDataTime(wxDateTime::Now()) {}
+    WindAlarm() : Alarm(true), m_Mode(UNDERSPEED), m_Type(APPARENT), m_dVal(5), m_dRange(15),
+            m_speed(NAN), m_direction(NAN), m_gps_speed(0), m_bearing(NAN),
+            m_gps_COG(0), m_WindDataTime(wxDateTime::Now()) {}
 
     wxString Type() {
       switch(m_Type) {
@@ -482,7 +533,8 @@ public:
                 return "N/A";
             else
                 return wxString::Format(fmt + " < " + fmt + " < " + fmt,
-                                        heading_resolve(m_dVal - m_dRange), m_direction,
+                                        heading_resolve(m_dVal - m_dRange),
+                                        m_direction,
                                         heading_resolve(m_dVal + m_dRange));
         }
         return "";
@@ -534,7 +586,10 @@ public:
             return m_bNoData;
 
         if (!isnan(g_watchdog_pi->LastFix().Sog))
-          m_gps_speed = g_watchdog_pi->LastFix().Sog * .1 + m_gps_speed * .9;
+          m_gps_speed = g_watchdog_pi->LastFix().Sog; // * .1 + m_gps_speed * .9;
+
+        if (!isnan(g_watchdog_pi->LastFix().Cog))
+          m_gps_COG = g_watchdog_pi->LastFix().Cog;
 
         switch(m_Mode) {
         case UNDERSPEED: return m_dVal > m_speed;
@@ -635,15 +690,14 @@ private:
                   m_wSpeedFactor = 0.53995; // km/h > knots
                 if (nmea.Mwv.WindSpeedUnits == "M")
                   m_wSpeedFactor = 1.94384;
-                if (nmea.Mwv.Reference == "R" && m_Type == APPARENT) {
+                if (nmea.Mwv.Reference == "R") {
                   ProcessWind(nmea.Mwv.WindSpeed * m_wSpeedFactor,
                               nmea.Mwv.WindAngle);
-                } else if (nmea.Mwv.Reference == "R" && m_Type == TRUE_RELATIVE) {
-                    ProcessWind(nmea.Mwv.WindSpeed * m_wSpeedFactor,
-                                nmea.Mwv.WindAngle);
+                  //printf("dir A A:  %g\n", m_direction);
                 } else if (nmea.Mwv.Reference == "T" && m_Type == TRUE_ABSOLUTE) {
                     m_speed = nmea.Mwv.WindSpeed * m_wSpeedFactor;
                     m_direction = nmea.Mwv.WindAngle;
+                    //printf("dir T T_A:  %g\n", m_direction);
                 }
             }
         }
@@ -656,11 +710,18 @@ private:
             m_speed = apparent_speed;
             m_direction = apparent_direction;
         } else {
-            TrueWind(apparent_speed, apparent_direction, m_gps_speed, m_speed, m_direction);
+            //TrueWind(apparent_speed, apparent_direction, m_gps_speed, m_speed, m_direction);
+            CalculateTWDS(apparent_speed, apparent_direction, m_gps_speed,
+                          m_gps_COG,
+                          m_bearing,
+                          m_speed,
+                          m_direction);
+
             if(m_Type == TRUE_ABSOLUTE) {
                 m_direction += m_bearing;
                 if(m_direction > 360)
                     m_direction -= 360;
+                //printf("true absolute:  %g  %g\n", m_speed, m_direction);
             }
         }
 
@@ -672,6 +733,7 @@ private:
 
     double m_speed, m_direction;
     double m_gps_speed, m_bearing;
+    double m_gps_COG;
 
     wxDateTime m_WindDataTime;
 };
