@@ -461,7 +461,7 @@ W = acos |  VW + VB - VA  |
 #endif
 
 void CalculateTWDS(double awsKnots, double awaDegrees, double gps_SOG, double gps_COG, double heading, double &TWspeed, double &TWdirection) {
-    if (!std::isnan(heading)) {
+    if (!isnan(heading)) {
       // Apparent wind velocity vector, relative to head-up
       double awsx = awsKnots * cos(awaDegrees * PI / 180.);
       double awsy = awsKnots * sin(awaDegrees * PI / 180.);
@@ -469,7 +469,7 @@ void CalculateTWDS(double awsKnots, double awaDegrees, double gps_SOG, double gp
       // Ownship velocity vector, relative to head-up
       double bsx = 0;
       double bsy = 0;
-      if ((!std::isnan(gps_SOG)) && (!std::isnan(gps_COG))) {
+      if ((!isnan(gps_SOG)) && (!isnan(gps_COG))) {
             bsx = gps_SOG * cos((gps_COG - heading) * PI / 180.);
             bsy = gps_SOG * sin((gps_COG - heading) * PI / 180.);
       }
