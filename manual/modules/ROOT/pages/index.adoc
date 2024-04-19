@@ -1095,12 +1095,12 @@ Note: In subtropic and tropic regions some of the above rules may not be valid a
 
 Let’s say you want to be warned when the barometer drops more than 1,3 hPa per hour.
 
-1 hectopascal (hPa) is equal to 100 millibar (mBar). So 1,3 hPa per hour = 130 mBar per hour or 130 mBar per 3600 seconds.
+1 hectopascal (hPa) is equal to 1 millibar (mBar). So 1,3 hPa per hour = 1.3 mBar per hour or 1.3 mBar per 3600 seconds.
 
 The setting in the WD-Weather-alarm would then be: 
 Variable: Barometer  Rate
 Type: Decreasing
-Value: 130 mBar
+Value: 1.3 mBar
 In Last: 3600 Seconds
 
 *Weathertips:* +

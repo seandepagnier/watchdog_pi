@@ -79,6 +79,9 @@ double heading_resolve(double degrees, double offset)
         degrees += 360;
     while(degrees >= offset+180)
         degrees -= 360;
+
+    if (degrees < 0)
+        degrees += 360.;
     return degrees;
 }
 
@@ -213,7 +216,7 @@ bool watchdog_pi::DeInit(void)
 }
 
 int watchdog_pi::GetAPIVersionMajor()
-{ 
+{
      return OCPN_API_VERSION_MAJOR;
 }
 
@@ -233,24 +236,24 @@ int watchdog_pi::GetPlugInVersionMinor()
 }
 
 int watchdog_pi::GetPlugInVersionPatch()
-{ 
-      return PLUGIN_VERSION_PATCH; 
+{
+      return PLUGIN_VERSION_PATCH;
 }
 
 int watchdog_pi::GetPlugInVersionPost()
-{ 
+{
       return PLUGIN_VERSION_TWEAK;
 }
 
 wxBitmap *watchdog_pi::GetPlugInBitmap()
-{ 
+{
       return new wxBitmap(_img_watchdog->ConvertToImage().Copy());
 }
 
 wxString watchdog_pi::GetCommonName()
 {
-	  return _T(PLUGIN_COMMON_NAME); 
-}   
+	  return _T(PLUGIN_COMMON_NAME);
+}
  // return _("Watchdog");
 
 wxString watchdog_pi::GetShortDescription()
@@ -546,7 +549,7 @@ void watchdog_pi::SetPluginMessage(wxString &message_id, wxString &message_body)
         }
 
         if(!bFail) {
-            if(root["Type"].asString() == "Information" && root["Source"].asString() == "AIS_Decoder") {
+            if(root["Type"].asString() == "Information" && (root["Source"].asString() == "AIS_Decoder" || root["Source"].asString() == "AisDecoder")) {
                 g_ReceivedAISJSONMsg = root;
                 g_ReceivedAISMessage = message_body;
                 g_AISTarget.m_dLat = g_ReceivedAISJSONMsg["lat"].asDouble();
