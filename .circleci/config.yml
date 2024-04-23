@@ -86,10 +86,6 @@ commands:
             deploy_use_orb:
                 type: boolean
                 default: true
-            use_virtual_python_env:
-                type: boolean
-                default: false
-
         steps:
             - when:
                 condition: <<pipeline.parameters.run_workflow_deploy>>
@@ -104,10 +100,6 @@ commands:
                     steps:
                     - cloudsmith/ensure-api-key
                     - cloudsmith/install-cli
-                - when:
-                    condition: <<parameters.use_virtual_python_env>>
-                    steps:
-                    - run: sudo python3 -m pip install -q cloudsmith-cli
                 - run: bash ci/cloudsmith-upload.sh
 
 # if you want to use a local proxy add Acquire::http::Proxy \"http://192.168.1.1:3142\"; to a file called circleci-cache/apt-proxy. This will require
@@ -194,7 +186,6 @@ jobs:
               sh -c "cat build/*.xml"
         - deploy-code:
             deploy_use_orb: false
-            use_virtual_python_env: true
     build-msvc-wx32-2022:
         executor:
             name: win/server-2022
