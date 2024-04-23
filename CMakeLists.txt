@@ -19,7 +19,7 @@
 ## *   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                                       *
 #-----------------------------------------------------------------------------
 # Frontend2 Author: Jon Gough 
-# Testplugin(TP) v1.0.286.3 29/12/2023 DD/MM/YYYY format
+# Testplugin(TP) v1.0.297.0 15/03/2024 DD/MM/YYYY format
 # buildCI:yes useODAPI:no validateJSON:no
 # ---------------------------------------------------------------------------
 ## -- When changing this file do NOT change the order of the sections.    -- ##
@@ -56,9 +56,9 @@ set(LONG_DESCRIPTION "Set alarms for changing conditions, boundaries, cog, landf
 
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "4")
-set(VERSION_PATCH "107")
+set(VERSION_PATCH "108")
 set(VERSION_TWEAK "0")
-set(VERSION_DATE  "30/01/2023")#DD/MM/YYYY format
+set(VERSION_DATE  "23/04/2024`")#DD/MM/YYYY format
 set(OCPN_MIN_VERSION "ov58")
 
 set(OCPN_API_VERSION_MAJOR "1")
