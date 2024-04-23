@@ -161,9 +161,9 @@ if(APPLE)
 
     # On macos, fix paths which points to the build environment, make sure they
     # refers to runtime locations
-    message(STATUS "Adjusting MacOS library paths")
+    message(STATUS "${CMLOC}copying: Adjusting MacOS library paths")
     install(CODE "execute_process(
-      COMMAND bash -c ${PROJECT_SOURCE_DIR}/cmake/fix-macos-libs.sh
+      COMMAND bash ${PROJECT_SOURCE_DIR}/cmake/fix-macos-libs.sh
     )")
 
     install(
